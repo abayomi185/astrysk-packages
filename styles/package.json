@@ -1,0 +1,23 @@
+{
+  "name": "@astrysk/styles",
+  "version": "0.0.0",
+  "main": "tamagui.config.ts",
+  "dependencies": {
+    "react": "18.2.0",
+    "@tamagui/animations-react-native": "^1.28.1",
+    "@tamagui/animations-reanimated": "^1.28.1",
+    "@tamagui/babel-plugin": "^1.28.1",
+    "@tamagui/config": "^1.28.1",
+    "@tamagui/font-inter": "^1.28.1",
+    "@tamagui/lucide-icons": "^1.28.1",
+    "@tamagui/shorthands": "^1.28.1",
+    "@tamagui/theme-base": "^1.28.1",
+    "@tamagui/themes": "^1.28.1",
+    "@tamagui/toast": "^1.28.1",
+    "tamagui": "^1.28.1"
+  },
+  "devDependencies": {
+    "@types/react": "~18.0.33"
+  },
+  "private": true
+}

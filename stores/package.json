@@ -1,0 +1,20 @@
+{
+  "name": "@astrysk/stores",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsup --watch --silent"
+  },
+  "dependencies": {
+    "@astrysk/api": "*",
+    "@astrysk/types": "*",
+    "@astrysk/components": "*",
+    "tamagui": "^1.28.1",
+    "react-native": "0.71.6",
+    "zustand": "^4.3.3"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  },
+  "private": true
+}

@@ -1,0 +1,67 @@
+{
+  "jellyfin": "Jellyfin",
+  "changeServer": "Change Server",
+  "disconnectServer": "Disconnect Server",
+  "selectSeason": "Select Season",
+
+  "suggestions": "Suggestions",
+  "mediaNotSupported": "Media Not Supported",
+  "mediaNotSupportedText": "This media type is not currently supported.",
+
+  "resume": "Resume",
+  "nextUp": "Next Up",
+  "recentlyAdded": "Recently Added",
+  "latestMedia": "Latest",
+  "play": "Play",
+  "episode": "Episode",
+  "ep": "Ep",
+  "e": "E",
+  "season": "Season",
+  "s": "S",
+
+  "readMore": "Read more",
+  "series": "Series",
+  "description": "Description",
+  "information": "Information",
+  "released": "Released",
+  "castAndCrew": "Cast and Crew",
+  "about": "About",
+  "overview": "Overview",
+
+  "codec": "Codec",
+  "quality": "Quality",
+  "audio": "Audio",
+  "hour": "h",
+  "minute": "m",
+
+  "error_episodeNotSelected": "Episode not selected",
+
+  "playerOptions": "Player Options",
+  "deleteCache": "Delete Cache",
+  "deleteCacheMessage": "This action will delete all media cache. Are you sure?",
+  "deleteMediaSettings": "Delete Media Settings",
+  "deleteMediaSettingsMessage": "This action will delete all individual media settings such as audio language and subtitle language.\nAre you sure?",
+  "operatingSystem": "Operating System",
+
+  "serverDetails": "Server Details",
+
+  "audioLanguage": "Audio Language",
+  "defaultAudioLanguage": "Default Audio Language",
+  "subtitleLanguage": "Subtitle Language",
+  "defaultSubtitleLanguage": "Default Subtitle Language",
+
+  "videoPlayer": "Video Player",
+
+  "h264": "H.264",
+  "h265": "H.265",
+  "hevc": "HEVC",
+  "aac": "AAC",
+  "ac3": "AC3",
+  "eac3": "EAC3",
+  "flac": "FLAC",
+
+  "channel2": "2.0",
+  "channel5": "5.1",
+  "channel6": "6.1",
+  "channel7": "7.1"
+}

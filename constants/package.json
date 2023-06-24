@@ -1,0 +1,12 @@
+{
+  "name": "@astrysk/constants",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsup --watch --silent"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  },
+  "private": true
+}

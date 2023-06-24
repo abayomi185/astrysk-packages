@@ -1,0 +1,16 @@
+{
+  "name": "@astrysk/api",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsup --watch --silent"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^4.28.0",
+    "qs": "^6.11.1"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  },
+  "private": true
+}

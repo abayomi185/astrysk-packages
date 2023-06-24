@@ -1,0 +1,17 @@
+{
+  "name": "@astrysk/types",
+  "version": "0.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsup --watch --silent"
+  },
+  "dependencies": {
+    "@astrysk/utils": "*",
+    "react": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "~18.0.33",
+    "tsup": "^6.7.0"
+  },
+  "private": true
+}

@@ -1,0 +1,57 @@
+{
+  "search": "Search",
+  "settings": "Settings",
+  "makeYourVote": "MAKE YOUR VOTE",
+  "moreApplets": "More Applets!",
+  "vote": "VOTE",
+  "authenticate": "Authenticate",
+  "username": "Username",
+  "password": "Password",
+  "signIn": "Sign In",
+  "serverURL": "Server URL",
+  "error": "Error",
+  "applet": "Applet",
+  "exitApplet": "Exit Applet",
+  "changeApplet": "Change Applet",
+
+  "errorOccured": "Error Occured",
+  "goBack": "Go Back",
+  "select": "Select",
+  "selectDefault": "Select default",
+  "lastActiveApplet": "Last active applet",
+
+  "pageNotFound": "Page not found.",
+  "areYouSure": "Are you sure?",
+
+  "ok": "Ok",
+  "cancel": "Cancel",
+  "add": "Add",
+  "choose": "Choose",
+
+  "general": "General",
+  "default": "Default",
+  "global": "Global",
+
+  "name": "Name",
+  "user": "User",
+  "server": "Server",
+  "about": "About",
+  "url": "URL",
+  "version": "Version",
+
+  "language": "Language",
+
+  "settings_joinDiscord": "Join our Discord",
+  "settings_defaultApplet": "Default Applet",
+  "search_noAppletSelected": "Please select an applet to use Search",
+  "settings_about": "About",
+  "settings_requestFeature": "Request a Feature",
+  "settings_reportIssue": "Report an Issue",
+  "settings_sourceCode": "Source Code",
+
+  "addCustomHeader": "Add Custom Header",
+  "addCustomHeader_description": "Add a custom header to the request.\nUse the format Key:Value",
+  "addCustomHeaders": "Add Custom Headers",
+  "invalidCustomHeader": "Invalid Custom Header",
+  "invalidCustomHeader_description": "Please enter a valid custom header in the format Key:Value"
+}

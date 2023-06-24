@@ -1,0 +1,24 @@
+{
+  "name": "@astrysk/components",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "tsup --watch --silent"
+  },
+  "dependencies": {
+    "@astrysk/api": "*",
+    "@astrysk/applets": "*",
+    "@astrysk/assets": "*",
+    "@astrysk/constants": "*",
+    "@astrysk/stores": "*",
+    "@astrysk/styles": "*",
+    "@astrysk/utils": "*",
+    "react": "18.2.0",
+    "react-dom": "^18.2.0",
+    "tamagui": "^1.28.1"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0"
+  },
+  "private": true
+}
