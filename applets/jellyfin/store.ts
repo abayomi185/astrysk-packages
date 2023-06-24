@@ -2,7 +2,6 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthenticationResultUser } from "./api";
 import { JellyfinMediaCache, JellyfinMediaItemSettings } from "./types";
 
