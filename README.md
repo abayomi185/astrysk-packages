@@ -8,3 +8,4 @@ Packages for Astrysk
 - [x] Jellyfin
 - [ ] Sonarr
 - [ ] Radarr
+- [ ] \[Your suggested applet?\]
