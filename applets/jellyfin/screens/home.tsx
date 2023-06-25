@@ -44,13 +44,13 @@ const JellyfinHome: React.FC = () => {
           component: () => <JellyfinResumeMedia />,
         },
         {
-          header: () => <SectionTitle>{t("jellyfin:nextUp")}</SectionTitle>,
+          // header: () => <SectionTitle>{t("jellyfin:nextUp")}</SectionTitle>,
           component: () => <JellyfinNextUp />,
         },
         {
-          header: () => (
-            <SectionTitle>{t("jellyfin:recentlyAdded")}</SectionTitle>
-          ),
+          // header: () => (
+          //   <SectionTitle>{t("jellyfin:recentlyAdded")}</SectionTitle>
+          // ),
           component: () => <JellyfinRecentlyAdded />,
         },
         // {
@@ -70,7 +70,6 @@ const JellyfinHome: React.FC = () => {
         data={listOrder}
         renderItem={({ item }) => (
           <>
-            {item.header && <item.header />}
             <item.component />
           </>
         )}

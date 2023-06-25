@@ -41,6 +41,8 @@
 
   "language": "Language",
 
+  "unexpectedResponseFormat_message": "Unexpected response format from server.",
+
   "settings_joinDiscord": "Join our Discord",
   "settings_defaultApplet": "Default Applet",
   "search_noAppletSelected": "Please select an applet to use Search",

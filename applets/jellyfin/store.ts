@@ -69,6 +69,7 @@ export const jellyfinPersistStateKeys = Array.from(
 );
 
 const initialAppState: JellyfinState = {
+  authenticated: false,
   isConfigured: false, // Use this state to configure if not configured
 };
 

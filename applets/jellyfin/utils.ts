@@ -16,12 +16,34 @@ import {
   JellyfinDetailScreenProps,
 } from "./types";
 import { Router } from "@astrysk/types";
-import { BaseItemKind } from "./api";
+import config from "@astrysk/styles";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
+export const configureAxios = (
+  baseURL: string,
+  token?: string,
+  customHeaders?: object,
+  callback?: () => void
+) => {
+  const axiosConfig = {
+    baseURL: baseURL,
+    headers: {
+      "Content-Type": "application/json",
+      "x-emby-authorization": `MediaBrowser , Client="${Constants.manifest?.name}", \
+        Device="${DeviceInfo.deviceName}", DeviceId="${DeviceInfo.modelId}", \
+        Version="${Constants.manifest?.version}"`,
+      ...(token ? { "x-mediabrowser-token": token } : {}),
+      ...(customHeaders ? customHeaders : {}),
+    },
+  };
+  create_axios_instance(axiosConfig);
+  callback && callback();
+};
+
 // Jellyfin configure function that all screens can run
 // to authenticate and set up the applet appropriately
 export const configureJellyfin = () => {
+  const authenticated = useJellyfinStore.getState().authenticated;
   const isConfigured = useJellyfinStore.getState().isConfigured;
 
   // Check if token and baseURL exists
@@ -37,21 +59,10 @@ export const configureJellyfin = () => {
     return true;
   }
 
-  const axiosConfig = {
-    baseURL: baseURL,
-    headers: {
-      "x-emby-authorization": `MediaBrowser , Client="${Constants.manifest?.name}", \
-        Device="${DeviceInfo.deviceName}", DeviceId="${DeviceInfo.modelId}", \
-        Version="${Constants.manifest?.version}"`,
-      ...(token ? { "x-mediabrowser-token": token } : {}),
-      ...(customHeaders ? customHeaders : {}),
-    },
-  };
-  create_axios_instance(axiosConfig);
+  configureAxios(baseURL, token, customHeaders);
 
   useJellyfinStore.setState({ isConfigured: true });
 
-  // console.log("Configured Jellyfin");
   return true;
 };
 

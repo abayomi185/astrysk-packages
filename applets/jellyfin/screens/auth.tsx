@@ -1,5 +1,14 @@
 import React from "react";
-import { ScrollView, Button, Form, Text, Input, YStack, XStack } from "tamagui";
+import {
+  ScrollView,
+  Button,
+  Form,
+  Text,
+  Input,
+  YStack,
+  XStack,
+  Spinner,
+} from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useTranslation } from "react-i18next";
@@ -9,7 +18,7 @@ import { Applets } from "@astrysk/constants";
 
 import { useAuthenticateUserByName } from "../api";
 import { useJellyfinStore } from "../store";
-import { configureJellyfin } from "../utils";
+import { configureAxios, configureJellyfin } from "../utils";
 import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
@@ -36,36 +45,55 @@ const JellyfinAuth = () => {
   const auth = useAuthenticateUserByName({
     mutation: {
       onSuccess: (data) => {
-        useJellyfinStore.setState({
-          token: data.AccessToken,
-          userDetails: data.User,
-        });
-        useAppStateStore.setState({ activeApplet: Applets.JELLYFIN });
-        navigation.goBack();
+        if (typeof data === "object") {
+          useJellyfinStore.setState({
+            authenticated: true,
+            token: data.AccessToken,
+            userDetails: data.User,
+          });
+          useAppStateStore.setState({
+            activeApplet: Applets.JELLYFIN,
+          });
+          navigation.goBack();
+        } else {
+          Alert.alert(
+            `${t("common:error")}`,
+            `${t("common:unexpectedResponseFormat_message")}`
+          );
+        }
       },
       onError: (error) => {
         useAppStateStore.setState({ activeApplet: undefined });
         // WARN: Show error message or prompt
         if (error.response?.status) {
-          error.response.status >= 400 &&
-            error.response.status < 500 &&
-            Alert.alert(
-              `${t("common:error")}`,
-              `${error.response.status}: ${error.code}`
-            );
+          // error.response.status >= 400 &&
+          //   error.response.status < 500 &&
+          Alert.alert(
+            `${t("common:error")}`,
+            `${error.response.status}: ${error.code}`
+          );
           // WARN: Make use of ReactHookForm to show error in fields
           setError("root.serverError", {
             type: error.response.status.toString(),
           });
         }
       },
+      onSettled: (data, error) => {
+        if (typeof data !== "object" || error) {
+          useJellyfinStore.setState({ baseURL: undefined });
+        }
+      },
     },
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    // WARN: This implementation for authentication is terrible. Needs a proper rework
+    // From this onSubmit to the mutation
+
     useJellyfinStore.setState({ baseURL: data.serverURL });
-    if (configureJellyfin())
+    configureAxios(data.serverURL, undefined, undefined, () => {
       auth.mutate({ data: { Username: data.username, Pw: data.password } });
+    });
   };
 
   const [customHeaders, setCustomHeaders] = React.useState<
@@ -87,7 +115,7 @@ const JellyfinAuth = () => {
   return (
     <ScrollView
       height="100%"
-      keyboardDismissMode="on-drag"
+      // keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets={true}
     >
@@ -174,7 +202,7 @@ const JellyfinAuth = () => {
         </YStack>
         <Form.Trigger asChild>
           <Button theme="blue" width="100%">
-            {t("common:signIn")}
+            {auth.status === "loading" ? <Spinner /> : t("common:signIn")}
           </Button>
         </Form.Trigger>
         <YStack>

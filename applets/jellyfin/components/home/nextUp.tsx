@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { useRouter, useFocusEffect } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
-import { Text, YStack, XStack, H6 } from "tamagui";
+import { Text, YStack, XStack, H6, H3 } from "tamagui";
 import * as Crypto from "expo-crypto";
 
 import { BaseItemDto, ImageType, useGetNextUp } from "../../api";
@@ -133,30 +133,37 @@ const JellyfinNextUp: React.FC = () => {
 
   useLoadingSpinner(JellyfinNextUp.name);
 
+  if (nextUpMedia.data?.Items?.length == 0) {
+    return null;
+  }
+
   return (
-    <YStack minHeight="$14" flexGrow={0}>
-      {/* WARN: Add see more button here */}
-      {/* May need to adjust padding */}
-      <Suspense>
-        <XStack flexGrow={1} height={flashListHeight}>
-          <FlashList
-            horizontal
-            data={nextUpMedia.data?.Items}
-            renderItem={({ item, index }) => (
-              <YStack
-                onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
-              >
-                <JellyfinNextUpItem index={index} nextUpItem={item} />
-              </YStack>
-            )}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment="center"
-            ListFooterComponent={() => <XStack marginLeft="$3" />}
-            estimatedItemSize={100}
-          />
-        </XStack>
-      </Suspense>
-    </YStack>
+    <>
+      <SectionTitle>{t("jellyfin:nextUp")}</SectionTitle>
+      <YStack minHeight="$14" flexGrow={0}>
+        {/* WARN: Add see more button here */}
+        {/* May need to adjust padding */}
+        <Suspense>
+          <XStack flexGrow={1} height={flashListHeight}>
+            <FlashList
+              horizontal
+              data={nextUpMedia.data?.Items}
+              renderItem={({ item, index }) => (
+                <YStack
+                  onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
+                >
+                  <JellyfinNextUpItem index={index} nextUpItem={item} />
+                </YStack>
+              )}
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment="center"
+              ListFooterComponent={() => <XStack marginLeft="$3" />}
+              estimatedItemSize={100}
+            />
+          </XStack>
+        </Suspense>
+      </YStack>
+    </>
   );
 };
 

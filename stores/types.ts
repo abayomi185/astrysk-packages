@@ -34,5 +34,6 @@ export interface PersistAppState
 export interface AppletState {
   baseURL?: string;
   token?: string | null;
+  authenticated?: boolean;
   isConfigured?: boolean;
 }

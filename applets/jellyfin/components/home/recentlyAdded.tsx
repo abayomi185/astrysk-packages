@@ -137,30 +137,33 @@ const JellyfinRecentlyAdded: React.FC = () => {
   useLoadingSpinner(JellyfinRecentlyAdded.name);
 
   return (
-    <YStack minHeight="$14">
-      <Suspense>
-        <XStack flex={1} minHeight={flashListHeight}>
-          <FlashList
-            horizontal
-            data={latestMedia.data}
-            renderItem={({ item, index }) => (
-              <YStack
-                onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
-              >
-                <JellyfinRecentlyAddedItem
-                  index={index}
-                  recentlyAddedItem={item}
-                />
-              </YStack>
-            )}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment="center"
-            ListFooterComponent={() => <XStack marginLeft="$3" />}
-            estimatedItemSize={100}
-          />
-        </XStack>
-      </Suspense>
-    </YStack>
+    <>
+      <SectionTitle>{t("jellyfin:recentlyAdded")}</SectionTitle>
+      <YStack minHeight="$14">
+        <Suspense>
+          <XStack flex={1} minHeight={flashListHeight}>
+            <FlashList
+              horizontal
+              data={latestMedia.data}
+              renderItem={({ item, index }) => (
+                <YStack
+                  onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
+                >
+                  <JellyfinRecentlyAddedItem
+                    index={index}
+                    recentlyAddedItem={item}
+                  />
+                </YStack>
+              )}
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment="center"
+              ListFooterComponent={() => <XStack marginLeft="$3" />}
+              estimatedItemSize={100}
+            />
+          </XStack>
+        </Suspense>
+      </YStack>
+    </>
   );
 };
 
