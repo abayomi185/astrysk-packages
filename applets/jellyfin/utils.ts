@@ -21,7 +21,7 @@ import config from "@astrysk/styles";
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxios = (
   baseURL: string,
-  token?: string,
+  token?: string | null,
   customHeaders?: object,
   callback?: () => void
 ) => {
