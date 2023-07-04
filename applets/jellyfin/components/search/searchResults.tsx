@@ -18,12 +18,13 @@ const JellyfinSearchResultItem: React.FC<{
   const token = useJellyfinStore.getState().token;
   const baseURL = useJellyfinStore.getState().baseURL;
 
-  const userId = useJellyfinStore.getState().userDetails?.Id as string;
+  // This causes out of order hook error with many search results
+  // const imageId =
+  //   data.Type === BaseItemKind.Episode
+  //     ? useGetItem(userId, data.Id as string)?.data?.SeriesId
+  //     : data.Id;
 
-  const imageId =
-    data.Type === BaseItemKind.Episode
-      ? useGetItem(userId, data.Id as string)?.data?.SeriesId
-      : data.Id;
+  const imageId = data.Id;
 
   return (
     <YStack

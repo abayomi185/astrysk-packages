@@ -225,7 +225,7 @@ const JellyfinModal = () => {
 
     const primaryBlurHash = data?.ImageTags?.Primary as string;
 
-    const headerTitle = `${data?.SeriesName} - ${data?.Name}`;
+    const headerTitle = `${data?.SeriesName}`;
 
     const playbackInfo = useGetPlaybackInfo(episodeId, { userId });
 
@@ -312,6 +312,14 @@ const JellyfinModal = () => {
                 transition={200}
               />
             </XStack>
+            <Text
+              color="$gray12"
+              paddingTop="$4"
+              fontSize={18}
+              textAlign="center"
+            >
+              {data?.Name}
+            </Text>
             <Text
               color="$gray11"
               paddingVertical="$4"
