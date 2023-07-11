@@ -142,3 +142,4 @@ export const roundToNearestStandardResolution = (height: number) => {
 
 // NOTE: VIDEO UTILS
 export const TICK_TO_SECOND_MULTIPLIER = 10000000;
+export const TICK_TO_MILLISECOND_MULTIPLIER = 10000;

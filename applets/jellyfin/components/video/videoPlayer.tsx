@@ -2,12 +2,20 @@ import React from "react";
 import { SafeAreaView } from "react-native";
 // import { useSafeAreaInsets } from "react-native-safe-area-context";
 // import { useTranslation } from "react-i18next";
-import Video, {
-  OnProgressData,
-  OnPlaybackRateData,
-  OnSeekData,
-  LoadError,
-} from "react-native-video";
+// import Video, {
+//   OnProgressData,
+//   OnPlaybackRateData,
+//   OnSeekData,
+//   LoadError,
+// } from "react-native-video";
+import {
+  Audio,
+  Video,
+  ResizeMode,
+  InterruptionModeIOS,
+  VideoFullscreenUpdateEvent,
+  VideoFullscreenUpdate,
+} from "expo-av";
 import * as ISO639 from "iso-language-codes";
 import * as DeviceInfo from "expo-device";
 import { getLocales } from "expo-localization";
@@ -26,7 +34,7 @@ import {
 } from "../../api";
 import { useJellyfinStore } from "../../store";
 import { Button, XStack, YStack, Spinner, H3 } from "tamagui";
-import { TICK_TO_SECOND_MULTIPLIER } from "../../utils";
+import { TICK_TO_MILLISECOND_MULTIPLIER } from "../../utils";
 // import { Dimensions } from "react-native";
 
 const JellyfinVideoPlayer: React.FC<{
@@ -64,7 +72,7 @@ const JellyfinVideoPlayer: React.FC<{
   const playbackStart = useOnPlaybackStart();
   // const playbackStop = useOnPlaybackStopped();
 
-  // console.log(JSON.stringify(playbackInfo, null, 4));
+  console.log(JSON.stringify(playbackInfo, null, 4));
 
   const preferredAudioLanguage =
     useJellyfinStore.getState().mediaItemSettings?.[id]?.audio;
@@ -126,8 +134,15 @@ const JellyfinVideoPlayer: React.FC<{
     return subtitleLanguage;
   };
 
+  const presentFullscreenPlayer = () => {
+    videoRef.current?.presentFullscreenPlayer();
+  };
+
   const handleLoad = () => {
     setVideoLoaded(true);
+    // Set video to fullscreen
+    videoRef.current?.presentFullscreenPlayer();
+    // Tell server that playback has started
     playbackStart.mutate({
       userId: userId,
       itemId: id,
@@ -136,118 +151,166 @@ const JellyfinVideoPlayer: React.FC<{
         playSessionId: playbackInfo?.PlaySessionId as string,
       },
     });
+    // Seek to last position
     if (playbackUserData)
       if (playbackUserData.PlaybackPositionTicks !== 0)
-        videoRef.current?.seek(
+        videoRef.current?.setPositionAsync(
           (playbackUserData?.PlaybackPositionTicks as number) /
-            TICK_TO_SECOND_MULTIPLIER
+            TICK_TO_MILLISECOND_MULTIPLIER
         );
+    // Play Video
+    videoRef.current?.playAsync();
   };
 
-  const handleProgress = (progressData: OnProgressData | OnSeekData) => {
-    const positionTicks = Math.floor(
-      progressData.currentTime * TICK_TO_SECOND_MULTIPLIER
-    );
-
-    if (
-      progressData.currentTime !== playbackUserData?.PlaybackPositionTicks &&
-      progressData.currentTime !== 0
-    ) {
-      playbackProgress.mutate({
-        userId: userId,
-        itemId: id,
-        params: {
-          mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
-          positionTicks: positionTicks,
-          playSessionId: playbackInfo?.PlaySessionId as string,
-          isPaused: isPaused,
-        },
-      });
-      playbackPositionTicks.current = positionTicks;
+  const handleFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
+    // WARN: When video is put back from PIP, this is called - not good
+    // if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+    //   navigation.goBack();
+    // }
+    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_PRESENT) {
+      videoRef.current?.playAsync();
+    }
+    // WARN: Continue playing video if it was playing before - Use isPaused state
+    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_DISMISS) {
+      if (!isPaused) videoRef.current?.playAsync();
     }
   };
 
-  const handlePlaybackRateChange = (playbackRate: OnPlaybackRateData) => {
-    if (playbackRate.playbackRate === 0) {
-      setIsPaused(true);
-      return;
-    }
-    setIsPaused(false);
-  };
+  // const handleProgress = (progressData: OnProgressData | OnSeekData) => {
+  //   const positionTicks = Math.floor(
+  //     progressData.currentTime * TICK_TO_SECOND_MULTIPLIER
+  //   );
 
-  const handleEnd = () => {
-    markPlayedItem.mutate({
-      userId: userId,
-      itemId: id,
-    });
-    navigation.goBack();
-  };
+  //   if (
+  //     progressData.currentTime !== playbackUserData?.PlaybackPositionTicks &&
+  //     progressData.currentTime !== 0
+  //   ) {
+  //     playbackProgress.mutate({
+  //       userId: userId,
+  //       itemId: id,
+  //       params: {
+  //         mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
+  //         positionTicks: positionTicks,
+  //         playSessionId: playbackInfo?.PlaySessionId as string,
+  //         isPaused: isPaused,
+  //       },
+  //     });
+  //     playbackPositionTicks.current = positionTicks;
+  //   }
+  // };
 
-  const handleDismiss = () => {
-    // This causes playback status to be a few seconds behind
-    // and is intended - it is a result of the progress interval
-    playbackProgress.mutate({
-      userId: userId,
-      itemId: id,
-      params: {
-        mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
-        playSessionId: playbackInfo?.PlaySessionId as string,
-        positionTicks: playbackPositionTicks.current,
-        isPaused: true,
-      },
-    });
-  };
+  // const handlePlaybackRateChange = (playbackRate: OnPlaybackRateData) => {
+  //   if (playbackRate.playbackRate === 0) {
+  //     setIsPaused(true);
+  //     return;
+  //   }
+  //   setIsPaused(false);
+  // };
 
-  const handleError = (error: LoadError) => {
-    setHasErrored(true);
-  };
+  // const handleEnd = () => {
+  //   markPlayedItem.mutate({
+  //     userId: userId,
+  //     itemId: id,
+  //   });
+  //   navigation.goBack();
+  // };
+
+  // const handleDismiss = () => {
+  //   // This causes playback status to be a few seconds behind
+  //   // and is intended - it is a result of the progress interval
+  //   playbackProgress.mutate({
+  //     userId: userId,
+  //     itemId: id,
+  //     params: {
+  //       mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
+  //       playSessionId: playbackInfo?.PlaySessionId as string,
+  //       positionTicks: playbackPositionTicks.current,
+  //       isPaused: true,
+  //     },
+  //   });
+  // };
+
+  // const handleError = (error: LoadError) => {
+  //   setHasErrored(true);
+  // };
 
   // WARN: Add player options to settings
 
   // Alternative to using the `Video` dismissed event - doesn't work at the moment
   // See here: https://github.com/react-native-video/react-native-video/issues/3085#issuecomment-1557293391
+  // React.useEffect(() => {
+  //   const screenDismissed = navigation.addListener("beforeRemove", () => {
+  //     handleDismiss();
+  //   });
+  //   return screenDismissed;
+  // }, [navigation]);
+
+  // WARN: Yare yare, Back to using Expo-av video
   React.useEffect(() => {
-    const screenDismissed = navigation.addListener("beforeRemove", () => {
-      handleDismiss();
+    Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      playsInSilentModeIOS: true,
     });
-    return screenDismissed;
-  }, [navigation]);
+    // videoRef.current?.presentFullscreenPlayer();
+  }, []);
 
   return (
     <YStack flex={1}>
+      {/* <Video */}
+      {/*   ref={videoRef} */}
+      {/*   source={{ */}
+      {/*     uri: videoURL, */}
+      {/*     type: "m3u8", */}
+      {/*   }} */}
+      {/*   style={{ flex: 1, backgroundColor: "black" }} */}
+      {/*   ignoreSilentSwitch="ignore" */}
+      {/*   poster={`${baseURL}/Items/${id}/Images/Backdrop?quality=80`} */}
+      {/*   resizeMode="contain" */}
+      {/*   selectedTextTrack={{ */}
+      {/*     type: "language", */}
+      {/*     value: getSubtitleLanguage(), */}
+      {/*   }} */}
+      {/*   onLoad={() => handleLoad()} */}
+      {/*   onProgress={(progressData) => handleProgress(progressData)} */}
+      {/*   onSeek={(seekData) => handleProgress(seekData)} */}
+      {/*   progressUpdateInterval={2000} */}
+      {/*   onPlaybackRateChange={(playbackRate) => */}
+      {/*     handlePlaybackRateChange(playbackRate) */}
+      {/*   } */}
+      {/*   onEnd={() => handleEnd()} */}
+      {/*   onError={(error) => handleError(error)} */}
+      {/*   // onFullscreenPlayerWillDismiss={() => handleDismiss()} */}
+      {/*   fullscreenOrientation="landscape" */}
+      {/*   fullscreenAutorotate={false} */}
+      {/*   playWhenInactive */}
+      {/*   pictureInPicture */}
+      {/*   playInBackground */}
+      {/*   fullscreen */}
+      {/*   controls // Native controls */}
+      {/* /> */}
       <Video
         ref={videoRef}
         source={{
           uri: videoURL,
-          type: "m3u8",
         }}
-        style={{ flex: 1, backgroundColor: "black" }}
-        ignoreSilentSwitch="ignore"
-        poster={`${baseURL}/Items/${id}/Images/Backdrop?quality=80`}
-        resizeMode="contain"
-        selectedTextTrack={{
-          type: "language",
-          value: getSubtitleLanguage(),
+        style={{
+          flex: 1,
+          backgroundColor: "black",
         }}
+        posterSource={{
+          uri: `${baseURL}/Items/${id}/Images/Primary?quality=80`,
+        }}
+        posterStyle={{
+          resizeMode: "contain",
+        }}
+        resizeMode={ResizeMode.CONTAIN}
         onLoad={() => handleLoad()}
-        onProgress={(progressData) => handleProgress(progressData)}
-        onSeek={(seekData) => handleProgress(seekData)}
-        progressUpdateInterval={2000}
-        onPlaybackRateChange={(playbackRate) =>
-          handlePlaybackRateChange(playbackRate)
-        }
-        onEnd={() => handleEnd()}
-        onError={(error) => handleError(error)}
-        // onFullscreenPlayerWillDismiss={() => handleDismiss()}
-        fullscreenOrientation="landscape"
-        fullscreenAutorotate={false}
-        playWhenInactive
-        pictureInPicture
-        playInBackground
-        fullscreen
-        controls // Native controls
+        onFullscreenUpdate={(event) => handleFullScreenUpdate(event)}
+        // useNativeControls // Always shown in fullscreen
       />
-      {(hasErrored || !videoLoaded) && (
+      {/* {(hasErrored || !videoLoaded) && ( */}
+      {
         <YStack position="absolute" width="100%" height="100%">
           <SafeAreaView
             style={{
@@ -260,10 +323,9 @@ const JellyfinVideoPlayer: React.FC<{
             <YStack
               flex={1}
               paddingVertical="$3"
-              paddingHorizontal="$3"
               justifyContent="space-between"
             >
-              <XStack>
+              <XStack paddingHorizontal="$3">
                 <Button
                   width="$5"
                   height="$5"
@@ -276,7 +338,17 @@ const JellyfinVideoPlayer: React.FC<{
                   <Ionicons name="close" size={28} color="white" />
                 </Button>
               </XStack>
-              <YStack height="$6" marginBottom="$2" justifyContent="flex-end">
+              <YStack
+                flex={1}
+                marginVertical="$18"
+                onPress={() => presentFullscreenPlayer()}
+              />
+              <YStack
+                height="$6"
+                marginBottom="$2"
+                justifyContent="flex-end"
+                paddingHorizontal="$3"
+              >
                 <H3 color="white" numberOfLines={2}>
                   {mediaTitle}
                 </H3>
@@ -292,11 +364,11 @@ const JellyfinVideoPlayer: React.FC<{
             }}
           >
             <YStack flex={1} justifyContent="center" alignItems="center">
-              <Spinner size="large" />
+              {(hasErrored || !videoLoaded) && <Spinner size="large" />}
             </YStack>
           </SafeAreaView>
         </YStack>
-      )}
+      }
     </YStack>
   );
 };
