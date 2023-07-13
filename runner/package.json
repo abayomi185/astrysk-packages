@@ -59,14 +59,12 @@
     "react-native-screens": "~3.20.0",
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-svg": "13.9.0",
-    "react-native-video": "^6.0.0-alpha.6",
     "react-native-web": "^0.19.2",
     "tamagui": "^1.28.1"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@types/react": "~18.0.33",
-    "@types/react-native-video": "^5.0.14",
     "burnt": "^0.10.0",
     "react-native-svg-transformer": "^1.0.0",
     "typescript": "^5.0.4"
