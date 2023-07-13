@@ -1,13 +1,7 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { AppState, SafeAreaView } from "react-native";
 // import { useSafeAreaInsets } from "react-native-safe-area-context";
 // import { useTranslation } from "react-i18next";
-// import Video, {
-//   OnProgressData,
-//   OnPlaybackRateData,
-//   OnSeekData,
-//   LoadError,
-// } from "react-native-video";
 import {
   Audio,
   Video,
@@ -15,12 +9,14 @@ import {
   InterruptionModeIOS,
   VideoFullscreenUpdateEvent,
   VideoFullscreenUpdate,
+  AVPlaybackStatus,
+  PitchCorrectionQuality,
 } from "expo-av";
 import * as ISO639 from "iso-language-codes";
 import * as DeviceInfo from "expo-device";
 import { getLocales } from "expo-localization";
 // import * as ScreenOrientation from "expo-screen-orientation";
-import { useNavigation } from "expo-router";
+import { useNavigation, useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
 import {
@@ -46,6 +42,8 @@ const JellyfinVideoPlayer: React.FC<{
   // const { t } = useTranslation();
   const navigation = useNavigation();
 
+  const appState = React.useRef(AppState.currentState);
+
   // const insets = useSafeAreaInsets();
   // const { width, height } = Dimensions.get("window");
   // console.log("width:", width, "height:", height);
@@ -61,6 +59,8 @@ const JellyfinVideoPlayer: React.FC<{
   const [hasErrored, setHasErrored] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false);
 
+  const [videoIsFullScreen, setVideoIsFullScreen] = React.useState(true);
+
   // useRef is the solution here and not state. State seemingly does not
   // live long enough such that it causes out of date values on dismiss
   const playbackPositionTicks = React.useRef<number>(
@@ -72,7 +72,7 @@ const JellyfinVideoPlayer: React.FC<{
   const playbackStart = useOnPlaybackStart();
   // const playbackStop = useOnPlaybackStopped();
 
-  console.log(JSON.stringify(playbackInfo, null, 4));
+  // console.log(JSON.stringify(playbackInfo, null, 4));
 
   const preferredAudioLanguage =
     useJellyfinStore.getState().mediaItemSettings?.[id]?.audio;
@@ -138,10 +138,23 @@ const JellyfinVideoPlayer: React.FC<{
     videoRef.current?.presentFullscreenPlayer();
   };
 
+  const dismissFullscreenPlayer = () => {
+    videoRef.current?.dismissFullscreenPlayer();
+  };
+
   const handleLoad = () => {
     setVideoLoaded(true);
+
+    // NOTE: May consider adding this back in later
     // Set video to fullscreen
-    videoRef.current?.presentFullscreenPlayer();
+    // videoRef.current?.presentFullscreenPlayer();
+
+    // Correct audio pitch
+    videoRef.current?.setStatusAsync({
+      shouldCorrectPitch: true,
+      pitchCorrectionQuality: PitchCorrectionQuality.High,
+    });
+
     // Tell server that playback has started
     playbackStart.mutate({
       userId: userId,
@@ -170,125 +183,117 @@ const JellyfinVideoPlayer: React.FC<{
     if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_PRESENT) {
       videoRef.current?.playAsync();
     }
+    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+      if (videoIsFullScreen) {
+        navigation.goBack();
+      }
+      setVideoIsFullScreen(false);
+    }
     // WARN: Continue playing video if it was playing before - Use isPaused state
     if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_DISMISS) {
-      if (!isPaused) videoRef.current?.playAsync();
     }
   };
 
-  // const handleProgress = (progressData: OnProgressData | OnSeekData) => {
-  //   const positionTicks = Math.floor(
-  //     progressData.currentTime * TICK_TO_SECOND_MULTIPLIER
-  //   );
+  const handlePlaybackStatus = (playbackStatus: AVPlaybackStatus) => {
+    if (!playbackStatus.isLoaded) {
+      // Playback error
+      if (playbackStatus.error) {
+        setHasErrored(true);
+      }
+    } else {
+      // NOTE: Is playing
+      if (playbackStatus.isPlaying) {
+        const positionTicks = Math.floor(
+          playbackStatus.positionMillis * TICK_TO_MILLISECOND_MULTIPLIER
+        );
+        if (
+          positionTicks !== playbackUserData?.PlaybackPositionTicks &&
+          playbackStatus.positionMillis !== 0
+        ) {
+          playbackProgress.mutate({
+            userId: userId,
+            itemId: id,
+            params: {
+              mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
+              positionTicks: positionTicks,
+              playSessionId: playbackInfo?.PlaySessionId as string,
+              isPaused: isPaused,
+            },
+          });
+          playbackPositionTicks.current = positionTicks;
+        }
+      }
+      // NOTE: Playback rate
+      if (playbackStatus.rate !== 0) {
+        // Playing
+        isPaused && setIsPaused(false);
+      } else {
+        // Paused
+        !isPaused && setIsPaused(true);
+      }
+      // NOTE: Did just finish
+      if (playbackStatus.didJustFinish) {
+        markPlayedItem.mutate({
+          userId: userId,
+          itemId: id,
+        });
+        dismissFullscreenPlayer();
+        // navigation.goBack();
+      }
+    }
+  };
 
-  //   if (
-  //     progressData.currentTime !== playbackUserData?.PlaybackPositionTicks &&
-  //     progressData.currentTime !== 0
-  //   ) {
-  //     playbackProgress.mutate({
-  //       userId: userId,
-  //       itemId: id,
-  //       params: {
-  //         mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
-  //         positionTicks: positionTicks,
-  //         playSessionId: playbackInfo?.PlaySessionId as string,
-  //         isPaused: isPaused,
-  //       },
-  //     });
-  //     playbackPositionTicks.current = positionTicks;
-  //   }
-  // };
-
-  // const handlePlaybackRateChange = (playbackRate: OnPlaybackRateData) => {
-  //   if (playbackRate.playbackRate === 0) {
-  //     setIsPaused(true);
-  //     return;
-  //   }
-  //   setIsPaused(false);
-  // };
-
-  // const handleEnd = () => {
-  //   markPlayedItem.mutate({
-  //     userId: userId,
-  //     itemId: id,
-  //   });
-  //   navigation.goBack();
-  // };
-
-  // const handleDismiss = () => {
-  //   // This causes playback status to be a few seconds behind
-  //   // and is intended - it is a result of the progress interval
-  //   playbackProgress.mutate({
-  //     userId: userId,
-  //     itemId: id,
-  //     params: {
-  //       mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
-  //       playSessionId: playbackInfo?.PlaySessionId as string,
-  //       positionTicks: playbackPositionTicks.current,
-  //       isPaused: true,
-  //     },
-  //   });
-  // };
-
-  // const handleError = (error: LoadError) => {
-  //   setHasErrored(true);
-  // };
+  const handleDismiss = () => {
+    // This causes playback status to be a few seconds behind
+    // and is intended - it is a result of the progress interval
+    playbackProgress.mutate({
+      userId: userId,
+      itemId: id,
+      params: {
+        mediaSourceId: playbackInfo?.MediaSources?.[0].Id as string,
+        playSessionId: playbackInfo?.PlaySessionId as string,
+        positionTicks: playbackPositionTicks.current,
+        isPaused: true,
+      },
+    });
+  };
 
   // WARN: Add player options to settings
 
-  // Alternative to using the `Video` dismissed event - doesn't work at the moment
-  // See here: https://github.com/react-native-video/react-native-video/issues/3085#issuecomment-1557293391
-  // React.useEffect(() => {
-  //   const screenDismissed = navigation.addListener("beforeRemove", () => {
-  //     handleDismiss();
-  //   });
-  //   return screenDismissed;
-  // }, [navigation]);
-
-  // WARN: Yare yare, Back to using Expo-av video
+  // Yare yare, Back to using Expo-av video
   React.useEffect(() => {
     Audio.setAudioModeAsync({
       staysActiveInBackground: true,
       interruptionModeIOS: InterruptionModeIOS.DoNotMix,
       playsInSilentModeIOS: true,
     });
-    // videoRef.current?.presentFullscreenPlayer();
+
+    // NOTE: Part of logic for handling video (PiP) when app is in background
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        if (!videoIsFullScreen) presentFullscreenPlayer();
+      }
+      appState.current = nextAppState;
+    });
+    return () => {
+      subscription.remove();
+    };
   }, []);
+
+  // Alternative to using the `Video` dismissed event - doesn't work at the moment
+  // See here: https://github.com/react-native-video/react-native-video/issues/3085#issuecomment-1557293391
+  React.useEffect(() => {
+    const screenDismissed = navigation.addListener("beforeRemove", () => {
+      handleDismiss();
+    });
+    return screenDismissed;
+  }, [navigation]);
 
   return (
     <YStack flex={1}>
-      {/* <Video */}
-      {/*   ref={videoRef} */}
-      {/*   source={{ */}
-      {/*     uri: videoURL, */}
-      {/*     type: "m3u8", */}
-      {/*   }} */}
-      {/*   style={{ flex: 1, backgroundColor: "black" }} */}
-      {/*   ignoreSilentSwitch="ignore" */}
-      {/*   poster={`${baseURL}/Items/${id}/Images/Backdrop?quality=80`} */}
-      {/*   resizeMode="contain" */}
-      {/*   selectedTextTrack={{ */}
-      {/*     type: "language", */}
-      {/*     value: getSubtitleLanguage(), */}
-      {/*   }} */}
-      {/*   onLoad={() => handleLoad()} */}
-      {/*   onProgress={(progressData) => handleProgress(progressData)} */}
-      {/*   onSeek={(seekData) => handleProgress(seekData)} */}
-      {/*   progressUpdateInterval={2000} */}
-      {/*   onPlaybackRateChange={(playbackRate) => */}
-      {/*     handlePlaybackRateChange(playbackRate) */}
-      {/*   } */}
-      {/*   onEnd={() => handleEnd()} */}
-      {/*   onError={(error) => handleError(error)} */}
-      {/*   // onFullscreenPlayerWillDismiss={() => handleDismiss()} */}
-      {/*   fullscreenOrientation="landscape" */}
-      {/*   fullscreenAutorotate={false} */}
-      {/*   playWhenInactive */}
-      {/*   pictureInPicture */}
-      {/*   playInBackground */}
-      {/*   fullscreen */}
-      {/*   controls // Native controls */}
-      {/* /> */}
       <Video
         ref={videoRef}
         source={{
@@ -298,6 +303,7 @@ const JellyfinVideoPlayer: React.FC<{
           flex: 1,
           backgroundColor: "black",
         }}
+        usePoster
         posterSource={{
           uri: `${baseURL}/Items/${id}/Images/Primary?quality=80`,
         }}
@@ -306,10 +312,13 @@ const JellyfinVideoPlayer: React.FC<{
         }}
         resizeMode={ResizeMode.CONTAIN}
         onLoad={() => handleLoad()}
+        onPlaybackStatusUpdate={(playbackStatus) =>
+          handlePlaybackStatus(playbackStatus)
+        }
+        progressUpdateIntervalMillis={1000}
         onFullscreenUpdate={(event) => handleFullScreenUpdate(event)}
-        // useNativeControls // Always shown in fullscreen
+        shouldCorrectPitch
       />
-      {/* {(hasErrored || !videoLoaded) && ( */}
       {
         <YStack position="absolute" width="100%" height="100%">
           <SafeAreaView
@@ -338,11 +347,13 @@ const JellyfinVideoPlayer: React.FC<{
                   <Ionicons name="close" size={28} color="white" />
                 </Button>
               </XStack>
-              <YStack
-                flex={1}
-                marginVertical="$18"
-                onPress={() => presentFullscreenPlayer()}
-              />
+              <YStack flex={1} alignItems="center" justifyContent="center">
+                <YStack
+                  height="90%"
+                  width="80%"
+                  onPress={() => presentFullscreenPlayer()}
+                />
+              </YStack>
               <YStack
                 height="$6"
                 marginBottom="$2"
