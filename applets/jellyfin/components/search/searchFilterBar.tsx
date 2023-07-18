@@ -2,13 +2,15 @@ import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
 import { XStack, Button, Text } from "tamagui";
 import { X, ChevronDown } from "@tamagui/lucide-icons";
-import { BaseItemKind } from "../../api";
+import { BaseItemKind, useGetGenres } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
 } from "../../types";
 import { Screens } from "@astrysk/constants";
+import { useJellyfinStore } from "../../store";
+import { filters } from "../../constants";
 
 const FilterButton: React.FC<{
   id: string;
@@ -41,28 +43,21 @@ const FilterButton: React.FC<{
 
 const JellyfinSearchFilterBar = () => {
   const router = useRouter();
-  // const genre:
+  const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
-  const filters = React.useMemo(() => {
-    return [
-      {
-        id: "Type",
-        options: ["Movie", "Series", "Episode", "Person"] as BaseItemKind[],
-      },
-      {
-        id: "Status",
-        options: ["Played", "Unplayed", "Liked", "Favourite"],
-      },
-      {
-        id: "Order",
-        options: ["Ascending", "Descending"],
-      },
-      {
-        id: "Genre",
-        options: ["Action", "Adventure", "Comedy", "Drama", "Horror"],
-      },
-    ];
-  }, []);
+  // const genres = useGetGenres(
+  //   {
+  //     userId: userId,
+  //   },
+  //   {
+  //     query: {
+  //       onSuccess: (data) => {
+  //         console.log(JSON.stringify(data, null, 4));
+  //         console.log(data.Items?.map((item) => item.Name));
+  //       },
+  //     },
+  //   }
+  // );
 
   const handleFilterPress = (id: string) => {
     router.push({

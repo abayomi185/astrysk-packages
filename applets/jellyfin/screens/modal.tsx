@@ -93,7 +93,7 @@ const JellyfinModal = () => {
 
     useJellyfinModalHeader(navigation, filterType);
 
-    return <JellyfinSearchFilterOptions type={filterType} />;
+    return <JellyfinSearchFilterOptions filterType={filterType} />;
   }
 
   // NOTE: SETTINGS
