@@ -7,6 +7,19 @@ import JellyfinSearchLanding from "../components/search/searchLanding";
 import JellyfinSearchResults from "../components/search/searchResults";
 import JellyfinSearchFilterBar from "../components/search/searchFilterBar";
 import { useTranslation } from "react-i18next";
+import { useJellyfinStore } from "../store";
+
+const debouncedSetter = (
+  setStateFunction: (value: string | string[]) => void,
+  delay: number = 500
+) => {
+  return React.useCallback(
+    debounce((newSearchTerm: string | string[]) => {
+      setStateFunction(newSearchTerm);
+    }, delay),
+    []
+  );
+};
 
 const JellyfinSearch: React.FC = () => {
   useJellyfinConfigurator();
@@ -16,35 +29,31 @@ const JellyfinSearch: React.FC = () => {
 
   const { searchPathName, searchQuery } = useSearchParams();
 
-  const [searchTerm, setSearchTerm] = React.useState<string>();
+  const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
+  const isFilterApplied = useJellyfinStore((state) => state.searchFilters);
 
   // Successfully debounce the search term
-  const debouncedSetSearchTerm = React.useCallback(
-    debounce((newSearchTerm: string) => {
-      setSearchTerm(newSearchTerm);
-    }, 500),
-    []
-  );
+  const debouncedSetSearchTerm = debouncedSetter(setSearchTerm);
 
   React.useMemo(() => {
-    // Set searchTerm immediately if empty string
-    if (searchPathName === "search" && searchQuery == "") {
-      setSearchTerm(searchQuery);
-    }
-    // Otherwise debounce
-    else if (searchPathName === "search" && searchQuery !== searchTerm) {
-      debouncedSetSearchTerm(searchQuery as string);
+    if (searchPathName === "search") {
+      // Set searchTerm immediately if empty string
+      if (searchQuery == "") {
+        setSearchTerm(searchQuery);
+      }
+      // Otherwise debounce
+      else if (searchQuery !== searchTerm) {
+        debouncedSetSearchTerm(searchQuery as string);
+      }
     }
   }, [searchQuery]);
 
   useJellyfinSearchHeader(t, navigation);
 
-  // WARN: Use search params to send things to the filter bar
-
   return (
     <>
       <JellyfinSearchFilterBar />
-      {searchTerm ? (
+      {searchTerm || isFilterApplied ? (
         <JellyfinSearchResults searchTerm={searchTerm as string} />
       ) : (
         <JellyfinSearchLanding />

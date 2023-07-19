@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetUserViewsParams = { includeExternalContent?: boolean; presetViews?: string[]; includeHidden?: boolean };
+export type GetUserViewsParams = {
+  includeExternalContent?: boolean;
+  presetViews?: string[];
+  includeHidden?: boolean;
+};

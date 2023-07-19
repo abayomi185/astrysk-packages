@@ -152,15 +152,7 @@ const JellyfinModal = () => {
                     <SettingsOptionHeader t={t} headerTitle={item as string} />
                   );
                 } else {
-                  return (
-                    <SettingsOption
-                      t={t}
-                      item={item}
-                      style={{
-                        backgroundColor: "$gray1",
-                      }}
-                    />
-                  );
+                  return <SettingsOption t={t} item={item} />;
                 }
               }}
               getItemType={(item) => {
@@ -367,13 +359,7 @@ const JellyfinModal = () => {
                           setFlashListHeight
                         )}
                       >
-                        <SettingsOption
-                          t={t}
-                          item={item}
-                          style={{
-                            backgroundColor: "$gray1",
-                          }}
-                        />
+                        <SettingsOption t={t} item={item} />
                       </YStack>
                     );
                   }}
@@ -509,13 +495,7 @@ const JellyfinModal = () => {
                           setFlashListHeight
                         )}
                       >
-                        <SettingsOption
-                          t={t}
-                          item={item}
-                          style={{
-                            backgroundColor: "$gray1",
-                          }}
-                        />
+                        <SettingsOption t={t} item={item} />
                       </YStack>
                     );
                   }}

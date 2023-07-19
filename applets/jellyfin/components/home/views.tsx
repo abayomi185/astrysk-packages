@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { useRouter, useFocusEffect } from "expo-router";
-import { YStack, XStack, H6 } from "tamagui";
+import { YStack, XStack } from "tamagui";
 import * as Crypto from "expo-crypto";
-import { BaseItemDto, ImageType, useGetLatestMedia } from "../../api";
+import { BaseItemDto, ImageType, useGetUserViews } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
@@ -16,37 +16,37 @@ import {
 import { FlashList } from "@shopify/flash-list";
 import { onItemLayout } from "@astrysk/utils";
 
-const JellyfinRecentlyAddedItem: React.FC<{
+const JellyfinViewsItem: React.FC<{
   index: number;
-  recentlyAddedItem: BaseItemDto;
-}> = ({ index, recentlyAddedItem }) => {
+  viewsItem: BaseItemDto;
+}> = ({ index, viewsItem }) => {
   const router = useRouter();
   const token = useJellyfinStore.getState().token;
   const baseURL = useJellyfinStore.getState().baseURL;
 
-  const primaryBlurHash: string = recentlyAddedItem.ImageTags?.[
+  const primaryBlurHash: string = viewsItem.ImageTags?.[
     ImageType.Primary
   ] as string;
 
-  const recentlyAddedItemId: string = recentlyAddedItem.Id as string;
+  const recentlyAddedItemId: string = viewsItem.Id as string;
 
   const goToDetailScreen = () => {
     router.push({
       pathname: `/${Screens.HOME_SCREEN_DETAIL_ROUTE}+${Crypto.randomUUID()}`,
       params: {
-        context: JellyfinDetailScreenContext.RecentlyAdded,
+        context: JellyfinDetailScreenContext.Views,
         itemCacheIndex: index.toString(),
-        itemId: recentlyAddedItem.Id,
+        itemId: viewsItem.Id,
       } as JellyfinDetailScreenProps,
     });
   };
 
-  useLoadingSpinner(JellyfinRecentlyAddedItem.name);
+  useLoadingSpinner(JellyfinViewsItem.name);
 
   return (
     <>
       <YStack
-        width="$9"
+        width="$20"
         marginLeft="$3"
         pressStyle={{ scale: 0.97 }}
         animation="delay"
@@ -64,31 +64,19 @@ const JellyfinRecentlyAddedItem: React.FC<{
               } as ImageSource
             }
             placeholder={
-              recentlyAddedItem.ImageBlurHashes?.Primary?.[
-                primaryBlurHash
-              ] as string
+              viewsItem.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
             }
             onLoadEnd={() => {
-              setLoadingSpinner(JellyfinRecentlyAddedItem.name, Actions.DONE);
+              setLoadingSpinner(JellyfinViewsItem.name, Actions.DONE);
             }}
           />
-        </YStack>
-        <YStack paddingHorizontal="$1" paddingTop="$1">
-          <H6
-            color="$color"
-            ellipsizeMode="tail"
-            numberOfLines={2}
-            lineHeight={25}
-          >
-            {recentlyAddedItem.Name}
-          </H6>
         </YStack>
       </YStack>
     </>
   );
 };
 
-const JellyfinRecentlyAdded: React.FC = () => {
+const JellyfinViews: React.FC = () => {
   const { t } = useTranslation();
 
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
@@ -96,30 +84,29 @@ const JellyfinRecentlyAdded: React.FC = () => {
 
   const [flashListHeight, setFlashListHeight] = React.useState(0);
 
-  const latestMedia = useGetLatestMedia(
+  const views = useGetUserViews(
     userId,
-    { limit: 50 },
+    { includeExternalContent: false },
     {
       query: {
-        // initialData: () => {
-        //   // WARN: Make use of time to regulate query staletime
-        //   // return useJellyfinStore.getState().mediaCache?.resumeMediaCache.data;
-        // },
+        select: (data) => {
+          return data.Items as BaseItemDto[];
+        },
         onSuccess: (data) => {
           useJellyfinStore.setState((state) => ({
             mediaCache: {
               [serverId]: {
                 ...state.mediaCache?.[serverId],
-                latestMediaCache: { data: data },
+                viewsMediaCache: { data: data },
               },
             },
           }));
-          setLoadingSpinner(JellyfinRecentlyAdded.name, Actions.DONE);
+          setLoadingSpinner(JellyfinViews.name, Actions.DONE);
         },
         onError: () => {
           // Call common function to alert or have indicator to show when there's an error.
           // Perhaps replace applet icon
-          setLoadingSpinner(JellyfinRecentlyAdded.name, Actions.DONE);
+          setLoadingSpinner(JellyfinViews.name, Actions.DONE);
         },
       },
     }
@@ -127,32 +114,29 @@ const JellyfinRecentlyAdded: React.FC = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      latestMedia.refetch({
+      views.refetch({
         cancelRefetch: false,
       });
       return () => {};
     }, [])
   );
 
-  useLoadingSpinner(JellyfinRecentlyAdded.name);
+  useLoadingSpinner(JellyfinViews.name);
 
   return (
     <>
-      <SectionTitle>{t("jellyfin:recentlyAdded")}</SectionTitle>
+      <SectionTitle>{t("jellyfin:media")}</SectionTitle>
       <YStack minHeight="$14">
         <Suspense>
           <XStack flex={1} minHeight={flashListHeight}>
             <FlashList
               horizontal
-              data={latestMedia.data}
+              data={views.data}
               renderItem={({ item, index }) => (
                 <YStack
                   onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
                 >
-                  <JellyfinRecentlyAddedItem
-                    index={index}
-                    recentlyAddedItem={item}
-                  />
+                  <JellyfinViewsItem index={index} viewsItem={item} />
                 </YStack>
               )}
               showsHorizontalScrollIndicator={false}
@@ -167,4 +151,4 @@ const JellyfinRecentlyAdded: React.FC = () => {
   );
 };
 
-export default JellyfinRecentlyAdded;
+export default JellyfinViews;

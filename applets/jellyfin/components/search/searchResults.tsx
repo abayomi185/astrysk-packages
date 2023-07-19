@@ -1,8 +1,7 @@
 import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
-import { useSearchParams } from "expo-router";
 import { Spinner, XStack, YStack, Text, H6 } from "tamagui";
-import { useGet, useGetItem } from "../../api/api";
+import { useGet } from "../../api/api";
 import { FlashList } from "@shopify/flash-list";
 import { useJellyfinStore } from "../../store";
 import { BaseItemKind, SearchHint } from "../../api";
@@ -81,17 +80,44 @@ const JellyfinSearchResults: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;
 
+  const searchFilters = useJellyfinStore((state) => state.searchFilters);
+
   const [isLoading, setIsLoading] = React.useState(true);
 
   const filterSuggestionsData = (data: SearchHint[]) => {
-    return data.filter((item) => item.Type !== BaseItemKind.Folder);
+    let filteredData = data;
+
+    filteredData = filteredData.filter(
+      (item) => item.Type !== BaseItemKind.Folder
+    );
+
+    // if (searchFilters?.["Genre"]) {
+    //   // filteredData = filteredData.filter()
+    // }
+    // if (searchFilters?.["Status"]) {
+    //   // filteredData = filteredData.filter()
+    // }
+    if (searchFilters?.["Order"]) {
+      if (searchFilters?.["Order"] === "Ascending") {
+        filteredData = filteredData.sort((a, b) =>
+          (a.Name as string).localeCompare(b.Name as string)
+        );
+      } else if (searchFilters?.["Order"] === "Descending") {
+        filteredData = filteredData.sort((a, b) =>
+          (b.Name as string).localeCompare(a.Name as string)
+        );
+      }
+    }
+
+    return filteredData;
   };
 
   const searchResults = useGet(
     {
       userId: userId,
       searchTerm: searchTerm,
-      limit: 30,
+      ...(searchFilters ? { includeItemTypes: [searchFilters?.["Type"]] } : {}),
+      limit: 50,
     },
     {
       query: {

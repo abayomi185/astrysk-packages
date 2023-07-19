@@ -49,6 +49,7 @@ export const SettingsOption: React.FC<{
         borderBottomColor="$gray8"
         borderRadius="$0"
         theme="dark_gray"
+        backgroundColor="$gray1"
         {...style}
         onPress={item.onPress}
       >
@@ -79,6 +80,8 @@ export const SettingsOption: React.FC<{
   }
 
   if (item.type === "item") {
+    const active =
+      item.selectedValue === item.key || item.selectedValue === null;
     return (
       <Button
         flex={1}
@@ -93,6 +96,9 @@ export const SettingsOption: React.FC<{
         borderBottomColor="$gray8"
         borderRadius="$0"
         theme="dark_gray"
+        backgroundColor={active ? "$gray5" : "$gray1"}
+        borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
+        borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         {...style}
         onPress={item.onPress}
       >
@@ -101,7 +107,7 @@ export const SettingsOption: React.FC<{
             <H6 color="$color">{item.name ?? t(`${item.key}`)}</H6>
           </XStack>
           <XStack alignItems="center">
-            {item.selectedValue === item.key || item.selectedValue === null ? (
+            {active ? (
               <Check size={20} opacity={0.6} />
             ) : (
               <CircleDot size={20} opacity={0.6} />
@@ -128,6 +134,7 @@ export const SettingsOption: React.FC<{
         borderRadius="$0"
         // theme="gray"
         theme="dark_gray"
+        backgroundColor="$gray1"
         {...style}
         onPress={item.onPress}
       >

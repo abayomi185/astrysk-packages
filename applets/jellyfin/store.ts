@@ -3,7 +3,11 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import { AuthenticationResultUser } from "./api";
-import { JellyfinMediaCache, JellyfinMediaItemSettings } from "./types";
+import {
+  JellyfinFilter,
+  JellyfinMediaCache,
+  JellyfinMediaItemSettings,
+} from "./types";
 
 const MMKVStore = new MMKV({
   id: "jellyfinStore",
@@ -43,6 +47,7 @@ interface JellyfinState extends StateTypes.AppletState {
   mediaItemSettings?: JellyfinMediaItemSettings;
   customHeaders?: Record<string, string>;
   searchFilters?: Record<string, any>;
+  filterBarOptions?: JellyfinFilter[];
 }
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too

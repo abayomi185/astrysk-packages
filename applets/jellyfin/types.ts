@@ -22,6 +22,7 @@ export interface JellyfinMediaCache {
     resumeMediaCache?: QueryCache<BaseItemDtoQueryResult>;
     latestMediaCache?: QueryCache<BaseItemDto[]>;
     nextUpMediaCache?: QueryCache<BaseItemDtoQueryResult>;
+    viewsMediaCache?: QueryCache<BaseItemDto[]>;
     seriesMediaCache?: Record<string, QueryCache<BaseItemDto>>;
     episodesMediaCache?: Record<string, QueryCache<BaseItemDto[]>>;
     movieMediaCache?: Record<string, QueryCache<BaseItemDto>>;
@@ -41,6 +42,7 @@ export interface JellyfinMediaItemSettings {
 export enum JellyfinDetailScreenContext {
   NextUp = "NextUp",
   RecentlyAdded = "RecentlyAdded",
+  Views = "Views",
   // Detail
   MovieDetail = "MovieDetail",
   SeriesDetail = "SeriesDetail",
@@ -90,6 +92,11 @@ export interface JellyfinMediaItemSettingsProps {
 export enum JellyfinMediaItemSettingsType {
   Audio = "audio",
   Subtitle = "subtitle",
+}
+
+export interface JellyfinFilter {
+  id: string;
+  options: string[];
 }
 
 // type AuthModalProps = Record<string, string> & {

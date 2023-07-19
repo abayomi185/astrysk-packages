@@ -7,10 +7,61 @@ import { FlashList } from "@shopify/flash-list";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
+  JellyfinFilter,
 } from "../../types";
 import { Screens } from "@astrysk/constants";
 import { useJellyfinStore } from "../../store";
-import { filters } from "../../constants";
+
+const getFilterBarOptions = (genres?: string[]): JellyfinFilter[] => {
+  return [
+    {
+      id: "Type",
+      options: [
+        "Movie",
+        "Series",
+        "Episode",
+        "Season",
+        "Video",
+        "Person",
+      ] as BaseItemKind[],
+    },
+    // {
+    //   id: "Genre",
+    //   options: genres
+    //     ? genres
+    //     : [
+    //         "Action",
+    //         "Adventure",
+    //         "Animation",
+    //         "Anime",
+    //         "Audiobook",
+    //         "Comedy",
+    //         "Crime",
+    //         "Documentary",
+    //         "Drama",
+    //         "Family",
+    //         "Fantasy",
+    //         "History",
+    //         "Horror",
+    //         "Mystery",
+    //         "Reality",
+    //         "Romance",
+    //         "School",
+    //         "Sci-Fi",
+    //         "Sport",
+    //         "Thriller",
+    //       ],
+    // },
+    // {
+    //   id: "Status",
+    //   options: ["Played", "Unplayed", "Liked", "Favourite"],
+    // },
+    {
+      id: "Order",
+      options: ["Ascending", "Descending"],
+    },
+  ];
+};
 
 const FilterButton: React.FC<{
   id: string;
@@ -45,19 +96,11 @@ const JellyfinSearchFilterBar = () => {
   const router = useRouter();
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
-  // const genres = useGetGenres(
-  //   {
-  //     userId: userId,
-  //   },
-  //   {
-  //     query: {
-  //       onSuccess: (data) => {
-  //         console.log(JSON.stringify(data, null, 4));
-  //         console.log(data.Items?.map((item) => item.Name));
-  //       },
-  //     },
-  //   }
-  // );
+  const searchFilters = useJellyfinStore((state) => state.searchFilters);
+
+  const genres = useGetGenres({
+    userId: userId,
+  });
 
   const handleFilterPress = (id: string) => {
     router.push({
@@ -69,8 +112,23 @@ const JellyfinSearchFilterBar = () => {
     });
   };
 
+  const clearAllFilters = () => {
+    useJellyfinStore.setState({ searchFilters: undefined });
+  };
+
   const checkActiveStatus = (id: string) => {
+    if (searchFilters && id in searchFilters) {
+      return true;
+    }
     return false;
+  };
+
+  const filterBarOptions = () => {
+    const filterBarOptions = getFilterBarOptions(
+      (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
+    );
+    useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
+    return filterBarOptions;
   };
 
   return (
@@ -78,7 +136,8 @@ const JellyfinSearchFilterBar = () => {
       <XStack flex={1}>
         <FlashList
           horizontal
-          data={filters}
+          data={filterBarOptions()}
+          extraData={searchFilters}
           renderItem={({ item }) => (
             <FilterButton
               id={item.id}
@@ -95,7 +154,8 @@ const JellyfinSearchFilterBar = () => {
                 height="$2.5"
                 borderRadius="$8"
                 paddingHorizontal="$3"
-                backgroundColor="$gray5"
+                backgroundColor={searchFilters ? "$purple7" : "$gray5"}
+                onPress={() => clearAllFilters()}
               >
                 <X size={18} opacity={0.8} />
               </Button>

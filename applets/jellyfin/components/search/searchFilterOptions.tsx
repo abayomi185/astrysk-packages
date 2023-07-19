@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigation } from "expo-router";
-import { filters } from "../../constants";
 import { FlashList } from "@shopify/flash-list";
-import { YStack, XStack, Text } from "tamagui";
+import { YStack, XStack } from "tamagui";
 import { onItemLayout } from "@astrysk/utils";
 import { SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
@@ -29,6 +28,7 @@ const createSettingsOptionsObject = (
           [filterType]: item,
         },
       }));
+      navigation.goBack();
     },
     lastItem: last,
   } as SettingsOptionProps;
@@ -45,8 +45,12 @@ const JellyfinSearchFilterOptions: React.FC<{ filterType: string }> = ({
   const selectedValue =
     useJellyfinStore((state) => state?.searchFilters?.[filterType]) ?? "";
 
+  // const filterBarOptions = useJellyfinStore((state) => state.filterBarOptions);
+  const filterBarOptions = useJellyfinStore.getState().filterBarOptions;
+
   const settingsOptions = React.useMemo(() => {
-    const options = filters.find((data) => data.id === filterType)?.options;
+    const options =
+      filterBarOptions?.find((data) => data.id === filterType)?.options ?? [];
     return options?.map((item, index) =>
       createSettingsOptionsObject(
         navigation,
@@ -56,11 +60,7 @@ const JellyfinSearchFilterOptions: React.FC<{ filterType: string }> = ({
         index === options.length - 1
       )
     );
-  }, [filterType, selectedValue]);
-
-  // WARN: Do something here with selectedValue to set the filter in the search bar
-  // and add visual indicator to the selected option on the search screen
-  // Do this for the clear button too
+  }, [filterBarOptions, filterType, selectedValue]);
 
   return (
     <YStack height="100%" padding="$4">
@@ -73,19 +73,7 @@ const JellyfinSearchFilterOptions: React.FC<{ filterType: string }> = ({
                 <YStack
                   onLayout={onItemLayout(flashListHeight, setFlashListHeight)}
                 >
-                  <SettingsOption
-                    t={t}
-                    item={item}
-                    style={{
-                      backgroundColor: "$gray1",
-                      ...(item.lastItem
-                        ? {
-                            borderBottomLeftRadius: "$5",
-                            borderBottomRightRadius: "$5",
-                          }
-                        : {}),
-                    }}
-                  />
+                  <SettingsOption t={t} item={item} />
                 </YStack>
               );
             }}

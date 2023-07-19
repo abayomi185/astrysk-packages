@@ -9,6 +9,7 @@ import {
 import { BaseItemDto, BaseItemKind } from "../api";
 import JellyfinSeriesDetail from "../components/detail/seriesDetail";
 import JellyfinMovieDetail from "../components/detail/movieDetail";
+import JellyfinCollectionFolderDetail from "../components/detail/collectionFolderDetail";
 import JellyfinMediaNotSupported from "../components/detail/mediaNotSupported";
 
 const JellyfinDetail: React.FC = () => {
@@ -26,6 +27,11 @@ const JellyfinDetail: React.FC = () => {
     if (params.context === JellyfinDetailScreenContext.RecentlyAdded) {
       return useJellyfinStore.getState().mediaCache?.[serverId]
         ?.latestMediaCache?.data?.[Number(params.itemCacheIndex)];
+    }
+
+    if (params.context === JellyfinDetailScreenContext.Views) {
+      return useJellyfinStore.getState().mediaCache?.[serverId]?.viewsMediaCache
+        ?.data?.[Number(params.itemCacheIndex)];
     }
 
     if (params.context === JellyfinDetailScreenContext.SearchSuggestionItem) {
@@ -56,6 +62,14 @@ const JellyfinDetail: React.FC = () => {
     } else if (itemData?.Type === BaseItemKind.Movie) {
       return (
         <JellyfinMovieDetail
+          userId={userId}
+          serverId={serverId}
+          forwardedData={itemData}
+        />
+      );
+    } else if (itemData?.Type === BaseItemKind.CollectionFolder) {
+      return (
+        <JellyfinCollectionFolderDetail
           userId={userId}
           serverId={serverId}
           forwardedData={itemData}

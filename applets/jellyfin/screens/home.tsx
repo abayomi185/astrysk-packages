@@ -12,6 +12,7 @@ import { useJellyfinHomeHeader } from "../components/useHeader";
 import { useNavigation } from "expo-router";
 import { SectionTitle } from "../components/styles";
 import { useTranslation } from "react-i18next";
+import JellyfinViews from "../components/home/views";
 // import LatestMedia from "@applets/jellyfin/components/home/latestMedia";
 
 // const ResumeMedia = React.lazy(
@@ -53,6 +54,9 @@ const JellyfinHome: React.FC = () => {
           // ),
           component: () => <JellyfinRecentlyAdded />,
         },
+        {
+          component: () => <JellyfinViews />,
+        },
         // {
         //   component: () => (
         //     <LatestMedia resumeItems={resumeItems.data?.Items as BaseItemDto[]} />
@@ -73,7 +77,7 @@ const JellyfinHome: React.FC = () => {
             <item.component />
           </>
         )}
-        ListFooterComponent={() => <XStack height="$2" />}
+        ListFooterComponent={() => <XStack height="$16" />}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={198}
         refreshControl={
