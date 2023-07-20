@@ -5,6 +5,7 @@ import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
   JellyfinMediaItemSettingsType,
+  JellyfinSearchFilterContext,
   JellyfinSettingsKeys,
 } from "../types";
 import { useJellyfinStore } from "../store";
@@ -93,7 +94,12 @@ const JellyfinModal = () => {
 
     useJellyfinModalHeader(navigation, filterType);
 
-    return <JellyfinSearchFilterOptions filterType={filterType} />;
+    return (
+      <JellyfinSearchFilterOptions
+        context={JellyfinSearchFilterContext.Search}
+        filterType={filterType}
+      />
+    );
   }
 
   // NOTE: SETTINGS

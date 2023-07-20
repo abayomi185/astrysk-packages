@@ -94,6 +94,11 @@ export enum JellyfinMediaItemSettingsType {
   Subtitle = "subtitle",
 }
 
+export enum JellyfinSearchFilterContext {
+  Search = "Search",
+  Collection = "Collection",
+}
+
 export interface JellyfinFilter {
   id: string;
   options: string[];

@@ -8,6 +8,7 @@ import JellyfinSearchResults from "../components/search/searchResults";
 import JellyfinSearchFilterBar from "../components/search/searchFilterBar";
 import { useTranslation } from "react-i18next";
 import { useJellyfinStore } from "../store";
+import { JellyfinSearchFilterContext } from "../types";
 
 const debouncedSetter = (
   setStateFunction: (value: string | string[]) => void,
@@ -52,7 +53,7 @@ const JellyfinSearch: React.FC = () => {
 
   return (
     <>
-      <JellyfinSearchFilterBar />
+      <JellyfinSearchFilterBar context={JellyfinSearchFilterContext.Search} />
       {searchTerm || isFilterApplied ? (
         <JellyfinSearchResults searchTerm={searchTerm as string} />
       ) : (

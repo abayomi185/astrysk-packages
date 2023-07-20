@@ -46,7 +46,7 @@ interface JellyfinState extends StateTypes.AppletState {
   // defaultSubtitleLanguage?: string;
   mediaItemSettings?: JellyfinMediaItemSettings;
   customHeaders?: Record<string, string>;
-  searchFilters?: Record<string, any>;
+  searchFilters?: Record<string, Record<string, any> | undefined>;
   filterBarOptions?: JellyfinFilter[];
 }
 

@@ -7,7 +7,10 @@ import { useJellyfinStore } from "../../store";
 import { BaseItemKind, SearchHint } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { goToSearchedItemDetailScreen } from "../../utils";
-import { JellyfinDetailScreenContext } from "../../types";
+import {
+  JellyfinDetailScreenContext,
+  JellyfinSearchFilterContext,
+} from "../../types";
 
 const JellyfinSearchResultItem: React.FC<{
   index: number;
@@ -97,12 +100,18 @@ const JellyfinSearchResults: React.FC<{
     // if (searchFilters?.["Status"]) {
     //   // filteredData = filteredData.filter()
     // }
-    if (searchFilters?.["Order"]) {
-      if (searchFilters?.["Order"] === "Ascending") {
+    if (searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"]) {
+      if (
+        searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"] ===
+        "Ascending"
+      ) {
         filteredData = filteredData.sort((a, b) =>
           (a.Name as string).localeCompare(b.Name as string)
         );
-      } else if (searchFilters?.["Order"] === "Descending") {
+      } else if (
+        searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"] ===
+        "Descending"
+      ) {
         filteredData = filteredData.sort((a, b) =>
           (b.Name as string).localeCompare(a.Name as string)
         );
@@ -116,7 +125,13 @@ const JellyfinSearchResults: React.FC<{
     {
       userId: userId,
       searchTerm: searchTerm,
-      ...(searchFilters ? { includeItemTypes: [searchFilters?.["Type"]] } : {}),
+      ...(searchFilters?.[JellyfinSearchFilterContext.Search]
+        ? {
+            includeItemTypes: [
+              searchFilters?.[JellyfinSearchFilterContext.Search]?.["Type"],
+            ],
+          }
+        : {}),
       limit: 50,
     },
     {

@@ -8,6 +8,7 @@ import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
   JellyfinFilter,
+  JellyfinSearchFilterContext,
 } from "../../types";
 import { Screens } from "@astrysk/constants";
 import { useJellyfinStore } from "../../store";
@@ -92,11 +93,14 @@ const FilterButton: React.FC<{
   );
 };
 
-const JellyfinSearchFilterBar = () => {
+const JellyfinSearchFilterBar: React.FC<{
+  context: JellyfinSearchFilterContext;
+}> = ({ context }) => {
   const router = useRouter();
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
+  console.log(searchFilters);
 
   const genres = useGetGenres({
     userId: userId,
@@ -112,12 +116,17 @@ const JellyfinSearchFilterBar = () => {
     });
   };
 
-  const clearAllFilters = () => {
-    useJellyfinStore.setState({ searchFilters: undefined });
+  const clearFiltersForContext = () => {
+    useJellyfinStore.setState((state) => ({
+      searchFilters: {
+        ...state.searchFilters,
+        [context]: undefined,
+      },
+    }));
   };
 
   const checkActiveStatus = (id: string) => {
-    if (searchFilters && id in searchFilters) {
+    if (searchFilters?.[context] && id in (searchFilters?.[context] ?? {})) {
       return true;
     }
     return false;
@@ -137,7 +146,7 @@ const JellyfinSearchFilterBar = () => {
         <FlashList
           horizontal
           data={filterBarOptions()}
-          extraData={searchFilters}
+          extraData={searchFilters?.[context]}
           renderItem={({ item }) => (
             <FilterButton
               id={item.id}
@@ -154,8 +163,10 @@ const JellyfinSearchFilterBar = () => {
                 height="$2.5"
                 borderRadius="$8"
                 paddingHorizontal="$3"
-                backgroundColor={searchFilters ? "$purple7" : "$gray5"}
-                onPress={() => clearAllFilters()}
+                backgroundColor={
+                  searchFilters?.[context] ? "$purple7" : "$gray5"
+                }
+                onPress={() => clearFiltersForContext()}
               >
                 <X size={18} opacity={0.8} />
               </Button>

@@ -8,10 +8,12 @@ import { useTranslation } from "react-i18next";
 import { SettingsOptionProps } from "@astrysk/types";
 import { NavigationProp } from "@react-navigation/native";
 import { useJellyfinStore } from "../../store";
+import { JellyfinSearchFilterContext } from "../../types";
 
 const createSettingsOptionsObject = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   item: string,
+  context: JellyfinSearchFilterContext,
   filterType: string,
   selectedValue: string | null,
   last?: boolean
@@ -25,7 +27,10 @@ const createSettingsOptionsObject = (
       useJellyfinStore.setState((state) => ({
         searchFilters: {
           ...state.searchFilters,
-          [filterType]: item,
+          [context]: {
+            ...state.searchFilters?.[context],
+            [filterType]: item,
+          },
         },
       }));
       navigation.goBack();
@@ -34,18 +39,20 @@ const createSettingsOptionsObject = (
   } as SettingsOptionProps;
 };
 
-const JellyfinSearchFilterOptions: React.FC<{ filterType: string }> = ({
-  filterType,
-}) => {
+const JellyfinSearchFilterOptions: React.FC<{
+  context: JellyfinSearchFilterContext;
+  filterType: string;
+}> = ({ context, filterType }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
   const [flashListHeight, setFlashListHeight] = React.useState(0);
 
   const selectedValue =
-    useJellyfinStore((state) => state?.searchFilters?.[filterType]) ?? "";
+    useJellyfinStore(
+      (state) => state?.searchFilters?.[context]?.[filterType]
+    ) ?? "";
 
-  // const filterBarOptions = useJellyfinStore((state) => state.filterBarOptions);
   const filterBarOptions = useJellyfinStore.getState().filterBarOptions;
 
   const settingsOptions = React.useMemo(() => {
@@ -55,6 +62,7 @@ const JellyfinSearchFilterOptions: React.FC<{ filterType: string }> = ({
       createSettingsOptionsObject(
         navigation,
         item,
+        context,
         filterType,
         selectedValue,
         index === options.length - 1
