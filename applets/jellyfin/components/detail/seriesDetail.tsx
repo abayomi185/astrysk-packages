@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Alert } from "react-native";
-import { H2, H3, YStack, Text, XStack, H4, H6 } from "tamagui";
+import { H2, H3, YStack, Text, XStack, H4, H6, Button } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import * as Crypto from "expo-crypto";
 
@@ -13,6 +13,7 @@ import {
   ImageType,
   ItemFields,
   getGetEpisodesQueryKey,
+  getGetItemQueryKey,
   useGetEpisodes,
   useGetItem,
   useGetItemImage,
@@ -33,7 +34,7 @@ import { FlashList } from "@shopify/flash-list";
 import ContextMenu from "react-native-context-menu-view";
 import JellyfinCastAndCrew from "./castAndCrew";
 import JellyfinSeriesDetailEpisodeList from "./episodesList";
-import { resetLoadingComponent } from "@astrysk/components";
+// import { resetLoadingComponent } from "@astrysk/components";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
@@ -52,13 +53,12 @@ const JellyfinSeriesDetail: React.FC<{
   const token = useJellyfinStore.getState().token;
   const baseURL = useJellyfinStore.getState().baseURL;
 
-  // WARN: Search Hint does not have SeriesId
   const episodeData = useGetItem(userId, forwardedData.Id as string, {
-    query: {
-      onSuccess: (data) => {
-        // console.log(data);
-      },
-    },
+    // query: {
+    //   onSuccess: (data) => {
+    //     // console.log(data);
+    //   },
+    // },
   });
 
   const seriesId: string =
@@ -112,7 +112,7 @@ const JellyfinSeriesDetail: React.FC<{
   const [selectedEpisodeIndex, setSelectedEpisodeIndex] =
     React.useState<number>();
 
-  const [readMore, setReadMore] = React.useState(false);
+  const [readMore, _] = React.useState(false);
   const [summaryLines, setSummaryLines] = React.useState(4);
 
   // Get Series data
@@ -150,7 +150,7 @@ const JellyfinSeriesDetail: React.FC<{
     {},
     {
       query: {
-        onSuccess: (data) => {
+        onSuccess: (_data) => {
           setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
         },
         onError: () => {
@@ -241,8 +241,8 @@ const JellyfinSeriesDetail: React.FC<{
         episode.IndexNumber === selectedEpisodeIndex
     );
 
-    if (episodeData) {
-      episodeData?.UserData?.Played
+    episodeData
+      ? episodeData?.UserData?.Played
         ? markUnplayedItem.mutate({
             userId: userId,
             itemId: episodeData.Id as string,
@@ -250,8 +250,8 @@ const JellyfinSeriesDetail: React.FC<{
         : markPlayedItem.mutate({
             userId: userId,
             itemId: episodeData.Id as string,
-          });
-    }
+          })
+      : Alert.alert(t("jellyfin:error_episodeNotSelected"));
 
     // Optimistically update cache before mutation
     queryClient.setQueryData<BaseItemDtoQueryResult>(
@@ -340,6 +340,55 @@ const JellyfinSeriesDetail: React.FC<{
         })
       : Alert.alert(t("jellyfin:error_episodeNotSelected"));
   };
+
+  const getSeriesWatchedStatus = () => seriesData?.data?.UserData?.Played;
+
+  const setSeriesAsWatched = () => {
+    seriesData.data?.UserData?.Played
+      ? markUnplayedItem.mutate({
+          userId: userId,
+          itemId: seriesId as string,
+        })
+      : markPlayedItem.mutate({
+          userId: userId,
+          itemId: seriesId as string,
+        });
+
+    // Optimistically update cache before mutation
+    queryClient.setQueryData<BaseItemDto>(
+      getGetItemQueryKey(userId, seriesId),
+
+      (oldData) => {
+        if (!oldData) {
+          return undefined;
+        }
+        const newData = {
+          ...oldData,
+          UserData: {
+            ...oldData.UserData,
+            Played: !oldData.UserData?.Played,
+          },
+        };
+        return newData;
+      }
+    );
+  };
+
+  // Delay fetching until setSeriesAsWatched is effectively done
+  React.useEffect(() => {
+    seriesData.refetch();
+    episodesData.refetch();
+    seasonsData.refetch();
+  }, [seriesData.data?.UserData?.Played]);
+
+  // Filter episodes based on selected season
+  const filteredEpisodeData = React.useMemo(
+    () =>
+      episodesData?.data?.Items?.filter(
+        (data) => data.SeasonId === selectedSeasonID
+      ) as BaseItemDto[],
+    [selectedSeasonID, episodesData.data?.Items]
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -473,8 +522,7 @@ const JellyfinSeriesDetail: React.FC<{
                   {(episodesData.data?.Items?.length ?? 0) > 0 ? (
                     <JellyfinSeriesDetailEpisodeList
                       userId={userId}
-                      episodesData={episodesData.data?.Items as BaseItemDto[]}
-                      selectedSeasonID={selectedSeasonID as string}
+                      episodesData={filteredEpisodeData}
                       selectedEpisodeIndex={selectedEpisodeIndex as number}
                       onSelectEpisode={onSelectEpisode}
                     />
@@ -518,9 +566,9 @@ const JellyfinSeriesDetail: React.FC<{
                   }
                   indexNumber={selectedEpisodeIndex as number}
                   hasBeenWatched={
-                    episodesData.data?.Items?.[
-                      (selectedEpisodeIndex as number) - 1
-                    ]?.UserData?.Played
+                    filteredEpisodeData?.find(
+                      (data) => data.IndexNumber === selectedEpisodeIndex
+                    )?.UserData?.Played
                   }
                   setWatchedStatus={setWatchedStatus}
                   playEpisode={goToPlayScreen}
@@ -614,6 +662,21 @@ const JellyfinSeriesDetail: React.FC<{
                     </XStack>
                     <YStack marginTop="$2"></YStack>
                   </YStack>
+                  <XStack>
+                    <Button
+                      height="$3"
+                      width="$9"
+                      backgroundColor="$background"
+                      padding="$0"
+                      onPress={setSeriesAsWatched}
+                    >
+                      <Ionicons
+                        name="checkmark-circle-outline"
+                        size={23}
+                        color={getSeriesWatchedStatus() ? "#8e4ec6" : "white"}
+                      />
+                    </Button>
+                  </XStack>
                 </JellyfinDetailSection>
               </YStack>
               <XStack height="$3" />

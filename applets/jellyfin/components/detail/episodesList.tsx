@@ -131,30 +131,20 @@ const JellyfinSeriesDetailEpisodeItem: React.FC<{
 const JellyfinSeriesDetailEpisodeList: React.FC<{
   userId: string;
   episodesData: BaseItemDto[];
-  selectedSeasonID: string;
   selectedEpisodeIndex: number;
   onSelectEpisode: (indexNumber: number) => void;
-}> = ({
-  episodesData,
-  selectedSeasonID,
-  selectedEpisodeIndex,
-  onSelectEpisode,
-}) => {
-  const flashListEpisodeIndex = episodesData
-    .filter((data) => data.SeasonId === selectedSeasonID)
-    .findIndex((data) => data.IndexNumber === selectedEpisodeIndex);
-
-  const getFilterdEpisodeData = () => {
-    return episodesData.filter((data) => data.SeasonId === selectedSeasonID);
-  };
+}> = ({ episodesData, selectedEpisodeIndex, onSelectEpisode }) => {
+  const flashListEpisodeIndex = episodesData.findIndex(
+    (data) => data.IndexNumber === selectedEpisodeIndex
+  );
 
   return (
     <XStack flex={1}>
       <Suspense>
         <FlashList
           horizontal
-          data={getFilterdEpisodeData()}
-          extraData={{ selectedEpisodeIndex, episodesData }}
+          data={episodesData}
+          extraData={{ selectedEpisodeIndex }}
           renderItem={({ item }) => (
             <JellyfinSeriesDetailEpisodeItem
               data={item}
