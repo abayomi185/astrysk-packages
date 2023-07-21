@@ -125,15 +125,6 @@ const JellyfinSearchFilterBar: React.FC<{
     return false;
   };
 
-  // const filterBarOptions = () => {
-  //   const filterBarOptions = getFilterBarOptions(
-  //     context,
-  //     (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
-  //   );
-  //   useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
-  //   return filterBarOptions;
-  // };
-
   const filterBarOptions = React.useMemo(() => {
     const filterBarOptions = getFilterBarOptions(
       context,
@@ -142,6 +133,12 @@ const JellyfinSearchFilterBar: React.FC<{
     useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
     return filterBarOptions;
   }, [context]);
+
+  // WARN: filterBarOptions from search and home are clashing.
+  // State is cleared when using search filter making collection filter empty
+
+  // React.useEffect(() => {
+  // }, [context]);
 
   return (
     <XStack height="$4" backgroundColor="$backgroundTransparent" {...style}>

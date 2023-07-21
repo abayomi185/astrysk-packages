@@ -55,6 +55,7 @@ const JellyfinSearchFilterOptions: React.FC<{
 
   // WARN: This is not ideal to get the filterBarOptions from the store here.
   const filterBarOptions = useJellyfinStore.getState().filterBarOptions;
+  console.log("filterBarOptions", filterBarOptions);
 
   const settingsOptions = React.useMemo(() => {
     const options =
