@@ -17,7 +17,7 @@ import {
   JellyfinSearchFilterContext,
 } from "./types";
 import { Router } from "@astrysk/types";
-import config from "@astrysk/styles";
+import { BaseItemDto, BaseItemKind, SearchHint } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxios = (
@@ -124,6 +124,73 @@ export const goToSearchedItemDetailScreen = (
       itemCacheIndex: searchItemIndex,
     } as JellyfinDetailScreenProps,
   });
+};
+
+const isBaseItemDto = (data: BaseItemDto | SearchHint): data is BaseItemDto => {
+  return (data as BaseItemDto).UserData !== undefined;
+};
+
+// Intersection type to get typescript to stop complaining
+export const filterSearchData = <T extends BaseItemDto | SearchHint>(
+  data: T[],
+  searchFilters: Record<string, any> | undefined
+) => {
+  let filteredData = data;
+
+  // NOTE: May need to change "MediaSources" key
+  if ("MediaSources" in filteredData[0]) {
+    filteredData = filteredData.filter(
+      (item) => item.Type !== BaseItemKind.Folder
+    );
+  }
+
+  // WARN: This is not the best way to do this
+  // isBaseItemDto type guard
+  if (searchFilters?.["jellyfin:status"]) {
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.Played === true
+      );
+    }
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.Played === false
+      );
+    }
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
+      );
+    }
+  }
+
+  if (searchFilters?.["jellyfin:order"]) {
+    if (searchFilters?.["jellyfin:order"] === "jellyfin:nameAscending") {
+      filteredData = filteredData.sort((a, b) =>
+        (a.Name as string).localeCompare(b.Name as string)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:nameDescending"
+    ) {
+      filteredData = filteredData.sort((a, b) =>
+        (b.Name as string).localeCompare(a.Name as string)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateAscending"
+    ) {
+      filteredData = filteredData.sort(
+        (a, b) => (a.ProductionYear as number) - (b.ProductionYear as number)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateDescending"
+    ) {
+      filteredData = filteredData.sort(
+        (a, b) => (b.ProductionYear as number) - (a.ProductionYear as number)
+      );
+    }
+  }
+
+  return filteredData;
 };
 
 // NOTE: ITEM UTILS

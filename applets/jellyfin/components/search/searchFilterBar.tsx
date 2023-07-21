@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
 import { XStack, Button, Text, GetProps, Stack } from "tamagui";
 import { X, ChevronDown } from "@tamagui/lucide-icons";
-import { BaseItemKind, useGetGenres } from "../../api";
+import { useGetGenres } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import {
   JellyfinDetailScreenContext,
@@ -12,6 +12,7 @@ import {
 } from "../../types";
 import { Screens } from "@astrysk/constants";
 import { useJellyfinStore } from "../../store";
+import { useTranslation } from "react-i18next";
 
 const getFilterBarOptions = (
   context: JellyfinSearchFilterContext,
@@ -21,22 +22,21 @@ const getFilterBarOptions = (
     ...(context === JellyfinSearchFilterContext.Search
       ? [
           {
-            id: "Type",
+            id: "jellyfin:type",
             options: [
-              "Movie",
-              "Series",
-              "Episode",
-              "Season",
-              "Video",
-              "Person",
-            ] as BaseItemKind[],
+              "jellyfin:movie",
+              "jellyfin:series",
+              "jellyfin:episode",
+              "jellyfin:season",
+              "jellyfin:person",
+            ], // as BaseItemKind[],
           },
         ]
       : []),
     ...(context === JellyfinSearchFilterContext.Collection
       ? [
           {
-            id: "Genre",
+            id: "jellyfin:genre",
             options: genres as string[],
           },
         ]
@@ -44,14 +44,23 @@ const getFilterBarOptions = (
     ...(context === JellyfinSearchFilterContext.Collection
       ? [
           {
-            id: "Status",
-            options: ["Played", "Unplayed", "Favourite"],
+            id: "jellyfin:status",
+            options: [
+              "jellyfin:played",
+              "jellyfin:unplayed",
+              "jellyfin:favourite",
+            ],
           },
         ]
       : []),
     {
-      id: "Order",
-      options: ["Ascending", "Descending"],
+      id: "jellyfin:order",
+      options: [
+        "jellyfin:nameAscending",
+        "jellyfin:nameDescending",
+        "jellyfin:premiereDateAscending",
+        "jellyfin:premiereDateDescending",
+      ],
     },
   ];
 };
@@ -62,6 +71,8 @@ const FilterButton: React.FC<{
   handlePress: (id: string) => void;
   active: boolean;
 }> = ({ id, data, handlePress, active }) => {
+  const { t } = useTranslation();
+
   return (
     <Suspense>
       <XStack flex={1} width="$8" marginLeft="$2" alignItems="center">
@@ -75,7 +86,7 @@ const FilterButton: React.FC<{
         >
           <XStack flex={1} alignItems="center" justifyContent="space-between">
             <Text numberOfLines={1} ellipsizeMode="tail" opacity={0.8}>
-              {id}
+              {t(id)}
             </Text>
             <ChevronDown size={18} opacity={0.8} />
           </XStack>
@@ -87,8 +98,9 @@ const FilterButton: React.FC<{
 
 const JellyfinSearchFilterBar: React.FC<{
   context: JellyfinSearchFilterContext;
+  handleClearAllFilters?: () => void;
   style?: GetProps<typeof Stack>;
-}> = ({ context, style }) => {
+}> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
@@ -110,12 +122,16 @@ const JellyfinSearchFilterBar: React.FC<{
   };
 
   const clearFiltersForContext = () => {
+    // Don't clear filters if there are none
+    if (!searchFilters?.[context]) return;
+    // Clear filters for context
     useJellyfinStore.setState((state) => ({
       searchFilters: {
         ...state.searchFilters,
         [context]: undefined,
       },
     }));
+    handleClearAllFilters?.();
   };
 
   const checkActiveStatus = (id: string) => {
@@ -130,15 +146,14 @@ const JellyfinSearchFilterBar: React.FC<{
       context,
       (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
     );
-    useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
+    useJellyfinStore.setState((state) => ({
+      filterBarOptions: {
+        ...state.filterBarOptions,
+        [context]: filterBarOptions,
+      },
+    }));
     return filterBarOptions;
-  }, [context]);
-
-  // WARN: filterBarOptions from search and home are clashing.
-  // State is cleared when using search filter making collection filter empty
-
-  // React.useEffect(() => {
-  // }, [context]);
+  }, [context, genres?.data?.Items]);
 
   return (
     <XStack height="$4" backgroundColor="$backgroundTransparent" {...style}>

@@ -7,6 +7,7 @@ import {
   JellyfinFilter,
   JellyfinMediaCache,
   JellyfinMediaItemSettings,
+  JellyfinSearchFilterContext,
 } from "./types";
 
 const MMKVStore = new MMKV({
@@ -46,8 +47,12 @@ interface JellyfinState extends StateTypes.AppletState {
   // defaultSubtitleLanguage?: string;
   mediaItemSettings?: JellyfinMediaItemSettings;
   customHeaders?: Record<string, string>;
-  searchFilters?: Record<string, Record<string, any> | undefined>;
-  filterBarOptions?: JellyfinFilter[];
+  searchFilters?: Partial<
+    Record<JellyfinSearchFilterContext, Record<string, string> | undefined>
+  >;
+  filterBarOptions?: Partial<
+    Record<JellyfinSearchFilterContext, JellyfinFilter[]>
+  >;
 }
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too

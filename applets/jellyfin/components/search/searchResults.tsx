@@ -6,11 +6,12 @@ import { FlashList } from "@shopify/flash-list";
 import { useJellyfinStore } from "../../store";
 import { BaseItemDto, BaseItemKind, SearchHint } from "../../api";
 import { Image, ImageSource } from "expo-image";
-import { goToSearchedItemDetailScreen } from "../../utils";
+import { filterSearchData, goToSearchedItemDetailScreen } from "../../utils";
 import {
   JellyfinDetailScreenContext,
   JellyfinSearchFilterContext,
 } from "../../types";
+import { useTranslation } from "react-i18next";
 
 export const JellyfinSearchResultItem: React.FC<{
   searchContext: JellyfinSearchFilterContext;
@@ -96,46 +97,13 @@ export const JellyfinSearchResultItem: React.FC<{
 const JellyfinSearchResults: React.FC<{
   searchTerm: string;
 }> = ({ searchTerm }) => {
+  const { t } = useTranslation();
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
 
   const [isLoading, setIsLoading] = React.useState(true);
-
-  const filterSuggestionsData = (data: SearchHint[]) => {
-    let filteredData = data;
-
-    filteredData = filteredData.filter(
-      (item) => item.Type !== BaseItemKind.Folder
-    );
-
-    // if (searchFilters?.["Genre"]) {
-    //   // filteredData = filteredData.filter()
-    // }
-    // if (searchFilters?.["Status"]) {
-    //   // filteredData = filteredData.filter()
-    // }
-    if (searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"]) {
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"] ===
-        "Ascending"
-      ) {
-        filteredData = filteredData.sort((a, b) =>
-          (a.Name as string).localeCompare(b.Name as string)
-        );
-      } else if (
-        searchFilters?.[JellyfinSearchFilterContext.Search]?.["Order"] ===
-        "Descending"
-      ) {
-        filteredData = filteredData.sort((a, b) =>
-          (b.Name as string).localeCompare(a.Name as string)
-        );
-      }
-    }
-
-    return filteredData;
-  };
 
   const searchResults = useGet(
     {
@@ -144,8 +112,12 @@ const JellyfinSearchResults: React.FC<{
       ...(searchFilters?.[JellyfinSearchFilterContext.Search]
         ? {
             includeItemTypes: [
-              searchFilters?.[JellyfinSearchFilterContext.Search]?.["Type"],
-            ],
+              t(
+                searchFilters?.[JellyfinSearchFilterContext.Search]?.[
+                  "jellyfin:type"
+                ]
+              ),
+            ] as BaseItemKind[],
           }
         : {}),
       limit: 50,
@@ -153,7 +125,10 @@ const JellyfinSearchResults: React.FC<{
     {
       query: {
         select: (data) => {
-          return filterSuggestionsData(data.SearchHints as SearchHint[]);
+          return filterSearchData<SearchHint>(
+            data.SearchHints as SearchHint[],
+            searchFilters?.[JellyfinSearchFilterContext.Search]
+          );
         },
         onSuccess: (data) => {
           useJellyfinStore.setState((state) => ({

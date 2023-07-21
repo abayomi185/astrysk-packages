@@ -9,8 +9,10 @@ import { SettingsOptionProps } from "@astrysk/types";
 import { NavigationProp } from "@react-navigation/native";
 import { useJellyfinStore } from "../../store";
 import { JellyfinSearchFilterContext } from "../../types";
+import { TFunction, t } from "i18next";
 
 const createSettingsOptionsObject = (
+  t: TFunction,
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   item: string,
   context: JellyfinSearchFilterContext,
@@ -20,7 +22,7 @@ const createSettingsOptionsObject = (
 ) => {
   return {
     key: item,
-    name: item,
+    name: t(item),
     type: "item",
     selectedValue: selectedValue,
     onPress: () => {
@@ -55,13 +57,14 @@ const JellyfinSearchFilterOptions: React.FC<{
 
   // WARN: This is not ideal to get the filterBarOptions from the store here.
   const filterBarOptions = useJellyfinStore.getState().filterBarOptions;
-  console.log("filterBarOptions", filterBarOptions);
 
   const settingsOptions = React.useMemo(() => {
     const options =
-      filterBarOptions?.find((data) => data.id === filterType)?.options ?? [];
+      filterBarOptions?.[context]?.find((data) => data.id === filterType)
+        ?.options ?? [];
     return options?.map((item, index) =>
       createSettingsOptionsObject(
+        t,
         navigation,
         item,
         context,

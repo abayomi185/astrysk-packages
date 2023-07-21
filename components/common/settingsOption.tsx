@@ -46,7 +46,7 @@ export const SettingsOption: React.FC<{
         borderWidth="$0"
         borderTopWidth="$0"
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
-        borderBottomColor="$gray8"
+        borderBottomColor="$gray6"
         borderRadius="$0"
         theme="dark_gray"
         backgroundColor="$gray1"
@@ -93,7 +93,7 @@ export const SettingsOption: React.FC<{
         borderWidth="$0"
         borderTopWidth="$0"
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
-        borderBottomColor="$gray8"
+        borderBottomColor="$gray6"
         borderRadius="$0"
         theme="dark_gray"
         backgroundColor={active ? "$gray5" : "$gray1"}
@@ -130,7 +130,7 @@ export const SettingsOption: React.FC<{
         borderWidth="$0"
         borderTopWidth="$0"
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
-        borderBottomColor="$gray8"
+        borderBottomColor="$gray6"
         borderRadius="$0"
         // theme="gray"
         theme="dark_gray"

@@ -8,6 +8,7 @@ import { useJellyfinDetailHeader } from "../useHeader";
 import { FlashList } from "@shopify/flash-list";
 import { JellyfinSearchResultItem } from "../search/searchResults";
 import { useJellyfinStore } from "../../store";
+import { filterSearchData } from "../../utils";
 
 const JellyfinCollectionFolderDetail: React.FC<{
   userId: string;
@@ -21,72 +22,17 @@ const JellyfinCollectionFolderDetail: React.FC<{
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
 
-  const filterCollectionData = (data: BaseItemDto[]) => {
-    let filteredData = data;
-
-    if (searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Status"]) {
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Status"] ===
-        "Played"
-      ) {
-        filteredData = filteredData.filter(
-          (data) => data.UserData?.Played === true
-        );
-      }
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Status"] ===
-        "Unplayed"
-      ) {
-        filteredData = filteredData.filter(
-          (data) => data.UserData?.Played === false
-        );
-      }
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Status"] ===
-        "Liked"
-      ) {
-        filteredData = filteredData;
-      }
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Status"] ===
-        "Favourite"
-      ) {
-        filteredData = filteredData.filter(
-          (data) => data.UserData?.IsFavorite === true
-        );
-      }
-    }
-
-    if (searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Order"]) {
-      if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Order"] ===
-        "Ascending"
-      ) {
-        filteredData = filteredData.sort((a, b) =>
-          (a.Name as string).localeCompare(b.Name as string)
-        );
-      } else if (
-        searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Order"] ===
-        "Descending"
-      ) {
-        filteredData = filteredData.sort((a, b) =>
-          (b.Name as string).localeCompare(a.Name as string)
-        );
-      }
-    }
-
-    return filteredData;
-  };
-
   const collectionData = useGetItems(
     {
       userId: userId,
       parentId: collectionId,
-      ...(searchFilters?.[JellyfinSearchFilterContext.Collection]?.["Genre"]
+      ...(searchFilters?.[JellyfinSearchFilterContext.Collection]?.[
+        "jellyfin:genre"
+      ]
         ? {
             genres: [
               searchFilters?.[JellyfinSearchFilterContext.Collection]?.[
-                "Genre"
+                "jellyfin:genre"
               ],
             ],
           }
@@ -95,7 +41,21 @@ const JellyfinCollectionFolderDetail: React.FC<{
     {
       query: {
         select: (data) => {
-          return filterCollectionData(data.Items as BaseItemDto[]);
+          const filteredData = filterSearchData<BaseItemDto>(
+            data.Items as BaseItemDto[],
+            searchFilters?.[JellyfinSearchFilterContext.Collection]
+          );
+          useJellyfinStore.setState((state) => ({
+            mediaCache: {
+              [serverId]: {
+                ...state.mediaCache?.[serverId],
+                collectionMediaCache: {
+                  data: filteredData,
+                },
+              },
+            },
+          }));
+          return filteredData;
         },
         onSuccess: (data) => {
           useJellyfinStore.setState((state) => ({
@@ -113,12 +73,17 @@ const JellyfinCollectionFolderDetail: React.FC<{
     }
   );
 
+  const handleClearAllFilters = () => {
+    collectionData.refetch();
+  };
+
   useJellyfinDetailHeader(navigation, headerTitle);
 
   return (
     <YStack flex={1}>
       <JellyfinSearchFilterBar
         context={JellyfinSearchFilterContext.Collection}
+        handleClearAllFilters={handleClearAllFilters}
         style={{
           backgroundColor: "$background",
         }}

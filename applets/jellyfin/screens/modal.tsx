@@ -95,7 +95,7 @@ const JellyfinModal = () => {
     const searchContext =
       params.searchContext ?? JellyfinSearchFilterContext.Search;
 
-    useJellyfinModalHeader(navigation, filterType);
+    useJellyfinModalHeader(navigation, t(filterType));
 
     return (
       <JellyfinSearchFilterOptions

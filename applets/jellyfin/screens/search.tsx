@@ -7,7 +7,6 @@ import JellyfinSearchLanding from "../components/search/searchLanding";
 import JellyfinSearchResults from "../components/search/searchResults";
 import JellyfinSearchFilterBar from "../components/search/searchFilterBar";
 import { useTranslation } from "react-i18next";
-import { useJellyfinStore } from "../store";
 import { JellyfinSearchFilterContext } from "../types";
 
 const debouncedSetter = (
@@ -31,9 +30,11 @@ const JellyfinSearch: React.FC = () => {
   const { searchPathName, searchQuery } = useSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
-  const isFilterApplied = useJellyfinStore(
-    (state) => state.searchFilters?.[JellyfinSearchFilterContext.Search]
-  );
+
+  // Formerly used to determine if search results are shown
+  // const isFilterApplied = useJellyfinStore(
+  //   (state) => state.searchFilters?.[JellyfinSearchFilterContext.Search]
+  // );
 
   // Successfully debounce the search term
   const debouncedSetSearchTerm = debouncedSetter(setSearchTerm);
@@ -56,7 +57,7 @@ const JellyfinSearch: React.FC = () => {
   return (
     <>
       <JellyfinSearchFilterBar context={JellyfinSearchFilterContext.Search} />
-      {searchTerm || isFilterApplied ? (
+      {searchTerm ? (
         <JellyfinSearchResults searchTerm={searchTerm as string} />
       ) : (
         <JellyfinSearchLanding />
