@@ -31,7 +31,9 @@ const JellyfinSearch: React.FC = () => {
   const { searchPathName, searchQuery } = useSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
-  const isFilterApplied = useJellyfinStore((state) => state.searchFilters);
+  const isFilterApplied = useJellyfinStore(
+    (state) => state.searchFilters?.[JellyfinSearchFilterContext.Search]
+  );
 
   // Successfully debounce the search term
   const debouncedSetSearchTerm = debouncedSetter(setSearchTerm);

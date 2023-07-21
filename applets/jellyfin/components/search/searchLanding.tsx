@@ -8,7 +8,10 @@ import { useJellyfinStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
 import { goToSearchedItemDetailScreen } from "../../utils";
-import { JellyfinDetailScreenContext } from "../../types";
+import {
+  JellyfinDetailScreenContext,
+  JellyfinSearchFilterContext,
+} from "../../types";
 import { useRefreshHandler } from "@astrysk/utils";
 
 const JellyfinSearchLandingItem: React.FC<{
@@ -33,6 +36,7 @@ const JellyfinSearchLandingItem: React.FC<{
           goToSearchedItemDetailScreen(
             router,
             JellyfinDetailScreenContext.SearchSuggestionItem,
+            JellyfinSearchFilterContext.Search,
             data.Id as string,
             index.toString()
           )

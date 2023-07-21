@@ -4,7 +4,7 @@ import { Spinner, XStack, YStack, Text, H6 } from "tamagui";
 import { useGet } from "../../api/api";
 import { FlashList } from "@shopify/flash-list";
 import { useJellyfinStore } from "../../store";
-import { BaseItemKind, SearchHint } from "../../api";
+import { BaseItemDto, BaseItemKind, SearchHint } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { goToSearchedItemDetailScreen } from "../../utils";
 import {
@@ -12,13 +12,24 @@ import {
   JellyfinSearchFilterContext,
 } from "../../types";
 
-const JellyfinSearchResultItem: React.FC<{
+export const JellyfinSearchResultItem: React.FC<{
+  searchContext: JellyfinSearchFilterContext;
   index: number;
-  data: SearchHint;
-}> = ({ index, data }) => {
+  data: SearchHint | BaseItemDto;
+}> = ({ searchContext, index, data }) => {
   const router = useRouter();
   const token = useJellyfinStore.getState().token;
   const baseURL = useJellyfinStore.getState().baseURL;
+
+  let primaryImageTag;
+  let seriesName;
+
+  if ("PrimaryImageTag" in data) {
+    primaryImageTag = data.PrimaryImageTag;
+    seriesName = data.Series;
+  } else if ("ImageTags" in data) {
+    primaryImageTag = data.ImageTags?.Primary;
+  }
 
   // This causes out of order hook error with many search results
   // const imageId =
@@ -38,7 +49,12 @@ const JellyfinSearchResultItem: React.FC<{
       onPress={() => {
         goToSearchedItemDetailScreen(
           router,
-          JellyfinDetailScreenContext.SearchItem,
+          // Screen Context
+          searchContext === JellyfinSearchFilterContext.Search
+            ? JellyfinDetailScreenContext.SearchItem
+            : JellyfinDetailScreenContext.CollectionItem,
+          // Search Context
+          searchContext,
           data.Id as string,
           index.toString()
         );
@@ -55,13 +71,13 @@ const JellyfinSearchResultItem: React.FC<{
               },
             } as ImageSource
           }
-          placeholder={data?.PrimaryImageTag as string}
+          placeholder={primaryImageTag as string}
           transition={200}
         />
       </YStack>
       <YStack paddingHorizontal="$1" paddingTop="$1">
         <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-          {data.Type === BaseItemKind.Episode ? data.Series : data.Name}
+          {data.Type === BaseItemKind.Episode ? seriesName : data.Name}
         </H6>
         <Text color="$color" opacity={0.6} numberOfLines={1}>
           {data.Type === BaseItemKind.Movie && data.ProductionYear}
@@ -202,7 +218,11 @@ const JellyfinSearchResults: React.FC<{
             numColumns={3}
             data={sortedSearchResults}
             renderItem={({ item, index }) => (
-              <JellyfinSearchResultItem index={index} data={item} />
+              <JellyfinSearchResultItem
+                searchContext={JellyfinSearchFilterContext.Search}
+                index={index}
+                data={item}
+              />
             )}
             showsVerticalScrollIndicator={false}
             estimatedItemSize={208}

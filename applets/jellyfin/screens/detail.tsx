@@ -45,6 +45,11 @@ const JellyfinDetail: React.FC = () => {
         Number(params.itemCacheIndex)
       ] as BaseItemDto;
     }
+
+    if (params.context === JellyfinDetailScreenContext.CollectionItem) {
+      return useJellyfinStore.getState().mediaCache?.[serverId]
+        ?.collectionMediaCache?.data?.[Number(params.itemCacheIndex)];
+    }
   }, []);
 
   const getComponentToRender = () => {

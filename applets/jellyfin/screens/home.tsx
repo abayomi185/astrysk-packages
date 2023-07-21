@@ -77,7 +77,7 @@ const JellyfinHome: React.FC = () => {
             <item.component />
           </>
         )}
-        ListFooterComponent={() => <XStack height="$16" />}
+        ListFooterComponent={() => <XStack height="$13" />}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={198}
         refreshControl={

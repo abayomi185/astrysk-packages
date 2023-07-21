@@ -14,6 +14,7 @@ import { Actions, Screens } from "@astrysk/constants";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
+  JellyfinSearchFilterContext,
 } from "./types";
 import { Router } from "@astrysk/types";
 import config from "@astrysk/styles";
@@ -103,17 +104,22 @@ export const useLoadingSpinner = (functionName: string) =>
 
 // NOTE: NEXT FUNCTION / ETC.
 
-// NOTE: SEARCH UTILS
+// NOTE: SEARCH / COLLECTION UTILS
 export const goToSearchedItemDetailScreen = (
   router: Router,
-  context: JellyfinDetailScreenContext,
+  screenContext: JellyfinDetailScreenContext,
+  searchContext: JellyfinSearchFilterContext,
   searchItemId: string,
   searchItemIndex: string
 ) => {
+  const screenRoute =
+    searchContext === JellyfinSearchFilterContext.Search
+      ? Screens.SEARCH_SCREEN_DETAIL_ROUTE
+      : Screens.HOME_SCREEN_DETAIL_ROUTE;
   router.push({
-    pathname: `/${Screens.SEARCH_SCREEN_DETAIL_ROUTE}+${Crypto.randomUUID()}`,
+    pathname: `/${screenRoute}+${Crypto.randomUUID()}`,
     params: {
-      context: context,
+      context: screenContext,
       itemId: searchItemId, // Use id to check cache for data
       itemCacheIndex: searchItemIndex,
     } as JellyfinDetailScreenProps,

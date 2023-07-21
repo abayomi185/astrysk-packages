@@ -28,6 +28,7 @@ export interface JellyfinMediaCache {
     movieMediaCache?: Record<string, QueryCache<BaseItemDto>>;
     searchSuggestionsMediaCache?: QueryCache<BaseItemDto[]>;
     searchMediaCache?: QueryCache<SearchHint[]>;
+    collectionMediaCache?: QueryCache<BaseItemDto[]>;
   };
 }
 
@@ -56,6 +57,7 @@ export enum JellyfinDetailScreenContext {
   SearchSuggestionItem = "SearchSuggestionItem",
   SearchItem = "SearchItem",
   SearchFilter = "SearchFilter",
+  CollectionItem = "CollectionItem",
   // Settings
   SettingsOption = "SettingsOption",
 }
@@ -70,6 +72,9 @@ export interface JellyfinDetailScreenProps extends Record<string, string> {
 
   // For EpisodeMoreDetail
   episodeId?: string;
+
+  // CollectionItem Detail
+  searchContext?: JellyfinSearchFilterContext;
   [key: string]: any;
 }
 

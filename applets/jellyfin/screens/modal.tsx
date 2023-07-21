@@ -92,11 +92,14 @@ const JellyfinModal = () => {
   if (params.context === JellyfinDetailScreenContext.SearchFilter) {
     const filterType = params?.itemId as string;
 
+    const searchContext =
+      params.searchContext ?? JellyfinSearchFilterContext.Search;
+
     useJellyfinModalHeader(navigation, filterType);
 
     return (
       <JellyfinSearchFilterOptions
-        context={JellyfinSearchFilterContext.Search}
+        context={searchContext}
         filterType={filterType}
       />
     );

@@ -534,7 +534,8 @@ const JellyfinSeriesDetail: React.FC<{
                       setSummaryLines(e.nativeEvent.lines.length)
                     }
                   >
-                    {seriesData.data?.Overview}
+                    {seriesData.data?.Overview ??
+                      t("jellyfin:noDescriptionAvailable")}
                   </Text>
                   <Text
                     display={!readMore && summaryLines >= 4 ? "flex" : "none"}
@@ -547,14 +548,17 @@ const JellyfinSeriesDetail: React.FC<{
                   </Text>
                 </JellyfinDetailSection>
               </YStack>
-              <JellyfinDetailSection
-                header={t("jellyfin:castAndCrew")}
-                headerPadding
-              >
-                <JellyfinCastAndCrew
-                  people={seriesData.data?.People as BaseItemPerson[]}
-                />
-              </JellyfinDetailSection>
+              {seriesData.data?.People &&
+                seriesData.data?.People?.length > 0 && (
+                  <JellyfinDetailSection
+                    header={t("jellyfin:castAndCrew")}
+                    headerPadding
+                  >
+                    <JellyfinCastAndCrew
+                      people={seriesData.data?.People as BaseItemPerson[]}
+                    />
+                  </JellyfinDetailSection>
+                )}
               <YStack paddingHorizontal="$3">
                 <JellyfinDetailSection header={t("jellyfin:about")}>
                   <YStack>

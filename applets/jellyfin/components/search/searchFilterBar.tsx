@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
-import { XStack, Button, Text } from "tamagui";
+import { XStack, Button, Text, GetProps, Stack } from "tamagui";
 import { X, ChevronDown } from "@tamagui/lucide-icons";
 import { BaseItemKind, useGetGenres } from "../../api";
 import { FlashList } from "@shopify/flash-list";
@@ -13,50 +13,42 @@ import {
 import { Screens } from "@astrysk/constants";
 import { useJellyfinStore } from "../../store";
 
-const getFilterBarOptions = (genres?: string[]): JellyfinFilter[] => {
+const getFilterBarOptions = (
+  context: JellyfinSearchFilterContext,
+  genres?: string[]
+): JellyfinFilter[] => {
   return [
-    {
-      id: "Type",
-      options: [
-        "Movie",
-        "Series",
-        "Episode",
-        "Season",
-        "Video",
-        "Person",
-      ] as BaseItemKind[],
-    },
-    // {
-    //   id: "Genre",
-    //   options: genres
-    //     ? genres
-    //     : [
-    //         "Action",
-    //         "Adventure",
-    //         "Animation",
-    //         "Anime",
-    //         "Audiobook",
-    //         "Comedy",
-    //         "Crime",
-    //         "Documentary",
-    //         "Drama",
-    //         "Family",
-    //         "Fantasy",
-    //         "History",
-    //         "Horror",
-    //         "Mystery",
-    //         "Reality",
-    //         "Romance",
-    //         "School",
-    //         "Sci-Fi",
-    //         "Sport",
-    //         "Thriller",
-    //       ],
-    // },
-    // {
-    //   id: "Status",
-    //   options: ["Played", "Unplayed", "Liked", "Favourite"],
-    // },
+    ...(context === JellyfinSearchFilterContext.Search
+      ? [
+          {
+            id: "Type",
+            options: [
+              "Movie",
+              "Series",
+              "Episode",
+              "Season",
+              "Video",
+              "Person",
+            ] as BaseItemKind[],
+          },
+        ]
+      : []),
+    ...(context === JellyfinSearchFilterContext.Collection
+      ? [
+          {
+            id: "Genre",
+            options: genres as string[],
+          },
+        ]
+      : []),
+    ...(context === JellyfinSearchFilterContext.Collection
+      ? [
+          {
+            id: "Status",
+            options: ["Played", "Unplayed", "Favourite"],
+          },
+        ]
+      : []),
     {
       id: "Order",
       options: ["Ascending", "Descending"],
@@ -95,12 +87,12 @@ const FilterButton: React.FC<{
 
 const JellyfinSearchFilterBar: React.FC<{
   context: JellyfinSearchFilterContext;
-}> = ({ context }) => {
+  style?: GetProps<typeof Stack>;
+}> = ({ context, style }) => {
   const router = useRouter();
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
-  console.log(searchFilters);
 
   const genres = useGetGenres({
     userId: userId,
@@ -111,6 +103,7 @@ const JellyfinSearchFilterBar: React.FC<{
       pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
       params: {
         context: JellyfinDetailScreenContext.SearchFilter,
+        searchContext: context,
         itemId: id,
       } as JellyfinDetailScreenProps,
     });
@@ -132,20 +125,30 @@ const JellyfinSearchFilterBar: React.FC<{
     return false;
   };
 
-  const filterBarOptions = () => {
+  // const filterBarOptions = () => {
+  //   const filterBarOptions = getFilterBarOptions(
+  //     context,
+  //     (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
+  //   );
+  //   useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
+  //   return filterBarOptions;
+  // };
+
+  const filterBarOptions = React.useMemo(() => {
     const filterBarOptions = getFilterBarOptions(
+      context,
       (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
     );
     useJellyfinStore.setState({ filterBarOptions: filterBarOptions });
     return filterBarOptions;
-  };
+  }, [context]);
 
   return (
-    <XStack height="$4" backgroundColor="$backgroundTransparent">
+    <XStack height="$4" backgroundColor="$backgroundTransparent" {...style}>
       <XStack flex={1}>
         <FlashList
           horizontal
-          data={filterBarOptions()}
+          data={filterBarOptions}
           extraData={searchFilters?.[context]}
           renderItem={({ item }) => (
             <FilterButton
