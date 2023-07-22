@@ -7,6 +7,7 @@ import { Jellyfin } from "@astrysk/applets";
 // Save the baseURL and token to the store to authenticate on startup
 // useJellyfinStore.setState({baseURL: "http://jellyfin-example.com"})
 // useJellyfinStore.setState({token: "jellyfin-token"})
+// useJellyfinStore.setState({customHeaders: {} }) // Optional
 
 // Other applets
 // import { Sonarr } from "@astrysk/applets";

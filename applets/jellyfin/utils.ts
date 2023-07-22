@@ -44,7 +44,6 @@ export const configureAxios = (
 // Jellyfin configure function that all screens can run
 // to authenticate and set up the applet appropriately
 export const configureJellyfin = () => {
-  const authenticated = useJellyfinStore.getState().authenticated;
   const isConfigured = useJellyfinStore.getState().isConfigured;
 
   // Check if token and baseURL exists

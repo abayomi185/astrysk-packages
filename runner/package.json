@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "dev": "expo start --dev-client --clear"
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "dev": "expo start --dev-client --clear",
+    "prebuild:clean": "expo prebuild --platform ios --clean"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
