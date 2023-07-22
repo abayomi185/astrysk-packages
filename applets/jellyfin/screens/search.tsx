@@ -8,6 +8,7 @@ import JellyfinSearchResults from "../components/search/searchResults";
 import JellyfinSearchFilterBar from "../components/search/searchFilterBar";
 import { useTranslation } from "react-i18next";
 import { JellyfinSearchFilterContext } from "../types";
+import { YStack } from "tamagui";
 
 const debouncedSetter = (
   setStateFunction: (value: string | string[]) => void,
@@ -55,14 +56,14 @@ const JellyfinSearch: React.FC = () => {
   useJellyfinSearchHeader(t, navigation);
 
   return (
-    <>
+    <YStack height="100%" width="100%">
       <JellyfinSearchFilterBar context={JellyfinSearchFilterContext.Search} />
       {searchTerm ? (
         <JellyfinSearchResults searchTerm={searchTerm as string} />
       ) : (
         <JellyfinSearchLanding />
       )}
-    </>
+    </YStack>
   );
 };
 
