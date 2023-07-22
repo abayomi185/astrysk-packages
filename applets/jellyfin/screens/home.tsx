@@ -10,22 +10,16 @@ import JellyfinRecentlyAdded from "../components/home/recentlyAdded";
 import JellyfinNextUp from "../components/home/nextUp";
 import { useJellyfinHomeHeader } from "../components/useHeader";
 import { useNavigation } from "expo-router";
-import { SectionTitle } from "../components/styles";
-import { useTranslation } from "react-i18next";
 import JellyfinViews from "../components/home/views";
 // import LatestMedia from "@applets/jellyfin/components/home/latestMedia";
 
 // const ResumeMedia = React.lazy(
 //   () => import("@applets/jellyfin/components/resumeMedia")
 // );
-// const RecentlyAdded = React.lazy(
-//   () => import("@applets/jellyfin/components/recentlyAdded")
-// );
 
 const JellyfinHome: React.FC = () => {
   useJellyfinConfigurator();
 
-  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const [refreshing, setRefreshing] = React.useState<boolean>(false);

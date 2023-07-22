@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
-import { useSearchParams, useNavigation } from "expo-router";
-import { Text, Button, YStack } from "tamagui";
-import { Image } from "expo-image";
+import { useSearchParams } from "expo-router";
+import { YStack } from "tamagui";
 import {
   JellyfinDetailScreenProps,
   JellyfinDetailScreenContext,
@@ -12,8 +11,6 @@ import { useJellyfinStore } from "../store";
 import JellyfinVideoPlayer from "../components/video/videoPlayer";
 
 const JellyfinFullScreenModal = () => {
-  const navigation = useNavigation();
-
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
   // WARN: Set this up later to support multiple types of media
