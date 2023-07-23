@@ -409,6 +409,20 @@ const JellyfinModal = () => {
 
     const playbackInfo = useGetPlaybackInfo(movieId, { userId });
 
+    const videoDetails =
+      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
+        (stream) => stream.Type === MediaStreamType.Video
+      );
+
+    const defaultAudioStreamIndex =
+      playbackInfo.data?.MediaSources?.[0].DefaultAudioStreamIndex;
+    const audioDetails =
+      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
+        (stream) =>
+          stream.Type === MediaStreamType.Audio &&
+          stream.Index === defaultAudioStreamIndex
+      );
+
     const [flashListHeight, setFlashListHeight] = React.useState(0);
     const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
     const showBottomSheet = () => {
@@ -486,7 +500,28 @@ const JellyfinModal = () => {
             >
               {data?.Overview}
             </Text>
-            <XStack height="$0.75" />
+            <YStack width="100%">
+              <Text color="$gray9">
+                {playbackInfo.data?.MediaSources?.[0].Name}
+              </Text>
+              <XStack marginTop="$2">
+                <Text color="$gray9">
+                  {t(`jellyfin:${videoDetails?.Codec}`)}
+                </Text>
+                <Text color="$gray9" marginLeft="$2">
+                  {`${roundToNearestStandardResolution(
+                    videoDetails?.Height as number
+                  )}p`}
+                </Text>
+                <Text color="$gray9" marginLeft="$2">
+                  {t(`jellyfin:${audioDetails?.Codec}`)}
+                </Text>
+                <Text color="$gray9" marginLeft="$2">
+                  {t(`jellyfin:channel${audioDetails?.Channels}`)}
+                </Text>
+              </XStack>
+            </YStack>
+            <XStack height="$1" />
             <YStack
               width="100%"
               minHeight="$3"
