@@ -5,6 +5,7 @@ import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
   JellyfinMediaItemSettingsType,
+  JellyfinMoreDetailContext,
   JellyfinSearchFilterContext,
   JellyfinSettingsKeys,
 } from "../types";
@@ -22,6 +23,7 @@ import { roundToNearestStandardResolution } from "../utils";
 import { JellyfinLanguageBottomSheet } from "../components/detail/bottomSheet";
 import { JellyfinMediaItemSettingsOptions } from "../settings";
 import { onItemLayout } from "@astrysk/utils";
+import JellyfinMoreDetail from "../components/detail/moreDetail";
 
 const JellyfinModal = () => {
   const navigation = useNavigation();
@@ -215,184 +217,15 @@ const JellyfinModal = () => {
 
   // NOTE: MORE DETAILS - EPISODE
   if (params.context === JellyfinDetailScreenContext.EpisodeMoreDetail) {
-    const seriesId = params?.itemId as string;
     const episodeId = params?.episodeId as string;
-
-    const data = useJellyfinStore
-      .getState()
-      .mediaCache?.[serverId]?.episodesMediaCache?.[seriesId]?.data.find(
-        (episode) => episode.Id === episodeId
-      );
-
-    const primaryBlurHash = data?.ImageTags?.Primary as string;
-
-    const headerTitle = `${data?.SeriesName}`;
-
-    const playbackInfo = useGetPlaybackInfo(episodeId, { userId });
-
-    const videoDetails =
-      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
-        (stream) => stream.Type === MediaStreamType.Video
-      );
-
-    const defaultAudioStreamIndex =
-      playbackInfo.data?.MediaSources?.[0].DefaultAudioStreamIndex;
-    const audioDetails =
-      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
-        (stream) =>
-          stream.Type === MediaStreamType.Audio &&
-          stream.Index === defaultAudioStreamIndex
-      );
-
-    const [flashListHeight, setFlashListHeight] = React.useState(0);
-    const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
-    const showBottomSheet = () => {
-      setBottomSheetIndex(0);
-    };
-
-    const audioLanguages = React.useMemo(
-      () =>
-        Array.from(
-          playbackInfo.data?.MediaSources?.[0].MediaStreams?.reduce(
-            (acc, stream) => {
-              if (stream.Type === MediaStreamType.Audio) {
-                acc.add(stream.Language as string);
-              }
-              return acc;
-            },
-            new Set<string>()
-          ) || new Set()
-        ),
-      [playbackInfo.data]
-    );
-    const subtitleLanguages = React.useMemo(
-      () =>
-        Array.from(
-          playbackInfo.data?.MediaSources?.[0].MediaStreams?.reduce(
-            (acc, stream) => {
-              if (stream.Type === MediaStreamType.Subtitle) {
-                acc.add(stream.Language as string);
-              }
-              return acc;
-            },
-            new Set<string>()
-          ) || new Set()
-        ),
-      [playbackInfo.data]
-    );
-
-    const settingsOptions = JellyfinMediaItemSettingsOptions(
-      episodeId,
-      (audioLanguages?.length || 0) > 1, // boolean
-      (subtitleLanguages?.length || 0) > 1, //boolean
-      showBottomSheet
-    );
-
-    useJellyfinModalHeader(navigation, headerTitle, bottomSheetIndex === -1, [
-      bottomSheetIndex,
-    ]);
+    const seriesId = params?.itemId as string;
 
     return (
-      <Suspense>
-        <ScrollView height="100%" nestedScrollEnabled>
-          <YStack padding="$4">
-            <XStack height="$14" width="100%">
-              <Image
-                style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
-                source={
-                  {
-                    uri: `${baseURL}/Items/${data?.Id}/Images/Primary?quality=80`,
-                    headers: {
-                      "X-Emby-Authorization": token,
-                    },
-                  } as ImageSource
-                }
-                placeholder={
-                  data?.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
-                }
-                transition={200}
-              />
-            </XStack>
-            <Text
-              color="$gray12"
-              paddingTop="$4"
-              fontSize={18}
-              textAlign="center"
-            >
-              {data?.Name}
-            </Text>
-            <Text
-              color="$gray11"
-              paddingVertical="$4"
-              fontSize={18}
-              lineHeight={24}
-            >
-              {data?.Overview}
-            </Text>
-            <YStack width="100%">
-              <Text color="$gray9">
-                {playbackInfo.data?.MediaSources?.[0].Name}
-              </Text>
-              <XStack marginTop="$2">
-                <Text color="$gray9">
-                  {t(`jellyfin:${videoDetails?.Codec}`)}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {`${roundToNearestStandardResolution(
-                    videoDetails?.Height as number
-                  )}p`}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {t(`jellyfin:${audioDetails?.Codec}`)}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {t(`jellyfin:channel${audioDetails?.Channels}`)}
-                </Text>
-              </XStack>
-            </YStack>
-            <XStack height="$1" />
-            <YStack
-              width="100%"
-              minHeight="$3"
-              borderRadius="$5"
-              overflow="hidden"
-            >
-              <XStack flex={1} minHeight={flashListHeight}>
-                <FlashList
-                  data={settingsOptions}
-                  renderItem={({ item }) => {
-                    return (
-                      <YStack
-                        onLayout={onItemLayout(
-                          flashListHeight,
-                          setFlashListHeight
-                        )}
-                      >
-                        <SettingsOption t={t} item={item} />
-                      </YStack>
-                    );
-                  }}
-                  getItemType={(item) => {
-                    return typeof item === "string" ? "sectionHeader" : "row";
-                  }}
-                  estimatedItemSize={100}
-                />
-              </XStack>
-            </YStack>
-          </YStack>
-          <XStack height="$4" />
-        </ScrollView>
-        <JellyfinLanguageBottomSheet
-          id={episodeId}
-          data={{
-            [JellyfinMediaItemSettingsType.Audio]: audioLanguages as string[],
-            [JellyfinMediaItemSettingsType.Subtitle]:
-              subtitleLanguages as string[],
-          }}
-          bottomSheetIndex={bottomSheetIndex}
-          setBottomSheetIndex={setBottomSheetIndex}
-        />
-      </Suspense>
+      <JellyfinMoreDetail
+        context={JellyfinMoreDetailContext.Episode}
+        itemId={episodeId}
+        seriesId={seriesId}
+      />
     );
   }
 
@@ -400,170 +233,11 @@ const JellyfinModal = () => {
   if (params.context === JellyfinDetailScreenContext.MovieMoreDetail) {
     const movieId = params?.itemId as string;
 
-    const data =
-      useJellyfinStore.getState().mediaCache?.[serverId]?.movieMediaCache?.[
-        movieId
-      ]?.data;
-
-    const primaryBlurHash = data?.ImageTags?.Primary as string;
-
-    const playbackInfo = useGetPlaybackInfo(movieId, { userId });
-
-    const videoDetails =
-      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
-        (stream) => stream.Type === MediaStreamType.Video
-      );
-
-    const defaultAudioStreamIndex =
-      playbackInfo.data?.MediaSources?.[0].DefaultAudioStreamIndex;
-    const audioDetails =
-      playbackInfo.data?.MediaSources?.[0].MediaStreams?.find(
-        (stream) =>
-          stream.Type === MediaStreamType.Audio &&
-          stream.Index === defaultAudioStreamIndex
-      );
-
-    const [flashListHeight, setFlashListHeight] = React.useState(0);
-    const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
-    const showBottomSheet = () => {
-      setBottomSheetIndex(0);
-    };
-
-    const audioLanguages = React.useMemo(
-      () =>
-        Array.from(
-          playbackInfo.data?.MediaSources?.[0].MediaStreams?.reduce(
-            (acc, stream) => {
-              if (stream.Type === MediaStreamType.Audio) {
-                acc.add(stream.Language as string);
-              }
-              return acc;
-            },
-            new Set<string>()
-          ) || new Set()
-        ),
-      [playbackInfo.data]
-    );
-    const subtitleLanguages = React.useMemo(
-      () =>
-        Array.from(
-          playbackInfo.data?.MediaSources?.[0].MediaStreams?.reduce(
-            (acc, stream) => {
-              if (stream.Type === MediaStreamType.Subtitle) {
-                acc.add(stream.Language as string);
-              }
-              return acc;
-            },
-            new Set<string>()
-          ) || new Set()
-        ),
-      [playbackInfo.data]
-    );
-
-    const settingsOptions = JellyfinMediaItemSettingsOptions(
-      movieId,
-      (audioLanguages?.length || 0) > 1, // boolean
-      (subtitleLanguages?.length || 0) > 1, //boolean
-      showBottomSheet
-    );
-
-    useJellyfinModalHeader(navigation, data?.Name as string);
-
     return (
-      <Suspense>
-        <ScrollView height="100%" nestedScrollEnabled>
-          <YStack padding="$4">
-            <XStack height="$20" width="100%" justifyContent="center">
-              <XStack width="$14">
-                <Image
-                  style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
-                  source={
-                    {
-                      uri: `${baseURL}/Items/${data?.Id}/Images/Primary?quality=80`,
-                      headers: {
-                        "X-Emby-Authorization": token,
-                      },
-                    } as ImageSource
-                  }
-                  placeholder={
-                    data?.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
-                  }
-                  transition={200}
-                />
-              </XStack>
-            </XStack>
-            <Text
-              color="$gray11"
-              paddingVertical="$4"
-              fontSize={18}
-              lineHeight={24}
-            >
-              {data?.Overview}
-            </Text>
-            <YStack width="100%">
-              <Text color="$gray9">
-                {playbackInfo.data?.MediaSources?.[0].Name}
-              </Text>
-              <XStack marginTop="$2">
-                <Text color="$gray9">
-                  {t(`jellyfin:${videoDetails?.Codec}`)}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {`${roundToNearestStandardResolution(
-                    videoDetails?.Height as number
-                  )}p`}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {t(`jellyfin:${audioDetails?.Codec}`)}
-                </Text>
-                <Text color="$gray9" marginLeft="$2">
-                  {t(`jellyfin:channel${audioDetails?.Channels}`)}
-                </Text>
-              </XStack>
-            </YStack>
-            <XStack height="$1" />
-            <YStack
-              width="100%"
-              minHeight="$3"
-              borderRadius="$5"
-              overflow="hidden"
-            >
-              <XStack flex={1} minHeight={flashListHeight}>
-                <FlashList
-                  data={settingsOptions}
-                  renderItem={({ item }) => {
-                    return (
-                      <YStack
-                        onLayout={onItemLayout(
-                          flashListHeight,
-                          setFlashListHeight
-                        )}
-                      >
-                        <SettingsOption t={t} item={item} />
-                      </YStack>
-                    );
-                  }}
-                  getItemType={(item) => {
-                    return typeof item === "string" ? "sectionHeader" : "row";
-                  }}
-                  estimatedItemSize={100}
-                />
-              </XStack>
-            </YStack>
-          </YStack>
-          <XStack height="$4" />
-        </ScrollView>
-        <JellyfinLanguageBottomSheet
-          id={movieId}
-          data={{
-            [JellyfinMediaItemSettingsType.Audio]: audioLanguages as string[],
-            [JellyfinMediaItemSettingsType.Subtitle]:
-              subtitleLanguages as string[],
-          }}
-          bottomSheetIndex={bottomSheetIndex}
-          setBottomSheetIndex={setBottomSheetIndex}
-        />
-      </Suspense>
+      <JellyfinMoreDetail
+        context={JellyfinMoreDetailContext.Movie}
+        itemId={movieId}
+      />
     );
   }
 

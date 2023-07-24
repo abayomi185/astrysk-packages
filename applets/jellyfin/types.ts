@@ -109,6 +109,11 @@ export interface JellyfinFilter {
   options: string[];
 }
 
+export enum JellyfinMoreDetailContext {
+  Episode = "Episode",
+  Movie = "Movie",
+}
+
 // type AuthModalProps = Record<string, string> & {
 //   applet: string;
 // };
