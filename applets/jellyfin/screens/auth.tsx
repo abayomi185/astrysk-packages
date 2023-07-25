@@ -18,7 +18,7 @@ import { Applets } from "@astrysk/constants";
 
 import { useAuthenticateUserByName } from "../api";
 import { useJellyfinStore } from "../store";
-import { configureAxios, configureJellyfin } from "../utils";
+import { configureAxiosForJellyfin, configureJellyfin } from "../utils";
 import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
@@ -91,7 +91,7 @@ const JellyfinAuth = () => {
     // From this onSubmit to the mutation
 
     useJellyfinStore.setState({ baseURL: data.serverURL });
-    configureAxios(data.serverURL, undefined, undefined, () => {
+    configureAxiosForJellyfin(data.serverURL, undefined, undefined, () => {
       auth.mutate({ data: { Username: data.username, Pw: data.password } });
     });
   };

@@ -20,7 +20,7 @@ import { Router } from "@astrysk/types";
 import { BaseItemDto, BaseItemKind, SearchHint } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
-export const configureAxios = (
+export const configureAxiosForJellyfin = (
   baseURL: string,
   token?: string | null,
   customHeaders?: object,
@@ -59,7 +59,7 @@ export const configureJellyfin = () => {
     return true;
   }
 
-  configureAxios(baseURL, token, customHeaders);
+  configureAxiosForJellyfin(baseURL, token, customHeaders);
 
   useJellyfinStore.setState({ isConfigured: true });
 
