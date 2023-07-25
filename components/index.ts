@@ -3,8 +3,13 @@ import config from "@astrysk/styles";
 // HOME
 export { default as LandingPage } from "./home/landingPage";
 
+// SEARCH
+export { FilterButton } from "./search/filterButton";
+
 // COMMON
 export { AppletButton, AppletButtonBanner } from "./common/appletButton";
+
+export { debouncedSetter } from "./common/debouncer";
 
 export { HeaderRightWrapper } from "./common/headerRightWrapper";
 export { AppletHeaderButton } from "./common/appletHeaderButton";

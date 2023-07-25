@@ -16,4 +16,5 @@ export interface Applet {
   fullScreenModalView?: React.FC;
   fullScreenDetailView?: React.FC;
   contextMenu: ContextMenuOptions;
+  accentColor?: string; // To change accent colour of tab bar
 }
