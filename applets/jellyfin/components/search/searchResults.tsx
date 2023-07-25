@@ -23,6 +23,7 @@ export const JellyfinSearchResultItem: React.FC<{
   const baseURL = useJellyfinStore.getState().baseURL;
 
   let primaryImageTag;
+  let imageBlurHash;
   let seriesName;
 
   if ("PrimaryImageTag" in data) {
@@ -32,11 +33,11 @@ export const JellyfinSearchResultItem: React.FC<{
     primaryImageTag = data.ImageTags?.Primary;
   }
 
-  // This causes out of order hook error with many search results
-  // const imageId =
-  //   data.Type === BaseItemKind.Episode
-  //     ? useGetItem(userId, data.Id as string)?.data?.SeriesId
-  //     : data.Id;
+  if ("ImageBlurHashes" in data) {
+    imageBlurHash = data.ImageBlurHashes?.Primary?.[
+      primaryImageTag as string
+    ] as string;
+  }
 
   const imageId = data.Id;
 
@@ -72,8 +73,9 @@ export const JellyfinSearchResultItem: React.FC<{
               },
             } as ImageSource
           }
-          placeholder={primaryImageTag as string}
+          placeholder={imageBlurHash}
           transition={200}
+          recyclingKey={imageId}
         />
       </YStack>
       <YStack paddingHorizontal="$1" paddingTop="$1">

@@ -70,6 +70,7 @@ const JellyfinNextUpItem: React.FC<{
           onLoadEnd={() => {
             setLoadingSpinner(JellyfinNextUpItem.name, Actions.DONE);
           }}
+          recyclingKey={seriesId}
         />
       </YStack>
       <YStack paddingHorizontal="$1" paddingTop="$1">

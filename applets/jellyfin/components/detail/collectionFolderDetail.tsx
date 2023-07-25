@@ -8,7 +8,12 @@ import { useJellyfinDetailHeader } from "../useHeader";
 import { FlashList } from "@shopify/flash-list";
 import { JellyfinSearchResultItem } from "../search/searchResults";
 import { useJellyfinStore } from "../../store";
-import { filterSearchData } from "../../utils";
+import {
+  filterSearchData,
+  setLoadingSpinner,
+  useLoadingSpinner,
+} from "../../utils";
+import { Actions } from "@astrysk/constants";
 
 const JellyfinCollectionFolderDetail: React.FC<{
   userId: string;
@@ -68,6 +73,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
               },
             },
           }));
+          setLoadingSpinner(JellyfinCollectionFolderDetail.name, Actions.DONE);
         },
       },
     }
@@ -78,6 +84,8 @@ const JellyfinCollectionFolderDetail: React.FC<{
   };
 
   useJellyfinDetailHeader(navigation, headerTitle);
+
+  useLoadingSpinner(JellyfinCollectionFolderDetail.name);
 
   return (
     <YStack flex={1}>

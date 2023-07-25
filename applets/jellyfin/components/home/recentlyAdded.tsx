@@ -71,6 +71,7 @@ const JellyfinRecentlyAddedItem: React.FC<{
             onLoadEnd={() => {
               setLoadingSpinner(JellyfinRecentlyAddedItem.name, Actions.DONE);
             }}
+            recyclingKey={recentlyAddedItemId}
           />
         </YStack>
         <YStack paddingHorizontal="$1" paddingTop="$1">

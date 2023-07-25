@@ -55,6 +55,8 @@ const JellyfinResumeMediaItem: React.FC<{
     });
   };
 
+  const imageId = backdropImageId ? backdropImageId : primaryImageId;
+
   return (
     <YStack
       width="$20"
@@ -67,9 +69,7 @@ const JellyfinResumeMediaItem: React.FC<{
         <Image
           style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
           source={{
-            uri: `${baseURL}/Items/${
-              backdropImageId ? backdropImageId : primaryImageId
-            }/Images/${
+            uri: `${baseURL}/Items/${imageId}/Images/${
               backdropImageExists ? "Backdrop" : "Primary"
             }?api_key=${token}`,
           }}
@@ -77,6 +77,7 @@ const JellyfinResumeMediaItem: React.FC<{
             resumeItem.ImageBlurHashes?.Backdrop?.[backdropBlurHash] as string
           }
           transition={200}
+          recyclingKey={imageId}
         />
         <YStack
           position="absolute"

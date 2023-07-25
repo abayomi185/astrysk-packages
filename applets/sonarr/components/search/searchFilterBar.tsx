@@ -1,92 +1,77 @@
 import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
 import { XStack, Button, Text, GetProps, Stack } from "tamagui";
-import { X, ChevronDown } from "@tamagui/lucide-icons";
-import { useGetGenres } from "../../api";
+import { X } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
-import {
-  JellyfinDetailScreenContext,
-  JellyfinDetailScreenProps,
-  JellyfinFilter,
-  JellyfinSearchFilterContext,
-} from "../../types";
 import { Screens } from "@astrysk/constants";
-import { useJellyfinStore } from "../../store";
+import { useSonarrStore } from "../../store";
 import { FilterButton } from "@astrysk/components";
+import {
+  SonarrDetailScreenContext,
+  SonarrDetailScreenProps,
+  SonarrFilter,
+  SonarrSearchFilterContext,
+} from "../../types";
 
-const getJellyfinFilterBarOptions = (
-  context: JellyfinSearchFilterContext,
-  genres?: string[]
-): JellyfinFilter[] => {
+const getSonarrFilterBarOptions = (
+  context: SonarrSearchFilterContext
+): SonarrFilter[] => {
   return [
-    ...(context === JellyfinSearchFilterContext.Search
-      ? [
-          {
-            id: "jellyfin:type",
-            options: [
-              "jellyfin:movie",
-              "jellyfin:series",
-              "jellyfin:episode",
-              "jellyfin:season",
-              "jellyfin:person",
-            ], // as BaseItemKind[],
-          },
-        ]
-      : []),
-    ...(context === JellyfinSearchFilterContext.Collection
-      ? [
-          {
-            id: "jellyfin:genre",
-            options: genres as string[],
-          },
-        ]
-      : []),
-    ...(context === JellyfinSearchFilterContext.Collection
-      ? [
-          {
-            id: "jellyfin:status",
-            options: [
-              "jellyfin:played",
-              "jellyfin:unplayed",
-              "jellyfin:favourite",
-            ],
-          },
-        ]
-      : []),
     {
-      id: "jellyfin:order",
+      id: "sonarr:status",
       options: [
-        "jellyfin:nameAscending",
-        "jellyfin:nameDescending",
-        "jellyfin:premiereDateAscending",
-        "jellyfin:premiereDateDescending",
+        "sonarr:all",
+        "sonarr:monitored",
+        "sonarr:unmonitored",
+        "sonarr:continuing",
+        "sonarr:ended",
+        "sonarr:missing",
+      ],
+    },
+    {
+      id: "sonarr:order",
+      options: [
+        "sonarr:nameAscending",
+        "sonarr:nameDescending",
+        "sonarr:dateAddedAscending",
+        "sonarr:dateAddedDescending",
+        "sonarr:episodesAscending",
+        "sonarr:episodesDescending",
+        "sonarr:networkAscending",
+        "sonarr:networkDescending",
+        "sonarr:nextAiringAscending",
+        "sonarr:nextAiringDescending",
+        "sonarr:previousAiringAscending",
+        "sonarr:previousAiringDescending",
+        "sonarr:qualityProfileAscending",
+        "sonarr:qualityProfileDescending",
+        "sonarr:sizeAscending",
+        "sonarr:sizeDescending",
+        "sonarr:typeAscending",
+        "sonarr:typeDescending",
       ],
     },
   ];
 };
 
-const JellyfinSearchFilterBar: React.FC<{
-  context: JellyfinSearchFilterContext;
+const SonarrSearchFilterBar: React.FC<{
+  context: SonarrSearchFilterContext;
   handleClearAllFilters?: () => void;
   style?: GetProps<typeof Stack>;
 }> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
-  const userId = useJellyfinStore.getState().userDetails?.Id as string;
+  // const userId = useSonarrStore.getState().userDetails?.Id as string;
 
-  const searchFilters = useJellyfinStore((state) => state.searchFilters);
-
-  const genres = useGetGenres({
-    userId: userId,
-  });
+  const searchFilters = useSonarrStore((state) => state.searchFilters);
 
   const handleFilterPress = (id: string) => {
     router.push({
       pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
       params: {
-        context: JellyfinDetailScreenContext.SearchFilter,
+        context: SonarrDetailScreenContext.SearchFilter,
         searchContext: context,
         itemId: id,
-      } as JellyfinDetailScreenProps,
+      } as SonarrDetailScreenProps,
     });
   };
 
@@ -94,7 +79,7 @@ const JellyfinSearchFilterBar: React.FC<{
     // Don't clear filters if there are none
     if (!searchFilters?.[context]) return;
     // Clear filters for context
-    useJellyfinStore.setState((state) => ({
+    useSonarrStore.setState((state) => ({
       searchFilters: {
         ...state.searchFilters,
         [context]: undefined,
@@ -111,18 +96,15 @@ const JellyfinSearchFilterBar: React.FC<{
   };
 
   const filterBarOptions = React.useMemo(() => {
-    const filterBarOptions = getJellyfinFilterBarOptions(
-      context,
-      (genres.data?.Items?.map((item) => item?.Name) as string[]) ?? []
-    );
-    useJellyfinStore.setState((state) => ({
+    const filterBarOptions = getSonarrFilterBarOptions(context);
+    useSonarrStore.setState((state) => ({
       filterBarOptions: {
         ...state.filterBarOptions,
         [context]: filterBarOptions,
       },
     }));
     return filterBarOptions;
-  }, [context, genres?.data?.Items]);
+  }, [context]);
 
   return (
     <XStack height="$4" backgroundColor="$backgroundTransparent" {...style}>
@@ -137,7 +119,7 @@ const JellyfinSearchFilterBar: React.FC<{
               data={item.options}
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
-              activeBackgroundColor="$purple7"
+              activeBackgroundColor="$blue7"
             />
           )}
           showsHorizontalScrollIndicator={false}
@@ -148,9 +130,7 @@ const JellyfinSearchFilterBar: React.FC<{
                 height="$2.5"
                 borderRadius="$8"
                 paddingHorizontal="$3"
-                backgroundColor={
-                  searchFilters?.[context] ? "$purple7" : "$gray5"
-                }
+                backgroundColor={searchFilters?.[context] ? "$blue7" : "$gray5"}
                 onPress={() => clearFiltersForContext()}
               >
                 <X size={18} opacity={0.8} />
@@ -164,4 +144,4 @@ const JellyfinSearchFilterBar: React.FC<{
     </XStack>
   );
 };
-export default JellyfinSearchFilterBar;
+export default SonarrSearchFilterBar;

@@ -1,26 +1,13 @@
 import React from "react";
-import debounce from "lodash.debounce";
 import { useNavigation, useSearchParams } from "expo-router";
 import { useSonarrConfigurator } from "../utils";
 import { useSonarrSearchHeader } from "../components/useHeader";
 import SonarrSearchLanding from "../components/search/searchLanding";
-import SonarrSearchResults from "../components/search/searchResults";
 import SonarrSearchFilterBar from "../components/search/searchFilterBar";
 import { useTranslation } from "react-i18next";
 import { SonarrSearchFilterContext } from "../types";
 import { YStack } from "tamagui";
-
-const debouncedSetter = (
-  setStateFunction: (value: string | string[]) => void,
-  delay: number = 500
-) => {
-  return React.useCallback(
-    debounce((newSearchTerm: string | string[]) => {
-      setStateFunction(newSearchTerm);
-    }, delay),
-    []
-  );
-};
+import { debouncedSetter } from "@astrysk/components";
 
 const SonarrSearch: React.FC = () => {
   useSonarrConfigurator();
@@ -53,11 +40,7 @@ const SonarrSearch: React.FC = () => {
   return (
     <YStack height="100%" width="100%">
       <SonarrSearchFilterBar context={SonarrSearchFilterContext.Search} />
-      {searchTerm ? (
-        <SonarrSearchResults searchTerm={searchTerm as string} />
-      ) : (
-        <SonarrSearchLanding />
-      )}
+      <SonarrSearchLanding searchTerm={searchTerm as string} />
     </YStack>
   );
 };

@@ -419,6 +419,7 @@ const JellyfinSeriesDetail: React.FC<{
         >
           <Image
             style={{ flex: 1, overflow: "hidden", height: maxHeight }}
+            priority="high"
             source={
               {
                 uri: `${baseURL}/Items/${seriesId}/Images/Backdrop`,

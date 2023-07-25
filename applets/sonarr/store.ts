@@ -2,6 +2,7 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
+import { SonarrFilter, SonarrSearchFilterContext } from "./types";
 
 const MMKVStore = new MMKV({
   id: "sonarr",
@@ -35,33 +36,23 @@ export const useSonarrStore = create<SonarrState>()(
 );
 
 interface SonarrState extends StateTypes.AppletState {
-  userDetails?: AuthenticationResultUser;
-  mediaCache?: JellyfinMediaCache;
+  // userDetails?: AuthenticationResultUser;
+  // mediaCache?: JellyfinMediaCache;
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;
-  // searchFilters?: Partial<
-  //   Record<JellyfinSearchFilterContext, Record<string, string> | undefined>
-  // >;
-  // filterBarOptions?: Partial<
-  //   Record<JellyfinSearchFilterContext, JellyfinFilter[]>
-  // >;
+  searchFilters?: Partial<
+    Record<SonarrSearchFilterContext, Record<string, string> | undefined>
+  >;
+  filterBarOptions?: Partial<Record<SonarrSearchFilterContext, SonarrFilter[]>>;
 }
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too
 interface SonarrPersistState
-  extends Pick<
-    SonarrState,
-    "token" | "baseURL" | "userDetails" | "customHeaders"
-  > {}
+  extends Pick<SonarrState, "token" | "baseURL" | "customHeaders"> {}
 
 // NOTE: Persist key needs to be added here too
 export const sonarrPersistStateKeys = Array.from(
-  new Set<keyof SonarrState>([
-    "token",
-    "baseURL",
-    "userDetails",
-    "customHeaders",
-  ])
+  new Set<keyof SonarrState>(["token", "baseURL", "customHeaders"])
 );
 
 const initialAppState: SonarrState = {
