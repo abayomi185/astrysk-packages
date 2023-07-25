@@ -5,16 +5,15 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type DayOfWeek = typeof DayOfWeek[keyof typeof DayOfWeek];
-
+export type DayOfWeek = (typeof DayOfWeek)[keyof typeof DayOfWeek];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DayOfWeek = {
-  Sunday: 'Sunday',
-  Monday: 'Monday',
-  Tuesday: 'Tuesday',
-  Wednesday: 'Wednesday',
-  Thursday: 'Thursday',
-  Friday: 'Friday',
-  Saturday: 'Saturday',
+  Sunday: "Sunday",
+  Monday: "Monday",
+  Tuesday: "Tuesday",
+  Wednesday: "Wednesday",
+  Thursday: "Thursday",
+  Friday: "Friday",
+  Saturday: "Saturday",
 } as const;

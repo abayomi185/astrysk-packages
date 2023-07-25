@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AdminNotificationDtoNotificationLevel } from './adminNotificationDtoNotificationLevel';
+import type { AdminNotificationDtoNotificationLevel } from "./adminNotificationDtoNotificationLevel";
 
 /**
  * The admin notification dto.

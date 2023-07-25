@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { UserPolicy } from './userPolicy';
+import type { UserPolicy } from "./userPolicy";
 
 /**
  * Gets or sets the policy.

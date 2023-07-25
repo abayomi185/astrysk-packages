@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemDto } from './baseItemDto';
-import type { RecommendationType } from './recommendationType';
+import type { BaseItemDto } from "./baseItemDto";
+import type { RecommendationType } from "./recommendationType";
 
 export interface RecommendationDto {
   Items?: BaseItemDto[] | null;

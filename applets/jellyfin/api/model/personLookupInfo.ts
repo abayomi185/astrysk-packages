@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PersonLookupInfoProviderIds } from './personLookupInfoProviderIds';
+import type { PersonLookupInfoProviderIds } from "./personLookupInfoProviderIds";
 
 export interface PersonLookupInfo {
   /** Gets or sets the name. */

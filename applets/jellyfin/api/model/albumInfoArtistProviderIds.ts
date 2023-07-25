@@ -8,4 +8,4 @@
 /**
  * Gets or sets the artist provider ids.
  */
-export type AlbumInfoArtistProviderIds = {[key: string]: string | null};
+export type AlbumInfoArtistProviderIds = { [key: string]: string | null };

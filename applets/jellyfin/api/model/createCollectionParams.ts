@@ -5,4 +5,9 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type CreateCollectionParams = { name?: string; ids?: string[]; parentId?: string; isLocked?: boolean };
+export type CreateCollectionParams = {
+  name?: string;
+  ids?: string[];
+  parentId?: string;
+  isLocked?: boolean;
+};

@@ -8,13 +8,13 @@
 /**
  * Enum describing the location of the FFmpeg tool.
  */
-export type FFmpegLocation = typeof FFmpegLocation[keyof typeof FFmpegLocation];
-
+export type FFmpegLocation =
+  (typeof FFmpegLocation)[keyof typeof FFmpegLocation];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FFmpegLocation = {
-  NotFound: 'NotFound',
-  SetByArgument: 'SetByArgument',
-  Custom: 'Custom',
-  System: 'System',
+  NotFound: "NotFound",
+  SetByArgument: "SetByArgument",
+  Custom: "Custom",
+  System: "System",
 } as const;

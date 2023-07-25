@@ -8,12 +8,12 @@
 /**
  * Enum GroupRepeatMode.
  */
-export type GroupRepeatMode = typeof GroupRepeatMode[keyof typeof GroupRepeatMode];
-
+export type GroupRepeatMode =
+  (typeof GroupRepeatMode)[keyof typeof GroupRepeatMode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupRepeatMode = {
-  RepeatOne: 'RepeatOne',
-  RepeatAll: 'RepeatAll',
-  RepeatNone: 'RepeatNone',
+  RepeatOne: "RepeatOne",
+  RepeatAll: "RepeatAll",
+  RepeatNone: "RepeatNone",
 } as const;

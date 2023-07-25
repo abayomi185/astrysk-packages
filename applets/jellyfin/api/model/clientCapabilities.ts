@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GeneralCommandType } from './generalCommandType';
-import type { ClientCapabilitiesDeviceProfile } from './clientCapabilitiesDeviceProfile';
+import type { GeneralCommandType } from "./generalCommandType";
+import type { ClientCapabilitiesDeviceProfile } from "./clientCapabilitiesDeviceProfile";
 
 export interface ClientCapabilities {
   PlayableMediaTypes?: string[] | null;

@@ -8,14 +8,14 @@
 /**
  * Enum MediaStreamType.
  */
-export type MediaStreamType = typeof MediaStreamType[keyof typeof MediaStreamType];
-
+export type MediaStreamType =
+  (typeof MediaStreamType)[keyof typeof MediaStreamType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MediaStreamType = {
-  Audio: 'Audio',
-  Video: 'Video',
-  Subtitle: 'Subtitle',
-  EmbeddedImage: 'EmbeddedImage',
-  Data: 'Data',
+  Audio: "Audio",
+  Video: "Video",
+  Subtitle: "Subtitle",
+  EmbeddedImage: "EmbeddedImage",
+  Data: "Data",
 } as const;

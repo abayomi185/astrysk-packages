@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DeviceProfile } from './deviceProfile';
+import type { DeviceProfile } from "./deviceProfile";
 
 /**
  * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.

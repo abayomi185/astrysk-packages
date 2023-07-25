@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AccessSchedule } from './accessSchedule';
-import type { UnratedItem } from './unratedItem';
-import type { SyncPlayUserAccessType } from './syncPlayUserAccessType';
+import type { AccessSchedule } from "./accessSchedule";
+import type { UnratedItem } from "./unratedItem";
+import type { SyncPlayUserAccessType } from "./syncPlayUserAccessType";
 
 export interface UserPolicy {
   /** Gets or sets a value indicating whether this instance is administrator. */

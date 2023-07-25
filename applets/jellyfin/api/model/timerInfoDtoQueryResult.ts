@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TimerInfoDto } from './timerInfoDto';
+import type { TimerInfoDto } from "./timerInfoDto";
 
 export interface TimerInfoDtoQueryResult {
   /** Gets or sets the items. */

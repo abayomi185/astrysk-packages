@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ExternalIdMediaType } from './externalIdMediaType';
+import type { ExternalIdMediaType } from "./externalIdMediaType";
 
 /**
  * Gets or sets the specific media type for this id. This is used to distinguish between the different

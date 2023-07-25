@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TranscodingInfoHardwareAccelerationType } from './transcodingInfoHardwareAccelerationType';
-import type { TranscodeReason } from './transcodeReason';
+import type { TranscodingInfoHardwareAccelerationType } from "./transcodingInfoHardwareAccelerationType";
+import type { TranscodeReason } from "./transcodeReason";
 
 export interface TranscodingInfo {
   AudioCodec?: string | null;

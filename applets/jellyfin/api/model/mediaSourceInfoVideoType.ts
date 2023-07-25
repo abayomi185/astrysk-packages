@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { VideoType } from './videoType';
+import type { VideoType } from "./videoType";
 
 export type MediaSourceInfoVideoType = VideoType | null;

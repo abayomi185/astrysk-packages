@@ -8,4 +8,4 @@
 /**
  * Gets or sets the custom prefs.
  */
-export type DisplayPreferencesDtoCustomPrefs = {[key: string]: string | null};
+export type DisplayPreferencesDtoCustomPrefs = { [key: string]: string | null };

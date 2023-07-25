@@ -5,11 +5,10 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RatingType = typeof RatingType[keyof typeof RatingType];
-
+export type RatingType = (typeof RatingType)[keyof typeof RatingType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RatingType = {
-  Score: 'Score',
-  Likes: 'Likes',
+  Score: "Score",
+  Likes: "Likes",
 } as const;

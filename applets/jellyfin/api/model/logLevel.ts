@@ -5,16 +5,15 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type LogLevel = typeof LogLevel[keyof typeof LogLevel];
-
+export type LogLevel = (typeof LogLevel)[keyof typeof LogLevel];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const LogLevel = {
-  Trace: 'Trace',
-  Debug: 'Debug',
-  Information: 'Information',
-  Warning: 'Warning',
-  Error: 'Error',
-  Critical: 'Critical',
-  None: 'None',
+  Trace: "Trace",
+  Debug: "Debug",
+  Information: "Information",
+  Warning: "Warning",
+  Error: "Error",
+  Critical: "Critical",
+  None: "None",
 } as const;

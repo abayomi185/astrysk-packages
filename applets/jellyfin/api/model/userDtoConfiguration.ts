@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { UserConfiguration } from './userConfiguration';
+import type { UserConfiguration } from "./userConfiguration";
 
 /**
  * Gets or sets the configuration.

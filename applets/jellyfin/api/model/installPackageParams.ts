@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type InstallPackageParams = { assemblyGuid?: string; version?: string; repositoryUrl?: string };
+export type InstallPackageParams = {
+  assemblyGuid?: string;
+  version?: string;
+  repositoryUrl?: string;
+};

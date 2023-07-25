@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlaybackErrorCode } from './playbackErrorCode';
+import type { PlaybackErrorCode } from "./playbackErrorCode";
 
 /**
  * Gets or sets the error code.

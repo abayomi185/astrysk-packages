@@ -8,14 +8,13 @@
 /**
  * Enum ImageOutputFormat.
  */
-export type ImageFormat = typeof ImageFormat[keyof typeof ImageFormat];
-
+export type ImageFormat = (typeof ImageFormat)[keyof typeof ImageFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageFormat = {
-  Bmp: 'Bmp',
-  Gif: 'Gif',
-  Jpg: 'Jpg',
-  Png: 'Png',
-  Webp: 'Webp',
+  Bmp: "Bmp",
+  Gif: "Gif",
+  Jpg: "Jpg",
+  Png: "Png",
+  Webp: "Webp",
 } as const;

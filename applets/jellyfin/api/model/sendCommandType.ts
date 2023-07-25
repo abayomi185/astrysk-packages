@@ -8,13 +8,13 @@
 /**
  * Enum SendCommandType.
  */
-export type SendCommandType = typeof SendCommandType[keyof typeof SendCommandType];
-
+export type SendCommandType =
+  (typeof SendCommandType)[keyof typeof SendCommandType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SendCommandType = {
-  Unpause: 'Unpause',
-  Pause: 'Pause',
-  Stop: 'Stop',
-  Seek: 'Seek',
+  Unpause: "Unpause",
+  Pause: "Pause",
+  Stop: "Stop",
+  Seek: "Seek",
 } as const;

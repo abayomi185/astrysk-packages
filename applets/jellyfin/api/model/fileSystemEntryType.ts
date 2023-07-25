@@ -8,13 +8,13 @@
 /**
  * Enum FileSystemEntryType.
  */
-export type FileSystemEntryType = typeof FileSystemEntryType[keyof typeof FileSystemEntryType];
-
+export type FileSystemEntryType =
+  (typeof FileSystemEntryType)[keyof typeof FileSystemEntryType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const FileSystemEntryType = {
-  File: 'File',
-  Directory: 'Directory',
-  NetworkComputer: 'NetworkComputer',
-  NetworkShare: 'NetworkShare',
+  File: "File",
+  Directory: "Directory",
+  NetworkComputer: "NetworkComputer",
+  NetworkShare: "NetworkShare",
 } as const;

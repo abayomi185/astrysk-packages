@@ -4,8 +4,26 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ItemFields } from './itemFields';
-import type { BaseItemKind } from './baseItemKind';
-import type { ImageType } from './imageType';
+import type { ItemFields } from "./itemFields";
+import type { BaseItemKind } from "./baseItemKind";
+import type { ImageType } from "./imageType";
 
-export type GetStudiosParams = { startIndex?: number; limit?: number; searchTerm?: string; parentId?: string; fields?: ItemFields[]; excludeItemTypes?: BaseItemKind[]; includeItemTypes?: BaseItemKind[]; isFavorite?: boolean; enableUserData?: boolean; imageTypeLimit?: number; enableImageTypes?: ImageType[]; userId?: string; nameStartsWithOrGreater?: string; nameStartsWith?: string; nameLessThan?: string; enableImages?: boolean; enableTotalRecordCount?: boolean };
+export type GetStudiosParams = {
+  startIndex?: number;
+  limit?: number;
+  searchTerm?: string;
+  parentId?: string;
+  fields?: ItemFields[];
+  excludeItemTypes?: BaseItemKind[];
+  includeItemTypes?: BaseItemKind[];
+  isFavorite?: boolean;
+  enableUserData?: boolean;
+  imageTypeLimit?: number;
+  enableImageTypes?: ImageType[];
+  userId?: string;
+  nameStartsWithOrGreater?: string;
+  nameStartsWith?: string;
+  nameLessThan?: string;
+  enableImages?: boolean;
+  enableTotalRecordCount?: boolean;
+};

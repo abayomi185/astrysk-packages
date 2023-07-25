@@ -8,20 +8,20 @@
 /**
  * Enum GroupUpdateType.
  */
-export type GroupUpdateType = typeof GroupUpdateType[keyof typeof GroupUpdateType];
-
+export type GroupUpdateType =
+  (typeof GroupUpdateType)[keyof typeof GroupUpdateType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupUpdateType = {
-  UserJoined: 'UserJoined',
-  UserLeft: 'UserLeft',
-  GroupJoined: 'GroupJoined',
-  GroupLeft: 'GroupLeft',
-  StateUpdate: 'StateUpdate',
-  PlayQueue: 'PlayQueue',
-  NotInGroup: 'NotInGroup',
-  GroupDoesNotExist: 'GroupDoesNotExist',
-  CreateGroupDenied: 'CreateGroupDenied',
-  JoinGroupDenied: 'JoinGroupDenied',
-  LibraryAccessDenied: 'LibraryAccessDenied',
+  UserJoined: "UserJoined",
+  UserLeft: "UserLeft",
+  GroupJoined: "GroupJoined",
+  GroupLeft: "GroupLeft",
+  StateUpdate: "StateUpdate",
+  PlayQueue: "PlayQueue",
+  NotInGroup: "NotInGroup",
+  GroupDoesNotExist: "GroupDoesNotExist",
+  CreateGroupDenied: "CreateGroupDenied",
+  JoinGroupDenied: "JoinGroupDenied",
+  LibraryAccessDenied: "LibraryAccessDenied",
 } as const;

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GroupStateType } from './groupStateType';
+import type { GroupStateType } from "./groupStateType";
 
 /**
  * Class GroupInfoDto.

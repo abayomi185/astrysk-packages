@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlayCommand } from './playCommand';
+import type { PlayCommand } from "./playCommand";
 
 /**
  * Class PlayRequest.

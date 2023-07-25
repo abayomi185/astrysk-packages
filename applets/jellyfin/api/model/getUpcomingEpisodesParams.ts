@@ -4,7 +4,17 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ItemFields } from './itemFields';
-import type { ImageType } from './imageType';
+import type { ItemFields } from "./itemFields";
+import type { ImageType } from "./imageType";
 
-export type GetUpcomingEpisodesParams = { userId?: string; startIndex?: number; limit?: number; fields?: ItemFields[]; parentId?: string; enableImages?: boolean; imageTypeLimit?: number; enableImageTypes?: ImageType[]; enableUserData?: boolean };
+export type GetUpcomingEpisodesParams = {
+  userId?: string;
+  startIndex?: number;
+  limit?: number;
+  fields?: ItemFields[];
+  parentId?: string;
+  enableImages?: boolean;
+  imageTypeLimit?: number;
+  enableImageTypes?: ImageType[];
+  enableUserData?: boolean;
+};

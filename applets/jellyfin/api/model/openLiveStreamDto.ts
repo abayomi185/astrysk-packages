@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { OpenLiveStreamDtoDeviceProfile } from './openLiveStreamDtoDeviceProfile';
-import type { MediaProtocol } from './mediaProtocol';
+import type { OpenLiveStreamDtoDeviceProfile } from "./openLiveStreamDtoDeviceProfile";
+import type { MediaProtocol } from "./mediaProtocol";
 
 /**
  * Open live stream dto.

@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AllThemeMediaResultThemeVideosResult } from './allThemeMediaResultThemeVideosResult';
-import type { AllThemeMediaResultThemeSongsResult } from './allThemeMediaResultThemeSongsResult';
-import type { AllThemeMediaResultSoundtrackSongsResult } from './allThemeMediaResultSoundtrackSongsResult';
+import type { AllThemeMediaResultThemeVideosResult } from "./allThemeMediaResultThemeVideosResult";
+import type { AllThemeMediaResultThemeSongsResult } from "./allThemeMediaResultThemeSongsResult";
+import type { AllThemeMediaResultSoundtrackSongsResult } from "./allThemeMediaResultSoundtrackSongsResult";
 
 export interface AllThemeMediaResult {
   /** Class ThemeMediaResult. */

@@ -5,4 +5,9 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetLogEntriesParams = { startIndex?: number; limit?: number; minDate?: string; hasUserId?: boolean };
+export type GetLogEntriesParams = {
+  startIndex?: number;
+  limit?: number;
+  minDate?: string;
+  hasUserId?: boolean;
+};

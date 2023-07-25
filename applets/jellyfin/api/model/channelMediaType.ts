@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type ChannelMediaType = typeof ChannelMediaType[keyof typeof ChannelMediaType];
-
+export type ChannelMediaType =
+  (typeof ChannelMediaType)[keyof typeof ChannelMediaType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChannelMediaType = {
-  Audio: 'Audio',
-  Video: 'Video',
-  Photo: 'Photo',
+  Audio: "Audio",
+  Video: "Video",
+  Photo: "Photo",
 } as const;

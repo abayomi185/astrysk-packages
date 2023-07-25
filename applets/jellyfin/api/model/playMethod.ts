@@ -5,12 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type PlayMethod = typeof PlayMethod[keyof typeof PlayMethod];
-
+export type PlayMethod = (typeof PlayMethod)[keyof typeof PlayMethod];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlayMethod = {
-  Transcode: 'Transcode',
-  DirectStream: 'DirectStream',
-  DirectPlay: 'DirectPlay',
+  Transcode: "Transcode",
+  DirectStream: "DirectStream",
+  DirectPlay: "DirectPlay",
 } as const;

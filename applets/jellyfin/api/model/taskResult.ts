@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TaskCompletionStatus } from './taskCompletionStatus';
+import type { TaskCompletionStatus } from "./taskCompletionStatus";
 
 /**
  * Class TaskExecutionInfo.

@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { Video3DFormat } from './video3DFormat';
+import type { Video3DFormat } from "./video3DFormat";
 
 export type MediaSourceInfoVideo3DFormat = Video3DFormat | null;

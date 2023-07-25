@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SortOrder } from './sortOrder';
+import type { SortOrder } from "./sortOrder";
 
 export type GetSeriesTimersParams = { sortBy?: string; sortOrder?: SortOrder };

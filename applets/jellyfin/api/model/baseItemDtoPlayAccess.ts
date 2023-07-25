@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlayAccess } from './playAccess';
+import type { PlayAccess } from "./playAccess";
 
 /**
  * Gets or sets the play access.

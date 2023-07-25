@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ActivityLogEntry } from './activityLogEntry';
+import type { ActivityLogEntry } from "./activityLogEntry";
 
 export interface ActivityLogEntryQueryResult {
   /** Gets or sets the items. */

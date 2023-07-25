@@ -4,9 +4,10 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { NotificationLevel } from './notificationLevel';
+import type { NotificationLevel } from "./notificationLevel";
 
 /**
  * Gets or sets the maximum unread notification level.
  */
-export type NotificationsSummaryDtoMaxUnreadNotificationLevel = NotificationLevel | null;
+export type NotificationsSummaryDtoMaxUnreadNotificationLevel =
+  NotificationLevel | null;

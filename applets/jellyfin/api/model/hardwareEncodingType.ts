@@ -8,15 +8,15 @@
 /**
  * Enum HardwareEncodingType.
  */
-export type HardwareEncodingType = typeof HardwareEncodingType[keyof typeof HardwareEncodingType];
-
+export type HardwareEncodingType =
+  (typeof HardwareEncodingType)[keyof typeof HardwareEncodingType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HardwareEncodingType = {
-  AMF: 'AMF',
-  QSV: 'QSV',
-  NVENC: 'NVENC',
-  V4L2M2M: 'V4L2M2M',
-  VAAPI: 'VAAPI',
-  VideoToolBox: 'VideoToolBox',
+  AMF: "AMF",
+  QSV: "QSV",
+  NVENC: "NVENC",
+  V4L2M2M: "V4L2M2M",
+  VAAPI: "VAAPI",
+  VideoToolBox: "VideoToolBox",
 } as const;

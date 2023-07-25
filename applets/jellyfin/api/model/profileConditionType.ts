@@ -5,14 +5,14 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type ProfileConditionType = typeof ProfileConditionType[keyof typeof ProfileConditionType];
-
+export type ProfileConditionType =
+  (typeof ProfileConditionType)[keyof typeof ProfileConditionType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ProfileConditionType = {
-  Equals: 'Equals',
-  NotEquals: 'NotEquals',
-  LessThanEqual: 'LessThanEqual',
-  GreaterThanEqual: 'GreaterThanEqual',
-  EqualsAny: 'EqualsAny',
+  Equals: "Equals",
+  NotEquals: "NotEquals",
+  LessThanEqual: "LessThanEqual",
+  GreaterThanEqual: "GreaterThanEqual",
+  EqualsAny: "EqualsAny",
 } as const;

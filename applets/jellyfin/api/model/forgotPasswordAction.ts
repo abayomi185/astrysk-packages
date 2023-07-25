@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type ForgotPasswordAction = typeof ForgotPasswordAction[keyof typeof ForgotPasswordAction];
-
+export type ForgotPasswordAction =
+  (typeof ForgotPasswordAction)[keyof typeof ForgotPasswordAction];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ForgotPasswordAction = {
-  ContactAdmin: 'ContactAdmin',
-  PinCode: 'PinCode',
-  InNetworkRequired: 'InNetworkRequired',
+  ContactAdmin: "ContactAdmin",
+  PinCode: "PinCode",
+  InNetworkRequired: "InNetworkRequired",
 } as const;

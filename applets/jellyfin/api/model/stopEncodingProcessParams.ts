@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type StopEncodingProcessParams = { deviceId: string; playSessionId: string };
+export type StopEncodingProcessParams = {
+  deviceId: string;
+  playSessionId: string;
+};

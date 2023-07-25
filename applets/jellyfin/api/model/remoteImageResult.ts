@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { RemoteImageInfo } from './remoteImageInfo';
+import type { RemoteImageInfo } from "./remoteImageInfo";
 
 /**
  * Class RemoteImageResult.

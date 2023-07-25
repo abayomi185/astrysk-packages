@@ -8,4 +8,6 @@
 /**
  * Gets or sets the provider ids.
  */
-export type PersonLookupInfoProviderIds = {[key: string]: string | null} | null;
+export type PersonLookupInfoProviderIds = {
+  [key: string]: string | null;
+} | null;

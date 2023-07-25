@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GeneralCommandType } from './generalCommandType';
-import type { ClientCapabilitiesDtoDeviceProfile } from './clientCapabilitiesDtoDeviceProfile';
+import type { GeneralCommandType } from "./generalCommandType";
+import type { ClientCapabilitiesDtoDeviceProfile } from "./clientCapabilitiesDtoDeviceProfile";
 
 /**
  * Client capabilities dto.

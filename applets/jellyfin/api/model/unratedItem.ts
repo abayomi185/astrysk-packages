@@ -8,18 +8,17 @@
 /**
  * An enum representing an unrated item.
  */
-export type UnratedItem = typeof UnratedItem[keyof typeof UnratedItem];
-
+export type UnratedItem = (typeof UnratedItem)[keyof typeof UnratedItem];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UnratedItem = {
-  Movie: 'Movie',
-  Trailer: 'Trailer',
-  Series: 'Series',
-  Music: 'Music',
-  Book: 'Book',
-  LiveTvChannel: 'LiveTvChannel',
-  LiveTvProgram: 'LiveTvProgram',
-  ChannelContent: 'ChannelContent',
-  Other: 'Other',
+  Movie: "Movie",
+  Trailer: "Trailer",
+  Series: "Series",
+  Music: "Music",
+  Book: "Book",
+  LiveTvChannel: "LiveTvChannel",
+  LiveTvProgram: "LiveTvProgram",
+  ChannelContent: "ChannelContent",
+  Other: "Other",
 } as const;

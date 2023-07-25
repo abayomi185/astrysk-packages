@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type HeaderMatchType = typeof HeaderMatchType[keyof typeof HeaderMatchType];
-
+export type HeaderMatchType =
+  (typeof HeaderMatchType)[keyof typeof HeaderMatchType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HeaderMatchType = {
-  Equals: 'Equals',
-  Regex: 'Regex',
-  Substring: 'Substring',
+  Equals: "Equals",
+  Regex: "Regex",
+  Substring: "Substring",
 } as const;

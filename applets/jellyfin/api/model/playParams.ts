@@ -4,6 +4,14 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlayCommand } from './playCommand';
+import type { PlayCommand } from "./playCommand";
 
-export type PlayParams = { playCommand: PlayCommand; itemIds: string[]; startPositionTicks?: number; mediaSourceId?: string; audioStreamIndex?: number; subtitleStreamIndex?: number; startIndex?: number };
+export type PlayParams = {
+  playCommand: PlayCommand;
+  itemIds: string[];
+  startPositionTicks?: number;
+  mediaSourceId?: string;
+  audioStreamIndex?: number;
+  subtitleStreamIndex?: number;
+  startIndex?: number;
+};

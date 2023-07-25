@@ -4,16 +4,16 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SessionInfoPlayState } from './sessionInfoPlayState';
-import type { SessionUserInfo } from './sessionUserInfo';
-import type { SessionInfoCapabilities } from './sessionInfoCapabilities';
-import type { SessionInfoNowPlayingItem } from './sessionInfoNowPlayingItem';
-import type { SessionInfoFullNowPlayingItem } from './sessionInfoFullNowPlayingItem';
-import type { SessionInfoNowViewingItem } from './sessionInfoNowViewingItem';
-import type { SessionInfoTranscodingInfo } from './sessionInfoTranscodingInfo';
-import type { QueueItem } from './queueItem';
-import type { BaseItemDto } from './baseItemDto';
-import type { GeneralCommandType } from './generalCommandType';
+import type { SessionInfoPlayState } from "./sessionInfoPlayState";
+import type { SessionUserInfo } from "./sessionUserInfo";
+import type { SessionInfoCapabilities } from "./sessionInfoCapabilities";
+import type { SessionInfoNowPlayingItem } from "./sessionInfoNowPlayingItem";
+import type { SessionInfoFullNowPlayingItem } from "./sessionInfoFullNowPlayingItem";
+import type { SessionInfoNowViewingItem } from "./sessionInfoNowViewingItem";
+import type { SessionInfoTranscodingInfo } from "./sessionInfoTranscodingInfo";
+import type { QueueItem } from "./queueItem";
+import type { BaseItemDto } from "./baseItemDto";
+import type { GeneralCommandType } from "./generalCommandType";
 
 /**
  * Class SessionInfo.

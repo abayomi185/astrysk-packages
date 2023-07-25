@@ -8,18 +8,17 @@
 /**
  * Enum ItemFilter.
  */
-export type ItemFilter = typeof ItemFilter[keyof typeof ItemFilter];
-
+export type ItemFilter = (typeof ItemFilter)[keyof typeof ItemFilter];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ItemFilter = {
-  IsFolder: 'IsFolder',
-  IsNotFolder: 'IsNotFolder',
-  IsUnplayed: 'IsUnplayed',
-  IsPlayed: 'IsPlayed',
-  IsFavorite: 'IsFavorite',
-  IsResumable: 'IsResumable',
-  Likes: 'Likes',
-  Dislikes: 'Dislikes',
-  IsFavoriteOrLikes: 'IsFavoriteOrLikes',
+  IsFolder: "IsFolder",
+  IsNotFolder: "IsNotFolder",
+  IsUnplayed: "IsUnplayed",
+  IsPlayed: "IsPlayed",
+  IsFavorite: "IsFavorite",
+  IsResumable: "IsResumable",
+  Likes: "Likes",
+  Dislikes: "Dislikes",
+  IsFavoriteOrLikes: "IsFavoriteOrLikes",
 } as const;

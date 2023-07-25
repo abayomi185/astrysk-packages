@@ -4,8 +4,17 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SortOrder } from './sortOrder';
-import type { ItemFilter } from './itemFilter';
-import type { ItemFields } from './itemFields';
+import type { SortOrder } from "./sortOrder";
+import type { ItemFilter } from "./itemFilter";
+import type { ItemFields } from "./itemFields";
 
-export type GetChannelItemsParams = { folderId?: string; userId?: string; startIndex?: number; limit?: number; sortOrder?: SortOrder[]; filters?: ItemFilter[]; sortBy?: string[]; fields?: ItemFields[] };
+export type GetChannelItemsParams = {
+  folderId?: string;
+  userId?: string;
+  startIndex?: number;
+  limit?: number;
+  sortOrder?: SortOrder[];
+  filters?: ItemFilter[];
+  sortBy?: string[];
+  fields?: ItemFields[];
+};

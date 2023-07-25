@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { UserItemDataDto } from './userItemDataDto';
+import type { UserItemDataDto } from "./userItemDataDto";
 
 /**
  * Gets or sets the user data for this item based on the user it's being requested for.

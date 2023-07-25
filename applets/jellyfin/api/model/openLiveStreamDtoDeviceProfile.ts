@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DeviceProfile } from './deviceProfile';
+import type { DeviceProfile } from "./deviceProfile";
 
 /**
  * Gets or sets the device profile.

@@ -8,11 +8,10 @@
 /**
  * Enum SeriesStatus.
  */
-export type SeriesStatus = typeof SeriesStatus[keyof typeof SeriesStatus];
-
+export type SeriesStatus = (typeof SeriesStatus)[keyof typeof SeriesStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SeriesStatus = {
-  Continuing: 'Continuing',
-  Ended: 'Ended',
+  Continuing: "Continuing",
+  Ended: "Ended",
 } as const;

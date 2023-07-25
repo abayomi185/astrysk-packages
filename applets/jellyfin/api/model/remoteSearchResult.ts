@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { RemoteSearchResultProviderIds } from './remoteSearchResultProviderIds';
-import type { RemoteSearchResultAlbumArtist } from './remoteSearchResultAlbumArtist';
+import type { RemoteSearchResultProviderIds } from "./remoteSearchResultProviderIds";
+import type { RemoteSearchResultAlbumArtist } from "./remoteSearchResultAlbumArtist";
 
 export interface RemoteSearchResult {
   /** Gets or sets the name. */

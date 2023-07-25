@@ -5,4 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetChannelsParams = { userId?: string; startIndex?: number; limit?: number; supportsLatestItems?: boolean; supportsMediaDeletion?: boolean; isFavorite?: boolean };
+export type GetChannelsParams = {
+  userId?: string;
+  startIndex?: number;
+  limit?: number;
+  supportsLatestItems?: boolean;
+  supportsMediaDeletion?: boolean;
+  isFavorite?: boolean;
+};

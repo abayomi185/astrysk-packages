@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlaystateCommand } from './playstateCommand';
+import type { PlaystateCommand } from "./playstateCommand";
 
 export interface PlaystateRequest {
   /** Enum PlaystateCommand. */

@@ -5,14 +5,13 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type Video3DFormat = typeof Video3DFormat[keyof typeof Video3DFormat];
-
+export type Video3DFormat = (typeof Video3DFormat)[keyof typeof Video3DFormat];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Video3DFormat = {
-  HalfSideBySide: 'HalfSideBySide',
-  FullSideBySide: 'FullSideBySide',
-  FullTopAndBottom: 'FullTopAndBottom',
-  HalfTopAndBottom: 'HalfTopAndBottom',
-  MVC: 'MVC',
+  HalfSideBySide: "HalfSideBySide",
+  FullSideBySide: "FullSideBySide",
+  FullTopAndBottom: "FullTopAndBottom",
+  HalfTopAndBottom: "HalfTopAndBottom",
+  MVC: "MVC",
 } as const;

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { HttpHeaderInfo } from './httpHeaderInfo';
+import type { HttpHeaderInfo } from "./httpHeaderInfo";
 
 export interface DeviceIdentification {
   /** Gets or sets the name of the friendly. */

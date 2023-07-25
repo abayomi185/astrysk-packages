@@ -8,14 +8,14 @@
 /**
  * An enum representing a subtitle playback mode.
  */
-export type SubtitlePlaybackMode = typeof SubtitlePlaybackMode[keyof typeof SubtitlePlaybackMode];
-
+export type SubtitlePlaybackMode =
+  (typeof SubtitlePlaybackMode)[keyof typeof SubtitlePlaybackMode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubtitlePlaybackMode = {
-  Default: 'Default',
-  Always: 'Always',
-  OnlyForced: 'OnlyForced',
-  None: 'None',
-  Smart: 'Smart',
+  Default: "Default",
+  Always: "Always",
+  OnlyForced: "OnlyForced",
+  None: "None",
+  Smart: "Smart",
 } as const;

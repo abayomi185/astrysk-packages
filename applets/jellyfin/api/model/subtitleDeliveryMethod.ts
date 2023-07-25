@@ -8,14 +8,14 @@
 /**
  * Delivery method to use during playback of a specific subtitle format.
  */
-export type SubtitleDeliveryMethod = typeof SubtitleDeliveryMethod[keyof typeof SubtitleDeliveryMethod];
-
+export type SubtitleDeliveryMethod =
+  (typeof SubtitleDeliveryMethod)[keyof typeof SubtitleDeliveryMethod];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SubtitleDeliveryMethod = {
-  Encode: 'Encode',
-  Embed: 'Embed',
-  External: 'External',
-  Hls: 'Hls',
-  Drop: 'Drop',
+  Encode: "Encode",
+  Embed: "Embed",
+  External: "External",
+  Hls: "Hls",
+  Drop: "Drop",
 } as const;

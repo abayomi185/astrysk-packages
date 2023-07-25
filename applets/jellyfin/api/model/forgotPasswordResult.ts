@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ForgotPasswordAction } from './forgotPasswordAction';
+import type { ForgotPasswordAction } from "./forgotPasswordAction";
 
 export interface ForgotPasswordResult {
   /** Gets or sets the action. */

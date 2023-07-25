@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type SendPlaystateCommandParams = { seekPositionTicks?: number; controllingUserId?: string };
+export type SendPlaystateCommandParams = {
+  seekPositionTicks?: number;
+  controllingUserId?: string;
+};

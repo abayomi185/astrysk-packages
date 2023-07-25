@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { InstallationInfo } from './installationInfo';
-import type { FFmpegLocation } from './fFmpegLocation';
-import type { Architecture } from './architecture';
+import type { InstallationInfo } from "./installationInfo";
+import type { FFmpegLocation } from "./fFmpegLocation";
+import type { Architecture } from "./architecture";
 
 /**
  * Class SystemInfo.

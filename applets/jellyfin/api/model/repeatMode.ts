@@ -5,12 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RepeatMode = typeof RepeatMode[keyof typeof RepeatMode];
-
+export type RepeatMode = (typeof RepeatMode)[keyof typeof RepeatMode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RepeatMode = {
-  RepeatNone: 'RepeatNone',
-  RepeatAll: 'RepeatAll',
-  RepeatOne: 'RepeatOne',
+  RepeatNone: "RepeatNone",
+  RepeatAll: "RepeatAll",
+  RepeatOne: "RepeatOne",
 } as const;

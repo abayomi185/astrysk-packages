@@ -8,11 +8,11 @@
 /**
  * Enum GroupQueueMode.
  */
-export type GroupQueueMode = typeof GroupQueueMode[keyof typeof GroupQueueMode];
-
+export type GroupQueueMode =
+  (typeof GroupQueueMode)[keyof typeof GroupQueueMode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupQueueMode = {
-  Queue: 'Queue',
-  QueueNext: 'QueueNext',
+  Queue: "Queue",
+  QueueNext: "QueueNext",
 } as const;

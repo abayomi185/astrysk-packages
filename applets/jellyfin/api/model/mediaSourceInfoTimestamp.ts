@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TransportStreamTimestamp } from './transportStreamTimestamp';
+import type { TransportStreamTimestamp } from "./transportStreamTimestamp";
 
 export type MediaSourceInfoTimestamp = TransportStreamTimestamp | null;

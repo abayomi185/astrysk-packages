@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type PlaybackErrorCode = typeof PlaybackErrorCode[keyof typeof PlaybackErrorCode];
-
+export type PlaybackErrorCode =
+  (typeof PlaybackErrorCode)[keyof typeof PlaybackErrorCode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaybackErrorCode = {
-  NotAllowed: 'NotAllowed',
-  NoCompatibleStream: 'NoCompatibleStream',
-  RateLimitExceeded: 'RateLimitExceeded',
+  NotAllowed: "NotAllowed",
+  NoCompatibleStream: "NoCompatibleStream",
+  RateLimitExceeded: "RateLimitExceeded",
 } as const;

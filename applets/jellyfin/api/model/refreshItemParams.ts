@@ -4,6 +4,11 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MetadataRefreshMode } from './metadataRefreshMode';
+import type { MetadataRefreshMode } from "./metadataRefreshMode";
 
-export type RefreshItemParams = { metadataRefreshMode?: MetadataRefreshMode; imageRefreshMode?: MetadataRefreshMode; replaceAllMetadata?: boolean; replaceAllImages?: boolean };
+export type RefreshItemParams = {
+  metadataRefreshMode?: MetadataRefreshMode;
+  imageRefreshMode?: MetadataRefreshMode;
+  replaceAllMetadata?: boolean;
+  replaceAllImages?: boolean;
+};

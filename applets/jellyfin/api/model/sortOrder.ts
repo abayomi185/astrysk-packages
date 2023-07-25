@@ -8,11 +8,10 @@
 /**
  * An enum representing the sorting order.
  */
-export type SortOrder = typeof SortOrder[keyof typeof SortOrder];
-
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SortOrder = {
-  Ascending: 'Ascending',
-  Descending: 'Descending',
+  Ascending: "Ascending",
+  Descending: "Descending",
 } as const;

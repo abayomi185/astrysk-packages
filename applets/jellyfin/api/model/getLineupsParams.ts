@@ -5,4 +5,9 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetLineupsParams = { id?: string; type?: string; location?: string; country?: string };
+export type GetLineupsParams = {
+  id?: string;
+  type?: string;
+  location?: string;
+  country?: string;
+};

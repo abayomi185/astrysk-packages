@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RemoveMediaPathParams = { name?: string; path?: string; refreshLibrary?: boolean };
+export type RemoveMediaPathParams = {
+  name?: string;
+  path?: string;
+  refreshLibrary?: boolean;
+};

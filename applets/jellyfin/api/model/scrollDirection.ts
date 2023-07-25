@@ -8,11 +8,11 @@
 /**
  * An enum representing the axis that should be scrolled.
  */
-export type ScrollDirection = typeof ScrollDirection[keyof typeof ScrollDirection];
-
+export type ScrollDirection =
+  (typeof ScrollDirection)[keyof typeof ScrollDirection];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ScrollDirection = {
-  Horizontal: 'Horizontal',
-  Vertical: 'Vertical',
+  Horizontal: "Horizontal",
+  Vertical: "Vertical",
 } as const;

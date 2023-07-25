@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaPathInfo } from './mediaPathInfo';
+import type { MediaPathInfo } from "./mediaPathInfo";
 
 /**
  * Update library options dto.

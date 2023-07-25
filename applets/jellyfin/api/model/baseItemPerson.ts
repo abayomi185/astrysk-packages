@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemPersonImageBlurHashes } from './baseItemPersonImageBlurHashes';
+import type { BaseItemPersonImageBlurHashes } from "./baseItemPersonImageBlurHashes";
 
 /**
  * This is used by the api to get information about a Person within a BaseItem.

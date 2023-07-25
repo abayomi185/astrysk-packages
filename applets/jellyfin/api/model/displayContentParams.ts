@@ -4,6 +4,10 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemKind } from './baseItemKind';
+import type { BaseItemKind } from "./baseItemKind";
 
-export type DisplayContentParams = { itemType: BaseItemKind; itemId: string; itemName: string };
+export type DisplayContentParams = {
+  itemType: BaseItemKind;
+  itemId: string;
+  itemName: string;
+};

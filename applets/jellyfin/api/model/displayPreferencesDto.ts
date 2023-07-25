@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DisplayPreferencesDtoCustomPrefs } from './displayPreferencesDtoCustomPrefs';
-import type { ScrollDirection } from './scrollDirection';
-import type { SortOrder } from './sortOrder';
+import type { DisplayPreferencesDtoCustomPrefs } from "./displayPreferencesDtoCustomPrefs";
+import type { ScrollDirection } from "./scrollDirection";
+import type { SortOrder } from "./sortOrder";
 
 /**
  * Defines the display preferences for any item that supports them (usually Folders).

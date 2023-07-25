@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type MediaSourceType = typeof MediaSourceType[keyof typeof MediaSourceType];
-
+export type MediaSourceType =
+  (typeof MediaSourceType)[keyof typeof MediaSourceType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MediaSourceType = {
-  Default: 'Default',
-  Grouping: 'Grouping',
-  Placeholder: 'Placeholder',
+  Default: "Default",
+  Grouping: "Grouping",
+  Placeholder: "Placeholder",
 } as const;

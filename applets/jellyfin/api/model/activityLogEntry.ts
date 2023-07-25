@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { LogLevel } from './logLevel';
+import type { LogLevel } from "./logLevel";
 
 /**
  * An activity log entry.

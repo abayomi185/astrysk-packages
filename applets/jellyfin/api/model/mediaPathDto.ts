@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaPathDtoPathInfo } from './mediaPathDtoPathInfo';
+import type { MediaPathDtoPathInfo } from "./mediaPathDtoPathInfo";
 
 /**
  * Media Path dto.

@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ClientCapabilities } from './clientCapabilities';
+import type { ClientCapabilities } from "./clientCapabilities";
 
 export type SessionInfoCapabilities = ClientCapabilities | null;

@@ -4,11 +4,11 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ParentalRating } from './parentalRating';
-import type { CountryInfo } from './countryInfo';
-import type { CultureDto } from './cultureDto';
-import type { ExternalIdInfo } from './externalIdInfo';
-import type { NameValuePair } from './nameValuePair';
+import type { ParentalRating } from "./parentalRating";
+import type { CountryInfo } from "./countryInfo";
+import type { CultureDto } from "./cultureDto";
+import type { ExternalIdInfo } from "./externalIdInfo";
+import type { NameValuePair } from "./nameValuePair";
 
 export interface MetadataEditorInfo {
   ParentalRatingOptions?: ParentalRating[];

@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { KeepUntil } from './keepUntil';
-import type { RecordingStatus } from './recordingStatus';
-import type { TimerInfoDtoProgramInfo } from './timerInfoDtoProgramInfo';
+import type { KeepUntil } from "./keepUntil";
+import type { RecordingStatus } from "./recordingStatus";
+import type { TimerInfoDtoProgramInfo } from "./timerInfoDtoProgramInfo";
 
 export interface TimerInfoDto {
   /** Gets or sets the Id of the recording. */

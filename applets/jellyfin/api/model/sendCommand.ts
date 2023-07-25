@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SendCommandType } from './sendCommandType';
+import type { SendCommandType } from "./sendCommandType";
 
 /**
  * Class SendCommand.

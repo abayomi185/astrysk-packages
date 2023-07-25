@@ -4,6 +4,24 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ImageFormat } from './imageFormat';
+import type { ImageFormat } from "./imageFormat";
 
-export type HeadItemImageParams = { maxWidth?: number; maxHeight?: number; width?: number; height?: number; quality?: number; fillWidth?: number; fillHeight?: number; tag?: string; cropWhitespace?: boolean; format?: ImageFormat; addPlayedIndicator?: boolean; percentPlayed?: number; unplayedCount?: number; blur?: number; backgroundColor?: string; foregroundLayer?: string; imageIndex?: number };
+export type HeadItemImageParams = {
+  maxWidth?: number;
+  maxHeight?: number;
+  width?: number;
+  height?: number;
+  quality?: number;
+  fillWidth?: number;
+  fillHeight?: number;
+  tag?: string;
+  cropWhitespace?: boolean;
+  format?: ImageFormat;
+  addPlayedIndicator?: boolean;
+  percentPlayed?: number;
+  unplayedCount?: number;
+  blur?: number;
+  backgroundColor?: string;
+  foregroundLayer?: string;
+  imageIndex?: number;
+};

@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetThemeVideosParams = { userId?: string; inheritFromParent?: boolean };
+export type GetThemeVideosParams = {
+  userId?: string;
+  inheritFromParent?: boolean;
+};

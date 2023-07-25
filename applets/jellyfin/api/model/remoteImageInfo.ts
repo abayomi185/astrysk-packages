@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ImageType } from './imageType';
-import type { RatingType } from './ratingType';
+import type { ImageType } from "./imageType";
+import type { RatingType } from "./ratingType";
 
 /**
  * Class RemoteImageInfo.

@@ -8,4 +8,6 @@
 /**
  * Class BasePluginConfiguration.
  */
-export interface BasePluginConfiguration { [key: string]: any }
+export interface BasePluginConfiguration {
+  [key: string]: any;
+}

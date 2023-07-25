@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TunerChannelMapping } from './tunerChannelMapping';
-import type { NameIdPair } from './nameIdPair';
-import type { NameValuePair } from './nameValuePair';
+import type { TunerChannelMapping } from "./tunerChannelMapping";
+import type { NameIdPair } from "./nameIdPair";
+import type { NameValuePair } from "./nameValuePair";
 
 /**
  * Channel mapping options dto.

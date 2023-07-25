@@ -1,5 +1,5 @@
 module.exports = {
-  jellyfin: {
+  sonarr: {
     output: {
       mode: "single",
       workspace: "api",

@@ -8,13 +8,12 @@
 /**
  * Enum VideoType.
  */
-export type VideoType = typeof VideoType[keyof typeof VideoType];
-
+export type VideoType = (typeof VideoType)[keyof typeof VideoType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const VideoType = {
-  VideoFile: 'VideoFile',
-  Iso: 'Iso',
-  Dvd: 'Dvd',
-  BluRay: 'BluRay',
+  VideoFile: "VideoFile",
+  Iso: "Iso",
+  Dvd: "Dvd",
+  BluRay: "BluRay",
 } as const;

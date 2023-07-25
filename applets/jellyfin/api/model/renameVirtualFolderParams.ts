@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RenameVirtualFolderParams = { name?: string; newName?: string; refreshLibrary?: boolean };
+export type RenameVirtualFolderParams = {
+  name?: string;
+  newName?: string;
+  refreshLibrary?: boolean;
+};

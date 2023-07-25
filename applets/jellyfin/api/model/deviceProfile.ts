@@ -4,14 +4,14 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DeviceProfileIdentification } from './deviceProfileIdentification';
-import type { XmlAttribute } from './xmlAttribute';
-import type { DirectPlayProfile } from './directPlayProfile';
-import type { TranscodingProfile } from './transcodingProfile';
-import type { ContainerProfile } from './containerProfile';
-import type { CodecProfile } from './codecProfile';
-import type { ResponseProfile } from './responseProfile';
-import type { SubtitleProfile } from './subtitleProfile';
+import type { DeviceProfileIdentification } from "./deviceProfileIdentification";
+import type { XmlAttribute } from "./xmlAttribute";
+import type { DirectPlayProfile } from "./directPlayProfile";
+import type { TranscodingProfile } from "./transcodingProfile";
+import type { ContainerProfile } from "./containerProfile";
+import type { CodecProfile } from "./codecProfile";
+import type { ResponseProfile } from "./responseProfile";
+import type { SubtitleProfile } from "./subtitleProfile";
 
 /**
  * A MediaBrowser.Model.Dlna.DeviceProfile represents a set of metadata which determines which content a certain device is able to play.

@@ -5,4 +5,16 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type OpenLiveStreamParams = { openToken?: string; userId?: string; playSessionId?: string; maxStreamingBitrate?: number; startTimeTicks?: number; audioStreamIndex?: number; subtitleStreamIndex?: number; maxAudioChannels?: number; itemId?: string; enableDirectPlay?: boolean; enableDirectStream?: boolean };
+export type OpenLiveStreamParams = {
+  openToken?: string;
+  userId?: string;
+  playSessionId?: string;
+  maxStreamingBitrate?: number;
+  startTimeTicks?: number;
+  audioStreamIndex?: number;
+  subtitleStreamIndex?: number;
+  maxAudioChannels?: number;
+  itemId?: string;
+  enableDirectPlay?: boolean;
+  enableDirectStream?: boolean;
+};

@@ -8,11 +8,10 @@
 /**
  * Enum IsoType.
  */
-export type IsoType = typeof IsoType[keyof typeof IsoType];
-
+export type IsoType = (typeof IsoType)[keyof typeof IsoType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const IsoType = {
-  Dvd: 'Dvd',
-  BluRay: 'BluRay',
+  Dvd: "Dvd",
+  BluRay: "BluRay",
 } as const;

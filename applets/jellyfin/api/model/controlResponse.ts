@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ControlResponseHeaders } from './controlResponseHeaders';
+import type { ControlResponseHeaders } from "./controlResponseHeaders";
 
 export interface ControlResponse {
   readonly Headers?: ControlResponseHeaders;

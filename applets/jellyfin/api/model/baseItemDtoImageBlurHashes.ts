@@ -4,19 +4,19 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemDtoImageBlurHashesPrimary } from './baseItemDtoImageBlurHashesPrimary';
-import type { BaseItemDtoImageBlurHashesArt } from './baseItemDtoImageBlurHashesArt';
-import type { BaseItemDtoImageBlurHashesBackdrop } from './baseItemDtoImageBlurHashesBackdrop';
-import type { BaseItemDtoImageBlurHashesBanner } from './baseItemDtoImageBlurHashesBanner';
-import type { BaseItemDtoImageBlurHashesLogo } from './baseItemDtoImageBlurHashesLogo';
-import type { BaseItemDtoImageBlurHashesThumb } from './baseItemDtoImageBlurHashesThumb';
-import type { BaseItemDtoImageBlurHashesDisc } from './baseItemDtoImageBlurHashesDisc';
-import type { BaseItemDtoImageBlurHashesBox } from './baseItemDtoImageBlurHashesBox';
-import type { BaseItemDtoImageBlurHashesScreenshot } from './baseItemDtoImageBlurHashesScreenshot';
-import type { BaseItemDtoImageBlurHashesMenu } from './baseItemDtoImageBlurHashesMenu';
-import type { BaseItemDtoImageBlurHashesChapter } from './baseItemDtoImageBlurHashesChapter';
-import type { BaseItemDtoImageBlurHashesBoxRear } from './baseItemDtoImageBlurHashesBoxRear';
-import type { BaseItemDtoImageBlurHashesProfile } from './baseItemDtoImageBlurHashesProfile';
+import type { BaseItemDtoImageBlurHashesPrimary } from "./baseItemDtoImageBlurHashesPrimary";
+import type { BaseItemDtoImageBlurHashesArt } from "./baseItemDtoImageBlurHashesArt";
+import type { BaseItemDtoImageBlurHashesBackdrop } from "./baseItemDtoImageBlurHashesBackdrop";
+import type { BaseItemDtoImageBlurHashesBanner } from "./baseItemDtoImageBlurHashesBanner";
+import type { BaseItemDtoImageBlurHashesLogo } from "./baseItemDtoImageBlurHashesLogo";
+import type { BaseItemDtoImageBlurHashesThumb } from "./baseItemDtoImageBlurHashesThumb";
+import type { BaseItemDtoImageBlurHashesDisc } from "./baseItemDtoImageBlurHashesDisc";
+import type { BaseItemDtoImageBlurHashesBox } from "./baseItemDtoImageBlurHashesBox";
+import type { BaseItemDtoImageBlurHashesScreenshot } from "./baseItemDtoImageBlurHashesScreenshot";
+import type { BaseItemDtoImageBlurHashesMenu } from "./baseItemDtoImageBlurHashesMenu";
+import type { BaseItemDtoImageBlurHashesChapter } from "./baseItemDtoImageBlurHashesChapter";
+import type { BaseItemDtoImageBlurHashesBoxRear } from "./baseItemDtoImageBlurHashesBoxRear";
+import type { BaseItemDtoImageBlurHashesProfile } from "./baseItemDtoImageBlurHashesProfile";
 
 /**
  * Gets or sets the blurhashes for the image tags.

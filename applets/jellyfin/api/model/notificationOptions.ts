@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { NotificationOption } from './notificationOption';
+import type { NotificationOption } from "./notificationOption";
 
 export interface NotificationOptions {
   Options?: NotificationOption[] | null;

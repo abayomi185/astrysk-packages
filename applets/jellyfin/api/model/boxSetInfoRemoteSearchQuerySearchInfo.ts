@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BoxSetInfo } from './boxSetInfo';
+import type { BoxSetInfo } from "./boxSetInfo";
 
 export type BoxSetInfoRemoteSearchQuerySearchInfo = BoxSetInfo | null;

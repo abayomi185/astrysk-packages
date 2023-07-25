@@ -8,13 +8,13 @@
 /**
  * Enum GroupState.
  */
-export type GroupStateType = typeof GroupStateType[keyof typeof GroupStateType];
-
+export type GroupStateType =
+  (typeof GroupStateType)[keyof typeof GroupStateType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupStateType = {
-  Idle: 'Idle',
-  Waiting: 'Waiting',
-  Paused: 'Paused',
-  Playing: 'Playing',
+  Idle: "Idle",
+  Waiting: "Waiting",
+  Paused: "Paused",
+  Playing: "Playing",
 } as const;

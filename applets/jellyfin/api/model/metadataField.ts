@@ -8,18 +8,17 @@
 /**
  * Enum MetadataFields.
  */
-export type MetadataField = typeof MetadataField[keyof typeof MetadataField];
-
+export type MetadataField = (typeof MetadataField)[keyof typeof MetadataField];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MetadataField = {
-  Cast: 'Cast',
-  Genres: 'Genres',
-  ProductionLocations: 'ProductionLocations',
-  Studios: 'Studios',
-  Tags: 'Tags',
-  Name: 'Name',
-  Overview: 'Overview',
-  Runtime: 'Runtime',
-  OfficialRating: 'OfficialRating',
+  Cast: "Cast",
+  Genres: "Genres",
+  ProductionLocations: "ProductionLocations",
+  Studios: "Studios",
+  Tags: "Tags",
+  Name: "Name",
+  Overview: "Overview",
+  Runtime: "Runtime",
+  OfficialRating: "OfficialRating",
 } as const;

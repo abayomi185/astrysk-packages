@@ -8,11 +8,11 @@
 /**
  * Enum GroupShuffleMode.
  */
-export type GroupShuffleMode = typeof GroupShuffleMode[keyof typeof GroupShuffleMode];
-
+export type GroupShuffleMode =
+  (typeof GroupShuffleMode)[keyof typeof GroupShuffleMode];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const GroupShuffleMode = {
-  Sorted: 'Sorted',
-  Shuffle: 'Shuffle',
+  Sorted: "Sorted",
+  Shuffle: "Shuffle",
 } as const;

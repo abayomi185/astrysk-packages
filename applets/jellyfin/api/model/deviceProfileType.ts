@@ -5,11 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type DeviceProfileType = typeof DeviceProfileType[keyof typeof DeviceProfileType];
-
+export type DeviceProfileType =
+  (typeof DeviceProfileType)[keyof typeof DeviceProfileType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeviceProfileType = {
-  System: 'System',
-  User: 'User',
+  System: "System",
+  User: "User",
 } as const;

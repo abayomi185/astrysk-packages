@@ -8,4 +8,4 @@
 /**
  * Gets or sets the provider ids.
  */
-export type BookInfoProviderIds = {[key: string]: string | null} | null;
+export type BookInfoProviderIds = { [key: string]: string | null } | null;

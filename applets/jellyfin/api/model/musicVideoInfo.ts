@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MusicVideoInfoProviderIds } from './musicVideoInfoProviderIds';
+import type { MusicVideoInfoProviderIds } from "./musicVideoInfoProviderIds";
 
 export interface MusicVideoInfo {
   /** Gets or sets the name. */

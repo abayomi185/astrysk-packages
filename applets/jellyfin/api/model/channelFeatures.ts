@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ChannelMediaType } from './channelMediaType';
-import type { ChannelMediaContentType } from './channelMediaContentType';
-import type { ChannelItemSortField } from './channelItemSortField';
+import type { ChannelMediaType } from "./channelMediaType";
+import type { ChannelMediaContentType } from "./channelMediaContentType";
+import type { ChannelItemSortField } from "./channelItemSortField";
 
 export interface ChannelFeatures {
   /** Gets or sets the name. */

@@ -5,4 +5,13 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetSubtitleWithTicksParams = { itemId?: string; mediaSourceId?: string; index?: number; startPositionTicks?: number; format?: string; endPositionTicks?: number; copyTimestamps?: boolean; addVttTimeMap?: boolean };
+export type GetSubtitleWithTicksParams = {
+  itemId?: string;
+  mediaSourceId?: string;
+  index?: number;
+  startPositionTicks?: number;
+  format?: string;
+  endPositionTicks?: number;
+  copyTimestamps?: boolean;
+  addVttTimeMap?: boolean;
+};

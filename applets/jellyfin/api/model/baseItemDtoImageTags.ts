@@ -8,4 +8,4 @@
 /**
  * Gets or sets the image tags.
  */
-export type BaseItemDtoImageTags = {[key: string]: string} | null;
+export type BaseItemDtoImageTags = { [key: string]: string } | null;

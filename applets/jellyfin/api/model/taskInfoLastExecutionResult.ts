@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TaskResult } from './taskResult';
+import type { TaskResult } from "./taskResult";
 
 /**
  * Gets or sets the last execution result.

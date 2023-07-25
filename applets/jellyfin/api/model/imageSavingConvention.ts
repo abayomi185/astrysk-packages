@@ -5,11 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type ImageSavingConvention = typeof ImageSavingConvention[keyof typeof ImageSavingConvention];
-
+export type ImageSavingConvention =
+  (typeof ImageSavingConvention)[keyof typeof ImageSavingConvention];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ImageSavingConvention = {
-  Legacy: 'Legacy',
-  Compatible: 'Compatible',
+  Legacy: "Legacy",
+  Compatible: "Compatible",
 } as const;

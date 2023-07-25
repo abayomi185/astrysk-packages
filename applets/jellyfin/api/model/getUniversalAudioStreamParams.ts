@@ -5,4 +5,22 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetUniversalAudioStreamParams = { container?: string[]; mediaSourceId?: string; deviceId?: string; userId?: string; audioCodec?: string; maxAudioChannels?: number; transcodingAudioChannels?: number; maxStreamingBitrate?: number; audioBitRate?: number; startTimeTicks?: number; transcodingContainer?: string; transcodingProtocol?: string; maxAudioSampleRate?: number; maxAudioBitDepth?: number; enableRemoteMedia?: boolean; breakOnNonKeyFrames?: boolean; enableRedirection?: boolean };
+export type GetUniversalAudioStreamParams = {
+  container?: string[];
+  mediaSourceId?: string;
+  deviceId?: string;
+  userId?: string;
+  audioCodec?: string;
+  maxAudioChannels?: number;
+  transcodingAudioChannels?: number;
+  maxStreamingBitrate?: number;
+  audioBitRate?: number;
+  startTimeTicks?: number;
+  transcodingContainer?: string;
+  transcodingProtocol?: string;
+  maxAudioSampleRate?: number;
+  maxAudioBitDepth?: number;
+  enableRemoteMedia?: boolean;
+  breakOnNonKeyFrames?: boolean;
+  enableRedirection?: boolean;
+};

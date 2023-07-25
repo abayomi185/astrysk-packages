@@ -8,14 +8,13 @@
 /**
  * Enum PlayCommand.
  */
-export type PlayCommand = typeof PlayCommand[keyof typeof PlayCommand];
-
+export type PlayCommand = (typeof PlayCommand)[keyof typeof PlayCommand];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlayCommand = {
-  PlayNow: 'PlayNow',
-  PlayNext: 'PlayNext',
-  PlayLast: 'PlayLast',
-  PlayInstantMix: 'PlayInstantMix',
-  PlayShuffle: 'PlayShuffle',
+  PlayNow: "PlayNow",
+  PlayNext: "PlayNext",
+  PlayLast: "PlayLast",
+  PlayInstantMix: "PlayInstantMix",
+  PlayShuffle: "PlayShuffle",
 } as const;

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TrailerInfoRemoteSearchQuerySearchInfo } from './trailerInfoRemoteSearchQuerySearchInfo';
+import type { TrailerInfoRemoteSearchQuerySearchInfo } from "./trailerInfoRemoteSearchQuerySearchInfo";
 
 export interface TrailerInfoRemoteSearchQuery {
   SearchInfo?: TrailerInfoRemoteSearchQuerySearchInfo;

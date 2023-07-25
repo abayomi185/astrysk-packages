@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DayOfWeek } from './dayOfWeek';
+import type { DayOfWeek } from "./dayOfWeek";
 
 /**
  * Gets or sets the day of week.

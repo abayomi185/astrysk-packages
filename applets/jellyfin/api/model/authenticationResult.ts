@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AuthenticationResultUser } from './authenticationResultUser';
-import type { AuthenticationResultSessionInfo } from './authenticationResultSessionInfo';
+import type { AuthenticationResultUser } from "./authenticationResultUser";
+import type { AuthenticationResultSessionInfo } from "./authenticationResultSessionInfo";
 
 export interface AuthenticationResult {
   /** Class UserDto. */

@@ -4,10 +4,10 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DlnaProfileType } from './dlnaProfileType';
-import type { TranscodeSeekInfo } from './transcodeSeekInfo';
-import type { EncodingContext } from './encodingContext';
-import type { ProfileCondition } from './profileCondition';
+import type { DlnaProfileType } from "./dlnaProfileType";
+import type { TranscodeSeekInfo } from "./transcodeSeekInfo";
+import type { EncodingContext } from "./encodingContext";
+import type { ProfileCondition } from "./profileCondition";
 
 export interface TranscodingProfile {
   Container?: string;

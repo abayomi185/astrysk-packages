@@ -8,12 +8,12 @@
 /**
  * Enum SyncPlayUserAccessType.
  */
-export type SyncPlayUserAccessType = typeof SyncPlayUserAccessType[keyof typeof SyncPlayUserAccessType];
-
+export type SyncPlayUserAccessType =
+  (typeof SyncPlayUserAccessType)[keyof typeof SyncPlayUserAccessType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SyncPlayUserAccessType = {
-  CreateAndJoinGroups: 'CreateAndJoinGroups',
-  JoinGroups: 'JoinGroups',
-  None: 'None',
+  CreateAndJoinGroups: "CreateAndJoinGroups",
+  JoinGroups: "JoinGroups",
+  None: "None",
 } as const;

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { NotificationDto } from './notificationDto';
+import type { NotificationDto } from "./notificationDto";
 
 /**
  * A list of notifications with the total record count for pagination.

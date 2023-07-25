@@ -8,4 +8,4 @@
 /**
  * Gets or sets the provider ids.
  */
-export type SongInfoProviderIds = {[key: string]: string | null} | null;
+export type SongInfoProviderIds = { [key: string]: string | null } | null;

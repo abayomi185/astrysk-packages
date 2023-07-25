@@ -8,18 +8,18 @@
 /**
  * Enum PlaystateCommand.
  */
-export type PlaystateCommand = typeof PlaystateCommand[keyof typeof PlaystateCommand];
-
+export type PlaystateCommand =
+  (typeof PlaystateCommand)[keyof typeof PlaystateCommand];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PlaystateCommand = {
-  Stop: 'Stop',
-  Pause: 'Pause',
-  Unpause: 'Unpause',
-  NextTrack: 'NextTrack',
-  PreviousTrack: 'PreviousTrack',
-  Seek: 'Seek',
-  Rewind: 'Rewind',
-  FastForward: 'FastForward',
-  PlayPause: 'PlayPause',
+  Stop: "Stop",
+  Pause: "Pause",
+  Unpause: "Unpause",
+  NextTrack: "NextTrack",
+  PreviousTrack: "PreviousTrack",
+  Seek: "Seek",
+  Rewind: "Rewind",
+  FastForward: "FastForward",
+  PlayPause: "PlayPause",
 } as const;

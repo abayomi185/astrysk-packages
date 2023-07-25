@@ -5,13 +5,13 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type DlnaProfileType = typeof DlnaProfileType[keyof typeof DlnaProfileType];
-
+export type DlnaProfileType =
+  (typeof DlnaProfileType)[keyof typeof DlnaProfileType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DlnaProfileType = {
-  Audio: 'Audio',
-  Video: 'Video',
-  Photo: 'Photo',
-  Subtitle: 'Subtitle',
+  Audio: "Audio",
+  Video: "Video",
+  Photo: "Photo",
+  Subtitle: "Subtitle",
 } as const;

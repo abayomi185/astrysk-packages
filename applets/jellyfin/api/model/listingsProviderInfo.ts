@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { NameValuePair } from './nameValuePair';
+import type { NameValuePair } from "./nameValuePair";
 
 export interface ListingsProviderInfo {
   Id?: string | null;

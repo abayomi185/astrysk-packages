@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PluginStatus } from './pluginStatus';
+import type { PluginStatus } from "./pluginStatus";
 
 /**
  * This is a serializable stub class that is used by the api to provide information about installed plugins.

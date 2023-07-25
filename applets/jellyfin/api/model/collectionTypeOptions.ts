@@ -5,17 +5,17 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type CollectionTypeOptions = typeof CollectionTypeOptions[keyof typeof CollectionTypeOptions];
-
+export type CollectionTypeOptions =
+  (typeof CollectionTypeOptions)[keyof typeof CollectionTypeOptions];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CollectionTypeOptions = {
-  Movies: 'Movies',
-  TvShows: 'TvShows',
-  Music: 'Music',
-  MusicVideos: 'MusicVideos',
-  HomeVideos: 'HomeVideos',
-  BoxSets: 'BoxSets',
-  Books: 'Books',
-  Mixed: 'Mixed',
+  Movies: "Movies",
+  TvShows: "TvShows",
+  Music: "Music",
+  MusicVideos: "MusicVideos",
+  HomeVideos: "HomeVideos",
+  BoxSets: "BoxSets",
+  Books: "Books",
+  Mixed: "Mixed",
 } as const;

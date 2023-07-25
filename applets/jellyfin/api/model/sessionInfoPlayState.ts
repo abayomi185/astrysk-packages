@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlayerStateInfo } from './playerStateInfo';
+import type { PlayerStateInfo } from "./playerStateInfo";
 
 export type SessionInfoPlayState = PlayerStateInfo | null;

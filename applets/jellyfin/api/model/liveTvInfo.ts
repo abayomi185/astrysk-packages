@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { LiveTvServiceInfo } from './liveTvServiceInfo';
+import type { LiveTvServiceInfo } from "./liveTvServiceInfo";
 
 export interface LiveTvInfo {
   /** Gets or sets the services. */

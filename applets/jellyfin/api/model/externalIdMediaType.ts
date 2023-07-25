@@ -8,21 +8,21 @@
 /**
  * The specific media type of an MediaBrowser.Model.Providers.ExternalIdInfo.
  */
-export type ExternalIdMediaType = typeof ExternalIdMediaType[keyof typeof ExternalIdMediaType];
-
+export type ExternalIdMediaType =
+  (typeof ExternalIdMediaType)[keyof typeof ExternalIdMediaType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ExternalIdMediaType = {
-  Album: 'Album',
-  AlbumArtist: 'AlbumArtist',
-  Artist: 'Artist',
-  BoxSet: 'BoxSet',
-  Episode: 'Episode',
-  Movie: 'Movie',
-  OtherArtist: 'OtherArtist',
-  Person: 'Person',
-  ReleaseGroup: 'ReleaseGroup',
-  Season: 'Season',
-  Series: 'Series',
-  Track: 'Track',
+  Album: "Album",
+  AlbumArtist: "AlbumArtist",
+  Artist: "Artist",
+  BoxSet: "BoxSet",
+  Episode: "Episode",
+  Movie: "Movie",
+  OtherArtist: "OtherArtist",
+  Person: "Person",
+  ReleaseGroup: "ReleaseGroup",
+  Season: "Season",
+  Series: "Series",
+  Track: "Track",
 } as const;

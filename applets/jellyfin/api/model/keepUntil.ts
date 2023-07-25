@@ -5,13 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type KeepUntil = typeof KeepUntil[keyof typeof KeepUntil];
-
+export type KeepUntil = (typeof KeepUntil)[keyof typeof KeepUntil];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const KeepUntil = {
-  UntilDeleted: 'UntilDeleted',
-  UntilSpaceNeeded: 'UntilSpaceNeeded',
-  UntilWatched: 'UntilWatched',
-  UntilDate: 'UntilDate',
+  UntilDeleted: "UntilDeleted",
+  UntilSpaceNeeded: "UntilSpaceNeeded",
+  UntilWatched: "UntilWatched",
+  UntilDate: "UntilDate",
 } as const;

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlaybackInfoDtoDeviceProfile } from './playbackInfoDtoDeviceProfile';
+import type { PlaybackInfoDtoDeviceProfile } from "./playbackInfoDtoDeviceProfile";
 
 /**
  * Plabyback info dto.

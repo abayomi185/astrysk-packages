@@ -4,6 +4,13 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GeneralCommandType } from './generalCommandType';
+import type { GeneralCommandType } from "./generalCommandType";
 
-export type PostCapabilitiesParams = { id?: string; playableMediaTypes?: string[]; supportedCommands?: GeneralCommandType[]; supportsMediaControl?: boolean; supportsSync?: boolean; supportsPersistentIdentifier?: boolean };
+export type PostCapabilitiesParams = {
+  id?: string;
+  playableMediaTypes?: string[];
+  supportedCommands?: GeneralCommandType[];
+  supportsMediaControl?: boolean;
+  supportsSync?: boolean;
+  supportsPersistentIdentifier?: boolean;
+};

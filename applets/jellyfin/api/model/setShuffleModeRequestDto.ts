@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GroupShuffleMode } from './groupShuffleMode';
+import type { GroupShuffleMode } from "./groupShuffleMode";
 
 /**
  * Class SetShuffleModeRequestDto.

@@ -4,10 +4,10 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlaybackStartInfoItem } from './playbackStartInfoItem';
-import type { PlayMethod } from './playMethod';
-import type { RepeatMode } from './repeatMode';
-import type { QueueItem } from './queueItem';
+import type { PlaybackStartInfoItem } from "./playbackStartInfoItem";
+import type { PlayMethod } from "./playMethod";
+import type { RepeatMode } from "./repeatMode";
+import type { QueueItem } from "./queueItem";
 
 /**
  * Class PlaybackStartInfo.

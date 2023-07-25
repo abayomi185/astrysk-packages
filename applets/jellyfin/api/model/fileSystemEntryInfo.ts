@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { FileSystemEntryType } from './fileSystemEntryType';
+import type { FileSystemEntryType } from "./fileSystemEntryType";
 
 /**
  * Class FileSystemEntryInfo.

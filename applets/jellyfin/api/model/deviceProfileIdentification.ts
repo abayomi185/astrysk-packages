@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DeviceIdentification } from './deviceIdentification';
+import type { DeviceIdentification } from "./deviceIdentification";
 
 /**
  * Gets or sets the Identification.

@@ -5,15 +5,15 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RecommendationType = typeof RecommendationType[keyof typeof RecommendationType];
-
+export type RecommendationType =
+  (typeof RecommendationType)[keyof typeof RecommendationType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RecommendationType = {
-  SimilarToRecentlyPlayed: 'SimilarToRecentlyPlayed',
-  SimilarToLikedItem: 'SimilarToLikedItem',
-  HasDirectorFromRecentlyPlayed: 'HasDirectorFromRecentlyPlayed',
-  HasActorFromRecentlyPlayed: 'HasActorFromRecentlyPlayed',
-  HasLikedDirector: 'HasLikedDirector',
-  HasLikedActor: 'HasLikedActor',
+  SimilarToRecentlyPlayed: "SimilarToRecentlyPlayed",
+  SimilarToLikedItem: "SimilarToLikedItem",
+  HasDirectorFromRecentlyPlayed: "HasDirectorFromRecentlyPlayed",
+  HasActorFromRecentlyPlayed: "HasActorFromRecentlyPlayed",
+  HasLikedDirector: "HasLikedDirector",
+  HasLikedActor: "HasLikedActor",
 } as const;

@@ -4,6 +4,17 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemKind } from './baseItemKind';
+import type { BaseItemKind } from "./baseItemKind";
 
-export type GetQueryFiltersParams = { userId?: string; parentId?: string; includeItemTypes?: BaseItemKind[]; isAiring?: boolean; isMovie?: boolean; isSports?: boolean; isKids?: boolean; isNews?: boolean; isSeries?: boolean; recursive?: boolean };
+export type GetQueryFiltersParams = {
+  userId?: string;
+  parentId?: string;
+  includeItemTypes?: BaseItemKind[];
+  isAiring?: boolean;
+  isMovie?: boolean;
+  isSports?: boolean;
+  isKids?: boolean;
+  isNews?: boolean;
+  isSeries?: boolean;
+  recursive?: boolean;
+};

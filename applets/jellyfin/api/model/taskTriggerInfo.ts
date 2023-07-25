@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TaskTriggerInfoDayOfWeek } from './taskTriggerInfoDayOfWeek';
+import type { TaskTriggerInfoDayOfWeek } from "./taskTriggerInfoDayOfWeek";
 
 /**
  * Class TaskTriggerInfo.

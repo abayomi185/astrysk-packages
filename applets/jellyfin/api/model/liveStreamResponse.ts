@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaSourceInfo } from './mediaSourceInfo';
+import type { MediaSourceInfo } from "./mediaSourceInfo";
 
 export interface LiveStreamResponse {
   MediaSource?: MediaSourceInfo;

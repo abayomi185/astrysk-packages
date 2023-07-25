@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetDirectoryContentsParams = { path: string; includeFiles?: boolean; includeDirectories?: boolean };
+export type GetDirectoryContentsParams = {
+  path: string;
+  includeFiles?: boolean;
+  includeDirectories?: boolean;
+};

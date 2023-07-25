@@ -4,29 +4,29 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItemDtoVideo3DFormat } from './baseItemDtoVideo3DFormat';
-import type { ExternalUrl } from './externalUrl';
-import type { MediaSourceInfo } from './mediaSourceInfo';
-import type { BaseItemDtoPlayAccess } from './baseItemDtoPlayAccess';
-import type { MediaUrl } from './mediaUrl';
-import type { BaseItemDtoProviderIds } from './baseItemDtoProviderIds';
-import type { BaseItemKind } from './baseItemKind';
-import type { BaseItemPerson } from './baseItemPerson';
-import type { NameGuidPair } from './nameGuidPair';
-import type { BaseItemDtoUserData } from './baseItemDtoUserData';
-import type { DayOfWeek } from './dayOfWeek';
-import type { MediaStream } from './mediaStream';
-import type { BaseItemDtoVideoType } from './baseItemDtoVideoType';
-import type { BaseItemDtoImageTags } from './baseItemDtoImageTags';
-import type { BaseItemDtoImageBlurHashes } from './baseItemDtoImageBlurHashes';
-import type { ChapterInfo } from './chapterInfo';
-import type { BaseItemDtoLocationType } from './baseItemDtoLocationType';
-import type { BaseItemDtoIsoType } from './baseItemDtoIsoType';
-import type { MetadataField } from './metadataField';
-import type { BaseItemDtoImageOrientation } from './baseItemDtoImageOrientation';
-import type { BaseItemDtoChannelType } from './baseItemDtoChannelType';
-import type { BaseItemDtoAudio } from './baseItemDtoAudio';
-import type { BaseItemDtoCurrentProgram } from './baseItemDtoCurrentProgram';
+import type { BaseItemDtoVideo3DFormat } from "./baseItemDtoVideo3DFormat";
+import type { ExternalUrl } from "./externalUrl";
+import type { MediaSourceInfo } from "./mediaSourceInfo";
+import type { BaseItemDtoPlayAccess } from "./baseItemDtoPlayAccess";
+import type { MediaUrl } from "./mediaUrl";
+import type { BaseItemDtoProviderIds } from "./baseItemDtoProviderIds";
+import type { BaseItemKind } from "./baseItemKind";
+import type { BaseItemPerson } from "./baseItemPerson";
+import type { NameGuidPair } from "./nameGuidPair";
+import type { BaseItemDtoUserData } from "./baseItemDtoUserData";
+import type { DayOfWeek } from "./dayOfWeek";
+import type { MediaStream } from "./mediaStream";
+import type { BaseItemDtoVideoType } from "./baseItemDtoVideoType";
+import type { BaseItemDtoImageTags } from "./baseItemDtoImageTags";
+import type { BaseItemDtoImageBlurHashes } from "./baseItemDtoImageBlurHashes";
+import type { ChapterInfo } from "./chapterInfo";
+import type { BaseItemDtoLocationType } from "./baseItemDtoLocationType";
+import type { BaseItemDtoIsoType } from "./baseItemDtoIsoType";
+import type { MetadataField } from "./metadataField";
+import type { BaseItemDtoImageOrientation } from "./baseItemDtoImageOrientation";
+import type { BaseItemDtoChannelType } from "./baseItemDtoChannelType";
+import type { BaseItemDtoAudio } from "./baseItemDtoAudio";
+import type { BaseItemDtoCurrentProgram } from "./baseItemDtoCurrentProgram";
 
 /**
  * This is strictly used as a data transfer object from the api layer.

@@ -5,4 +5,6 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type MediaSourceInfoRequiredHttpHeaders = {[key: string]: string | null} | null;
+export type MediaSourceInfoRequiredHttpHeaders = {
+  [key: string]: string | null;
+} | null;

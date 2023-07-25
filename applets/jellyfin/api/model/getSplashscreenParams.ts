@@ -4,6 +4,19 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ImageFormat } from './imageFormat';
+import type { ImageFormat } from "./imageFormat";
 
-export type GetSplashscreenParams = { tag?: string; format?: ImageFormat; maxWidth?: number; maxHeight?: number; width?: number; height?: number; fillWidth?: number; fillHeight?: number; blur?: number; backgroundColor?: string; foregroundLayer?: string; quality?: number };
+export type GetSplashscreenParams = {
+  tag?: string;
+  format?: ImageFormat;
+  maxWidth?: number;
+  maxHeight?: number;
+  width?: number;
+  height?: number;
+  fillWidth?: number;
+  fillHeight?: number;
+  blur?: number;
+  backgroundColor?: string;
+  foregroundLayer?: string;
+  quality?: number;
+};

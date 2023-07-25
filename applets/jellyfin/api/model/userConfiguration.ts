@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SubtitlePlaybackMode } from './subtitlePlaybackMode';
+import type { SubtitlePlaybackMode } from "./subtitlePlaybackMode";
 
 /**
  * Class UserConfiguration.

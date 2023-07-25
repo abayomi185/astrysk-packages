@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MovieInfoProviderIds } from './movieInfoProviderIds';
+import type { MovieInfoProviderIds } from "./movieInfoProviderIds";
 
 export interface MovieInfo {
   /** Gets or sets the name. */

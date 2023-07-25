@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { VirtualFolderInfoCollectionType } from './virtualFolderInfoCollectionType';
-import type { VirtualFolderInfoLibraryOptions } from './virtualFolderInfoLibraryOptions';
+import type { VirtualFolderInfoCollectionType } from "./virtualFolderInfoCollectionType";
+import type { VirtualFolderInfoLibraryOptions } from "./virtualFolderInfoLibraryOptions";
 
 /**
  * Used to hold information about a user's list of configured virtual folders.

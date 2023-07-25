@@ -5,4 +5,15 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetItemImage2Params = { width?: number; height?: number; quality?: number; fillWidth?: number; fillHeight?: number; cropWhitespace?: boolean; addPlayedIndicator?: boolean; blur?: number; backgroundColor?: string; foregroundLayer?: string };
+export type GetItemImage2Params = {
+  width?: number;
+  height?: number;
+  quality?: number;
+  fillWidth?: number;
+  fillHeight?: number;
+  cropWhitespace?: boolean;
+  addPlayedIndicator?: boolean;
+  blur?: number;
+  backgroundColor?: string;
+  foregroundLayer?: string;
+};

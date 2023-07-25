@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GroupQueueMode } from './groupQueueMode';
+import type { GroupQueueMode } from "./groupQueueMode";
 
 /**
  * Class QueueRequestDto.

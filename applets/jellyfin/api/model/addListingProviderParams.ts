@@ -5,4 +5,8 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type AddListingProviderParams = { pw?: string; validateListings?: boolean; validateLogin?: boolean };
+export type AddListingProviderParams = {
+  pw?: string;
+  validateListings?: boolean;
+  validateLogin?: boolean;
+};

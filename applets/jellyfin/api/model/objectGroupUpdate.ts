@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GroupUpdateType } from './groupUpdateType';
+import type { GroupUpdateType } from "./groupUpdateType";
 
 /**
  * Class GroupUpdate.

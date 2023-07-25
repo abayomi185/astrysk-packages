@@ -5,4 +5,4 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GeneralCommandArguments = {[key: string]: string | null};
+export type GeneralCommandArguments = { [key: string]: string | null };

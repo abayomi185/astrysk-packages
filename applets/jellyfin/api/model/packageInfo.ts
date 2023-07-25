@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { VersionInfo } from './versionInfo';
+import type { VersionInfo } from "./versionInfo";
 
 /**
  * Class PackageInfo.

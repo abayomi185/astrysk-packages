@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GeneralCommandType } from './generalCommandType';
-import type { GeneralCommandArguments } from './generalCommandArguments';
+import type { GeneralCommandType } from "./generalCommandType";
+import type { GeneralCommandArguments } from "./generalCommandArguments";
 
 export interface GeneralCommand {
   /** This exists simply to identify a set of known commands. */

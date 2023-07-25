@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MovieInfoRemoteSearchQuerySearchInfo } from './movieInfoRemoteSearchQuerySearchInfo';
+import type { MovieInfoRemoteSearchQuerySearchInfo } from "./movieInfoRemoteSearchQuerySearchInfo";
 
 export interface MovieInfoRemoteSearchQuery {
   SearchInfo?: MovieInfoRemoteSearchQuerySearchInfo;

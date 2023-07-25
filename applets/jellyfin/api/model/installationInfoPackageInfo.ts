@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PackageInfo } from './packageInfo';
+import type { PackageInfo } from "./packageInfo";
 
 /**
  * Gets or sets package information for the installation.

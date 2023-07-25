@@ -4,8 +4,23 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { RecordingStatus } from './recordingStatus';
-import type { ImageType } from './imageType';
-import type { ItemFields } from './itemFields';
+import type { RecordingStatus } from "./recordingStatus";
+import type { ImageType } from "./imageType";
+import type { ItemFields } from "./itemFields";
 
-export type GetRecordingsSeriesParams = { channelId?: string; userId?: string; groupId?: string; startIndex?: number; limit?: number; status?: RecordingStatus; isInProgress?: boolean; seriesTimerId?: string; enableImages?: boolean; imageTypeLimit?: number; enableImageTypes?: ImageType[]; fields?: ItemFields[]; enableUserData?: boolean; enableTotalRecordCount?: boolean };
+export type GetRecordingsSeriesParams = {
+  channelId?: string;
+  userId?: string;
+  groupId?: string;
+  startIndex?: number;
+  limit?: number;
+  status?: RecordingStatus;
+  isInProgress?: boolean;
+  seriesTimerId?: string;
+  enableImages?: boolean;
+  imageTypeLimit?: number;
+  enableImageTypes?: ImageType[];
+  fields?: ItemFields[];
+  enableUserData?: boolean;
+  enableTotalRecordCount?: boolean;
+};

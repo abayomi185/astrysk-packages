@@ -5,4 +5,4 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type BaseItemDtoImageBlurHashesPrimary = {[key: string]: string};
+export type BaseItemDtoImageBlurHashesPrimary = { [key: string]: string };

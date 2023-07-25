@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { HeaderMatchType } from './headerMatchType';
+import type { HeaderMatchType } from "./headerMatchType";
 
 export interface HttpHeaderInfo {
   Name?: string | null;

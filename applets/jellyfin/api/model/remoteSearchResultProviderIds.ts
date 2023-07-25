@@ -8,4 +8,6 @@
 /**
  * Gets or sets the provider ids.
  */
-export type RemoteSearchResultProviderIds = {[key: string]: string | null} | null;
+export type RemoteSearchResultProviderIds = {
+  [key: string]: string | null;
+} | null;

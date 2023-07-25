@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetThemeMediaParams = { userId?: string; inheritFromParent?: boolean };
+export type GetThemeMediaParams = {
+  userId?: string;
+  inheritFromParent?: boolean;
+};

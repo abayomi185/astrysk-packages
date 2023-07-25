@@ -5,12 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type CodecType = typeof CodecType[keyof typeof CodecType];
-
+export type CodecType = (typeof CodecType)[keyof typeof CodecType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CodecType = {
-  Video: 'Video',
-  VideoAudio: 'VideoAudio',
-  Audio: 'Audio',
+  Video: "Video",
+  VideoAudio: "VideoAudio",
+  Audio: "Audio",
 } as const;

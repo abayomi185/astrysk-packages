@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { BaseItem } from './baseItem';
+import type { BaseItem } from "./baseItem";
 
 /**
  * Class BaseItem.

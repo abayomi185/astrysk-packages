@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type TransportStreamTimestamp = typeof TransportStreamTimestamp[keyof typeof TransportStreamTimestamp];
-
+export type TransportStreamTimestamp =
+  (typeof TransportStreamTimestamp)[keyof typeof TransportStreamTimestamp];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TransportStreamTimestamp = {
-  None: 'None',
-  Zero: 'Zero',
-  Valid: 'Valid',
+  None: "None",
+  Zero: "Zero",
+  Valid: "Valid",
 } as const;

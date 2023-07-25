@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ProfileConditionType } from './profileConditionType';
-import type { ProfileConditionValue } from './profileConditionValue';
+import type { ProfileConditionType } from "./profileConditionType";
+import type { ProfileConditionValue } from "./profileConditionValue";
 
 export interface ProfileCondition {
   Condition?: ProfileConditionType;

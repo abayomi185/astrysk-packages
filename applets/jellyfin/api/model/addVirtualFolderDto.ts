@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AddVirtualFolderDtoLibraryOptions } from './addVirtualFolderDtoLibraryOptions';
+import type { AddVirtualFolderDtoLibraryOptions } from "./addVirtualFolderDtoLibraryOptions";
 
 /**
  * Add virtual folder dto.

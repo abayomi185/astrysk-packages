@@ -4,6 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { HardwareEncodingType } from './hardwareEncodingType';
+import type { HardwareEncodingType } from "./hardwareEncodingType";
 
-export type TranscodingInfoHardwareAccelerationType = HardwareEncodingType | null;
+export type TranscodingInfoHardwareAccelerationType =
+  HardwareEncodingType | null;

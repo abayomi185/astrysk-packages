@@ -4,6 +4,11 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ItemFields } from './itemFields';
+import type { ItemFields } from "./itemFields";
 
-export type GetSimilarAlbumsParams = { excludeArtistIds?: string[]; userId?: string; limit?: number; fields?: ItemFields[] };
+export type GetSimilarAlbumsParams = {
+  excludeArtistIds?: string[];
+  userId?: string;
+  limit?: number;
+  fields?: ItemFields[];
+};

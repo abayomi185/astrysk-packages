@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SortOrder } from './sortOrder';
-import type { ImageType } from './imageType';
-import type { ItemFields } from './itemFields';
+import type { SortOrder } from "./sortOrder";
+import type { ImageType } from "./imageType";
+import type { ItemFields } from "./itemFields";
 
 /**
  * Get programs dto.

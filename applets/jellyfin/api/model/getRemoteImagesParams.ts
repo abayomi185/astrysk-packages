@@ -4,6 +4,12 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ImageType } from './imageType';
+import type { ImageType } from "./imageType";
 
-export type GetRemoteImagesParams = { type?: ImageType; startIndex?: number; limit?: number; providerName?: string; includeAllLanguages?: boolean };
+export type GetRemoteImagesParams = {
+  type?: ImageType;
+  startIndex?: number;
+  limit?: number;
+  providerName?: string;
+  includeAllLanguages?: boolean;
+};

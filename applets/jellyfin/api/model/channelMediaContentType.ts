@@ -5,17 +5,17 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type ChannelMediaContentType = typeof ChannelMediaContentType[keyof typeof ChannelMediaContentType];
-
+export type ChannelMediaContentType =
+  (typeof ChannelMediaContentType)[keyof typeof ChannelMediaContentType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ChannelMediaContentType = {
-  Clip: 'Clip',
-  Podcast: 'Podcast',
-  Trailer: 'Trailer',
-  Movie: 'Movie',
-  Episode: 'Episode',
-  Song: 'Song',
-  MovieExtra: 'MovieExtra',
-  TvExtra: 'TvExtra',
+  Clip: "Clip",
+  Podcast: "Podcast",
+  Trailer: "Trailer",
+  Movie: "Movie",
+  Episode: "Episode",
+  Song: "Song",
+  MovieExtra: "MovieExtra",
+  TvExtra: "TvExtra",
 } as const;

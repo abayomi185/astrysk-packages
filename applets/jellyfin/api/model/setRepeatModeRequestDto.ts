@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { GroupRepeatMode } from './groupRepeatMode';
+import type { GroupRepeatMode } from "./groupRepeatMode";
 
 /**
  * Class SetRepeatModeRequestDto.

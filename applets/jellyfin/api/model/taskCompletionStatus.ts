@@ -8,13 +8,13 @@
 /**
  * Enum TaskCompletionStatus.
  */
-export type TaskCompletionStatus = typeof TaskCompletionStatus[keyof typeof TaskCompletionStatus];
-
+export type TaskCompletionStatus =
+  (typeof TaskCompletionStatus)[keyof typeof TaskCompletionStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TaskCompletionStatus = {
-  Completed: 'Completed',
-  Failed: 'Failed',
-  Cancelled: 'Cancelled',
-  Aborted: 'Aborted',
+  Completed: "Completed",
+  Failed: "Failed",
+  Cancelled: "Cancelled",
+  Aborted: "Aborted",
 } as const;

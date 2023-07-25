@@ -8,16 +8,15 @@
 /**
  * Plugin load status.
  */
-export type PluginStatus = typeof PluginStatus[keyof typeof PluginStatus];
-
+export type PluginStatus = (typeof PluginStatus)[keyof typeof PluginStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PluginStatus = {
-  Active: 'Active',
-  Restart: 'Restart',
-  Deleted: 'Deleted',
-  Superceded: 'Superceded',
-  Malfunctioned: 'Malfunctioned',
-  NotSupported: 'NotSupported',
-  Disabled: 'Disabled',
+  Active: "Active",
+  Restart: "Restart",
+  Deleted: "Deleted",
+  Superceded: "Superceded",
+  Malfunctioned: "Malfunctioned",
+  NotSupported: "NotSupported",
+  Disabled: "Disabled",
 } as const;

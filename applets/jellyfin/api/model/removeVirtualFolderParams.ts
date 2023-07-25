@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type RemoveVirtualFolderParams = { name?: string; refreshLibrary?: boolean };
+export type RemoveVirtualFolderParams = {
+  name?: string;
+  refreshLibrary?: boolean;
+};

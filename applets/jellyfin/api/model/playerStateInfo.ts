@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlayerStateInfoPlayMethod } from './playerStateInfoPlayMethod';
-import type { RepeatMode } from './repeatMode';
+import type { PlayerStateInfoPlayMethod } from "./playerStateInfoPlayMethod";
+import type { RepeatMode } from "./repeatMode";
 
 export interface PlayerStateInfo {
   /** Gets or sets the now playing position ticks. */

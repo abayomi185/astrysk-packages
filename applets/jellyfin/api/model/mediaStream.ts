@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaStreamType } from './mediaStreamType';
-import type { MediaStreamDeliveryMethod } from './mediaStreamDeliveryMethod';
+import type { MediaStreamType } from "./mediaStreamType";
+import type { MediaStreamDeliveryMethod } from "./mediaStreamDeliveryMethod";
 
 /**
  * Class MediaStream.

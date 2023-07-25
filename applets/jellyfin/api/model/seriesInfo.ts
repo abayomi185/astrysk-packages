@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SeriesInfoProviderIds } from './seriesInfoProviderIds';
+import type { SeriesInfoProviderIds } from "./seriesInfoProviderIds";
 
 export interface SeriesInfo {
   /** Gets or sets the name. */

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DayPattern } from './dayPattern';
+import type { DayPattern } from "./dayPattern";
 
 /**
  * Gets or sets the day pattern.

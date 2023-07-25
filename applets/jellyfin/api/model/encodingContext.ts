@@ -5,11 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type EncodingContext = typeof EncodingContext[keyof typeof EncodingContext];
-
+export type EncodingContext =
+  (typeof EncodingContext)[keyof typeof EncodingContext];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EncodingContext = {
-  Streaming: 'Streaming',
-  Static: 'Static',
+  Streaming: "Streaming",
+  Static: "Static",
 } as const;

@@ -4,11 +4,11 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ImageSavingConvention } from './imageSavingConvention';
-import type { MetadataOptions } from './metadataOptions';
-import type { NameValuePair } from './nameValuePair';
-import type { RepositoryInfo } from './repositoryInfo';
-import type { PathSubstitution } from './pathSubstitution';
+import type { ImageSavingConvention } from "./imageSavingConvention";
+import type { MetadataOptions } from "./metadataOptions";
+import type { NameValuePair } from "./nameValuePair";
+import type { RepositoryInfo } from "./repositoryInfo";
+import type { PathSubstitution } from "./pathSubstitution";
 
 /**
  * Represents the server configuration.

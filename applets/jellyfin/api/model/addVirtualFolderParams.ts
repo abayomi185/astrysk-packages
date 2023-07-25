@@ -4,6 +4,11 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { CollectionTypeOptions } from './collectionTypeOptions';
+import type { CollectionTypeOptions } from "./collectionTypeOptions";
 
-export type AddVirtualFolderParams = { name?: string; collectionType?: CollectionTypeOptions; paths?: string[]; refreshLibrary?: boolean };
+export type AddVirtualFolderParams = {
+  name?: string;
+  collectionType?: CollectionTypeOptions;
+  paths?: string[];
+  refreshLibrary?: boolean;
+};

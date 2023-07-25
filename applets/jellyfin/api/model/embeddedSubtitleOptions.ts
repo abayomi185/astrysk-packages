@@ -8,13 +8,13 @@
 /**
  * An enum representing the options to disable embedded subs.
  */
-export type EmbeddedSubtitleOptions = typeof EmbeddedSubtitleOptions[keyof typeof EmbeddedSubtitleOptions];
-
+export type EmbeddedSubtitleOptions =
+  (typeof EmbeddedSubtitleOptions)[keyof typeof EmbeddedSubtitleOptions];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EmbeddedSubtitleOptions = {
-  AllowAll: 'AllowAll',
-  AllowText: 'AllowText',
-  AllowImage: 'AllowImage',
-  AllowNone: 'AllowNone',
+  AllowAll: "AllowAll",
+  AllowText: "AllowText",
+  AllowImage: "AllowImage",
+  AllowNone: "AllowNone",
 } as const;

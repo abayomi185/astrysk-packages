@@ -8,4 +8,4 @@
 /**
  * Gets or sets the image tags.
  */
-export type SeriesTimerInfoDtoImageTags = {[key: string]: string} | null;
+export type SeriesTimerInfoDtoImageTags = { [key: string]: string } | null;

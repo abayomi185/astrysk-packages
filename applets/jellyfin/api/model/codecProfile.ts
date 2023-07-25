@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { CodecType } from './codecType';
-import type { ProfileCondition } from './profileCondition';
+import type { CodecType } from "./codecType";
+import type { ProfileCondition } from "./profileCondition";
 
 export interface CodecProfile {
   Type?: CodecType;

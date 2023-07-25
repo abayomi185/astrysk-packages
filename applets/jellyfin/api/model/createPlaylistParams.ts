@@ -5,4 +5,9 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type CreatePlaylistParams = { name?: string; ids?: string[]; userId?: string; mediaType?: string };
+export type CreatePlaylistParams = {
+  name?: string;
+  ids?: string[];
+  userId?: string;
+  mediaType?: string;
+};

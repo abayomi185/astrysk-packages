@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaPathInfo } from './mediaPathInfo';
-import type { EmbeddedSubtitleOptions } from './embeddedSubtitleOptions';
-import type { TypeOptions } from './typeOptions';
+import type { MediaPathInfo } from "./mediaPathInfo";
+import type { EmbeddedSubtitleOptions } from "./embeddedSubtitleOptions";
+import type { TypeOptions } from "./typeOptions";
 
 export interface LibraryOptions {
   EnablePhotos?: boolean;

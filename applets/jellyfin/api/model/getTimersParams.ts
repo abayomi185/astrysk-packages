@@ -5,4 +5,9 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetTimersParams = { channelId?: string; seriesTimerId?: string; isActive?: boolean; isScheduled?: boolean };
+export type GetTimersParams = {
+  channelId?: string;
+  seriesTimerId?: string;
+  isActive?: boolean;
+  isScheduled?: boolean;
+};

@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { LibraryOptionInfoDto } from './libraryOptionInfoDto';
-import type { ImageType } from './imageType';
-import type { ImageOption } from './imageOption';
+import type { LibraryOptionInfoDto } from "./libraryOptionInfoDto";
+import type { ImageType } from "./imageType";
+import type { ImageOption } from "./imageOption";
 
 /**
  * Library type options dto.

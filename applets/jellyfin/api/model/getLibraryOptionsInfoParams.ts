@@ -5,4 +5,7 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type GetLibraryOptionsInfoParams = { libraryContentType?: string; isNewLibrary?: boolean };
+export type GetLibraryOptionsInfoParams = {
+  libraryContentType?: string;
+  isNewLibrary?: boolean;
+};

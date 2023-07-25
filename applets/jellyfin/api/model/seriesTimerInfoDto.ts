@@ -4,10 +4,10 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { KeepUntil } from './keepUntil';
-import type { DayOfWeek } from './dayOfWeek';
-import type { SeriesTimerInfoDtoDayPattern } from './seriesTimerInfoDtoDayPattern';
-import type { SeriesTimerInfoDtoImageTags } from './seriesTimerInfoDtoImageTags';
+import type { KeepUntil } from "./keepUntil";
+import type { DayOfWeek } from "./dayOfWeek";
+import type { SeriesTimerInfoDtoDayPattern } from "./seriesTimerInfoDtoDayPattern";
+import type { SeriesTimerInfoDtoImageTags } from "./seriesTimerInfoDtoImageTags";
 
 /**
  * Class SeriesTimerInfoDto.

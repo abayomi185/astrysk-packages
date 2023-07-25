@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { CollectionTypeOptions } from './collectionTypeOptions';
+import type { CollectionTypeOptions } from "./collectionTypeOptions";
 
 /**
  * Gets or sets the type of the collection.

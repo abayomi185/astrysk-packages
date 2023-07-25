@@ -4,8 +4,8 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PlaybackStopInfoItem } from './playbackStopInfoItem';
-import type { QueueItem } from './queueItem';
+import type { PlaybackStopInfoItem } from "./playbackStopInfoItem";
+import type { QueueItem } from "./queueItem";
 
 /**
  * Class PlaybackStopInfo.

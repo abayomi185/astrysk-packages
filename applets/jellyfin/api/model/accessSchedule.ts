@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { DynamicDayOfWeek } from './dynamicDayOfWeek';
+import type { DynamicDayOfWeek } from "./dynamicDayOfWeek";
 
 /**
  * An entity representing a user's access schedule.

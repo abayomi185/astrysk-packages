@@ -4,6 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { PersonLookupInfo } from './personLookupInfo';
+import type { PersonLookupInfo } from "./personLookupInfo";
 
-export type PersonLookupInfoRemoteSearchQuerySearchInfo = PersonLookupInfo | null;
+export type PersonLookupInfoRemoteSearchQuerySearchInfo =
+  PersonLookupInfo | null;

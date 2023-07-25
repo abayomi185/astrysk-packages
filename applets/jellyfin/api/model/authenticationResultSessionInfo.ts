@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SessionInfo } from './sessionInfo';
+import type { SessionInfo } from "./sessionInfo";
 
 /**
  * Class SessionInfo.

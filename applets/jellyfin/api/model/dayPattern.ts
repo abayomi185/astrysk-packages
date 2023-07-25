@@ -5,12 +5,11 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type DayPattern = typeof DayPattern[keyof typeof DayPattern];
-
+export type DayPattern = (typeof DayPattern)[keyof typeof DayPattern];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DayPattern = {
-  Daily: 'Daily',
-  Weekdays: 'Weekdays',
-  Weekends: 'Weekends',
+  Daily: "Daily",
+  Weekdays: "Weekdays",
+  Weekends: "Weekends",
 } as const;

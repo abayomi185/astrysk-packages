@@ -4,6 +4,6 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { AlbumInfo } from './albumInfo';
+import type { AlbumInfo } from "./albumInfo";
 
 export type AlbumInfoRemoteSearchQuerySearchInfo = AlbumInfo | null;

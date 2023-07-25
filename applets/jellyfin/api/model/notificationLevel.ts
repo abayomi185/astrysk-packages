@@ -5,12 +5,12 @@
  * OpenAPI spec version: 10.8.8
  */
 
-export type NotificationLevel = typeof NotificationLevel[keyof typeof NotificationLevel];
-
+export type NotificationLevel =
+  (typeof NotificationLevel)[keyof typeof NotificationLevel];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const NotificationLevel = {
-  Normal: 'Normal',
-  Warning: 'Warning',
-  Error: 'Error',
+  Normal: "Normal",
+  Warning: "Warning",
+  Error: "Error",
 } as const;

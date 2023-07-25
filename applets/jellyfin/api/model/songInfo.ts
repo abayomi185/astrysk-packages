@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { SongInfoProviderIds } from './songInfoProviderIds';
+import type { SongInfoProviderIds } from "./songInfoProviderIds";
 
 export interface SongInfo {
   /** Gets or sets the name. */

@@ -4,7 +4,7 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { ThemeMediaResult } from './themeMediaResult';
+import type { ThemeMediaResult } from "./themeMediaResult";
 
 /**
  * Class ThemeMediaResult.

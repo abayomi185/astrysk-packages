@@ -4,16 +4,16 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { MediaProtocol } from './mediaProtocol';
-import type { MediaSourceInfoEncoderProtocol } from './mediaSourceInfoEncoderProtocol';
-import type { MediaSourceType } from './mediaSourceType';
-import type { MediaSourceInfoVideoType } from './mediaSourceInfoVideoType';
-import type { MediaSourceInfoIsoType } from './mediaSourceInfoIsoType';
-import type { MediaSourceInfoVideo3DFormat } from './mediaSourceInfoVideo3DFormat';
-import type { MediaStream } from './mediaStream';
-import type { MediaAttachment } from './mediaAttachment';
-import type { MediaSourceInfoTimestamp } from './mediaSourceInfoTimestamp';
-import type { MediaSourceInfoRequiredHttpHeaders } from './mediaSourceInfoRequiredHttpHeaders';
+import type { MediaProtocol } from "./mediaProtocol";
+import type { MediaSourceInfoEncoderProtocol } from "./mediaSourceInfoEncoderProtocol";
+import type { MediaSourceType } from "./mediaSourceType";
+import type { MediaSourceInfoVideoType } from "./mediaSourceInfoVideoType";
+import type { MediaSourceInfoIsoType } from "./mediaSourceInfoIsoType";
+import type { MediaSourceInfoVideo3DFormat } from "./mediaSourceInfoVideo3DFormat";
+import type { MediaStream } from "./mediaStream";
+import type { MediaAttachment } from "./mediaAttachment";
+import type { MediaSourceInfoTimestamp } from "./mediaSourceInfoTimestamp";
+import type { MediaSourceInfoRequiredHttpHeaders } from "./mediaSourceInfoRequiredHttpHeaders";
 
 export interface MediaSourceInfo {
   Protocol?: MediaProtocol;

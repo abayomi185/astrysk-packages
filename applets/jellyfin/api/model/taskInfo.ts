@@ -4,9 +4,9 @@
  * Jellyfin API
  * OpenAPI spec version: 10.8.8
  */
-import type { TaskState } from './taskState';
-import type { TaskInfoLastExecutionResult } from './taskInfoLastExecutionResult';
-import type { TaskTriggerInfo } from './taskTriggerInfo';
+import type { TaskState } from "./taskState";
+import type { TaskInfoLastExecutionResult } from "./taskInfoLastExecutionResult";
+import type { TaskTriggerInfo } from "./taskTriggerInfo";
 
 /**
  * Class TaskInfo.
