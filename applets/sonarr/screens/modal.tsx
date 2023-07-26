@@ -24,9 +24,11 @@ const SonarrModal = () => {
   const baseURL = useSonarrStore.getState().baseURL;
   const token = useSonarrStore.getState().token;
 
-  const userId = useSonarrStore.getState().userDetails?.Id as string;
+  // const userId = useSonarrStore.getState().userDetails?.Id as string;
 
-  const serverId = useSonarrStore.getState().userDetails?.ServerId as string;
+  // const serverId = useSonarrStore.getState().userDetails?.ServerId as string;
 
   return <></>;
 };
+
+export default SonarrModal;

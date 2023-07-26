@@ -59,6 +59,7 @@ export const configureJellyfin = () => {
     return true;
   }
 
+  // WARN: Find a way to get this to be called after switching applets
   configureAxiosForJellyfin(baseURL, token, customHeaders);
 
   useJellyfinStore.setState({ isConfigured: true });

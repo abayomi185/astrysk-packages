@@ -76,6 +76,7 @@ export const JellyfinSearchResultItem: React.FC<{
           placeholder={imageBlurHash}
           transition={200}
           recyclingKey={imageId}
+          placeholderContentFit="cover"
         />
       </YStack>
       <YStack paddingHorizontal="$1" paddingTop="$1">

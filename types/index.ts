@@ -1,4 +1,4 @@
-export type { Applet } from "./types/applet";
+export type { Applet, AppletColors } from "./types/applet";
 
 export type { Router } from "./types/router";
 

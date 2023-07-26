@@ -72,6 +72,7 @@ const JellyfinRecentlyAddedItem: React.FC<{
               setLoadingSpinner(JellyfinRecentlyAddedItem.name, Actions.DONE);
             }}
             recyclingKey={recentlyAddedItemId}
+            placeholderContentFit="cover"
           />
         </YStack>
         <YStack paddingHorizontal="$1" paddingTop="$1">

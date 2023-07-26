@@ -7,6 +7,7 @@
   "authenticate": "Authenticate",
   "username": "Username",
   "password": "Password",
+  "apiKey": "API Key",
   "signIn": "Sign In",
   "serverURL": "Server URL",
   "error": "Error",
@@ -19,6 +20,8 @@
   "select": "Select",
   "selectDefault": "Select default",
   "lastActiveApplet": "Last active applet",
+
+  "disconnectServer": "Disconnect Server",
 
   "pageNotFound": "Page not found.",
   "areYouSure": "Are you sure?",

@@ -22,13 +22,13 @@ export const configureAxiosForSonarr = (
 ) => {
   const axiosConfig = {
     baseURL: baseURL,
-    headers: {
-      "Content-Type": "application/json",
-      "x-emby-authorization": `MediaBrowser , Client="${Constants.manifest?.name}", \
-        Device="${DeviceInfo.deviceName}", DeviceId="${DeviceInfo.modelId}", \
-        Version="${Constants.manifest?.version}"`,
-      ...(token ? { "x-mediabrowser-token": token } : {}),
-      ...(customHeaders ? customHeaders : {}),
+    // headers: {
+    //   // "Content-Type": "application/json",
+    //   ...(token ? { apiKey: token } : {}),
+    //   ...(customHeaders ? customHeaders : {}),
+    // },
+    params: {
+      apikey: token,
     },
   };
   create_axios_instance(axiosConfig);

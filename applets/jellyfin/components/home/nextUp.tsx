@@ -71,6 +71,7 @@ const JellyfinNextUpItem: React.FC<{
             setLoadingSpinner(JellyfinNextUpItem.name, Actions.DONE);
           }}
           recyclingKey={seriesId}
+          placeholderContentFit="cover"
         />
       </YStack>
       <YStack paddingHorizontal="$1" paddingTop="$1">

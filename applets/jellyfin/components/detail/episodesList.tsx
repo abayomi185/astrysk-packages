@@ -65,6 +65,8 @@ const JellyfinSeriesDetailEpisodeItem: React.FC<{
                 Actions.DONE
               );
             }}
+            recyclingKey={data.Id}
+            placeholderContentFit="cover"
           />
           <YStack
             position="absolute"

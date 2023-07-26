@@ -11,6 +11,12 @@ export const create_axios_instance = (config: AxiosRequestConfig) => {
       return qs.stringify(params, { arrayFormat: "repeat" });
     },
   });
+
+  // Add request interceptor for testing
+  AXIOS_INSTANCE.interceptors.request.use((request) => {
+    console.log("Starting Request", request);
+    return request;
+  });
 };
 
 export const apiInstance = <T>(config: AxiosRequestConfig): Promise<T> => {

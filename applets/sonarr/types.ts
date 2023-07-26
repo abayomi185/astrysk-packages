@@ -38,6 +38,11 @@ export interface SonarrDetailScreenProps extends Record<string, string> {
   [key: string]: any;
 }
 
+export enum SonarrSettingsKeys {
+  Server = "common:server",
+  DeleteCache = "jellyfin:deleteCache",
+}
+
 export interface SonarrFilter {
   id: string;
   options: string[];

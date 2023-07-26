@@ -2,6 +2,7 @@ import React from "react";
 import { ContextMenuOptions } from "@astrysk/utils";
 import { SettingsOptionProps } from "./settings";
 import { Router } from "./router";
+import { ColorTokens } from "tamagui";
 
 // Make a generic type that defines the class
 export interface Applet {
@@ -16,5 +17,11 @@ export interface Applet {
   fullScreenModalView?: React.FC;
   fullScreenDetailView?: React.FC;
   contextMenu: ContextMenuOptions;
-  accentColor?: string; // To change accent colour of tab bar
+  accentColor?: AppletColors; // To change accent colour of tab bar
+}
+
+export interface AppletColors {
+  primary: ColorTokens;
+  secondary: string | ColorTokens;
+  accentColor: string | ColorTokens;
 }

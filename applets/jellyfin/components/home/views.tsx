@@ -69,6 +69,8 @@ const JellyfinViewsItem: React.FC<{
             onLoadEnd={() => {
               setLoadingSpinner(JellyfinViewsItem.name, Actions.DONE);
             }}
+            recyclingKey={recentlyAddedItemId}
+            placeholderContentFit="cover"
           />
         </YStack>
       </YStack>

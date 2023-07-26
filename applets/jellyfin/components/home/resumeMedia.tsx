@@ -78,6 +78,7 @@ const JellyfinResumeMediaItem: React.FC<{
           }
           transition={200}
           recyclingKey={imageId}
+          placeholderContentFit="cover"
         />
         <YStack
           position="absolute"

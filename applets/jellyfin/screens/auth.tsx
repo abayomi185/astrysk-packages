@@ -90,6 +90,10 @@ const JellyfinAuth = () => {
     // WARN: This implementation for authentication is terrible. Needs a proper rework
     // From this onSubmit to the mutation
 
+    // Essentially setting up axios without token and headers such that it has the
+    // correct structure when configureJellyfin is called on each tab
+    // The error handling in the case is done within the mutation
+    // which is less than ideal
     useJellyfinStore.setState({ baseURL: data.serverURL });
     configureAxiosForJellyfin(data.serverURL, undefined, undefined, () => {
       auth.mutate({ data: { Username: data.username, Pw: data.password } });
