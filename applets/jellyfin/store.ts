@@ -9,6 +9,7 @@ import {
   JellyfinMediaItemSettings,
   JellyfinSearchFilterContext,
 } from "./types";
+import { filterPersistState } from "@astrysk/utils";
 
 const MMKVStore = new MMKV({
   id: "jellyfinStore",
@@ -36,7 +37,10 @@ export const useJellyfinStore = create<JellyfinState>()(
     // storage: MMKVStorageAdapter,
     // Allow only specific state to be persisted
     partialize: (state): JellyfinPersistState => {
-      return filterPersistState(state);
+      return filterPersistState<JellyfinState, JellyfinPersistState>(
+        state,
+        jellyfinPersistStateKeys
+      );
     },
   })
 );
@@ -59,8 +63,8 @@ interface JellyfinState extends StateTypes.AppletState {
 interface JellyfinPersistState
   extends Pick<
     JellyfinState,
-    | "token"
     | "baseURL"
+    | "token"
     | "userDetails"
     | "mediaCache"
     | "mediaItemSettings"
@@ -70,8 +74,8 @@ interface JellyfinPersistState
 // NOTE: Persist key needs to be added here too
 export const jellyfinPersistStateKeys = Array.from(
   new Set<keyof JellyfinState>([
-    "token",
     "baseURL",
+    "token",
     "userDetails",
     "mediaCache",
     "mediaItemSettings",
@@ -82,13 +86,4 @@ export const jellyfinPersistStateKeys = Array.from(
 const initialAppState: JellyfinState = {
   authenticated: false,
   isConfigured: false, // Use this state to configure if not configured
-};
-
-const filterPersistState = (state: JellyfinState): JellyfinPersistState => {
-  return Object.keys(state).reduce((result: any, key: string) => {
-    if (jellyfinPersistStateKeys.includes(key as keyof JellyfinState)) {
-      result[key] = state[key as keyof JellyfinState];
-    }
-    return result;
-  }, {});
 };

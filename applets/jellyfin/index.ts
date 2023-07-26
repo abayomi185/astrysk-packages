@@ -6,12 +6,13 @@ import JellyfinSearch from "./screens/search";
 import JellyfinDetail from "./screens/detail";
 import JellyfinModal from "./screens/modal";
 import JellyfinFullScreenModal from "./screens/fullScreenModal";
-import { configureJellyfin } from "./utils";
+import { configureJellyfin, deConfigureJellyfin } from "./utils";
 import { JellyfinContextMenuOptions } from "./context";
 import { JellyfinSettingsOptions } from "./settings";
 
 export const Jellyfin: Applet = {
   configure: configureJellyfin,
+  deconfigure: deConfigureJellyfin,
   configureView: JellyfinAuth,
   homeView: JellyfinHome,
   searchView: JellyfinSearch,

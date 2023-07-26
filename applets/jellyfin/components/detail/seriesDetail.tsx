@@ -344,20 +344,50 @@ const JellyfinSeriesDetail: React.FC<{
   const getSeriesWatchedStatus = () => seriesData?.data?.UserData?.Played;
 
   const setSeriesAsWatched = () => {
-    seriesData.data?.UserData?.Played
-      ? markUnplayedItem.mutate({
-          userId: userId,
-          itemId: seriesId as string,
-        })
-      : markPlayedItem.mutate({
-          userId: userId,
-          itemId: seriesId as string,
-        });
+    if (!seriesData.data?.UserData?.Played) {
+      Alert.alert(t("jellyfin:seriesDetail:markSeriesAsWatched"), undefined, [
+        {
+          text: "Cancel",
+          style: "default",
+        },
+        {
+          text: t("common:ok") as string,
+          style: "default",
+          onPress: () => {
+            markPlayedItem.mutate(
+              {
+                userId: userId,
+                itemId: seriesId as string,
+              },
+              {
+                onSuccess: () => {
+                  optimisticUpdateWatchedStatus();
+                },
+              }
+            );
+          },
+        },
+      ]);
+    }
 
+    seriesData.data?.UserData?.Played &&
+      markUnplayedItem.mutate(
+        {
+          userId: userId,
+          itemId: seriesId as string,
+        },
+        {
+          onSuccess: () => {
+            optimisticUpdateWatchedStatus();
+          },
+        }
+      );
+  };
+
+  const optimisticUpdateWatchedStatus = () => {
     // Optimistically update cache before mutation
     queryClient.setQueryData<BaseItemDto>(
       getGetItemQueryKey(userId, seriesId),
-
       (oldData) => {
         if (!oldData) {
           return undefined;
@@ -667,7 +697,11 @@ const JellyfinSeriesDetail: React.FC<{
                     <Button
                       height="$3"
                       width="$9"
-                      backgroundColor="$background"
+                      backgroundColor={
+                        getSeriesWatchedStatus() ? "$background" : "#8e4ec6"
+                      }
+                      borderWidth="$1"
+                      borderColor="$purple9"
                       padding="$0"
                       onPress={setSeriesAsWatched}
                     >

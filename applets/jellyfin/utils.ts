@@ -73,6 +73,10 @@ export const useJellyfinConfigurator = () => {
   }, []);
 };
 
+export const deConfigureJellyfin = () => {
+  useJellyfinStore.setState({ isConfigured: false });
+};
+
 // NOTE: DELAY RENDER - OLD, now using Suspense
 export const useDelayedRender = (delay: number = 0) => {
   const [isDelayed, setIsDelayed] = React.useState(true);
