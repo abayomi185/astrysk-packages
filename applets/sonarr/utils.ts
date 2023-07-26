@@ -22,11 +22,6 @@ export const configureAxiosForSonarr = (
 ) => {
   const axiosConfig = {
     baseURL: baseURL,
-    // headers: {
-    //   // "Content-Type": "application/json",
-    //   ...(token ? { apiKey: token } : {}),
-    //   ...(customHeaders ? customHeaders : {}),
-    // },
     params: {
       apikey: token,
     },
@@ -64,4 +59,8 @@ export const useSonarrConfigurator = () => {
   return React.useEffect(() => {
     configureSonarr();
   }, []);
+};
+
+export const deConfigureSonarr = () => {
+  useSonarrStore.setState({ isConfigured: false });
 };

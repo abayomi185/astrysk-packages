@@ -55,6 +55,10 @@
 
   "error_episodeNotSelected": "Episode not selected",
 
+  "seriesDetail": {
+    "markSeriesAsWatched": "Mark Series as Watched?"
+  },
+
   "playerOptions": "Player Options",
   "deleteCache": "Delete Cache",
   "deleteCacheMessage": "This action will delete all media cache. Are you sure?",

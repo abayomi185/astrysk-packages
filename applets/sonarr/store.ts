@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import { SonarrFilter, SonarrSearchFilterContext } from "./types";
+import { filterPersistState } from "@astrysk/utils";
 
 const MMKVStore = new MMKV({
   id: "sonarr",
@@ -23,14 +24,15 @@ const MMKVStorageAdapter = {
 
 export const useSonarrStore = create<SonarrState>()(
   persist((_set, _get) => initialAppState, {
-    name: "jellyfinStore",
+    name: "sonarrStore",
     version: APP_STATE_VERSION,
-    // storage: createJSONStorage(() => AsyncStorage),
     storage: createJSONStorage(() => MMKVStorageAdapter),
-    // storage: MMKVStorageAdapter,
     // Allow only specific state to be persisted
     partialize: (state): SonarrPersistState => {
-      return filterPersistState(state);
+      return filterPersistState<SonarrState, SonarrPersistState>(
+        state,
+        sonarrPersistStateKeys
+      );
     },
   })
 );
@@ -48,23 +50,14 @@ interface SonarrState extends StateTypes.AppletState {
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too
 interface SonarrPersistState
-  extends Pick<SonarrState, "token" | "baseURL" | "customHeaders"> {}
+  extends Pick<SonarrState, "baseURL" | "token" | "customHeaders"> {}
 
 // NOTE: Persist key needs to be added here too
 export const sonarrPersistStateKeys = Array.from(
-  new Set<keyof SonarrState>(["token", "baseURL", "customHeaders"])
+  new Set<keyof SonarrState>(["baseURL", "token", "customHeaders"])
 );
 
 const initialAppState: SonarrState = {
-  authenticated: false,
+  authenticated: false, // Not sure this is needed anymore
   isConfigured: false, // Use this state to configure if not configured
-};
-
-const filterPersistState = (state: SonarrState): SonarrPersistState => {
-  return Object.keys(state).reduce((result: any, key: string) => {
-    if (sonarrPersistStateKeys.includes(key as keyof SonarrState)) {
-      result[key] = state[key as keyof SonarrState];
-    }
-    return result;
-  }, {});
 };

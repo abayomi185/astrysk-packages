@@ -72,7 +72,7 @@ const SonarrAuth = () => {
         }
       },
       onSettled: (data, error) => {
-        if (Array.isArray(data) || error) {
+        if (!Array.isArray(data) || error) {
           useSonarrStore.setState({ baseURL: undefined });
         }
       },

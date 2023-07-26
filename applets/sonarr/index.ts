@@ -5,12 +5,13 @@ import SonarrHome from "./screens/home";
 import SonarrSearch from "./screens/search";
 import SonarrDetail from "./screens/detail";
 import SonarrModal from "./screens/modal";
-import { configureSonarr } from "./utils";
+import { configureSonarr, deConfigureSonarr } from "./utils";
 import { SonarrContextMenuOptions } from "./context";
 import { SonarrSettingsOptions } from "./settings";
 
 export const Sonarr: Applet = {
   configure: configureSonarr,
+  deconfigure: deConfigureSonarr,
   configureView: SonarrAuth,
   homeView: SonarrHome,
   searchView: SonarrSearch,
