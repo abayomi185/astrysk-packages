@@ -1,107 +1,35 @@
 import React from "react";
-import { ScrollView, YStack, Text } from "tamagui";
+import { YStack, Text, useTheme, XStack } from "tamagui";
 import {
   ExpandableCalendar,
   CalendarProvider,
-  Agenda,
   AgendaList,
-  WeekCalendar,
 } from "react-native-calendars";
+import { Theme } from "react-native-calendars/src/types";
 import { useGetApiV3Calendar } from "../../api";
 
-const calendarTheme = {
-  // timelineContainer?: object;
-  // contentStyle?: ViewStyle;
-  // event?: object;
-  // eventTitle?: object;
-  // eventSummary?: object;
-  // eventTimes?: object;
-  // line?: object;
-  // verticalLine?: object;
-  // nowIndicatorLine?: object;
-  // nowIndicatorKnob?: object;
-  // timeLabel?: object;
-  // todayTextColor?: string;
-  // calendarBackground: "transparent",
-  // indicatorColor?: string;
-  // textSectionTitleColor?: string;
-  // textSectionTitleDisabledColor?: string;
-  // dayTextColor?: string;
-  // selectedDayTextColor?: string;
-  // monthTextColor?: string;
-  // selectedDayBackgroundColor?: string;
-  // arrowColor?: string;
-  // textDisabledColor?: string;
-  // textInactiveColor?: string;
-  // backgroundColor?: string;
-  // dotColor?: string;
-  // selectedDotColor?: string;
-  // disabledArrowColor?: string;
-  // textDayFontFamily?: TextStyle['fontFamily'];
-  // textMonthFontFamily?: TextStyle['fontFamily'];
-  // textDayHeaderFontFamily?: TextStyle['fontFamily'];
-  // textDayFontWeight?: TextStyle['fontWeight'];
-  // textMonthFontWeight?: TextStyle['fontWeight'];
-  // textDayHeaderFontWeight?: TextStyle['fontWeight'];
-  // textDayFontSize?: number;
-  // textMonthFontSize?: number;
-  // textDayHeaderFontSize?: number;
-  // agendaDayTextColor?: string;
-  // agendaDayNumColor?: string;
-  // agendaTodayColor?: string;
-  // agendaKnobColor?: string;
-  // todayButtonFontFamily?: TextStyle['fontFamily'];
-  // todayButtonFontWeight?: TextStyle['fontWeight'];
-  // todayButtonFontSize?: number;
-  // textDayStyle?: TextStyle;
-  // dotStyle?: object;
-  // arrowStyle?: ViewStyle;
-  // todayBackgroundColor?: string;
-  // disabledDotColor?: string;
-  // inactiveDotColor?: string;
-  // todayDotColor?: string;
-  // todayButtonTextColor?: string;
-  // todayButtonPosition?: string;
-  // arrowHeight?: number;
-  // arrowWidth?: number;
-  // weekVerticalMargin?: number;
-  // stylesheet?: {
-  //     calendar?: {
-  //         main?: object;
-  //         header?: object;
-  //     };
-  //     day?: {
-  //         basic?: object;
-  //         period?: object;
-  //     };
-  //     dot?: object;
-  //     marking?: object;
-  //     'calendar-list'?: {
-  //         main?: object;
-  //     };
-  //     agenda?: {
-  //         main?: object;
-  //         list?: object;
-  //     };
-  //     expandable?: {
-  //         main?: object;
-  //     };
-  // };
-  backgroundColor: "red",
-};
+const getExpandableCalendarTheme = (): Theme => ({
+  arrowColor: "red",
+  monthTextColor: "#d1d1d1",
+  dayTextColor: "#808080",
+  calendarBackground: "#151515",
+  // calendarBackground: variableToString(),
+  // calendarBackground: useTheme().background.get().val,
+});
 
-const weekCalendarTheme = {
-  // reservationBackgroundColor: "blue",
-  backgroundColor: "red",
-  textDefaultColor: "red",
-  selectedDayTextColor: "blue",
-  todayBackgroundColor: "#e6ffe6",
-  "stylesheet.week.main": {
-    reservations: {
-      backgroundColor: "#ff8080",
+const getAgendaListTheme = (): Theme => ({
+  dayTextColor: "#808080",
+  // textSectionTitleColor: "#d1d1d1",
+  stylesheet: {
+    agenda: {
+      list: {
+        fontWeight: "bold",
+        fontSize: 18,
+        backgroundColor: "#d1d1d1",
+      },
     },
   },
-};
+});
 
 // const renderItem = React.useCallback(({ item }: any) => {
 //   return (
@@ -114,6 +42,9 @@ const weekCalendarTheme = {
 const today = new Date().toISOString().split("T")[0];
 
 const SonarrCalendar: React.FC = () => {
+  const expandableCalendarTheme = React.useRef(getExpandableCalendarTheme());
+  const agendaListTheme = React.useRef(getAgendaListTheme());
+
   const calendar = useGetApiV3Calendar({
     // start?: string;
     // end?: string;
@@ -124,14 +55,20 @@ const SonarrCalendar: React.FC = () => {
     // tags?: string;
   });
 
+  // console.log(useTheme().background.get().val); // To get the background color from tamagui
+
   return (
     <YStack flex={1}>
       <CalendarProvider
         // date={new Date().toISOString().slice(0, 10)}
         date={new Date().toISOString().split("T")[0]}
-        theme={calendarTheme}
+        // theme={calendarTheme.current}
       >
-        <ExpandableCalendar allowShadow={false} />
+        <ExpandableCalendar
+          firstDay={1}
+          allowShadow={false}
+          theme={expandableCalendarTheme.current}
+        />
         <AgendaList
           sections={[
             {
@@ -219,9 +156,17 @@ const SonarrCalendar: React.FC = () => {
               </YStack>
             );
           }}
-          // sectionStyle={{
-          //   backgroundColor: "transparent",
+          // For manual section header rendering
+          // renderSectionHeader={(info) => {
+          //   console.log(info);
+          //   return <XStack height="$3" backgroundColor="red"></XStack>;
           // }}
+          theme={agendaListTheme.current}
+          sectionStyle={{
+            backgroundColor: useTheme().background.get().val,
+            // @ts-ignore
+            color: "#d1d1d1",
+          }}
         />
       </CalendarProvider>
     </YStack>

@@ -41,7 +41,7 @@ const animations = createAnimations({
   },
 });
 
-export const customTokenMerge = {
+const customTokenMerge = {
   ...size,
   "$6.5": 69,
   "$11.5": 134,
@@ -55,7 +55,7 @@ export const customTokenMerge = {
   $25: 384,
 };
 
-const customTokens = createTokens({
+export const customTokens = createTokens({
   color: color,
   radius: radius,
   zIndex: zIndex,
