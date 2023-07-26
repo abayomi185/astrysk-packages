@@ -7,6 +7,7 @@ import { ColorTokens } from "tamagui";
 // Make a generic type that defines the class
 export interface Applet {
   configure: () => boolean;
+  deconfigure?: () => void;
   configureView: React.FC;
   homeView: React.FC;
   searchView: React.FC;

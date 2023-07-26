@@ -41,6 +41,7 @@ export const AppletHeaderButton = () => {
               switch (indexPath[1]) {
                 case 0:
                   useAppStateStore.setState({ activeApplet: undefined });
+                  applets[applet]?.deconfigure?.();
                   break;
               }
             applets[applet].contextMenu.getContextHandler(indexPath);

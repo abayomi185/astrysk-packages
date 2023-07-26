@@ -12,11 +12,11 @@ export const create_axios_instance = (config: AxiosRequestConfig) => {
     },
   });
 
-  // Add request interceptor for testing
-  AXIOS_INSTANCE.interceptors.request.use((request) => {
-    console.log("Starting Request", request);
-    return request;
-  });
+  // Add request interceptor for testing and logging
+  // AXIOS_INSTANCE.interceptors.request.use((request) => {
+  //   console.log("Starting Request", request);
+  //   return request;
+  // });
 };
 
 export const apiInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
