@@ -165,7 +165,7 @@ const SonarrCalendar: React.FC = () => {
           sectionStyle={{
             backgroundColor: useTheme().background.get().val,
             // @ts-ignore
-            color: "#d1d1d1",
+            color: useTheme().gray11.get().val,
           }}
         />
       </CalendarProvider>
