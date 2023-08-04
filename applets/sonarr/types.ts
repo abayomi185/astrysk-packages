@@ -1,3 +1,11 @@
+import { SeriesResource } from "./api";
+
+export interface SonarrCache {
+  [baseURL: string]: {
+    seriesCache: SeriesResource[];
+  };
+}
+
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
 export enum SonarrDetailScreenContext {
@@ -9,13 +17,13 @@ export enum SonarrDetailScreenContext {
   // SeriesDetail = "SeriesDetail",
   // // Description
   // MovieDescription = "MovieDescription",
-  // SeriesDescription = "SeriesDescription",
+  SeriesDescription = "SeriesDescription",
   // // More Detail
   // EpisodeMoreDetail = "EpisodeMoreDetail",
   // MovieMoreDetail = "MovieMoreDetail",
   // // Filter
   // SearchSuggestionItem = "SearchSuggestionItem",
-  // SearchItem = "SearchItem",
+  SearchItem = "SearchItem",
   SearchFilter = "SearchFilter",
   // CollectionItem = "CollectionItem",
   // // Settings
@@ -25,7 +33,7 @@ export enum SonarrDetailScreenContext {
 export interface SonarrDetailScreenProps extends Record<string, string> {
   context?: SonarrDetailScreenContext;
   // itemType?: BaseItemKind;
-  itemId?: string;
+  itemId?: string | number;
   itemName?: string;
   itemCacheIndex?: string; // For cache purposes
   // itemData?: BaseItemDto | string;

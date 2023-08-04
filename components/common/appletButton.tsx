@@ -49,7 +49,11 @@ export const AppletButton = ({ applet, isBanner }: AppletButtonProps) => {
 };
 
 export const AppletButtonBanner = (props: AppletButtonProps) => {
-  return <AppletButton {...props} isBanner />;
+  return (
+    <XStack justifyContent="center">
+      <AppletButton {...props} isBanner />
+    </XStack>
+  );
 };
 
 const SCAppletButton = styled(XStack, {
@@ -69,6 +73,9 @@ const SCAppletButton = styled(XStack, {
     height: "$12",
     // elevation: "$2", // Cannot calculate shadow efficiently
     marginTop: "$3",
+    maxWidth: "$24",
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: "$3",
     borderRadius: "$8",
     borderWidth: "$0",

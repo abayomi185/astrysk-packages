@@ -50,6 +50,10 @@ export const SettingsOption: React.FC<{
         borderRadius="$0"
         theme="dark_gray"
         backgroundColor="$gray1"
+        borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
+        borderTopRightRadius={item.firstItem ? "$5" : "$0"}
+        borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
+        borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         {...style}
         onPress={item.onPress}
       >
@@ -72,7 +76,15 @@ export const SettingsOption: React.FC<{
             <H6 color="$color">{t(`${item.name ?? item.key}`)}</H6>
           </XStack>
           <XStack alignItems="center">
-            {item.value && <Text color="$gray11">{item.value}</Text>}
+            {item.value && Array.isArray(item.value) ? (
+              item.value.map((line, index) => (
+                <Text key={index} color="$gray11">
+                  {line}
+                </Text>
+              ))
+            ) : (
+              <Text color="$gray11">{item.value}</Text>
+            )}
           </XStack>
         </XStack>
       </Button>

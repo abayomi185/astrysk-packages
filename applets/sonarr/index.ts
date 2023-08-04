@@ -8,6 +8,7 @@ import SonarrModal from "./screens/modal";
 import { configureSonarr, deConfigureSonarr } from "./utils";
 import { SonarrContextMenuOptions } from "./context";
 import { SonarrSettingsOptions } from "./settings";
+import { sonarrColors } from "./colors";
 
 export const Sonarr: Applet = {
   configure: configureSonarr,
@@ -19,7 +20,7 @@ export const Sonarr: Applet = {
   detailView: SonarrDetail,
   modalView: SonarrModal,
   contextMenu: SonarrContextMenuOptions,
-  // accentColor: config.colors.sonarr,
+  colors: sonarrColors,
 };
 
 export default Sonarr;

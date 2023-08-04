@@ -7,9 +7,10 @@ import {
 } from "react-native-calendars";
 import { Theme } from "react-native-calendars/src/types";
 import { useGetApiV3Calendar } from "../../api";
+import { sonarrColors } from "../../colors";
 
 const getExpandableCalendarTheme = (): Theme => ({
-  arrowColor: "red",
+  arrowColor: sonarrColors.accentColor,
   monthTextColor: "#d1d1d1",
   dayTextColor: "#808080",
   calendarBackground: "#151515",

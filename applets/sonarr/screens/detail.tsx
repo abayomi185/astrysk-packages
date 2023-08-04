@@ -3,86 +3,42 @@ import { useSearchParams } from "expo-router";
 
 import { useSonarrStore } from "../store";
 import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
-// import JellyfinSeriesDetail from "../components/detail/seriesDetail";
-// import JellyfinMovieDetail from "../components/detail/movieDetail";
-// import JellyfinCollectionFolderDetail from "../components/detail/collectionFolderDetail";
-// import JellyfinMediaNotSupported from "../components/detail/mediaNotSupported";
+import SonarrSeriesDetail from "../components/detail/seriesDetail";
+import { SeriesResource } from "../api";
 
 const SonarrDetail: React.FC = () => {
   const params = useSearchParams() as SonarrDetailScreenProps;
 
-  // const userId = useSonarrStore.getState().userDetails?.Id as string;
-  // const serverId = useSonarrStore.getState().userDetails?.ServerId as string;
+  const baseURL = useSonarrStore.getState().baseURL as string;
 
-  // const itemData = React.useMemo(() => {
-  //   if (params.context === JellyfinDetailScreenContext.NextUp) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]
-  //       ?.nextUpMediaCache?.data?.Items?.[Number(params.itemCacheIndex)];
-  //   }
+  const itemData = React.useMemo(() => {
+    if (params.context === SonarrDetailScreenContext.SearchItem) {
+      return useSonarrStore
+        .getState()
+        .sonarrCache?.[baseURL].seriesCache.find(
+          (series) => series.id === Number(params.itemId)
+        );
+    }
+  }, [params.itemId]);
 
-  //   if (params.context === JellyfinDetailScreenContext.RecentlyAdded) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]
-  //       ?.latestMediaCache?.data?.[Number(params.itemCacheIndex)];
-  //   }
-
-  //   if (params.context === JellyfinDetailScreenContext.Views) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]?.viewsMediaCache
-  //       ?.data?.[Number(params.itemCacheIndex)];
-  //   }
-
-  //   if (params.context === JellyfinDetailScreenContext.SearchSuggestionItem) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]
-  //       ?.searchSuggestionsMediaCache?.data?.[Number(params.itemCacheIndex)];
-  //   }
-
-  //   if (params.context === JellyfinDetailScreenContext.SearchItem) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]
-  //       ?.searchMediaCache?.data?.[
-  //       Number(params.itemCacheIndex)
-  //     ] as BaseItemDto;
-  //   }
-
-  //   if (params.context === JellyfinDetailScreenContext.CollectionItem) {
-  //     return useSonarrStore.getState().mediaCache?.[serverId]
-  //       ?.collectionMediaCache?.data?.[Number(params.itemCacheIndex)];
-  //   }
-  // }, []);
-
-  // const getComponentToRender = () => {
-  //   if (
-  //     itemData?.Type === BaseItemKind.Episode ||
-  //     itemData?.Type === BaseItemKind.Series
-  //   ) {
-  //     return (
-  //       <JellyfinSeriesDetail
-  //         userId={userId}
-  //         serverId={serverId}
-  //         forwardedData={itemData}
-  //       />
-  //     );
-  //   } else if (itemData?.Type === BaseItemKind.Movie) {
-  //     return (
-  //       <JellyfinMovieDetail
-  //         userId={userId}
-  //         serverId={serverId}
-  //         forwardedData={itemData}
-  //       />
-  //     );
-  //   } else if (itemData?.Type === BaseItemKind.CollectionFolder) {
-  //     return (
-  //       <JellyfinCollectionFolderDetail
-  //         userId={userId}
-  //         serverId={serverId}
-  //         forwardedData={itemData}
-  //       />
-  //     );
-  //   } else {
-  //     return <JellyfinMediaNotSupported />;
+  // const itemData = () => {
+  //   if (params.context === SonarrDetailScreenContext.SearchItem) {
+  //     return useSonarrStore
+  //       .getState()
+  //       .sonarrCache?.[baseURL].seriesCache.find(
+  //         (series) => series.id === Number(params.itemId)
+  //       );
   //   }
   // };
 
-  // return <>{itemData && <Suspense>{getComponentToRender()}</Suspense>}</>;
-  return <></>;
+  const getComponentToRender = () => {
+    if (itemData) {
+      // console.log(itemData);
+      return <SonarrSeriesDetail forwardedData={itemData as SeriesResource} />;
+    }
+  };
+
+  return <>{itemData && <Suspense>{getComponentToRender()}</Suspense>}</>;
 };
 
 export default SonarrDetail;

@@ -7,11 +7,12 @@ export interface SettingsOptionProps {
   iconSize?: number;
   selectionHint?: string;
   selectedValue?: string | null;
-  value?: string;
+  value?: string | string[];
   route?: string;
   type: "label" | "toggle" | "item" | "action";
   viewType?: "modal" | "detail";
   onPress?: () => void;
+  firstItem?: boolean;
   lastItem?: boolean;
 }
 

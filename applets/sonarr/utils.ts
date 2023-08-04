@@ -12,6 +12,11 @@ import {
 } from "@astrysk/components";
 import { Actions, Screens } from "@astrysk/constants";
 import { Router } from "@astrysk/types";
+import {
+  SonarrDetailScreenContext,
+  SonarrDetailScreenProps,
+  SonarrSearchFilterContext,
+} from "./types";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForSonarr = (
@@ -63,4 +68,26 @@ export const useSonarrConfigurator = () => {
 
 export const deConfigureSonarr = () => {
   useSonarrStore.setState({ isConfigured: false });
+};
+
+// NOTE: SEARCH / COLLECTION UTILS
+export const goToSonarrSearchedItemDetailScreen = (
+  router: Router,
+  screenContext: SonarrDetailScreenContext,
+  searchContext: SonarrSearchFilterContext,
+  searchItemId: number
+  // searchItemIndex?: string
+) => {
+  const screenRoute =
+    searchContext === SonarrSearchFilterContext.Search
+      ? Screens.SEARCH_SCREEN_DETAIL_ROUTE
+      : Screens.HOME_SCREEN_DETAIL_ROUTE;
+  router.push({
+    pathname: `/${screenRoute}+${Crypto.randomUUID()}`,
+    params: {
+      context: screenContext,
+      itemId: searchItemId, // Use id to check cache for data
+      // itemCacheIndex: searchItemIndex,
+    } as SonarrDetailScreenProps,
+  });
 };

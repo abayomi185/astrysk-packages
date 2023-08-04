@@ -2,8 +2,9 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
-import { SonarrFilter, SonarrSearchFilterContext } from "./types";
+import { SonarrCache, SonarrFilter, SonarrSearchFilterContext } from "./types";
 import { filterPersistState } from "@astrysk/utils";
+import { SeriesResource } from "./api";
 
 const MMKVStore = new MMKV({
   id: "sonarr",
@@ -38,6 +39,7 @@ export const useSonarrStore = create<SonarrState>()(
 );
 
 interface SonarrState extends StateTypes.AppletState {
+  sonarrCache?: SonarrCache;
   // userDetails?: AuthenticationResultUser;
   // mediaCache?: JellyfinMediaCache;
   customHeaders?: Record<string, string>;
