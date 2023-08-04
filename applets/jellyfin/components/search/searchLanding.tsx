@@ -7,7 +7,7 @@ import { BaseItemDto, BaseItemKind, useGetSuggestions } from "../../api";
 import { useJellyfinStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
-import { goToSearchedItemDetailScreen } from "../../utils";
+import { goToJellyfinSearchedItemDetailScreen } from "../../utils";
 import {
   JellyfinDetailScreenContext,
   JellyfinSearchFilterContext,
@@ -33,7 +33,7 @@ const JellyfinSearchLandingItem: React.FC<{
         animation="delay"
         justifyContent="center"
         onPress={() =>
-          goToSearchedItemDetailScreen(
+          goToJellyfinSearchedItemDetailScreen(
             router,
             JellyfinDetailScreenContext.SearchSuggestionItem,
             JellyfinSearchFilterContext.Search,

@@ -6,10 +6,8 @@ import { Image, ImageSource } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 import { Animated } from "react-native";
 import { YStack, Text, XStack, H2, H4, H6 } from "tamagui";
-import {
-  roundToNearestStandardResolution,
-  setLoadingSpinner,
-} from "../../utils";
+import { roundToNearestStandardResolution } from "../../utils";
+import { setLoadingSpinner } from "@astrysk/utils";
 import { Actions, Screens } from "@astrysk/constants";
 import { useTranslation } from "react-i18next";
 import JellyfinDetailSection from "./section";

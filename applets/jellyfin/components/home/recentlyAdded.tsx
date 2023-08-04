@@ -6,7 +6,7 @@ import { BaseItemDto, ImageType, useGetLatestMedia } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { setLoadingSpinner, useLoadingSpinner } from "../../utils";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Actions, Screens } from "@astrysk/constants";
 import {

@@ -22,7 +22,7 @@ import {
   useMarkUnplayedItem,
 } from "../../api";
 import { Actions, Screens } from "@astrysk/constants";
-import { setLoadingSpinner, useLoadingSpinner } from "../../utils";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
 import { useNavigation, useRouter, useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { JellyfinEpisodeActionPanel } from "../../components/detail/videoActionPanel";

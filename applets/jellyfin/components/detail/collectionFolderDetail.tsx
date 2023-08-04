@@ -8,11 +8,8 @@ import { useJellyfinDetailHeader } from "../useHeader";
 import { FlashList } from "@shopify/flash-list";
 import { JellyfinSearchResultItem } from "../search/searchResults";
 import { useJellyfinStore } from "../../store";
-import {
-  filterSearchData,
-  setLoadingSpinner,
-  useLoadingSpinner,
-} from "../../utils";
+import { filterJellyfinSearchData } from "../../utils";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 
 const JellyfinCollectionFolderDetail: React.FC<{
@@ -46,7 +43,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
     {
       query: {
         select: (data) => {
-          const filteredData = filterSearchData<BaseItemDto>(
+          const filteredData = filterJellyfinSearchData<BaseItemDto>(
             data.Items as BaseItemDto[],
             searchFilters?.[JellyfinSearchFilterContext.Collection]
           );

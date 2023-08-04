@@ -1,5 +1,5 @@
 import { BaseItemDto } from "../../api";
-import { setLoadingSpinner } from "../../utils";
+import { setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 // import { customTokenMerge } from "@astrysk/styles/themeConfig";
 import React, { Suspense } from "react";

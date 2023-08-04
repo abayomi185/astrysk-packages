@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { H6, XStack, YStack, Text } from "tamagui";
 import { Image, ImageSource } from "expo-image";
-import { setLoadingSpinner, useLoadingSpinner } from "../../utils";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
 import { BaseItemPerson } from "../../api";
 import { useJellyfinStore } from "../../store";
 import { Actions } from "@astrysk/constants";

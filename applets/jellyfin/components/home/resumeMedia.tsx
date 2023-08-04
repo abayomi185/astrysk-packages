@@ -7,7 +7,7 @@ import { Image } from "expo-image";
 
 import { BaseItemDto, BaseItemKind, useGetResumeItems } from "../../api";
 
-import { setLoadingSpinner, useLoadingSpinner } from "../../utils";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Actions, Screens } from "@astrysk/constants";
 import { onItemLayout } from "@astrysk/utils";

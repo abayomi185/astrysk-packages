@@ -125,22 +125,24 @@ const JellyfinMoreDetail: React.FC<{
       <ScrollView height="100%" nestedScrollEnabled>
         <YStack padding="$4">
           {context === JellyfinMoreDetailContext.Episode && (
-            <XStack height="$14" width="100%">
-              <Image
-                style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
-                source={
-                  {
-                    uri: `${baseURL}/Items/${data?.Id}/Images/Primary?quality=80`,
-                    headers: {
-                      "X-Emby-Authorization": token,
-                    },
-                  } as ImageSource
-                }
-                placeholder={
-                  data?.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
-                }
-                transition={200}
-              />
+            <XStack justifyContent="center">
+              <XStack height="$14" width="100%" maxWidth="$24">
+                <Image
+                  style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
+                  source={
+                    {
+                      uri: `${baseURL}/Items/${data?.Id}/Images/Primary?quality=80`,
+                      headers: {
+                        "X-Emby-Authorization": token,
+                      },
+                    } as ImageSource
+                  }
+                  placeholder={
+                    data?.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
+                  }
+                  transition={200}
+                />
+              </XStack>
             </XStack>
           )}
           {context === JellyfinMoreDetailContext.Movie && (

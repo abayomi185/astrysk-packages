@@ -6,7 +6,10 @@ import { FlashList } from "@shopify/flash-list";
 import { useJellyfinStore } from "../../store";
 import { BaseItemDto, BaseItemKind, SearchHint } from "../../api";
 import { Image, ImageSource } from "expo-image";
-import { filterSearchData, goToSearchedItemDetailScreen } from "../../utils";
+import {
+  filterJellyfinSearchData,
+  goToJellyfinSearchedItemDetailScreen,
+} from "../../utils";
 import {
   JellyfinDetailScreenContext,
   JellyfinSearchFilterContext,
@@ -49,7 +52,7 @@ export const JellyfinSearchResultItem: React.FC<{
       pressStyle={{ scale: 0.97 }}
       animation="delay"
       onPress={() => {
-        goToSearchedItemDetailScreen(
+        goToJellyfinSearchedItemDetailScreen(
           router,
           // Screen Context
           searchContext === JellyfinSearchFilterContext.Search
@@ -128,7 +131,7 @@ const JellyfinSearchResults: React.FC<{
     {
       query: {
         select: (data) => {
-          return filterSearchData<SearchHint>(
+          return filterJellyfinSearchData<SearchHint>(
             data.SearchHints as SearchHint[],
             searchFilters?.[JellyfinSearchFilterContext.Search]
           );
