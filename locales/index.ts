@@ -9,6 +9,7 @@ const resources = {
   en: {
     common: en.common,
     jellyfin: en.jellyfin,
+    sonarr: en.sonarr,
   },
 };
 

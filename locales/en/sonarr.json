@@ -1,1 +1,20 @@
-{}
+{
+  "seriesDetail": "Series Detail",
+  "noDescriptionAvailable": "No description available",
+
+  "allSeasons": "All Seasons",
+  "episodes": "Episodes",
+
+  "gb": "GB",
+  "percent": "%",
+  "na": "N/A",
+
+  "seriesType": "Series Type",
+  "monitoring": "Monitoring",
+  "nextAiring": "Next Airing",
+  "network": "Network",
+  "runtime": "Runtime",
+  "rating": "Rating",
+  "genres": "Genres",
+  "alternateTitles": "Alternative Titles"
+}
