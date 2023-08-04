@@ -9,6 +9,7 @@ import JellyfinFullScreenModal from "./screens/fullScreenModal";
 import { configureJellyfin, deConfigureJellyfin } from "./utils";
 import { JellyfinContextMenuOptions } from "./context";
 import { JellyfinSettingsOptions } from "./settings";
+import { jellyfinColors } from "./colors";
 
 export const Jellyfin: Applet = {
   configure: configureJellyfin,
@@ -21,6 +22,7 @@ export const Jellyfin: Applet = {
   modalView: JellyfinModal,
   fullScreenModalView: JellyfinFullScreenModal,
   contextMenu: JellyfinContextMenuOptions,
+  colors: jellyfinColors,
 };
 
 export default Jellyfin;

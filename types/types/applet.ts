@@ -18,11 +18,11 @@ export interface Applet {
   fullScreenModalView?: React.FC;
   fullScreenDetailView?: React.FC;
   contextMenu: ContextMenuOptions;
-  accentColor?: AppletColors; // To change accent colour of tab bar
+  colors?: AppletColors; // To change accent colour of tab bar
 }
 
 export interface AppletColors {
-  primary: ColorTokens;
+  primary: string | ColorTokens;
   secondary: string | ColorTokens;
   accentColor: string | ColorTokens;
 }

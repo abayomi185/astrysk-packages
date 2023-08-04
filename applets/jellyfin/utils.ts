@@ -6,11 +6,7 @@ import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import { useJellyfinStore } from "./store";
 
-import {
-  registerLoadingComponent,
-  unregisterLoadingComponent,
-} from "@astrysk/components";
-import { Actions, Screens } from "@astrysk/constants";
+import { Screens } from "@astrysk/constants";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
@@ -91,25 +87,10 @@ export const useDelayedRender = (delay: number = 0) => {
   return isDelayed;
 };
 
-// NOTE: LOADING SPINNER
-type LoadingStatus = "done" | "loading";
-export const setLoadingSpinner = (
-  componentId: string,
-  isLoaded: LoadingStatus
-) => {
-  isLoaded === Actions.DONE
-    ? unregisterLoadingComponent(componentId)
-    : registerLoadingComponent(componentId);
-};
-export const useLoadingSpinner = (functionName: string) =>
-  React.useEffect(() => {
-    setLoadingSpinner(functionName, Actions.LOADING);
-  }, []);
-
 // NOTE: NEXT FUNCTION / ETC.
 
 // NOTE: SEARCH / COLLECTION UTILS
-export const goToSearchedItemDetailScreen = (
+export const goToJellyfinSearchedItemDetailScreen = (
   router: Router,
   screenContext: JellyfinDetailScreenContext,
   searchContext: JellyfinSearchFilterContext,
@@ -135,7 +116,7 @@ const isBaseItemDto = (data: BaseItemDto | SearchHint): data is BaseItemDto => {
 };
 
 // Intersection type to get typescript to stop complaining
-export const filterSearchData = <T extends BaseItemDto | SearchHint>(
+export const filterJellyfinSearchData = <T extends BaseItemDto | SearchHint>(
   data: T[],
   searchFilters: Record<string, any> | undefined
 ) => {
