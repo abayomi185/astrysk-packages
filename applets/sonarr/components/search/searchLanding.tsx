@@ -1,7 +1,12 @@
 import React, { Suspense } from "react";
 import { RefreshControl } from "react-native";
 import { useRouter } from "expo-router";
-import { SeriesResource, useGetApiV3Series } from "../../api";
+import {
+  SeriesResource,
+  useGetApiV3Languageprofile,
+  useGetApiV3Qualityprofile,
+  useGetApiV3Series,
+} from "../../api";
 import { H6, Spinner, XStack, YStack, Text } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
@@ -10,7 +15,7 @@ import {
   SonarrSearchFilterContext,
 } from "../../types";
 import { useSonarrStore } from "../../store";
-import { goToSonarrSearchedItemDetailScreen } from "../../utils";
+import { goToSonarrDetailScreen } from "../../utils";
 import {
   setLoadingSpinner,
   useLoadingSpinner,
@@ -18,6 +23,7 @@ import {
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { sonarrColors } from "../../colors";
+import { TabContext } from "@astrysk/types";
 
 const SonarrSearchResultItem: React.FC<{
   searchContext: SonarrSearchFilterContext;
@@ -35,16 +41,15 @@ const SonarrSearchResultItem: React.FC<{
       padding="$2"
       pressStyle={{ scale: 0.97 }}
       animation="delay"
-      onPress={() => {
-        goToSonarrSearchedItemDetailScreen(
+      onPress={() =>
+        goToSonarrDetailScreen({
           router,
-          // Screen Context
-          SonarrDetailScreenContext.SearchItem,
-          // Search Context
+          searchItemId: data.id as number,
+          tabContext: TabContext.Search,
+          screenContext: SonarrDetailScreenContext.SearchItem,
           searchContext,
-          data.id as number
-        );
-      }}
+        })
+      }
     >
       <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
         <Image
@@ -93,6 +98,29 @@ const SonarrSearchLanding: React.FC<{
       },
     }
   );
+
+  useGetApiV3Qualityprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrQualityProfiles: data,
+        });
+      },
+    },
+  });
+  useGetApiV3Languageprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrLanguageProfiles: data,
+        });
+      },
+    },
+  });
 
   const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
 

@@ -4,7 +4,11 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import { SonarrCache, SonarrFilter, SonarrSearchFilterContext } from "./types";
 import { filterPersistState } from "@astrysk/utils";
-import { SeriesResource } from "./api";
+import {
+  LanguageProfileResource,
+  QualityProfileResource,
+  SeriesResource,
+} from "./api";
 
 const MMKVStore = new MMKV({
   id: "sonarr",
@@ -40,6 +44,8 @@ export const useSonarrStore = create<SonarrState>()(
 
 interface SonarrState extends StateTypes.AppletState {
   sonarrCache?: SonarrCache;
+  sonarrQualityProfiles?: QualityProfileResource[];
+  sonarrLanguageProfiles?: LanguageProfileResource[];
   // userDetails?: AuthenticationResultUser;
   // mediaCache?: JellyfinMediaCache;
   customHeaders?: Record<string, string>;

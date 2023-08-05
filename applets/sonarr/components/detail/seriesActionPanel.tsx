@@ -39,16 +39,19 @@ const SonarrSeriesActionPanel: React.FC<{
         justifyContent="center"
       >
         <SonarrSeriesActionPanelButton first>
+          <Ionicons name="ios-bookmark" size={23} />
+        </SonarrSeriesActionPanelButton>
+        <SonarrSeriesActionPanelButton>
+          <Ionicons name="brush" size={23} />
+        </SonarrSeriesActionPanelButton>
+        <SonarrSeriesActionPanelButton>
           <Ionicons name="ios-search" size={23} />
         </SonarrSeriesActionPanelButton>
         <SonarrSeriesActionPanelButton>
           <Ionicons name="person" size={23} />
         </SonarrSeriesActionPanelButton>
         <SonarrSeriesActionPanelButton>
-          <Ionicons name="ios-bookmark" size={23} />
-        </SonarrSeriesActionPanelButton>
-        <SonarrSeriesActionPanelButton>
-          <Ionicons name="brush" size={23} />
+          <Ionicons name="time" size={23} />
         </SonarrSeriesActionPanelButton>
         <SonarrSeriesActionPanelButton>
           <Ionicons name="trash-bin-sharp" size={23} />

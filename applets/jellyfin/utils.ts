@@ -90,13 +90,19 @@ export const useDelayedRender = (delay: number = 0) => {
 // NOTE: NEXT FUNCTION / ETC.
 
 // NOTE: SEARCH / COLLECTION UTILS
-export const goToJellyfinSearchedItemDetailScreen = (
-  router: Router,
-  screenContext: JellyfinDetailScreenContext,
-  searchContext: JellyfinSearchFilterContext,
-  searchItemId: string,
-  searchItemIndex: string
-) => {
+export const goToJellyfinSearchedItemDetailScreen = ({
+  router,
+  screenContext,
+  searchContext,
+  searchItemId,
+  searchItemIndex,
+}: {
+  router: Router;
+  screenContext: JellyfinDetailScreenContext;
+  searchContext: JellyfinSearchFilterContext;
+  searchItemId: string;
+  searchItemIndex: string;
+}) => {
   const screenRoute =
     searchContext === JellyfinSearchFilterContext.Search
       ? Screens.SEARCH_SCREEN_DETAIL_ROUTE

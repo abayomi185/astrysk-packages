@@ -33,13 +33,13 @@ const JellyfinSearchLandingItem: React.FC<{
         animation="delay"
         justifyContent="center"
         onPress={() =>
-          goToJellyfinSearchedItemDetailScreen(
+          goToJellyfinSearchedItemDetailScreen({
             router,
-            JellyfinDetailScreenContext.SearchSuggestionItem,
-            JellyfinSearchFilterContext.Search,
-            data.Id as string,
-            index.toString()
-          )
+            screenContext: JellyfinDetailScreenContext.SearchSuggestionItem,
+            searchContext: JellyfinSearchFilterContext.Search,
+            searchItemId: data.Id as string,
+            searchItemIndex: index.toString(),
+          })
         }
       >
         <YStack height="$10" borderRadius="$6" backgroundColor="$gray6">

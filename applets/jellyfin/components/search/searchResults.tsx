@@ -52,17 +52,18 @@ export const JellyfinSearchResultItem: React.FC<{
       pressStyle={{ scale: 0.97 }}
       animation="delay"
       onPress={() => {
-        goToJellyfinSearchedItemDetailScreen(
+        goToJellyfinSearchedItemDetailScreen({
           router,
           // Screen Context
-          searchContext === JellyfinSearchFilterContext.Search
-            ? JellyfinDetailScreenContext.SearchItem
-            : JellyfinDetailScreenContext.CollectionItem,
+          screenContext:
+            searchContext === JellyfinSearchFilterContext.Search
+              ? JellyfinDetailScreenContext.SearchItem
+              : JellyfinDetailScreenContext.CollectionItem,
           // Search Context
           searchContext,
-          data.Id as string,
-          index.toString()
-        );
+          searchItemId: data.Id as string,
+          searchItemIndex: index.toString(),
+        });
       }}
     >
       <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">

@@ -11,7 +11,7 @@ import {
   unregisterLoadingComponent,
 } from "@astrysk/components";
 import { Actions, Screens } from "@astrysk/constants";
-import { Router } from "@astrysk/types";
+import { Router, TabContext } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,
@@ -71,15 +71,21 @@ export const deConfigureSonarr = () => {
 };
 
 // NOTE: SEARCH / COLLECTION UTILS
-export const goToSonarrSearchedItemDetailScreen = (
-  router: Router,
-  screenContext: SonarrDetailScreenContext,
-  searchContext: SonarrSearchFilterContext,
-  searchItemId: number
-  // searchItemIndex?: string
-) => {
+export const goToSonarrDetailScreen = ({
+  router,
+  searchItemId,
+  tabContext,
+  screenContext,
+  searchContext,
+}: {
+  router: Router;
+  searchItemId: number;
+  tabContext: TabContext;
+  screenContext?: SonarrDetailScreenContext;
+  searchContext?: SonarrSearchFilterContext;
+}) => {
   const screenRoute =
-    searchContext === SonarrSearchFilterContext.Search
+    tabContext === TabContext.Search
       ? Screens.SEARCH_SCREEN_DETAIL_ROUTE
       : Screens.HOME_SCREEN_DETAIL_ROUTE;
   router.push({

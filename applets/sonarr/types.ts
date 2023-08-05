@@ -18,6 +18,7 @@ export enum SonarrDetailScreenContext {
   // // Description
   // MovieDescription = "MovieDescription",
   SeriesDescription = "SeriesDescription",
+  AllSeasons = "AllSeasons",
   // // More Detail
   // EpisodeMoreDetail = "EpisodeMoreDetail",
   // MovieMoreDetail = "MovieMoreDetail",

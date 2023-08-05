@@ -37,8 +37,6 @@ const SonarrModal = () => {
         (item) => item.id === seriesId
       );
 
-    console.log(useSonarrStore.getState().sonarrCache?.[baseURL]?.seriesCache);
-
     useSonarrModalHeader(navigation, data?.title as string);
 
     return (

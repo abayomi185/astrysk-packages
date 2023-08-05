@@ -5,36 +5,52 @@ import { useSonarrStore } from "../store";
 import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
 import SonarrSeriesDetail from "../components/detail/seriesDetail";
 import { SeriesResource } from "../api";
+import SonarrAllSeasonsDetail from "../components/detail/allSeasonsDetail";
 
 const SonarrDetail: React.FC = () => {
   const params = useSearchParams() as SonarrDetailScreenProps;
+  const refParams = React.useRef(params);
+
+  // if (refParams.current.context !== params.context) {
+  //   // if (refParams.current.itemId !== params.itemId) {
+  //   refParams.current = params;
+  //   // }
+  // }
 
   const baseURL = useSonarrStore.getState().baseURL as string;
 
   const itemData = React.useMemo(() => {
-    if (params.context === SonarrDetailScreenContext.SearchItem) {
-      return useSonarrStore
-        .getState()
-        .sonarrCache?.[baseURL].seriesCache.find(
-          (series) => series.id === Number(params.itemId)
-        );
+    if (refParams.current.context === SonarrDetailScreenContext.SearchItem) {
+      return {
+        ...useSonarrStore
+          .getState()
+          .sonarrCache?.[baseURL].seriesCache.find(
+            (series) => series.id === Number(params.itemId)
+          ),
+        sonarrContext: params.context,
+      };
     }
-  }, [params.itemId]);
-
-  // const itemData = () => {
-  //   if (params.context === SonarrDetailScreenContext.SearchItem) {
-  //     return useSonarrStore
-  //       .getState()
-  //       .sonarrCache?.[baseURL].seriesCache.find(
-  //         (series) => series.id === Number(params.itemId)
-  //       );
-  //   }
-  // };
+    if (refParams.current.context === SonarrDetailScreenContext.AllSeasons) {
+      return {
+        ...useSonarrStore
+          .getState()
+          .sonarrCache?.[baseURL].seriesCache.find(
+            (series) => series.id === Number(params.itemId)
+          ),
+        sonarrContext: params.context,
+      };
+    }
+  }, [refParams.current.itemId]);
 
   const getComponentToRender = () => {
-    if (itemData) {
-      // console.log(itemData);
+    if (itemData?.sonarrContext === SonarrDetailScreenContext.SearchItem) {
       return <SonarrSeriesDetail forwardedData={itemData as SeriesResource} />;
+    } else if (
+      itemData?.sonarrContext === SonarrDetailScreenContext.AllSeasons
+    ) {
+      return (
+        <SonarrAllSeasonsDetail forwardedData={itemData as SeriesResource} />
+      );
     }
   };
 
