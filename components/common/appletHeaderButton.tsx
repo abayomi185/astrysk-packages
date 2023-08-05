@@ -1,9 +1,12 @@
 import React from "react";
+import { StackActions } from "@react-navigation/native";
+import { useRouter, useNavigation } from "expo-router";
 import { styled, XStack } from "tamagui";
 import { appletUtils } from "@astrysk/utils";
 import { useAppStateStore } from "@astrysk/stores";
 import ContextMenu from "react-native-context-menu-view";
 import { useTranslation } from "react-i18next";
+import { Screens } from "@astrysk/constants";
 
 export const AppletHeaderButton = () => {
   const applets = useAppStateStore.getState().applets; // Static applets
@@ -11,6 +14,8 @@ export const AppletHeaderButton = () => {
   const AppletIcon = appletUtils.getAppletIcon(applet);
 
   const { t } = useTranslation();
+  const router = useRouter();
+  const navigation = useNavigation();
 
   return (
     <XStack height="$2" width="$3.5">
@@ -42,6 +47,12 @@ export const AppletHeaderButton = () => {
                 case 0:
                   useAppStateStore.setState({ activeApplet: undefined });
                   applets[applet]?.deconfigure?.();
+                  // Go back to root of tab stack
+                  navigation.dispatch(StackActions.popToTop());
+                  // WARN: Add delay to prevent navigation from being blocked
+                  router.push({
+                    pathname: `/${Screens.HOME_SCREEN_ROUTE}`,
+                  });
                   break;
               }
             applets[applet].contextMenu.getContextHandler(indexPath);

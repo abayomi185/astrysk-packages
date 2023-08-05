@@ -1,5 +1,13 @@
 import React from "react";
-import { XStack, Button, H6, Text, SizeTokens, GetProps } from "tamagui";
+import {
+  YStack,
+  XStack,
+  Button,
+  H6,
+  Text,
+  SizeTokens,
+  GetProps,
+} from "tamagui";
 import { SettingsOptionProps } from "@astrysk/types";
 import { CircleDot, Check, ChevronRight } from "@tamagui/lucide-icons";
 import { TFunction } from "i18next";
@@ -30,15 +38,17 @@ export const SettingsOptionHeader: React.FC<{
 export const SettingsOption: React.FC<{
   t: TFunction;
   item: SettingsOptionProps;
+  alignCenter?: boolean;
   style?: GetProps<typeof Button>;
-}> = ({ t, item, style }) => {
+}> = ({ t, item, alignCenter, style }) => {
   const colorScheme = useColorScheme();
 
   if (item.type === "label") {
     return (
       <Button
         flex={1}
-        height="$5"
+        minHeight="$5"
+        height="auto"
         paddingVertical="$2"
         paddingHorizontal="$4"
         alignItems="center"
@@ -58,7 +68,11 @@ export const SettingsOption: React.FC<{
         onPress={item.onPress}
       >
         <XStack flex={1} justifyContent="space-between">
-          <XStack alignItems="center">
+          <XStack
+            flex={alignCenter ? 1 : undefined}
+            alignItems="center"
+            justifyContent={alignCenter ? "flex-end" : undefined}
+          >
             {item.icon && (
               <XStack
                 width="$2"
@@ -75,17 +89,38 @@ export const SettingsOption: React.FC<{
             )}
             <H6 color="$color">{t(`${item.name ?? item.key}`)}</H6>
           </XStack>
-          <XStack alignItems="center">
+          <YStack
+            flex={alignCenter ? undefined : 1}
+            width={alignCenter ? "60%" : undefined}
+            // backgroundColor="red"
+            marginLeft="$3"
+            flexWrap="wrap"
+            justifyContent="center"
+          >
             {item.value && Array.isArray(item.value) ? (
               item.value.map((line, index) => (
-                <Text key={index} color="$gray11">
-                  {line}
-                </Text>
+                <XStack
+                  key={index}
+                  flex={1}
+                  minHeight="$1"
+                  height="auto"
+                  justifyContent={alignCenter ? undefined : "flex-end"}
+                >
+                  <Text
+                    marginVertical="$1.5"
+                    color="$gray11"
+                    textAlign={alignCenter ? "left" : "right"}
+                  >
+                    {line}
+                  </Text>
+                </XStack>
               ))
             ) : (
-              <Text color="$gray11">{item.value}</Text>
+              <XStack justifyContent={alignCenter ? undefined : "flex-end"}>
+                <Text color="$gray11">{item.value}</Text>
+              </XStack>
             )}
-          </XStack>
+          </YStack>
         </XStack>
       </Button>
     );
