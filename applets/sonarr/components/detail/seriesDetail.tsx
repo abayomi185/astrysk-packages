@@ -1,6 +1,6 @@
 import React from "react";
 import { getLocales } from "expo-localization";
-import { useNavigation } from "expo-router";
+import { useNavigation, useSearchParams } from "expo-router";
 import { SeriesResource } from "../../api";
 import { XStack, YStack } from "tamagui";
 import { useSonarrStore } from "../../store";
@@ -8,7 +8,7 @@ import { useSonarrDetailHeader } from "../useHeader";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
 import { SettingsOption } from "@astrysk/components";
-import { SettingsOptionProps } from "@astrysk/types";
+import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import SonarrSeriesDetailHeader from "./seriesDetailHeader";
 
@@ -83,7 +83,7 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:runtime",
       type: "label",
-      value: `${seriesData.runtime}`,
+      value: `${seriesData.runtime} ${t("sonarr:mins")}`,
     },
     {
       key: "sonarr:rating",
@@ -111,7 +111,8 @@ const getSonarrSeriesDetailOptions = (
 
 export const SonarrSeriesDetail: React.FC<{
   forwardedData: SeriesResource;
-}> = ({ forwardedData }) => {
+  tabContext: TabContext;
+}> = ({ forwardedData, tabContext }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -145,7 +146,10 @@ export const SonarrSeriesDetail: React.FC<{
         }}
         estimatedItemSize={76}
         ListHeaderComponent={
-          <SonarrSeriesDetailHeader forwardedData={forwardedData} />
+          <SonarrSeriesDetailHeader
+            forwardedData={forwardedData}
+            tabContext={tabContext}
+          />
         }
         ListFooterComponent={() => <XStack height="$5"></XStack>}
       />

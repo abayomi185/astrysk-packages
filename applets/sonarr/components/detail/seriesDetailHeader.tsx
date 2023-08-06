@@ -17,7 +17,8 @@ import { TabContext } from "@astrysk/types";
 
 const SonarrSeriesDetailHeader: React.FC<{
   forwardedData: SeriesResource;
-}> = ({ forwardedData }) => {
+  tabContext: TabContext;
+}> = ({ forwardedData, tabContext }) => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -90,7 +91,7 @@ const SonarrSeriesDetailHeader: React.FC<{
             router,
             searchItemId: forwardedData.id as number,
             screenContext: SonarrDetailScreenContext.AllSeasons,
-            tabContext: TabContext.Search,
+            tabContext: tabContext ?? TabContext.Search,
           })
         }
       >

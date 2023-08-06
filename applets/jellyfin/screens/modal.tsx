@@ -230,13 +230,11 @@ const JellyfinModal = () => {
     // <Toasts providerKey="MODAL::1" />
 
     return (
-      <>
-        <JellyfinMoreDetail
-          context={JellyfinMoreDetailContext.Episode}
-          itemId={episodeId}
-          seriesId={seriesId}
-        />
-      </>
+      <JellyfinMoreDetail
+        context={JellyfinMoreDetailContext.Episode}
+        itemId={episodeId}
+        seriesId={seriesId}
+      />
     );
   }
 

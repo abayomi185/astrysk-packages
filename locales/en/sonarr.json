@@ -2,16 +2,28 @@
   "seriesDetail": "Series Detail",
   "seriesDescription": "Series Description",
   "noDescriptionAvailable": "No description available",
+
+  "history": "History",
+  "interactiveSearch": "Interactive Search",
+  "editSeries": "Edit Series",
+
   "season": "Season",
   "episode": "Episode",
+  "episodes": "Episodes",
+  "allEpisodes": "All Episodes",
   "specials": "Specials",
   "allSeasons": "All Seasons",
-  "episodes": "Episodes",
   "monitoredEpisodes": "Monitored Episodes",
+
   "gb": "GB",
   "percent": "%",
   "na": "N/A",
+  "mins": "mins",
+
   "upcoming": "Upcoming",
+  "missing": "Missing",
+  "available": "Available",
+  "notAired": "Not Aired",
   "upcomingEpisodes": "Upcoming Episodes",
   "seriesType": "Series Type",
   "monitoring": "Monitoring",
@@ -21,6 +33,7 @@
   "rating": "Rating",
   "genres": "Genres",
   "alternateTitles": "Alternative Titles",
+
   "error": {
     "unableToSetMonitoredStatus": "Unable to set monitored status",
     "automaticSearchFailed": "Automatic search failed"

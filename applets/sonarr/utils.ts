@@ -75,12 +75,14 @@ export const goToSonarrDetailScreen = ({
   router,
   searchItemId,
   tabContext,
+  seasonNumber,
   screenContext,
   searchContext,
 }: {
   router: Router;
   searchItemId: number;
   tabContext: TabContext;
+  seasonNumber?: number;
   screenContext?: SonarrDetailScreenContext;
   searchContext?: SonarrSearchFilterContext;
 }) => {
@@ -93,6 +95,8 @@ export const goToSonarrDetailScreen = ({
     params: {
       context: screenContext,
       itemId: searchItemId, // Use id to check cache for data
+      tabContext: tabContext,
+      seasonNumber: seasonNumber,
     } as SonarrDetailScreenProps,
   });
 };
@@ -126,6 +130,8 @@ export const getSizeOnDisk = (size: number) => {
 };
 
 // NOTE: DATE UTILS
+export const MILLISECONDS_TO_MINUTES_MULTIPLIER = 60 * 1000;
+
 export const getStartAndEndOfWeek = (date: Date) => {
   const day = date.getDay();
   const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday

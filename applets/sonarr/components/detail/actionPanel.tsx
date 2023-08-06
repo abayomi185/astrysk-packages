@@ -63,7 +63,7 @@ export const SonarrSeriesActionPanel: React.FC<{
       onSuccess: (data) => {
         useSonarrStore.setState((state) => {
           // @ts-ignore
-          const { sonarrContext, ...newData } = data;
+          const { sonarrContext, tabContext, ...newData } = data;
           return {
             sonarrCache: {
               ...state.sonarrCache,
@@ -249,7 +249,7 @@ export const SonarrSeasonActionPanel: React.FC<{
       onSuccess: (data) => {
         useSonarrStore.setState((state) => {
           // @ts-ignore
-          const { sonarrContext, ...newData } = data;
+          const { sonarrContext, tabContext, ...newData } = data;
           return {
             sonarrCache: {
               ...state.sonarrCache,
@@ -270,7 +270,7 @@ export const SonarrSeasonActionPanel: React.FC<{
   });
   const toggleMonitor = (seasonNumber: number) => {
     // @ts-ignore
-    const { sonarrContext, ...newData } = data;
+    const { sonarrContext, tabContext, ...newData } = data;
     putSeries.mutate({
       id: (newData.id as number).toString(),
       data: {
@@ -375,24 +375,23 @@ export const SonarrSeasonActionPanel: React.FC<{
         <Ionicons name="time" size={23} color={iconColor} />
       </SonarrActionPanelButton>
       {/* NOTE: Episodes */}
-      <SonarrActionPanelButton
-        style={{
-          backgroundColor: "$pink6",
-          borderColor: "$pink6",
-          borderWidth: "$1",
-        }}
-        onPress={() => {
-          goToSonarrModalScreen({
-            router,
-            searchItemId: data.id as number,
-            tabContext: TabContext.Search,
-            screenContext: SonarrDetailScreenContext.EpisodesList,
-          });
-        }}
-      >
-        {/* Episodes list */}
-        <Ionicons name="list" size={23} color={iconColor} />
-      </SonarrActionPanelButton>
+      {/* <SonarrActionPanelButton */}
+      {/*   style={{ */}
+      {/*     backgroundColor: "$pink6", */}
+      {/*     borderColor: "$pink6", */}
+      {/*     borderWidth: "$1", */}
+      {/*   }} */}
+      {/*   onPress={() => { */}
+      {/*     goToSonarrModalScreen({ */}
+      {/*       router, */}
+      {/*       searchItemId: data.id as number, */}
+      {/*       tabContext: TabContext.Search, */}
+      {/*       screenContext: SonarrDetailScreenContext.EpisodesList, */}
+      {/*     }); */}
+      {/*   }} */}
+      {/* > */}
+      {/*   <Ionicons name="list" size={23} color={iconColor} /> */}
+      {/* </SonarrActionPanelButton> */}
     </XStack>
   );
 };

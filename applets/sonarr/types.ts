@@ -1,3 +1,4 @@
+import { TabContext } from "@astrysk/types";
 import { SeriesResource } from "./api";
 
 export interface SonarrCache {
@@ -47,15 +48,12 @@ export enum SonarrCommands {
 
 export interface SonarrDetailScreenProps extends Record<string, string> {
   context?: SonarrDetailScreenContext;
-  // itemType?: BaseItemKind;
   itemId?: string | number;
-  tvdbId?: number;
-  itemName?: string;
-  itemCacheIndex?: string; // For cache purposes
+  tabContext?: TabContext;
+  seasonNumber?: number;
+  // itemName?: string;
+  // itemCacheIndex?: string; // For cache purposes
   // itemData?: BaseItemDto | string;
-
-  // For EpisodeMoreDetail
-  episodeId?: string;
 
   // CollectionItem Detail
   searchContext?: SonarrSearchFilterContext;
@@ -81,5 +79,7 @@ export interface CalendarData {
   title: string;
   seasonNumber: number;
   episodeNumber: number;
+  hasFile: boolean;
+  timeUtc: string;
   time: string;
 }

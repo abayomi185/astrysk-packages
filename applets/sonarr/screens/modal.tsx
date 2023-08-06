@@ -11,6 +11,11 @@ import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
 
 import { Text, ScrollView, XStack, YStack, H4 } from "tamagui";
 import { useSonarrModalHeader } from "../components/useHeader";
+import SonarrInteractiveSearch from "../components/modal/interactiveSearch";
+import SonarrEditSeries from "../components/modal/editSeries";
+import SonarrHistory from "../components/modal/history";
+import SonarrSeriesDescription from "../components/modal/seriesDescription";
+import { SeriesResource } from "../api";
 
 const SonarrModal = () => {
   const { t } = useTranslation();
@@ -20,35 +25,23 @@ const SonarrModal = () => {
 
   const baseURL = useSonarrStore.getState().baseURL as string;
 
+  const seriesId = parseInt(params?.itemId as string);
+  const data = useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+    seriesId
+  ] as SeriesResource;
+
   // NOTE: SERIES DESCRIPTION
   if (params.context === SonarrDetailScreenContext.SeriesDescription) {
-    const seriesId = parseInt(params?.itemId as string);
-
-    const data = useSonarrStore.getState().sonarrCache?.[baseURL]?.[seriesId];
-
     useSonarrModalHeader(navigation, t("sonarr:seriesDescription"));
 
-    return (
-      <ScrollView height="100%" nestedScrollEnabled>
-        <H4 paddingHorizontal="$4" paddingTop="$4">
-          {data?.title}
-        </H4>
-        <Text
-          color="$gray11"
-          paddingHorizontal="$4"
-          paddingVertical="$4"
-          fontSize={18}
-          lineHeight={24}
-        >
-          {data?.overview}
-        </Text>
-      </ScrollView>
-    );
+    return <SonarrSeriesDescription data={data} />;
   }
 
   // NOTE: Edit Series
   if (params.context === SonarrDetailScreenContext.EditSeries) {
-    return <></>;
+    useSonarrModalHeader(navigation, t("sonarr:editSeries"));
+
+    return <SonarrEditSeries />;
   }
 
   // NOTE: Interactive Search
@@ -56,7 +49,9 @@ const SonarrModal = () => {
     params.context === SonarrDetailScreenContext.InteractiveSearch ||
     params.context === SonarrDetailScreenContext.SeasonInteractiveSearch
   ) {
-    return <></>;
+    useSonarrModalHeader(navigation, t("sonarr:interactiveSearch"));
+
+    return <SonarrInteractiveSearch />;
   }
 
   // NOTE: HISTORY
@@ -64,12 +59,9 @@ const SonarrModal = () => {
     params.context === SonarrDetailScreenContext.History ||
     params.context === SonarrDetailScreenContext.SeasonHistory
   ) {
-    return <></>;
-  }
+    useSonarrModalHeader(navigation, t("sonarr:history"));
 
-  // NOTE: EPIOSDE LIST
-  if (params.context === SonarrDetailScreenContext.EpisodesList) {
-    return <></>;
+    return <SonarrHistory />;
   }
 
   return null;

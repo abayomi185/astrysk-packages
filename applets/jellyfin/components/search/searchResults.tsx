@@ -192,10 +192,13 @@ const JellyfinSearchResults: React.FC<{
           flex={1}
           height="100%"
           width="100%"
-          paddingHorizontal="$2"
+          // paddingHorizontal="$2"
           paddingTop="$2"
         >
           <FlashList
+            contentContainerStyle={{
+              paddingHorizontal: "7",
+            }}
             horizontal={false}
             numColumns={3}
             data={sortedSearchResults}
@@ -206,7 +209,7 @@ const JellyfinSearchResults: React.FC<{
                 data={item}
               />
             )}
-            showsVerticalScrollIndicator={false}
+            // showsVerticalScrollIndicator={false}
             estimatedItemSize={208}
           />
         </YStack>

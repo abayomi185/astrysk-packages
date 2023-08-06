@@ -1,7 +1,8 @@
 import React from "react";
+import { useRouter } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
-import { YStack, Text, useTheme, XStack, H5 } from "tamagui";
+import { YStack, Text, useTheme, XStack, H5, Button } from "tamagui";
 import {
   ExpandableCalendar,
   CalendarProvider,
@@ -21,10 +22,15 @@ import {
 } from "@astrysk/utils";
 import { SectionTitle } from "../../../jellyfin/components/styles";
 import { useTranslation } from "react-i18next";
-import { getStartAndEndOfWeek } from "../../utils";
+import {
+  MILLISECONDS_TO_MINUTES_MULTIPLIER,
+  getStartAndEndOfWeek,
+  goToSonarrDetailScreen,
+} from "../../utils";
 import { useSonarrStore } from "../../store";
-import { CalendarData } from "../../types";
+import { CalendarData, SonarrDetailScreenContext } from "../../types";
 import { Actions } from "@astrysk/constants";
+import { TabContext } from "@astrysk/types";
 
 const getExpandableCalendarTheme = (darkMode: boolean): Theme => ({
   arrowColor: sonarrColors.accentColor,
@@ -51,6 +57,7 @@ const today = new Date().toISOString().split("T")[0];
 
 const SonarrCalendar: React.FC = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const baseURL = useSonarrStore.getState().baseURL as string;
   const token = useSonarrStore.getState().token as string;
@@ -108,8 +115,7 @@ const SonarrCalendar: React.FC = () => {
     },
     {
       query: {
-        onSuccess: (data) => {
-          console.log(JSON.stringify(data, null, 2));
+        onSuccess: (_data) => {
           setLoadingSpinner(SonarrCalendar.name, Actions.DONE);
         },
       },
@@ -131,6 +137,15 @@ const SonarrCalendar: React.FC = () => {
   const refreshCalendar = () => {
     setLoadingSpinner(SonarrCalendar.name, Actions.LOADING);
     calendarQuery.refetch();
+  };
+
+  const checkEpisodeHasAired = (airDateUtc: string, runtime: number) => {
+    return (
+      new Date().getTime() -
+        (new Date(airDateUtc).getTime() +
+          (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
+      0
+    );
   };
 
   useLoadingSpinner(SonarrCalendar.name);
@@ -169,6 +184,8 @@ const SonarrCalendar: React.FC = () => {
                       title: calendarData.title,
                       seasonNumber: calendarData.seasonNumber,
                       episodeNumber: calendarData.episodeNumber,
+                      hasFile: calendarData.hasFile,
+                      timeUtc: calendarData.airDateUtc,
                       time: new Date(
                         calendarData.airDateUtc as string
                       ).toLocaleTimeString("en-US", {
@@ -183,40 +200,77 @@ const SonarrCalendar: React.FC = () => {
           }
           renderItem={({ item }: { item: CalendarData }) => {
             return (
-              <XStack
+              <Button
                 height="$11"
+                padding="$0"
                 marginHorizontal="$2"
                 marginTop="$2"
                 backgroundColor="$gray1"
                 borderRadius="$5"
+                onPress={() => {
+                  goToSonarrDetailScreen({
+                    router,
+                    searchItemId: item.seriesData.id as number,
+                    tabContext: TabContext.Home,
+                    screenContext: SonarrDetailScreenContext.SearchItem,
+                  });
+                }}
               >
-                <XStack width="$8" height="$11" padding="$2">
-                  <Image
-                    style={{ flex: 1, overflow: "hidden", borderRadius: 6 }}
-                    source={
-                      {
-                        uri: `${baseURL}/api/MediaCover/${item?.seriesData?.id}/poster.jpg?apikey=${token}`,
-                      } as ImageSource
-                    }
-                    transition={200}
-                    // recyclingKey={`${data.id}`}
-                  />
+                <XStack flex={1}>
+                  <XStack width="$8" height="$11" padding="$2">
+                    <Image
+                      style={{ flex: 1, overflow: "hidden", borderRadius: 6 }}
+                      source={
+                        {
+                          uri: `${baseURL}/api/MediaCover/${item?.seriesData?.id}/poster.jpg?apikey=${token}`,
+                        } as ImageSource
+                      }
+                      transition={200}
+                      // recyclingKey={`${data.id}`}
+                    />
+                  </XStack>
+                  <YStack
+                    flex={1}
+                    paddingHorizontal="$2"
+                    paddingVertical="$1.5"
+                  >
+                    <H5 color="$gray12">{item.seriesData?.title}</H5>
+                    <Text marginTop="$2" color="$gray11">{`${t(
+                      "sonarr:season"
+                    )} ${item.seasonNumber} - ${t("sonarr:episode")} ${
+                      item.episodeNumber
+                    }`}</Text>
+                    <Text marginTop="$1.5" color="$gray11">
+                      {item.title}
+                    </Text>
+                    <Text
+                      marginTop="$1.5"
+                      color={
+                        item.hasFile
+                          ? "$green9"
+                          : checkEpisodeHasAired(
+                              item.timeUtc,
+                              item.seriesData.runtime ?? 1
+                            )
+                          ? "$gray11"
+                          : "$red9"
+                      }
+                    >
+                      {item.hasFile
+                        ? t("sonarr:available")
+                        : checkEpisodeHasAired(
+                            item.timeUtc,
+                            item.seriesData.runtime ?? 1
+                          )
+                        ? t("sonarr:notAired")
+                        : t("sonarr:missing")}
+                    </Text>
+                  </YStack>
+                  <XStack marginHorizontal="$3" alignItems="center">
+                    <Text color="$gray11">{item.time}</Text>
+                  </XStack>
                 </XStack>
-                <YStack flex={1} paddingHorizontal="$2" paddingVertical="$1.5">
-                  <H5 color="$gray12">{item.seriesData?.title}</H5>
-                  <Text marginTop="$2" color="$gray11">{`${t(
-                    "sonarr:season"
-                  )} ${item.seasonNumber} - ${t("sonarr:episode")} ${
-                    item.episodeNumber
-                  }`}</Text>
-                  <Text marginTop="$1.5" color="$gray11">
-                    {item.title}
-                  </Text>
-                </YStack>
-                <XStack marginHorizontal="$3" alignItems="center">
-                  <Text color="$gray11">{item.time}</Text>
-                </XStack>
-              </XStack>
+              </Button>
             );
           }}
           refreshControl={
