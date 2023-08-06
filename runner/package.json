@@ -22,6 +22,7 @@
     "@astrysk/stores": "*",
     "@astrysk/styles": "*",
     "@astrysk/types": "*",
+    "@backpackapp-io/react-native-toast": "^0.9.0",
     "@react-native-async-storage/async-storage": "1.18.1",
     "@shopify/flash-list": "^1.4.3",
     "@tanstack/react-query": "^4.28.0",

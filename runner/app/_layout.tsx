@@ -19,7 +19,8 @@ import { Screens } from "@astrysk/constants";
 import { AuthProvider } from "@astrysk/api";
 import { useAppStateStore } from "@astrysk/stores";
 
-import {activeApplet} from "@applet"
+import { activeApplet } from "@applet";
+import { Toasts } from "@backpackapp-io/react-native-toast";
 
 // Prevent hiding the splash screen
 SplashScreen.preventAutoHideAsync();
@@ -41,7 +42,6 @@ export const navContainerDarkTheme = {
 export default (() => {
   const colorScheme = useColorScheme();
 
-
   const [fontsLoaded] = useFonts({
     Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
@@ -56,7 +56,10 @@ export default (() => {
   const [appletName, appletInstance] = activeApplet;
 
   React.useEffect(() => {
-    useAppStateStore.setState({ applets: {[appletName]: appletInstance}, activeApplet: appletName });
+    useAppStateStore.setState({
+      applets: { [appletName]: appletInstance },
+      activeApplet: appletName,
+    });
   }, []);
 
   if (!fontsLoaded) {
@@ -103,6 +106,7 @@ export default (() => {
                   }}
                 />
               </Stack>
+              <Toasts />
             </QueryClientProvider>
           </AuthProvider>
         </Theme>
