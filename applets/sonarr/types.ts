@@ -7,6 +7,12 @@ export interface SonarrCache {
   };
 }
 
+export interface ExtendedSeriesResource extends SeriesResource {
+  sonarrContext?: SonarrDetailScreenContext;
+  sonarrTabContext?: TabContext;
+  sonarrSeasonNumber?: number;
+}
+
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
 export enum SonarrDetailScreenContext {

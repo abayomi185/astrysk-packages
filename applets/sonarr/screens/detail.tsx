@@ -2,12 +2,16 @@ import React, { Suspense } from "react";
 import { useSearchParams } from "expo-router";
 
 import { useSonarrStore } from "../store";
-import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
+import {
+  ExtendedSeriesResource,
+  SonarrDetailScreenContext,
+  SonarrDetailScreenProps,
+} from "../types";
 import SonarrSeriesDetail from "../components/detail/seriesDetail";
 import { SeriesResource } from "../api";
 import SonarrAllSeasonsDetail from "../components/detail/allSeasonsDetail";
 import { TabContext } from "@astrysk/types";
-import SonarrAllEpisodesDetail from "../components/detail/allEpisodesDetail";
+import SonarrAllEpisodesDetail from "../components/detail/episodesDetail";
 
 const SonarrDetail: React.FC = () => {
   const params = useSearchParams() as SonarrDetailScreenProps;
@@ -21,7 +25,7 @@ const SonarrDetail: React.FC = () => {
         refParams.current.itemId as number
       ],
       sonarrContext: params.context,
-      tabContext: params.tabContext,
+      sonarrTabContext: params.tabContext,
     };
 
     // if (refParams.current.context === SonarrDetailScreenContext.SearchItem) {
@@ -30,9 +34,9 @@ const SonarrDetail: React.FC = () => {
     // if (refParams.current.context === SonarrDetailScreenContext.AllSeasons) {
     //   return dataToForward;
     // }
-    // if (refParams.current.context === SonarrDetailScreenContext.EpisodesList) {
-    //   return dataToForward;
-    // }
+    if (refParams.current.context === SonarrDetailScreenContext.EpisodesList) {
+      return { ...dataToForward, sonarrSeasonNumber: params.seasonNumber };
+    }
     return dataToForward;
   }, [refParams.current.itemId]);
 
@@ -41,7 +45,7 @@ const SonarrDetail: React.FC = () => {
       return (
         <SonarrSeriesDetail
           forwardedData={itemData as SeriesResource}
-          tabContext={itemData.tabContext as TabContext}
+          tabContext={itemData.sonarrTabContext as TabContext}
         />
       );
     } else if (
@@ -50,7 +54,7 @@ const SonarrDetail: React.FC = () => {
       return (
         <SonarrAllSeasonsDetail
           forwardedData={itemData as SeriesResource}
-          tabContext={itemData.tabContext as TabContext}
+          tabContext={itemData.sonarrTabContext as TabContext}
         />
       );
     } else if (
@@ -58,8 +62,8 @@ const SonarrDetail: React.FC = () => {
     ) {
       return (
         <SonarrAllEpisodesDetail
-          forwardedData={itemData as SeriesResource}
-          tabContext={itemData.tabContext as TabContext}
+          forwardedData={itemData as ExtendedSeriesResource}
+          tabContext={itemData.sonarrTabContext as TabContext}
         />
       );
     }

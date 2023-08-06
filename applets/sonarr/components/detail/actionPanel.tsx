@@ -14,7 +14,11 @@ import { useSonarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { goToSonarrModalScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
-import { SonarrDetailScreenContext, SonarrCommands } from "../../types";
+import {
+  SonarrDetailScreenContext,
+  SonarrCommands,
+  ExtendedSeriesResource,
+} from "../../types";
 import { useColorScheme } from "@astrysk/utils";
 
 const SonarrActionPanelButton: React.FC<{
@@ -39,7 +43,7 @@ const SonarrActionPanelButton: React.FC<{
 };
 
 export const SonarrSeriesActionPanel: React.FC<{
-  data: SeriesResource;
+  data: ExtendedSeriesResource;
   // parentIndexNumber?: number;
   // indexNumber: number;
   // hasBeenWatched?: boolean;
@@ -62,14 +66,12 @@ export const SonarrSeriesActionPanel: React.FC<{
     mutation: {
       onSuccess: (data) => {
         useSonarrStore.setState((state) => {
-          // @ts-ignore
-          const { sonarrContext, tabContext, ...newData } = data;
           return {
             sonarrCache: {
               ...state.sonarrCache,
               [baseURL]: {
                 ...state.sonarrCache?.[baseURL],
-                [newData.id as number]: data,
+                [data.id as number]: data,
               },
             },
           };
@@ -83,8 +85,7 @@ export const SonarrSeriesActionPanel: React.FC<{
     },
   });
   const toggleMonitor = () => {
-    // @ts-ignore
-    const { sonarrContext, ...newData } = data;
+    const { sonarrContext, sonarrTabContext, ...newData } = data;
     putSeries.mutate({
       id: (newData.id as number).toString(),
       data: {
@@ -228,7 +229,7 @@ export const SonarrSeriesActionPanel: React.FC<{
 };
 
 export const SonarrSeasonActionPanel: React.FC<{
-  data: SeriesResource;
+  data: ExtendedSeriesResource;
   seasonNumber: number;
 }> = ({ data, seasonNumber }) => {
   const { t } = useTranslation();
@@ -248,14 +249,12 @@ export const SonarrSeasonActionPanel: React.FC<{
     mutation: {
       onSuccess: (data) => {
         useSonarrStore.setState((state) => {
-          // @ts-ignore
-          const { sonarrContext, tabContext, ...newData } = data;
           return {
             sonarrCache: {
               ...state.sonarrCache,
               [baseURL]: {
                 ...state.sonarrCache?.[baseURL],
-                [newData.id as number]: data,
+                [data.id as number]: data,
               },
             },
           };
@@ -269,8 +268,7 @@ export const SonarrSeasonActionPanel: React.FC<{
     },
   });
   const toggleMonitor = (seasonNumber: number) => {
-    // @ts-ignore
-    const { sonarrContext, tabContext, ...newData } = data;
+    const { sonarrContext, sonarrTabContext, ...newData } = data;
     putSeries.mutate({
       id: (newData.id as number).toString(),
       data: {
