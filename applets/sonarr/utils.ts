@@ -93,7 +93,58 @@ export const goToSonarrDetailScreen = ({
     params: {
       context: screenContext,
       itemId: searchItemId, // Use id to check cache for data
-      // itemCacheIndex: searchItemIndex,
     } as SonarrDetailScreenProps,
   });
 };
+
+export const goToSonarrModalScreen = ({
+  router,
+  searchItemId,
+  tabContext,
+  screenContext,
+  searchContext,
+}: {
+  router: Router;
+  searchItemId: number;
+  tabContext: TabContext;
+  screenContext?: SonarrDetailScreenContext;
+  searchContext?: SonarrSearchFilterContext;
+}) => {
+  router.push({
+    pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
+    params: {
+      context: screenContext,
+      itemId: searchItemId,
+    } as SonarrDetailScreenProps,
+  });
+};
+
+// NOTE: STATISTICS UTILS
+export const getSizeOnDisk = (size: number) => {
+  const sizeInGB = size / 1073741824;
+  return sizeInGB.toFixed(2);
+};
+
+// NOTE: DATE UTILS
+export const getStartAndEndOfWeek = (date: Date) => {
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
+  const startOfWeek = new Date(date.getFullYear(), date.getMonth(), diff);
+  const endOfWeek = new Date(date.getFullYear(), date.getMonth(), diff + 6);
+
+  return [startOfWeek, endOfWeek];
+};
+
+// export const getStartAndEndOfWeek = (date: Date) => {
+//   const day = date.getDay();
+//   const diffToMonday = date.getDate() - day + (day === 0 ? -6 : 1);
+//   const startOfWeek = new Date(date.setDate(diffToMonday));
+
+//   // // Reset the date
+//   // date = new Date();
+
+//   const diffToSunday = date.getDate() - day + (day === 0 ? 0 : 7);
+//   const endOfWeek = new Date(date.setDate(diffToSunday));
+
+//   return [startOfWeek, endOfWeek];
+// };

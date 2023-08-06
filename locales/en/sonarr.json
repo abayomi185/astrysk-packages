@@ -1,15 +1,18 @@
 {
   "seriesDetail": "Series Detail",
+  "seriesDescription": "Series Description",
   "noDescriptionAvailable": "No description available",
-
+  "season": "Season",
+  "episode": "Episode",
+  "specials": "Specials",
   "allSeasons": "All Seasons",
   "episodes": "Episodes",
   "monitoredEpisodes": "Monitored Episodes",
-
   "gb": "GB",
   "percent": "%",
   "na": "N/A",
-
+  "upcoming": "Upcoming",
+  "upcomingEpisodes": "Upcoming Episodes",
   "seriesType": "Series Type",
   "monitoring": "Monitoring",
   "nextAiring": "Next Airing",
@@ -17,5 +20,13 @@
   "runtime": "Runtime",
   "rating": "Rating",
   "genres": "Genres",
-  "alternateTitles": "Alternative Titles"
+  "alternateTitles": "Alternative Titles",
+  "error": {
+    "unableToSetMonitoredStatus": "Unable to set monitored status",
+    "automaticSearchFailed": "Automatic search failed"
+  },
+  "success": {
+    "monitoringStatusUpdated": "Monitoring status updated",
+    "automaticSearchStarted": "Automatic search started"
+  }
 }

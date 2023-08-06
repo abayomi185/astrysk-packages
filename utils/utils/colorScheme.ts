@@ -1,5 +1,6 @@
 import React from "react";
 import { Appearance, ColorSchemeName } from "react-native";
+import debounce from "lodash/debounce";
 
 // This hook is from https://github.com/facebook/react-native/issues/28525
 export function useColorScheme(): NonNullable<ColorSchemeName> {
@@ -8,9 +9,14 @@ export function useColorScheme(): NonNullable<ColorSchemeName> {
   );
 
   const initAppearanceListener = () => {
-    const listener: Appearance.AppearanceListener = ({ colorScheme }) => {
-      setColorScheme(Appearance.getColorScheme());
-    };
+    const listener: Appearance.AppearanceListener = debounce(
+      () => {
+        setColorScheme(Appearance.getColorScheme());
+      },
+      100,
+      { leading: false, trailing: true }
+    );
+
     const changeListener = Appearance.addChangeListener(listener);
     return () => changeListener.remove();
   };

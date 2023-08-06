@@ -11,32 +11,22 @@ const SonarrDetail: React.FC = () => {
   const params = useSearchParams() as SonarrDetailScreenProps;
   const refParams = React.useRef(params);
 
-  // if (refParams.current.context !== params.context) {
-  //   // if (refParams.current.itemId !== params.itemId) {
-  //   refParams.current = params;
-  //   // }
-  // }
-
   const baseURL = useSonarrStore.getState().baseURL as string;
 
   const itemData = React.useMemo(() => {
     if (refParams.current.context === SonarrDetailScreenContext.SearchItem) {
       return {
-        ...useSonarrStore
-          .getState()
-          .sonarrCache?.[baseURL].seriesCache.find(
-            (series) => series.id === Number(params.itemId)
-          ),
+        ...useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+          refParams.current.itemId as number
+        ],
         sonarrContext: params.context,
       };
     }
     if (refParams.current.context === SonarrDetailScreenContext.AllSeasons) {
       return {
-        ...useSonarrStore
-          .getState()
-          .sonarrCache?.[baseURL].seriesCache.find(
-            (series) => series.id === Number(params.itemId)
-          ),
+        ...useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+          refParams.current.itemId as number
+        ],
         sonarrContext: params.context,
       };
     }

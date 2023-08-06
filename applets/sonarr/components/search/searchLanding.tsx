@@ -7,7 +7,7 @@ import {
   useGetApiV3Qualityprofile,
   useGetApiV3Series,
 } from "../../api";
-import { H6, Spinner, XStack, YStack, Text } from "tamagui";
+import { H6, YStack, Text } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -84,12 +84,19 @@ const SonarrSearchLanding: React.FC<{
     {},
     {
       query: {
+        // initialData: () => useSonarrStore.getState().sonarrCache?.[baseURL]
         onSuccess: (data) => {
           useSonarrStore.setState((state) => ({
             sonarrCache: {
               ...state.sonarrCache,
               [baseURL]: {
-                seriesCache: data,
+                ...data.reduce(
+                  (acc: { [key: number]: SeriesResource }, item) => {
+                    if (item.id) acc[item.id as number] = item;
+                    return acc;
+                  },
+                  {}
+                ),
               },
             },
           }));

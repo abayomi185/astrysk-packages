@@ -1,11 +1,10 @@
 import React from "react";
 import { useRouter } from "expo-router";
-import * as Crypto from "expo-crypto";
 import { YStack, XStack, H3, H4, Text, Button } from "tamagui";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import { Image, ImageSource } from "expo-image";
 import { SeriesResource } from "../../api";
-import SonarrSeriesActionPanel from "./seriesActionPanel";
+import { SonarrSeriesActionPanel } from "./actionPanel";
 import { useSonarrStore } from "../../store";
 import {
   SonarrDetailScreenContext,
@@ -13,7 +12,7 @@ import {
 } from "../../types";
 import { Screens } from "@astrysk/constants";
 import { useTranslation } from "react-i18next";
-import { goToSonarrDetailScreen } from "../../utils";
+import { getSizeOnDisk, goToSonarrDetailScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
 
 const SonarrSeriesDetailHeader: React.FC<{
@@ -25,9 +24,9 @@ const SonarrSeriesDetailHeader: React.FC<{
   const baseURL = useSonarrStore.getState().baseURL as string;
   const token = useSonarrStore.getState().token as string;
 
-  // const [readMore, _] = React.useState(false);
-  // const [titleLines, setTitleLines] = React.useState(2);
-  // const [summaryLines, setSummaryLines] = React.useState(5);
+  const [readMore, _] = React.useState(false);
+  const [titleLines, setTitleLines] = React.useState(2);
+  const [summaryLines, setSummaryLines] = React.useState(5);
 
   const goToDescriptionScreen = (seriesId: number) => {
     router.push({
@@ -37,11 +36,6 @@ const SonarrSeriesDetailHeader: React.FC<{
         itemId: seriesId,
       } as SonarrDetailScreenProps,
     });
-  };
-
-  const getSizeOnDisk = (size: number) => {
-    const sizeInGB = size / 1073741824;
-    return sizeInGB.toFixed(2);
   };
 
   return (
@@ -61,24 +55,19 @@ const SonarrSeriesDetailHeader: React.FC<{
         <YStack flex={1} marginLeft="$3">
           <H3
             numberOfLines={2}
-            // onTextLayout={(e) =>
-            //   setTitleLines(e.nativeEvent.lines.length)
-            // }
+            onTextLayout={(e) => setTitleLines(e.nativeEvent.lines.length)}
           >
             {forwardedData.title}
           </H3>
           <Text
             color="$gray11"
-            // numberOfLines={readMore ? 0 : titleLines == 2 ? 5 : 7}
-            numberOfLines={7}
-            // onTextLayout={(e) =>
-            //   setSummaryLines(e.nativeEvent.lines.length)
-            // }
+            numberOfLines={readMore ? 0 : titleLines == 2 ? 5 : 7}
+            onTextLayout={(e) => setSummaryLines(e.nativeEvent.lines.length)}
           >
             {forwardedData.overview ?? t("sonarr:noDescriptionAvailable")}
           </Text>
           <Text
-            // display={!readMore && summaryLines > 5 ? "flex" : "none"}
+            display={!readMore && summaryLines >= 5 ? "flex" : "none"}
             color="$blue10Dark"
             onPress={() => {
               goToDescriptionScreen(forwardedData.id as number);
@@ -88,9 +77,7 @@ const SonarrSeriesDetailHeader: React.FC<{
           </Text>
         </YStack>
       </XStack>
-      <SonarrSeriesActionPanel
-      // data={forwardedData}
-      />
+      <SonarrSeriesActionPanel data={forwardedData} />
       <Button
         height="$8"
         marginTop="$4"
@@ -115,8 +102,17 @@ const SonarrSeriesDetailHeader: React.FC<{
                 forwardedData.statistics?.sizeOnDisk as number
               )} ${t("sonarr:gb")}`}
             </Text>
-            <Text color="$gray11" marginTop="$1">
-              {`${forwardedData.statistics?.percentOfEpisodes}${t(
+            <Text
+              color={
+                forwardedData.statistics?.percentOfEpisodes === 100
+                  ? "$green9"
+                  : forwardedData.statistics?.percentOfEpisodes === 0
+                  ? "$red9"
+                  : "$gray11"
+              }
+              marginTop="$1"
+            >
+              {`${forwardedData.statistics?.percentOfEpisodes?.toFixed(2)}${t(
                 "sonarr:percent"
               )} - ${forwardedData.statistics?.episodeFileCount}/${
                 forwardedData.statistics?.episodeCount

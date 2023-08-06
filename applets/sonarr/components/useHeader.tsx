@@ -18,6 +18,7 @@ import { sonarrColors } from "../colors";
 
 export const useSonarrHomeHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>
+  // largeTitle: boolean
 ) => {
   return useHomeHeader(navigation, HeaderRightWrapper);
 };

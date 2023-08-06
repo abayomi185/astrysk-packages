@@ -1,4 +1,5 @@
 import React from "react";
+import { getLocales } from "expo-localization";
 import { useNavigation } from "expo-router";
 import { SeriesResource } from "../../api";
 import { XStack, YStack } from "tamagui";
@@ -13,13 +14,14 @@ import SonarrSeriesDetailHeader from "./seriesDetailHeader";
 
 const getSonarrSeriesDetailOptions = (
   t: TFunction,
-  seriesData: SeriesResource
+  seriesData: SeriesResource,
+  monitored: boolean
 ): SettingsOptionProps[] => {
   return [
     {
       key: "sonarr:monitoring",
       type: "label",
-      value: seriesData.monitored ? `${t("common:yes")}` : `${t("common:no")}`,
+      value: monitored ? `${t("common:yes")}` : `${t("common:no")}`,
       firstItem: true,
     },
     {
@@ -58,7 +60,15 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:nextAiring",
       type: "label",
-      value: seriesData.nextAiring?.toLocaleString() ?? `${t("sonarr:na")}`,
+      value: seriesData.nextAiring
+        ? new Date(seriesData.nextAiring as string).toLocaleString(
+            getLocales()[0].languageCode,
+            {
+              dateStyle: "medium",
+              timeStyle: "short",
+            }
+          )
+        : `${t("sonarr:na")}`,
     },
     {
       key: "common:year",
@@ -88,9 +98,12 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:alternateTitles",
       type: "label",
-      value: seriesData.alternateTitles?.map(
-        (alternateTitle) => alternateTitle.title
-      ) as string[],
+      value:
+        seriesData.alternateTitles && seriesData.alternateTitles?.length > 0
+          ? (seriesData.alternateTitles?.map(
+              (alternateTitle) => alternateTitle.title
+            ) as string[])
+          : `${t("sonarr:na")}`,
       lastItem: true,
     },
   ];
@@ -102,16 +115,21 @@ export const SonarrSeriesDetail: React.FC<{
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  useSonarrDetailHeader(navigation, forwardedData.title as string);
+  const baseURL = useSonarrStore.getState().baseURL as string;
 
-  // React.useEffect(() => {
-  //   console.log(JSON.stringify(forwardedData, null, 2));
-  // }, []);
+  const monitoredStatus = useSonarrStore(
+    (state) =>
+      state.sonarrCache?.[baseURL]?.[forwardedData.id as number]
+        ?.monitored as boolean
+  );
+
+  useSonarrDetailHeader(navigation, forwardedData.title as string);
 
   return (
     <YStack flex={1}>
       <FlashList
-        data={getSonarrSeriesDetailOptions(t, forwardedData)}
+        data={getSonarrSeriesDetailOptions(t, forwardedData, monitoredStatus)}
+        extraData={monitoredStatus}
         renderItem={({ item }) => {
           return (
             <SettingsOption

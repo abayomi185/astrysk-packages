@@ -8,14 +8,15 @@ import { useAppStateStore } from "@astrysk/stores";
 
 export const useHomeHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
-  HeaderRightComponent: React.FC
+  HeaderRightComponent: React.FC,
+  largeTitle?: boolean
 ) => {
   const applet = useAppStateStore((state) => state.activeApplet) as string;
   return React.useEffect(() => {
     navigation.setOptions({
       headerTitle: applet ?? Screens.ASTRYSK,
       headerLargeTitle: true,
-      headerTransparent: true,
+      headerTransparent: largeTitle ?? true,
       headerBackTitleVisible: false,
       headerRight: () => <HeaderRightComponent />,
     } as NativeStackNavigationOptions);

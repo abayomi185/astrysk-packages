@@ -11,6 +11,8 @@ import JellyfinNextUp from "../components/home/nextUp";
 import { useJellyfinHomeHeader } from "../components/useHeader";
 import { useNavigation } from "expo-router";
 import JellyfinViews from "../components/home/views";
+import debounce from "lodash.debounce";
+import { jellyfinColors } from "../colors";
 // import LatestMedia from "@applets/jellyfin/components/home/latestMedia";
 
 // const ResumeMedia = React.lazy(
@@ -28,7 +30,7 @@ const JellyfinHome: React.FC = () => {
 
     setTimeout(() => {
       setRefreshing(false);
-    }, 0);
+    }, 500);
   }, []);
 
   // WARN: Using state with this can allow for customisation of order
@@ -74,11 +76,23 @@ const JellyfinHome: React.FC = () => {
         ListFooterComponent={() => <XStack height="$13" />}
         showsVerticalScrollIndicator={false}
         estimatedItemSize={198}
+        // refreshControl={
+        //   <RefreshControl
+        //     refreshing={debounce(() => refreshing, 300)() ?? false}
+        //     onRefresh={onRefresh}
+        //     tintColor="#8E4EC6"
+        //   />
+        // }
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={
+              debounce(() => refreshing, 100, {
+                leading: false,
+                trailing: true,
+              })() ?? false
+            }
             onRefresh={onRefresh}
-            tintColor="#8E4EC6"
+            tintColor={jellyfinColors.accentColor}
           />
         }
       />
