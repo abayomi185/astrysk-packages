@@ -1,15 +1,13 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useSearchParams, useNavigation } from "expo-router";
 
 import { useTranslation } from "react-i18next";
-import { FlashList } from "@shopify/flash-list";
 
 import { useSonarrStore } from "../store";
 import { SettingsOption, SettingsOptionHeader } from "@astrysk/components";
 import { SettingsOptionProps } from "@astrysk/types";
 import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
 
-import { Text, ScrollView, XStack, YStack, H4 } from "tamagui";
 import { useSonarrModalHeader } from "../components/useHeader";
 import SonarrInteractiveSearch from "../components/modal/interactiveSearch";
 import SonarrEditSeries from "../components/modal/editSeries";
@@ -41,27 +39,35 @@ const SonarrModal = () => {
   if (params.context === SonarrDetailScreenContext.EditSeries) {
     useSonarrModalHeader(navigation, t("sonarr:editSeries"));
 
-    return <SonarrEditSeries />;
+    return <SonarrEditSeries data={data} />;
   }
 
   // NOTE: Interactive Search
-  if (
-    params.context === SonarrDetailScreenContext.InteractiveSearch ||
-    params.context === SonarrDetailScreenContext.SeasonInteractiveSearch
-  ) {
+  if (params.context === SonarrDetailScreenContext.InteractiveSearch) {
     useSonarrModalHeader(navigation, t("sonarr:interactiveSearch"));
 
-    return <SonarrInteractiveSearch />;
+    return (
+      <SonarrInteractiveSearch
+        data={data}
+        seasonNumber={params?.seasonNumber}
+      />
+    );
   }
 
   // NOTE: HISTORY
-  if (
-    params.context === SonarrDetailScreenContext.History ||
-    params.context === SonarrDetailScreenContext.SeasonHistory
-  ) {
-    useSonarrModalHeader(navigation, t("sonarr:history"));
+  if (params.context === SonarrDetailScreenContext.History) {
+    useSonarrModalHeader(
+      navigation,
+      params.seasonNumber
+        ? `${t("sonarr:history")} - ${t("sonarr:season")} ${
+            params.seasonNumber == 0
+              ? t("sonarr:(special)")
+              : params.seasonNumber
+          }`
+        : t("sonarr:history")
+    );
 
-    return <SonarrHistory />;
+    return <SonarrHistory data={data} seasonNumber={params?.seasonNumber} />;
   }
 
   return null;

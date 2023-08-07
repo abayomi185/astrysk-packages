@@ -33,3 +33,5 @@ export { SettingsOption, SettingsOptionHeader } from "./common/settingsOption";
 export { PageNotFound } from "./common/pageNotFound";
 
 export { BottomSheetBackground } from "./common/bottomSheetBackground";
+
+export { SectionTitle } from "./common/sectionTitle";

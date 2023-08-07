@@ -12,6 +12,8 @@ import { Theme } from "react-native-calendars/src/types";
 import {
   SeriesResource,
   useGetApiV3Calendar,
+  useGetApiV3Languageprofile,
+  useGetApiV3Qualityprofile,
   useGetApiV3Series,
 } from "../../api";
 import { sonarrColors } from "../../colors";
@@ -20,7 +22,7 @@ import {
   useColorScheme,
   useLoadingSpinner,
 } from "@astrysk/utils";
-import { SectionTitle } from "../../../jellyfin/components/styles";
+import { SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import {
   MILLISECONDS_TO_MINUTES_MULTIPLIER,
@@ -50,10 +52,8 @@ const getAgendaListTheme = (
   paddingTop: 10,
   paddingLeft: 13,
   paddingRight: 13,
+  paddingBottom: 3,
 });
-
-// NOTE: Could consider putting date here
-const today = new Date().toISOString().split("T")[0];
 
 const SonarrCalendar: React.FC = () => {
   const { t } = useTranslation();
@@ -64,9 +64,9 @@ const SonarrCalendar: React.FC = () => {
 
   const colorScheme = useColorScheme();
 
-  const expandableCalendarTheme = React.useMemo(() => {
-    return getExpandableCalendarTheme(colorScheme === "dark");
-  }, [colorScheme]);
+  // const expandableCalendarTheme = React.useMemo(() => {
+  //   return getExpandableCalendarTheme(colorScheme === "dark");
+  // }, [colorScheme]);
 
   const backgroundColor = useTheme().background.get().val;
   const textColor = useTheme().gray11.get().val;
@@ -78,7 +78,7 @@ const SonarrCalendar: React.FC = () => {
     });
   }, [colorScheme]);
 
-  // const weekRange = getStartAndEndOfWeek(new Date());
+  const weekRange = getStartAndEndOfWeek(new Date());
   // console.log(getStartAndEndOfWeek(new Date()));
 
   useGetApiV3Series(
@@ -107,10 +107,10 @@ const SonarrCalendar: React.FC = () => {
 
   const calendarQuery = useGetApiV3Calendar(
     {
-      // start: weekRange[0].toISOString(),
-      // end: weekRange[1].toISOString(),
-      // unmonitored?: boolean;
+      start: weekRange[0].toISOString(),
+      end: weekRange[1].toISOString(),
       includeEpisodeImages: true,
+      // unmonitored: true,
       // tags?: string;
     },
     {
@@ -118,6 +118,7 @@ const SonarrCalendar: React.FC = () => {
         onSuccess: (_data) => {
           setLoadingSpinner(SonarrCalendar.name, Actions.DONE);
         },
+        staleTime: 60_000,
       },
     }
   );
@@ -133,6 +134,29 @@ const SonarrCalendar: React.FC = () => {
   //     console.log("End of week: ", endOfWeek.toString());
   //   }
   // };
+
+  useGetApiV3Qualityprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrQualityProfiles: data,
+        });
+      },
+    },
+  });
+  useGetApiV3Languageprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrLanguageProfiles: data,
+        });
+      },
+    },
+  });
 
   const refreshCalendar = () => {
     setLoadingSpinner(SonarrCalendar.name, Actions.LOADING);
@@ -229,15 +253,11 @@ const SonarrCalendar: React.FC = () => {
                       // recyclingKey={`${data.id}`}
                     />
                   </XStack>
-                  <YStack
-                    flex={1}
-                    paddingHorizontal="$2"
-                    paddingVertical="$1.5"
-                  >
+                  <YStack flex={1} paddingHorizontal="$2" paddingVertical="$2">
                     <H5 color="$gray12">{item.seriesData?.title}</H5>
                     <Text marginTop="$2" color="$gray11">{`${t(
                       "sonarr:season"
-                    )} ${item.seasonNumber} - ${t("sonarr:episode")} ${
+                    )} ${item.seasonNumber} • ${t("sonarr:episode")} ${
                       item.episodeNumber
                     }`}</Text>
                     <Text marginTop="$1.5" color="$gray11">
@@ -250,20 +270,20 @@ const SonarrCalendar: React.FC = () => {
                           ? "$green9"
                           : checkEpisodeHasAired(
                               item.timeUtc,
-                              item.seriesData.runtime ?? 1
+                              item.seriesData?.runtime ?? 1
                             )
-                          ? "$gray11"
-                          : "$red9"
+                          ? "$red9"
+                          : "$blue9"
                       }
                     >
                       {item.hasFile
                         ? t("sonarr:available")
                         : checkEpisodeHasAired(
                             item.timeUtc,
-                            item.seriesData.runtime ?? 1
+                            item.seriesData?.runtime ?? 1
                           )
-                        ? t("sonarr:notAired")
-                        : t("sonarr:missing")}
+                        ? t("sonarr:missing")
+                        : t("sonarr:notAired")}
                     </Text>
                   </YStack>
                   <XStack marginHorizontal="$3" alignItems="center">

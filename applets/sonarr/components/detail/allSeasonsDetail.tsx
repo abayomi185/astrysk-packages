@@ -6,7 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { useSonarrDetailHeader } from "../useHeader";
 import { getSizeOnDisk, goToSonarrDetailScreen } from "../../utils";
-import { SonarrSeasonActionPanel } from "./actionPanel";
+import { SonarrActionPanel } from "./actionPanel";
 import { TabContext } from "@astrysk/types";
 import { SonarrDetailScreenContext } from "../../types";
 
@@ -74,7 +74,7 @@ const SonarrAllSeasonsDetail: React.FC<{
                 } ${t("sonarr:episodes")}`}
               </Text>
               <XStack flex={1} marginTop="$2.5" justifyContent="center">
-                <SonarrSeasonActionPanel
+                <SonarrActionPanel
                   data={forwardedData}
                   seasonNumber={item.seasonNumber as number}
                 />

@@ -4,7 +4,7 @@ import { YStack, XStack, H3, H4, Text, Button } from "tamagui";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import { Image, ImageSource } from "expo-image";
 import { SeriesResource } from "../../api";
-import { SonarrSeriesActionPanel } from "./actionPanel";
+import { SonarrActionPanel } from "./actionPanel";
 import { useSonarrStore } from "../../store";
 import {
   SonarrDetailScreenContext,
@@ -78,7 +78,9 @@ const SonarrSeriesDetailHeader: React.FC<{
           </Text>
         </YStack>
       </XStack>
-      <SonarrSeriesActionPanel data={forwardedData} />
+      <XStack marginTop="$4" justifyContent="center">
+        <SonarrActionPanel data={forwardedData} isSeries />
+      </XStack>
       <Button
         height="$8"
         marginTop="$4"

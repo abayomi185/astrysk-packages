@@ -106,29 +106,6 @@ const SonarrSearchLanding: React.FC<{
     }
   );
 
-  useGetApiV3Qualityprofile({
-    query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrQualityProfiles: data,
-        });
-      },
-    },
-  });
-  useGetApiV3Languageprofile({
-    query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrLanguageProfiles: data,
-        });
-      },
-    },
-  });
-
   const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
 
   useLoadingSpinner(SonarrSearchLanding.name);

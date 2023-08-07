@@ -20,7 +20,7 @@ const SonarrDetail: React.FC = () => {
   const baseURL = useSonarrStore.getState().baseURL as string;
 
   const itemData = React.useMemo(() => {
-    const dataToForward = {
+    const dataToForward: ExtendedSeriesResource = {
       ...useSonarrStore.getState().sonarrCache?.[baseURL]?.[
         refParams.current.itemId as number
       ],
@@ -35,7 +35,10 @@ const SonarrDetail: React.FC = () => {
     //   return dataToForward;
     // }
     if (refParams.current.context === SonarrDetailScreenContext.EpisodesList) {
-      return { ...dataToForward, sonarrSeasonNumber: params.seasonNumber };
+      return {
+        ...dataToForward,
+        sonarrSeasonNumber: params.seasonNumber,
+      } as ExtendedSeriesResource;
     }
     return dataToForward;
   }, [refParams.current.itemId]);
@@ -64,6 +67,7 @@ const SonarrDetail: React.FC = () => {
         <SonarrAllEpisodesDetail
           forwardedData={itemData as ExtendedSeriesResource}
           tabContext={itemData.sonarrTabContext as TabContext}
+          seasonNumber={itemData.sonarrSeasonNumber as number}
         />
       );
     }

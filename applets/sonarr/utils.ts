@@ -105,12 +105,14 @@ export const goToSonarrModalScreen = ({
   router,
   searchItemId,
   tabContext,
+  seasonNumber,
   screenContext,
   searchContext,
 }: {
   router: Router;
   searchItemId: number;
   tabContext: TabContext;
+  seasonNumber?: number;
   screenContext?: SonarrDetailScreenContext;
   searchContext?: SonarrSearchFilterContext;
 }) => {
@@ -119,6 +121,7 @@ export const goToSonarrModalScreen = ({
     params: {
       context: screenContext,
       itemId: searchItemId,
+      seasonNumber: seasonNumber,
     } as SonarrDetailScreenProps,
   });
 };
@@ -136,7 +139,9 @@ export const getStartAndEndOfWeek = (date: Date) => {
   const day = date.getDay();
   const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
   const startOfWeek = new Date(date.getFullYear(), date.getMonth(), diff);
+  startOfWeek.setHours(0, 0, 0, 0); // set the start of week to the first hour
   const endOfWeek = new Date(date.getFullYear(), date.getMonth(), diff + 6);
+  endOfWeek.setHours(23, 59, 59, 999); // set the end of week to the last hour
 
   return [startOfWeek, endOfWeek];
 };

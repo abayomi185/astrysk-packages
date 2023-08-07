@@ -20,6 +20,8 @@
   "na": "N/A",
   "mins": "mins",
 
+  "(special)": "(Special)",
+
   "upcoming": "Upcoming",
   "missing": "Missing",
   "available": "Available",
@@ -33,6 +35,8 @@
   "rating": "Rating",
   "genres": "Genres",
   "alternateTitles": "Alternative Titles",
+
+  "noHistoryFound": "No History Found",
 
   "error": {
     "unableToSetMonitoredStatus": "Unable to set monitored status",
