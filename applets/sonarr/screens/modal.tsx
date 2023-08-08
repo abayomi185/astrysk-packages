@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams, useNavigation } from "expo-router";
 
 import { useTranslation } from "react-i18next";

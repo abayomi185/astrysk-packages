@@ -15,6 +15,14 @@
   "allSeasons": "All Seasons",
   "monitoredEpisodes": "Monitored Episodes",
 
+  "quality": "Quality",
+  "languages": "Languages",
+  "client": "Client",
+  "importedTo": "Imported To",
+  "indexer": "Indexer",
+  "releaseGroup": "Release Group",
+  "age": "Age",
+
   "gb": "GB",
   "percent": "%",
   "na": "N/A",
@@ -37,6 +45,15 @@
   "alternateTitles": "Alternative Titles",
 
   "noHistoryFound": "No History Found",
+
+  "unknown": "Unknown",
+  "grabbed": "Grabbed",
+  "seriesFolderImported": "Series Folder Imported",
+  "downloadFolderImported": "Download Folder Imported",
+  "downloadFailed": "Download Failed",
+  "episodeFileDeleted": "Episode File Deleted",
+  "episodeFileRenamed": "Episode File Renamed",
+  "downloadIgnored": "Download Ignored",
 
   "error": {
     "unableToSetMonitoredStatus": "Unable to set monitored status",
