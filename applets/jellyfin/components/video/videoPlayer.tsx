@@ -175,6 +175,7 @@ const JellyfinVideoPlayer: React.FC<{
     videoRef.current?.playAsync();
   };
 
+  // WARN: This logic needs to be looked at more closely
   const handleFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
     // WARN: When video is put back from PIP, this is called - not good
     // if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
@@ -184,13 +185,13 @@ const JellyfinVideoPlayer: React.FC<{
       videoRef.current?.playAsync();
     }
     if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+    }
+    // WARN: Continue playing video if it was playing before - Use isPaused state
+    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_DISMISS) {
       if (videoIsFullScreen) {
         navigation.goBack();
       }
       setVideoIsFullScreen(false);
-    }
-    // WARN: Continue playing video if it was playing before - Use isPaused state
-    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_DID_DISMISS) {
     }
   };
 
@@ -290,7 +291,7 @@ const JellyfinVideoPlayer: React.FC<{
       handleDismiss();
     });
     return screenDismissed;
-  }, [navigation]);
+  }, []);
 
   return (
     <YStack flex={1}>
