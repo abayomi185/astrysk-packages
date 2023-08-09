@@ -24,6 +24,7 @@ export enum SonarrDetailScreenContext {
   // SeasonHistory = "SeasonHistory",
   EditSeries = "EditSeries",
   EpisodesList = "EpisodesList",
+  EpisodeItem = "EpisodeItem",
   SearchItem = "SearchItem",
   SearchFilter = "SearchFilter",
 }
@@ -57,6 +58,7 @@ export interface SonarrDetailScreenProps extends Record<string, string> {
   itemId?: string | number;
   tabContext?: TabContext;
   seasonNumber?: number;
+  episodeNumber?: number;
   // itemName?: string;
   // itemCacheIndex?: string; // For cache purposes
   // itemData?: BaseItemDto | string;

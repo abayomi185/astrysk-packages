@@ -104,14 +104,12 @@ export const goToSonarrDetailScreen = ({
 export const goToSonarrModalScreen = ({
   router,
   searchItemId,
-  tabContext,
   seasonNumber,
   screenContext,
   searchContext,
 }: {
   router: Router;
   searchItemId: number;
-  tabContext: TabContext;
   seasonNumber?: number;
   screenContext?: SonarrDetailScreenContext;
   searchContext?: SonarrSearchFilterContext;
@@ -146,6 +144,14 @@ export const getStartAndEndOfWeek = (date: Date) => {
   return [startOfWeek, endOfWeek];
 };
 
+export const checkEpisodeHasAired = (airDateUtc: string, runtime: number) => {
+  return (
+    new Date().getTime() -
+      (new Date(airDateUtc).getTime() +
+        (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
+    0
+  );
+};
 // export const getStartAndEndOfWeek = (date: Date) => {
 //   const day = date.getDay();
 //   const diffToMonday = date.getDate() - day + (day === 0 ? -6 : 1);

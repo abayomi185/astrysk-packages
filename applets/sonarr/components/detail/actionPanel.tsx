@@ -1,8 +1,10 @@
 import React from "react";
+import { Alert } from "react-native";
 import { useRouter } from "expo-router";
-import { Button, GetProps, XStack } from "tamagui";
+import { Button, GetProps, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  EpisodeResource,
   SeasonResource,
   SeriesResource,
   useDeleteApiV3SeriesId,
@@ -26,11 +28,13 @@ const SonarrActionPanelButton: React.FC<{
   onPress?: () => void;
   style?: GetProps<typeof Button>;
   first?: boolean;
-}> = ({ children, onPress, style, first }) => {
+  vertical?: boolean;
+}> = ({ children, onPress, style, first, vertical }) => {
   return (
     <Button
       width="$5"
-      marginLeft={first ? undefined : "$2"}
+      marginLeft={first || vertical ? undefined : "$2"}
+      marginTop={!first && vertical ? "$3" : undefined}
       padding="$0"
       backgroundColor="$gray1"
       {...style}
@@ -38,6 +42,25 @@ const SonarrActionPanelButton: React.FC<{
     >
       {children}
     </Button>
+  );
+};
+
+export const SonarrEpisodeActionPanel: React.FC<{
+  data: EpisodeResource;
+}> = ({ data }) => {
+  const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+
+  return (
+    <YStack flex={1} justifyContent="center" alignItems="center">
+      {/* NOTE: Monitoring */}
+      <SonarrActionPanelButton
+        first
+        vertical
+        // onPress={toggleMonitor}
+      >
+        <Ionicons name="ios-search" size={23} color={iconColor} />
+      </SonarrActionPanelButton>
+    </YStack>
   );
 };
 
@@ -201,7 +224,6 @@ export const SonarrActionPanel: React.FC<{
               goToSonarrModalScreen({
                 router,
                 searchItemId: data.id as number,
-                tabContext: TabContext.Search,
                 screenContext: SonarrDetailScreenContext.EditSeries,
                 seasonNumber: seasonNumber,
               });
@@ -232,7 +254,6 @@ export const SonarrActionPanel: React.FC<{
             goToSonarrModalScreen({
               router,
               searchItemId: data.id as number,
-              tabContext: TabContext.Search,
               screenContext: SonarrDetailScreenContext.InteractiveSearch,
               seasonNumber: seasonNumber,
             })
@@ -251,7 +272,6 @@ export const SonarrActionPanel: React.FC<{
             goToSonarrModalScreen({
               router,
               searchItemId: data.id as number,
-              tabContext: TabContext.Search,
               screenContext: SonarrDetailScreenContext.History,
               seasonNumber: seasonNumber,
             })
@@ -267,7 +287,23 @@ export const SonarrActionPanel: React.FC<{
               borderColor: "$gray7",
               borderWidth: "$1",
             }}
-            onPress={() => {}}
+            onPress={() => {
+              Alert.alert(
+                `${t("common:areYouSure")}`,
+                `${t("common:thisWillDelete")} - ${data.title}`,
+                [
+                  {
+                    text: `${t("common:cancel")}`,
+                    style: "default",
+                  },
+                  {
+                    text: `${t("common:ok")}`,
+                    onPress: () => {},
+                    style: "destructive",
+                  },
+                ]
+              );
+            }}
           >
             <Ionicons name="trash-bin-sharp" size={23} color={iconColor} />
           </SonarrActionPanelButton>

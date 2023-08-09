@@ -26,6 +26,7 @@ import { SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import {
   MILLISECONDS_TO_MINUTES_MULTIPLIER,
+  checkEpisodeHasAired,
   getStartAndEndOfWeek,
   goToSonarrDetailScreen,
 } from "../../utils";
@@ -161,15 +162,6 @@ const SonarrCalendar: React.FC = () => {
   const refreshCalendar = () => {
     setLoadingSpinner(SonarrCalendar.name, Actions.LOADING);
     calendarQuery.refetch();
-  };
-
-  const checkEpisodeHasAired = (airDateUtc: string, runtime: number) => {
-    return (
-      new Date().getTime() -
-        (new Date(airDateUtc).getTime() +
-          (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
-      0
-    );
   };
 
   useLoadingSpinner(SonarrCalendar.name);

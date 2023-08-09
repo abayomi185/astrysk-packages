@@ -13,7 +13,8 @@ import SonarrInteractiveSearch from "../components/modal/interactiveSearch";
 import SonarrEditSeries from "../components/modal/editSeries";
 import SonarrHistory from "../components/modal/history";
 import SonarrSeriesDescription from "../components/modal/seriesDescription";
-import { SeriesResource } from "../api";
+import { EpisodeResource, SeriesResource } from "../api";
+import SonarrEpisode from "../components/modal/episode";
 
 const SonarrModal = () => {
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ const SonarrModal = () => {
       <SonarrInteractiveSearch
         data={data}
         seasonNumber={params?.seasonNumber}
+        episodeNumber={params?.episodeNumber}
       />
     );
   }
@@ -66,8 +68,22 @@ const SonarrModal = () => {
           }`
         : t("sonarr:history")
     );
-
     return <SonarrHistory data={data} seasonNumber={params?.seasonNumber} />;
+  }
+
+  // NOTE: EPISODE
+  if (params.context === SonarrDetailScreenContext.EpisodeItem) {
+    // const episodeData = useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+    //   seriesId
+    // ] as EpisodeResource;
+    const episodeData = {} as EpisodeResource;
+
+    useSonarrModalHeader(
+      navigation,
+      `${t("sonarr:episode")} ${params.episodeNumber} - ${data.title}`
+    );
+
+    return <SonarrEpisode data={episodeData} />;
   }
 
   return null;

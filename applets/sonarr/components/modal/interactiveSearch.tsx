@@ -5,7 +5,8 @@ import { YStack } from "tamagui";
 const SonarrInteractiveSearch: React.FC<{
   data: SeriesResource;
   seasonNumber?: number;
-}> = ({ data, seasonNumber }) => {
+  episodeNumber?: number;
+}> = ({ data, seasonNumber, episodeNumber }) => {
   const releaseQuery = useGetApiV3Release(
     {
       seriesId: data.id,
