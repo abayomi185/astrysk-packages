@@ -141,7 +141,7 @@ const JellyfinSearchFilterBar: React.FC<{
             />
           )}
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => (
+          ListHeaderComponent={
             <XStack flex={1} width="$3" marginLeft="$3" alignItems="center">
               <Button
                 flex={1}
@@ -156,7 +156,7 @@ const JellyfinSearchFilterBar: React.FC<{
                 <X size={18} opacity={0.8} />
               </Button>
             </XStack>
-          )}
+          }
           ListFooterComponent={() => <XStack marginLeft="$3" />}
           estimatedItemSize={69}
         />

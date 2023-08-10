@@ -22,10 +22,8 @@ const SonarrModal = () => {
 
   const params = useSearchParams() as SonarrDetailScreenProps;
 
-  const baseURL = useSonarrStore.getState().baseURL as string;
-
   const seriesId = parseInt(params?.itemId as string);
-  const data = useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+  const data = useSonarrStore.getState().sonarrSeriesCache?.[
     seriesId
   ] as SeriesResource;
 
@@ -73,17 +71,16 @@ const SonarrModal = () => {
 
   // NOTE: EPISODE
   if (params.context === SonarrDetailScreenContext.EpisodeItem) {
-    // const episodeData = useSonarrStore.getState().sonarrCache?.[baseURL]?.[
-    //   seriesId
-    // ] as EpisodeResource;
-    const episodeData = {} as EpisodeResource;
+    const episodeId = parseInt(params?.itemId as string);
+    const episodeData =
+      useSonarrStore.getState().sonarrEpisodeCache?.[episodeId];
 
     useSonarrModalHeader(
       navigation,
-      `${t("sonarr:episode")} ${params.episodeNumber} - ${data.title}`
+      `${t("sonarr:episode")} ${episodeData?.episodeNumber}`
     );
 
-    return <SonarrEpisode data={episodeData} />;
+    return <SonarrEpisode data={episodeData as EpisodeResource} />;
   }
 
   return null;

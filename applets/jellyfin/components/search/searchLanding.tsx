@@ -130,11 +130,11 @@ const JellyfinSearchLanding = () => {
             renderItem={({ item, index }) => (
               <JellyfinSearchLandingItem index={index} data={item} />
             )}
-            ListHeaderComponent={() => (
+            ListHeaderComponent={
               <XStack flex={1} marginTop="$6" justifyContent="center">
                 <H3>{t("jellyfin:suggestions")}</H3>
               </XStack>
-            )}
+            }
             refreshControl={
               <RefreshControl
                 refreshing={isRefetching}

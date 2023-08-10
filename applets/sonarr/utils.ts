@@ -144,7 +144,7 @@ export const getStartAndEndOfWeek = (date: Date) => {
   return [startOfWeek, endOfWeek];
 };
 
-export const checkEpisodeHasAired = (airDateUtc: string, runtime: number) => {
+export const checkEpisodeHasAired = (airDateUtc: string, runtime?: number) => {
   return (
     new Date().getTime() -
       (new Date(airDateUtc).getTime() +

@@ -156,8 +156,8 @@ const JellyfinSeriesDetailEpisodeList: React.FC<{
           )}
           initialScrollIndex={flashListEpisodeIndex}
           showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <XStack width="$0.75" />}
-          ListFooterComponent={() => <XStack width="$0.75" />}
+          ListHeaderComponent={<XStack width="$0.75" />}
+          ListFooterComponent={<XStack width="$0.75" />}
           // estimatedItemSize={customTokenMerge.$14}
           estimatedItemSize={184}
         />

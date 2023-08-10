@@ -43,6 +43,7 @@ const animations = createAnimations({
 
 const customTokenMerge = {
   ...size,
+  "$1.25": 22,
   "$6.5": 69,
   "$11.5": 134,
   "$12.5": 154,

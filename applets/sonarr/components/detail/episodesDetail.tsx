@@ -22,7 +22,8 @@ import {
   getSizeOnDisk,
   goToSonarrModalScreen,
 } from "../../utils";
-import { SonarrEpisodeActionPanel } from "./actionPanel";
+import { SonarrEpisodeItemActionPanel } from "./actionPanel";
+import { useSonarrStore } from "../../store";
 
 const SonarrEpisodeItem: React.FC<{
   t: TFunction;
@@ -44,6 +45,9 @@ const SonarrEpisodeItem: React.FC<{
     data.series?.runtime ?? 1
   );
 
+  // console.log(JSON.stringify(data, null, 2));
+  // console.log(JSON.stringify(fileData, null, 2));
+
   return (
     <Animated.View style={{ height: buttonHeight }}>
       <Button
@@ -61,7 +65,8 @@ const SonarrEpisodeItem: React.FC<{
           // setExpanded(!expanded);
           goToSonarrModalScreen({
             router,
-            searchItemId: 2,
+            searchItemId: data.id as number,
+            seasonNumber: data.seasonNumber as number,
             screenContext: SonarrDetailScreenContext.EpisodeItem,
           });
         }}
@@ -86,6 +91,7 @@ const SonarrEpisodeItem: React.FC<{
                         }
                       )}
                     </Text>
+
                     <H6
                       color={
                         data.hasFile
@@ -97,7 +103,8 @@ const SonarrEpisodeItem: React.FC<{
                       marginTop="$2"
                     >
                       {data.hasFile
-                        ? `${
+                        ? fileData &&
+                          `${
                             fileData?.quality?.quality?.name
                           } • ${getSizeOnDisk(fileData?.size as number)} ${t(
                             "sonarr:gb"
@@ -111,7 +118,7 @@ const SonarrEpisodeItem: React.FC<{
                 )}
               </YStack>
               <XStack width="$5" justifyContent="center">
-                <SonarrEpisodeActionPanel data={data} />
+                <SonarrEpisodeItemActionPanel data={data} />
               </XStack>
             </XStack>
           </YStack>
@@ -141,6 +148,18 @@ const SonarrAllEpisodesDetail: React.FC<{
       query: {
         onSuccess: (data) => {
           // console.log(JSON.stringify(data, null, 2));
+          useSonarrStore.setState((state) => ({
+            sonarrEpisodeCache: {
+              ...state.sonarrEpisodeCache,
+              ...data.reduce(
+                (acc: { [key: number]: EpisodeResource }, item) => {
+                  if (item.id) acc[item.id as number] = item;
+                  return acc;
+                },
+                {}
+              ),
+            },
+          }));
           setFileQueryEnabled(true);
         },
       },
@@ -162,6 +181,18 @@ const SonarrAllEpisodesDetail: React.FC<{
       query: {
         onSuccess: (data) => {
           // console.log(JSON.stringify(data, null, 2));
+          useSonarrStore.setState((state) => ({
+            sonarrEpisodeFileCache: {
+              ...state.sonarrEpisodeFileCache,
+              ...data.reduce(
+                (acc: { [key: number]: EpisodeFileResource }, item) => {
+                  if (item.id) acc[item.id as number] = item;
+                  return acc;
+                },
+                {}
+              ),
+            },
+          }));
         },
         enabled: fileQueryEnabled,
       },
@@ -186,7 +217,7 @@ const SonarrAllEpisodesDetail: React.FC<{
             )}
             extraData={episodeFile.data}
             contentContainerStyle={{
-              paddingHorizontal: "10",
+              paddingHorizontal: "12",
             }}
             renderItem={({
               item,

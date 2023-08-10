@@ -111,23 +111,23 @@ const SonarrHistoryItemExpanded: React.FC<{
             </Text>
           </XStack>
         )}
-        {data.eventType === "grabbed" && (
-          <XStack marginTop="$2.5">
-            <Text
-              color="$gray11"
-              width="30%"
-              textAlign="right"
-              marginRight="$3"
-            >
-              {t("sonarr:age")}
-            </Text>
-            <Text color="$gray11">{`${parseInt(
-              data.data?.ageHours as string
-            )} ${t("sonarr:hours")} ${parseInt(
-              data.data?.ageMinutes as string
-            )} ${t("sonarr:minutes")}`}</Text>
-          </XStack>
-        )}
+        {/* {data.eventType === "grabbed" && ( */}
+        {/*   <XStack marginTop="$2.5"> */}
+        {/*     <Text */}
+        {/*       color="$gray11" */}
+        {/*       width="30%" */}
+        {/*       textAlign="right" */}
+        {/*       marginRight="$3" */}
+        {/*     > */}
+        {/*       {t("sonarr:age")} */}
+        {/*     </Text> */}
+        {/*     <Text color="$gray11">{`${parseInt( */}
+        {/*       data.data?.ageHours as string */}
+        {/*     )} ${t("sonarr:hours")} ${parseInt( */}
+        {/*       data.data?.ageMinutes as string */}
+        {/*     )} ${t("sonarr:minutes")}`}</Text> */}
+        {/*   </XStack> */}
+        {/* )} */}
         {data.eventType === "episodeFileDeleted" && (
           <XStack marginTop="$2.5">
             <Text
@@ -148,7 +148,7 @@ const SonarrHistoryItemExpanded: React.FC<{
   );
 };
 
-const SonarrHistoryItem: React.FC<{
+export const SonarrHistoryItem: React.FC<{
   t: TFunction;
   data: HistoryResource;
 }> = ({ t, data }) => {
@@ -189,7 +189,7 @@ const SonarrHistoryItem: React.FC<{
         }}
         // animation="delay"
       >
-        <YStack flex={1}>
+        <YStack flex={1} marginTop="$1.5">
           <H6 numberOfLines={expanded ? 2 : 1}>{data.sourceTitle}</H6>
           {expanded ? (
             <SonarrHistoryItemExpanded t={t} data={data} />
@@ -255,7 +255,7 @@ const SonarrHistory: React.FC<{
         <XStack flex={1} marginTop="$1">
           <FlashList
             contentContainerStyle={{
-              paddingHorizontal: "10",
+              paddingHorizontal: "12",
             }}
             data={seriesHistory.data}
             renderItem={({ item }: { item: HistoryResource }) => (

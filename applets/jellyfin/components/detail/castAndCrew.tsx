@@ -79,8 +79,8 @@ const JellyfinCastAndCrew: React.FC<{
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment="center"
-            ListHeaderComponent={() => <XStack marginLeft="$2" />}
-            ListFooterComponent={() => <XStack marginLeft="$2" />}
+            ListHeaderComponent={<XStack marginLeft="$2" />}
+            ListFooterComponent={<XStack marginLeft="$2" />}
             estimatedItemSize={112}
           />
         </XStack>

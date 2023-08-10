@@ -2,7 +2,13 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
-import { SonarrCache, SonarrFilter, SonarrSearchFilterContext } from "./types";
+import {
+  SonarrSeriesCache,
+  SonarrFilter,
+  SonarrSearchFilterContext,
+  SonarrEpisodeCache,
+  SonarrEpisodeFileCache,
+} from "./types";
 import { filterPersistState } from "@astrysk/utils";
 import {
   LanguageProfileResource,
@@ -43,11 +49,13 @@ export const useSonarrStore = create<SonarrState>()(
 );
 
 interface SonarrState extends StateTypes.AppletState {
-  sonarrCache?: SonarrCache;
+  // Main cache
+  sonarrSeriesCache?: SonarrSeriesCache;
+  sonarrEpisodeCache?: SonarrEpisodeCache;
+  sonarrEpisodeFileCache?: SonarrEpisodeFileCache;
+  // Other
   sonarrQualityProfiles?: QualityProfileResource[];
   sonarrLanguageProfiles?: LanguageProfileResource[];
-  // userDetails?: AuthenticationResultUser;
-  // mediaCache?: JellyfinMediaCache;
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;
   searchFilters?: Partial<

@@ -78,26 +78,19 @@ const SonarrSearchResultItem: React.FC<{
 const SonarrSearchLanding: React.FC<{
   searchTerm: string;
 }> = () => {
-  const baseURL = useSonarrStore.getState().baseURL as string;
-
   const seriesData = useGetApiV3Series(
     {},
     {
       query: {
-        // initialData: () => useSonarrStore.getState().sonarrCache?.[baseURL]
+        // initialData: () => useSonarrStore.getState().sonarrSeriesCache?.[baseURL]
         onSuccess: (data) => {
           useSonarrStore.setState((state) => ({
-            sonarrCache: {
-              ...state.sonarrCache,
-              [baseURL]: {
-                ...data.reduce(
-                  (acc: { [key: number]: SeriesResource }, item) => {
-                    if (item.id) acc[item.id as number] = item;
-                    return acc;
-                  },
-                  {}
-                ),
-              },
+            sonarrSeriesCache: {
+              ...state.sonarrSeriesCache,
+              ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
+                if (item.id) acc[item.id as number] = item;
+                return acc;
+              }, {}),
             },
           }));
           setLoadingSpinner(SonarrSearchLanding.name, Actions.DONE);
@@ -105,6 +98,30 @@ const SonarrSearchLanding: React.FC<{
       },
     }
   );
+  useGetApiV3Qualityprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrQualityProfiles: data,
+        });
+      },
+      staleTime: Infinity,
+    },
+  });
+  useGetApiV3Languageprofile({
+    query: {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrLanguageProfiles: data,
+        });
+      },
+      staleTime: Infinity,
+    },
+  });
 
   const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
 

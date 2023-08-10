@@ -88,17 +88,12 @@ const SonarrCalendar: React.FC = () => {
       query: {
         onSuccess: (data) => {
           useSonarrStore.setState((state) => ({
-            sonarrCache: {
-              ...state.sonarrCache,
-              [baseURL]: {
-                ...data.reduce(
-                  (acc: { [key: number]: SeriesResource }, item) => {
-                    if (item.id) acc[item.id as number] = item;
-                    return acc;
-                  },
-                  {}
-                ),
-              },
+            sonarrSeriesCache: {
+              ...state.sonarrSeriesCache,
+              ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
+                if (item.id) acc[item.id as number] = item;
+                return acc;
+              }, {}),
             },
           }));
         },
@@ -145,6 +140,7 @@ const SonarrCalendar: React.FC = () => {
           sonarrQualityProfiles: data,
         });
       },
+      staleTime: Infinity,
     },
   });
   useGetApiV3Languageprofile({
@@ -156,6 +152,7 @@ const SonarrCalendar: React.FC = () => {
           sonarrLanguageProfiles: data,
         });
       },
+      staleTime: Infinity,
     },
   });
 
@@ -194,7 +191,7 @@ const SonarrCalendar: React.FC = () => {
                   data: [
                     {
                       seriesData:
-                        useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+                        useSonarrStore.getState().sonarrSeriesCache?.[
                           calendarData.seriesId as number
                         ],
                       title: calendarData.title,

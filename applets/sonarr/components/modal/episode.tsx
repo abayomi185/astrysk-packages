@@ -1,13 +1,203 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { EpisodeResource } from "../../api";
+import {
+  EpisodeFileResource,
+  EpisodeResource,
+  SeriesResource,
+  useGetApiV3HistorySeries,
+} from "../../api";
+import { useSonarrStore } from "../../store";
+import { XStack, YStack, Text } from "tamagui";
+import { SonarrEpisodeActionPanel } from "../detail/actionPanel";
+import { SectionTitle, SettingsOption } from "@astrysk/components";
+import { FlashList } from "@shopify/flash-list";
+import { SettingsOptionProps } from "@astrysk/types";
+import { TFunction } from "i18next";
+import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
+import { SonarrHistoryItem } from "./history";
+
+const getSonarrEpisodeModalOptions = (
+  t: TFunction,
+  episodeData: EpisodeResource,
+  episodeFileData: EpisodeFileResource,
+  monitored: boolean
+): SettingsOptionProps[] => {
+  // console.log(JSON.stringify(episodeData, null, 2));
+  // console.log(JSON.stringify(episodeFileData, null, 2));
+  return [
+    {
+      key: "sonarr:monitoring",
+      type: "label",
+      value: monitored ? `${t("common:yes")}` : `${t("common:no")}`,
+      firstItem: true,
+    },
+    {
+      key: "sonarr:relativePath",
+      type: "label",
+      value: episodeFileData?.relativePath as string,
+    },
+    {
+      key: "sonarr:video",
+      type: "label",
+      value: t(`sonarr:${episodeFileData?.mediaInfo?.videoCodec}`) as string,
+    },
+    {
+      key: "sonarr:audio",
+      type: "label",
+      value: `${t(`sonarr:${episodeFileData?.mediaInfo?.audioCodec}`)} • ${t(
+        `sonarr:channel${episodeFileData?.mediaInfo?.audioChannels}`
+      )}`,
+    },
+    {
+      key: "sonarr:audioLanguages",
+      type: "label",
+      value: episodeFileData.mediaInfo?.audioLanguages as string,
+    },
+    {
+      key: "sonarr:subtitles",
+      type: "label",
+      value: episodeFileData.mediaInfo?.subtitles as string,
+    },
+    {
+      key: "sonarr:size",
+      type: "label",
+      value: `${getSizeOnDisk(episodeFileData?.size as number)} ${t(
+        "sonarr:gb"
+      )}`,
+    },
+    {
+      key: "sonarr:added",
+      type: "label",
+      value: new Date(episodeFileData?.dateAdded as string).toLocaleString(
+        undefined,
+        {
+          dateStyle: "long",
+          timeStyle: "short",
+        }
+      ),
+      lastItem: true,
+    },
+  ];
+};
 
 const SonarrEpisode: React.FC<{
   data: EpisodeResource;
 }> = ({ data }) => {
   const { t } = useTranslation();
 
-  return <></>;
+  const episodeFileData = useSonarrStore.getState().sonarrEpisodeFileCache?.[
+    data.episodeFileId as number
+  ] as EpisodeFileResource;
+
+  const monitoredStatus = useSonarrStore(
+    (state) =>
+      state.sonarrEpisodeCache?.[data.id as number]?.monitored as boolean
+  );
+
+  const seriesData = useSonarrStore.getState().sonarrSeriesCache?.[
+    data.seriesId as number
+  ] as SeriesResource;
+
+  const episodeHasAired = checkEpisodeHasAired(
+    data.airDateUtc as string,
+    seriesData?.runtime ?? 1
+  );
+
+  console.log(JSON.stringify(episodeFileData, null, 2));
+
+  const episodeHistory = useGetApiV3HistorySeries(
+    {
+      seriesId: data.seriesId,
+      includeEpisode: true,
+      seasonNumber: data.seasonNumber,
+    },
+    {
+      query: {
+        select: (episodesHistory) =>
+          episodesHistory.filter(
+            (episode) => episode.episode?.episodeNumber === data.episodeNumber
+          ),
+      },
+    }
+  );
+
+  return (
+    <XStack width="100%" height="100%">
+      <FlashList
+        data={getSonarrEpisodeModalOptions(
+          t,
+          data,
+          episodeFileData,
+          monitoredStatus
+        )}
+        extraData={monitoredStatus}
+        renderItem={({ item }) => {
+          return (
+            <SettingsOption
+              t={t}
+              item={item as SettingsOptionProps}
+              alignCenter
+              style={{
+                marginHorizontal: "$3",
+                overflow: "hidden",
+              }}
+            />
+          );
+        }}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <YStack>
+            <SectionTitle>{data.title}</SectionTitle>
+            <YStack paddingHorizontal="$3">
+              <Text
+                color={
+                  data.hasFile
+                    ? "$gray11"
+                    : episodeHasAired
+                    ? "$red9"
+                    : "$blue9"
+                }
+              >
+                {data.hasFile
+                  ? `${new Date(data.airDateUtc as string).toLocaleString(
+                      undefined,
+                      {
+                        dateStyle: "long",
+                      }
+                    )}`
+                  : episodeHasAired
+                  ? t("sonarr:missing")
+                  : t("sonarr:notAired")}
+              </Text>
+              <Text color="$gray11" marginTop="$2">{`${t("sonarr:season")} ${
+                data.seasonNumber
+              } • ${t("sonarr:episode")} ${data.episodeNumber}`}</Text>
+              <Text color="$gray11" marginTop="$2">{`${data.overview}`}</Text>
+            </YStack>
+            <XStack marginTop="$4" marginBottom="$4" justifyContent="center">
+              <SonarrEpisodeActionPanel data={data} />
+            </XStack>
+          </YStack>
+        }
+        ListFooterComponent={
+          <XStack minHeight="$20" flex={1} marginTop="$4">
+            <FlashList
+              data={episodeHistory.data}
+              contentContainerStyle={{
+                paddingHorizontal: "12",
+              }}
+              renderItem={({ item }) => {
+                return <SonarrHistoryItem t={t} data={item} />;
+              }}
+              estimatedItemSize={55}
+              showsVerticalScrollIndicator={false}
+            />
+          </XStack>
+        }
+        estimatedItemSize={59}
+      />
+    </XStack>
+  );
 };
 
 export default SonarrEpisode;

@@ -116,11 +116,9 @@ export const SonarrSeriesDetail: React.FC<{
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const baseURL = useSonarrStore.getState().baseURL as string;
-
   const monitoredStatus = useSonarrStore(
     (state) =>
-      state.sonarrCache?.[baseURL]?.[forwardedData.id as number]
+      state.sonarrSeriesCache?.[forwardedData.id as number]
         ?.monitored as boolean
   );
 

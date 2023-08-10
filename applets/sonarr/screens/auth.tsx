@@ -238,7 +238,7 @@ const SonarrAuth = () => {
               <Ionicons name="close" size={16} color="red" />
             </Button>
           )}
-          ListHeaderComponent={() => <XStack marginLeft="$4" />}
+          ListHeaderComponent={<XStack marginLeft="$4" />}
           estimatedItemSize={74}
         />
       </XStack>

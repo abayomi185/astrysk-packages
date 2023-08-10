@@ -583,8 +583,8 @@ const JellyfinSeriesDetail: React.FC<{
                         </YStack>
                       )}
                       showsHorizontalScrollIndicator={false}
-                      ListHeaderComponent={() => <XStack width="$0.75" />}
-                      ListFooterComponent={() => <XStack width="$0.75" />}
+                      ListHeaderComponent={<XStack width="$0.75" />}
+                      ListFooterComponent={<XStack width="$0.75" />}
                       estimatedItemSize={170}
                     />
                   )}

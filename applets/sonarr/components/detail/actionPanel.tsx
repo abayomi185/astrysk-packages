@@ -23,7 +23,39 @@ import {
 } from "../../types";
 import { useColorScheme } from "@astrysk/utils";
 
-const SonarrActionPanelButton: React.FC<{
+const sonarrActionButtonColors = {
+  monitoring: {
+    borderColor: "$red7",
+    borderWidth: "$1.5",
+  },
+  edit: {
+    backgroundColor: "$green7",
+    borderColor: "$green7",
+    borderWidth: "$1",
+  },
+  automaticSearch: {
+    backgroundColor: "$blue7",
+    borderColor: "$blue7",
+    borderWidth: "$1",
+  },
+  interactiveSearch: {
+    backgroundColor: "$purple7",
+    borderColor: "$purple7",
+    borderWidth: "$1",
+  },
+  history: {
+    backgroundColor: "$orange7",
+    borderColor: "$orange7",
+    borderWidth: "$1",
+  },
+  delete: {
+    backgroundColor: "$gray7",
+    borderColor: "$gray7",
+    borderWidth: "$1",
+  },
+};
+
+export const SonarrActionPanelButton: React.FC<{
   children: React.ReactNode;
   onPress?: () => void;
   style?: GetProps<typeof Button>;
@@ -45,7 +77,7 @@ const SonarrActionPanelButton: React.FC<{
   );
 };
 
-export const SonarrEpisodeActionPanel: React.FC<{
+export const SonarrEpisodeItemActionPanel: React.FC<{
   data: EpisodeResource;
 }> = ({ data }) => {
   const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
@@ -61,6 +93,31 @@ export const SonarrEpisodeActionPanel: React.FC<{
         <Ionicons name="ios-search" size={23} color={iconColor} />
       </SonarrActionPanelButton>
     </YStack>
+  );
+};
+
+export const SonarrEpisodeActionPanel: React.FC<{
+  data: EpisodeResource;
+}> = ({ data }) => {
+  const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+
+  return (
+    <XStack flex={1} justifyContent="center" alignItems="center">
+      {/* NOTE: Monitoring */}
+      <SonarrActionPanelButton
+        first
+        style={sonarrActionButtonColors.automaticSearch}
+        // onPress={toggleMonitor}
+      >
+        <Ionicons name="ios-search" size={23} color={iconColor} />
+      </SonarrActionPanelButton>
+      <SonarrActionPanelButton
+        style={sonarrActionButtonColors.interactiveSearch}
+        // onPress={toggleMonitor}
+      >
+        <Ionicons name="person" size={23} color={iconColor} />
+      </SonarrActionPanelButton>
+    </XStack>
   );
 };
 
@@ -82,11 +139,11 @@ export const SonarrActionPanel: React.FC<{
   const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
 
   const monitoredStatus = useSonarrStore(
-    (state) => state.sonarrCache?.[baseURL]?.[data.id as number]?.monitored
+    (state) => state.sonarrSeriesCache?.[data.id as number]?.monitored
   );
 
   const seasonData = useSonarrStore((state) =>
-    state.sonarrCache?.[baseURL]?.[data.id as number].seasons?.find(
+    state.sonarrSeriesCache?.[data.id as number].seasons?.find(
       (season) => season.seasonNumber === seasonNumber
     )
   );
@@ -97,12 +154,9 @@ export const SonarrActionPanel: React.FC<{
       onSuccess: (data) => {
         useSonarrStore.setState((state) => {
           return {
-            sonarrCache: {
-              ...state.sonarrCache,
-              [baseURL]: {
-                ...state.sonarrCache?.[baseURL],
-                [data.id as number]: data,
-              },
+            sonarrSeriesCache: {
+              ...state.sonarrSeriesCache,
+              [data.id as number]: data,
             },
           };
         });
@@ -195,6 +249,7 @@ export const SonarrActionPanel: React.FC<{
         <SonarrActionPanelButton
           first
           style={{
+            ...sonarrActionButtonColors.monitoring,
             backgroundColor:
               seasonNumber !== undefined
                 ? seasonData?.monitored
@@ -203,10 +258,6 @@ export const SonarrActionPanel: React.FC<{
                 : monitoredStatus
                 ? "$red7"
                 : "$gray5",
-            // monitoredStatus ? "$red7" : "$gray5",
-            // backgroundColor: seasonData?.monitored ? "$red7" : "$gray5",
-            borderColor: "$red7",
-            borderWidth: "$1.5",
           }}
           onPress={toggleMonitor}
         >
@@ -215,11 +266,7 @@ export const SonarrActionPanel: React.FC<{
         {/* NOTE: Edit */}
         {isSeries && (
           <SonarrActionPanelButton
-            style={{
-              backgroundColor: "$green7",
-              borderColor: "$green7",
-              borderWidth: "$1",
-            }}
+            style={sonarrActionButtonColors.edit}
             onPress={() => {
               goToSonarrModalScreen({
                 router,
@@ -234,22 +281,14 @@ export const SonarrActionPanel: React.FC<{
         )}
         {/* NOTE: Automatic Search */}
         <SonarrActionPanelButton
-          style={{
-            backgroundColor: "$blue7",
-            borderColor: "$blue7",
-            borderWidth: "$1",
-          }}
+          style={sonarrActionButtonColors.automaticSearch}
           // onPress={() => postCommandAction(SonarrCommands.SERIES_SEARCH)}
         >
           <Ionicons name="ios-search" size={23} color={iconColor} />
         </SonarrActionPanelButton>
         {/* NOTE: Interactive Search */}
         <SonarrActionPanelButton
-          style={{
-            backgroundColor: "$purple7",
-            borderColor: "$purple7",
-            borderWidth: "$1",
-          }}
+          style={sonarrActionButtonColors.interactiveSearch}
           onPress={() =>
             goToSonarrModalScreen({
               router,
@@ -263,11 +302,7 @@ export const SonarrActionPanel: React.FC<{
         </SonarrActionPanelButton>
         {/* NOTE: History */}
         <SonarrActionPanelButton
-          style={{
-            backgroundColor: "$orange7",
-            borderColor: "$orange7",
-            borderWidth: "$1",
-          }}
+          style={sonarrActionButtonColors.history}
           onPress={() =>
             goToSonarrModalScreen({
               router,
@@ -282,11 +317,7 @@ export const SonarrActionPanel: React.FC<{
         {/* NOTE: Delete */}
         {isSeries && (
           <SonarrActionPanelButton
-            style={{
-              backgroundColor: "$gray7",
-              borderColor: "$gray7",
-              borderWidth: "$1",
-            }}
+            style={sonarrActionButtonColors.delete}
             onPress={() => {
               Alert.alert(
                 `${t("common:areYouSure")}`,

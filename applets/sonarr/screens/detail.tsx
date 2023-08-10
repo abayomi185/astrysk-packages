@@ -17,11 +17,9 @@ const SonarrDetail: React.FC = () => {
   const params = useSearchParams() as SonarrDetailScreenProps;
   const refParams = React.useRef(params);
 
-  const baseURL = useSonarrStore.getState().baseURL as string;
-
   const itemData = React.useMemo(() => {
     const dataToForward: ExtendedSeriesResource = {
-      ...useSonarrStore.getState().sonarrCache?.[baseURL]?.[
+      ...useSonarrStore.getState().sonarrSeriesCache?.[
         refParams.current.itemId as number
       ],
       sonarrContext: params.context,

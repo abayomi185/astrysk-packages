@@ -18,7 +18,10 @@ const SonarrAllSeasonsDetail: React.FC<{
   const navigation = useNavigation();
   const router = useRouter();
 
-  useSonarrDetailHeader(navigation, t("sonarr:allSeasons"));
+  useSonarrDetailHeader(
+    navigation,
+    `${t("sonarr:allSeasons")} - ${forwardedData.title}`
+  );
 
   return (
     <YStack flex={1}>

@@ -1,10 +1,14 @@
 import { TabContext } from "@astrysk/types";
-import { SeriesResource } from "./api";
+import { EpisodeFileResource, EpisodeResource, SeriesResource } from "./api";
 
-export interface SonarrCache {
-  [baseURL: string]: {
-    [id: number]: SeriesResource;
-  };
+export interface SonarrSeriesCache {
+  [id: number]: SeriesResource;
+}
+export interface SonarrEpisodeCache {
+  [id: number]: EpisodeResource;
+}
+export interface SonarrEpisodeFileCache {
+  [id: number]: EpisodeFileResource;
 }
 
 export interface ExtendedSeriesResource extends SeriesResource {
