@@ -9,7 +9,7 @@ import {
   useGetApiV3HistorySeries,
 } from "../../api";
 import { useSonarrStore } from "../../store";
-import { XStack, YStack, Text } from "tamagui";
+import { XStack, YStack, Text, Spinner, H4 } from "tamagui";
 import { SonarrEpisodeActionPanel } from "../detail/actionPanel";
 import { SectionTitle, SettingsOption } from "@astrysk/components";
 import { FlashList } from "@shopify/flash-list";
@@ -18,6 +18,7 @@ import { TFunction } from "i18next";
 import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
 import { SonarrHistoryItem } from "./history";
 import { ToastModalProviderKey } from "../../types";
+import { sonarrColors } from "../../colors";
 
 const getSonarrEpisodeModalOptions = (
   t: TFunction,
@@ -233,6 +234,15 @@ const SonarrEpisode: React.FC<{
               }}
               estimatedItemSize={55}
               showsVerticalScrollIndicator={false}
+              ListEmptyComponent={() => (
+                <XStack justifyContent="center" marginTop="$5">
+                  {episodeHistory.status === "loading" ? (
+                    <Spinner color={sonarrColors.accentColor} size="large" />
+                  ) : (
+                    <H4 color="$gray11">{t("sonarr:noHistoryFound")}</H4>
+                  )}
+                </XStack>
+              )}
             />
           </XStack>
         }
