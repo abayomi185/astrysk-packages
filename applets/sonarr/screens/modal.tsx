@@ -71,9 +71,9 @@ const SonarrModal = () => {
 
   // NOTE: EPISODE
   if (params.context === SonarrDetailScreenContext.EpisodeItem) {
-    const episodeId = parseInt(params?.itemId as string);
+    const episodeId = params?.episodeId as number;
     const episodeData =
-      useSonarrStore.getState().sonarrEpisodeCache?.[episodeId];
+      useSonarrStore.getState().sonarrEpisodeCache?.[seriesId]?.[episodeId];
 
     useSonarrModalHeader(
       navigation,

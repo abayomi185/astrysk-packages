@@ -5,7 +5,9 @@ export interface SonarrSeriesCache {
   [id: number]: SeriesResource;
 }
 export interface SonarrEpisodeCache {
-  [id: number]: EpisodeResource;
+  [seriesId: number]: {
+    [id: number]: EpisodeResource;
+  };
 }
 export interface SonarrEpisodeFileCache {
   [id: number]: EpisodeFileResource;
@@ -15,6 +17,11 @@ export interface ExtendedSeriesResource extends SeriesResource {
   sonarrContext?: SonarrDetailScreenContext;
   sonarrTabContext?: TabContext;
   sonarrSeasonNumber?: number;
+}
+
+export enum ToastModalProviderKey {
+  Persists = "PERSISTS",
+  Episode = "Episode",
 }
 
 // Context may sometimes mean where the route was pushed from,
@@ -62,6 +69,7 @@ export interface SonarrDetailScreenProps extends Record<string, string> {
   itemId?: string | number;
   tabContext?: TabContext;
   seasonNumber?: number;
+  episodeId?: number;
   episodeNumber?: number;
   // itemName?: string;
   // itemCacheIndex?: string; // For cache purposes
@@ -74,7 +82,7 @@ export interface SonarrDetailScreenProps extends Record<string, string> {
 
 export enum SonarrSettingsKeys {
   Server = "common:server",
-  DeleteCache = "jellyfin:deleteCache",
+  DeleteCache = "sonarr:deleteCache",
 }
 
 export interface SonarrFilter {

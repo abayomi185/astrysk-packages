@@ -104,12 +104,14 @@ export const goToSonarrDetailScreen = ({
 export const goToSonarrModalScreen = ({
   router,
   searchItemId,
+  episodeId,
   seasonNumber,
   screenContext,
   searchContext,
 }: {
   router: Router;
   searchItemId: number;
+  episodeId?: number;
   seasonNumber?: number;
   screenContext?: SonarrDetailScreenContext;
   searchContext?: SonarrSearchFilterContext;
@@ -119,6 +121,7 @@ export const goToSonarrModalScreen = ({
     params: {
       context: screenContext,
       itemId: searchItemId,
+      episodeId: episodeId,
       seasonNumber: seasonNumber,
     } as SonarrDetailScreenProps,
   });

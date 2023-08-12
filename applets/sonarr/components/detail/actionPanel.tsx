@@ -1,14 +1,19 @@
 import React from "react";
 import { Alert } from "react-native";
+import { ToastPosition } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
 import { Button, GetProps, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import {
+  EpisodeFileListResource,
   EpisodeResource,
   SeasonResource,
   SeriesResource,
+  useDeleteApiV3EpisodefileBulk,
+  useDeleteApiV3EpisodefileId,
   useDeleteApiV3SeriesId,
   usePostApiV3Command,
+  usePutApiV3EpisodeId,
   usePutApiV3SeriesId,
 } from "../../api";
 import { toast } from "@backpackapp-io/react-native-toast";
@@ -20,6 +25,7 @@ import {
   SonarrDetailScreenContext,
   SonarrCommands,
   ExtendedSeriesResource,
+  ToastModalProviderKey,
 } from "../../types";
 import { useColorScheme } from "@astrysk/utils";
 
@@ -84,7 +90,7 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
 
   return (
     <YStack flex={1} justifyContent="center" alignItems="center">
-      {/* NOTE: Monitoring */}
+      {/* NOTE: AUTOMATIC SEARCH */}
       <SonarrActionPanelButton
         first
         vertical
@@ -98,16 +104,127 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
 
 export const SonarrEpisodeActionPanel: React.FC<{
   data: EpisodeResource;
-}> = ({ data }) => {
+  refetchEpisodeData?: () => void;
+}> = ({ data, refetchEpisodeData }) => {
+  const { t } = useTranslation();
   const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+
+  const monitoredStatus = useSonarrStore(
+    (state) =>
+      state.sonarrEpisodeCache?.[data.seriesId as number]?.[data.id as number]
+        ?.monitored
+  );
+
+  // NOTE: MONITORING
+  const putEpisode = usePutApiV3EpisodeId({
+    mutation: {
+      onSuccess: (data) => {
+        useSonarrStore.setState((state) => {
+          return {
+            sonarrEpisodeCache: {
+              ...state.sonarrEpisodeCache,
+              [data.seriesId as number]: {
+                [data.id as number]: data,
+              },
+            },
+          };
+        });
+      },
+    },
+  });
+  const toggleMonitor = () => {
+    putEpisode.mutate({
+      id: data?.id as number,
+      data: {
+        ...data,
+        monitored: !monitoredStatus,
+      },
+    });
+  };
+
+  // NOTE: AUTOMATIC SEARCH
+  const postCommand = usePostApiV3Command({
+    mutation: {
+      onSuccess: () => {
+        toast.success(t("sonarr:success:automaticSearchStarted"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+      },
+      onError: (error) => {
+        toast.error(t("sonarr:error:automaticSearchFailed)"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+        toast.error(error.message, {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+      },
+    },
+  });
+  const postCommandAction = () => {
+    postCommand.mutate({
+      data: {
+        name: SonarrCommands.EPISODE_SEARCH,
+        // @ts-ignore
+        episodeIds: [data?.id as number],
+      },
+    });
+  };
+
+  // NOTE: DELETING
+  const deleteEpisode = useDeleteApiV3EpisodefileId({
+    mutation: {
+      onSuccess: () => {
+        useSonarrStore.setState((state) => {
+          if (state.sonarrEpisodeFileCache) {
+            const { [data.episodeFileId as number]: _, ...newState } =
+              state.sonarrEpisodeFileCache;
+            return { sonarrEpisodeFileCache: newState };
+          }
+          return state; // return the current state if sonarrEpisodeFileCache is undefined
+        });
+        refetchEpisodeData?.();
+      },
+    },
+  });
+  const deleteEpisodeFile = () => {
+    Alert.alert(
+      `${t("common:areYouSure")}`,
+      `${t("common:thisWillDelete")} - ${t("sonarr:episode")} ${
+        data.episodeNumber
+      } - ${data.title}`,
+      [
+        {
+          text: `${t("common:cancel")}`,
+          style: "default",
+        },
+        {
+          text: `${t("common:ok")}`,
+          onPress: () => {
+            deleteEpisode.mutate({
+              id: data?.episodeFileId as number,
+            });
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   return (
     <XStack flex={1} justifyContent="center" alignItems="center">
-      {/* NOTE: Monitoring */}
       <SonarrActionPanelButton
         first
+        style={{
+          ...sonarrActionButtonColors.monitoring,
+          backgroundColor: monitoredStatus ? "$red7" : "$gray5",
+        }}
+        onPress={toggleMonitor}
+      >
+        <Ionicons name="ios-bookmark" size={23} color={iconColor} />
+      </SonarrActionPanelButton>
+      <SonarrActionPanelButton
         style={sonarrActionButtonColors.automaticSearch}
-        // onPress={toggleMonitor}
+        onPress={postCommandAction}
       >
         <Ionicons name="ios-search" size={23} color={iconColor} />
       </SonarrActionPanelButton>
@@ -117,6 +234,12 @@ export const SonarrEpisodeActionPanel: React.FC<{
       >
         <Ionicons name="person" size={23} color={iconColor} />
       </SonarrActionPanelButton>
+      <SonarrActionPanelButton
+        style={sonarrActionButtonColors.delete}
+        onPress={deleteEpisodeFile}
+      >
+        <Ionicons name="trash-bin-sharp" size={23} color={iconColor} />
+      </SonarrActionPanelButton>
     </XStack>
   );
 };
@@ -125,13 +248,8 @@ export const SonarrActionPanel: React.FC<{
   data: ExtendedSeriesResource;
   isSeries?: boolean;
   seasonNumber?: number;
-  // parentIndexNumber?: number;
-  // indexNumber: number;
-  // hasBeenWatched?: boolean;
-  // setWatchedStatus: () => void;
-  // playEpisode: () => void;
-  // moreDetails: () => void;
-}> = ({ data, isSeries, seasonNumber }) => {
+  refetchSeasons?: () => void;
+}> = ({ data, isSeries, seasonNumber, refetchSeasons }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const baseURL = useSonarrStore.getState().baseURL as string;
@@ -148,7 +266,10 @@ export const SonarrActionPanel: React.FC<{
     )
   );
 
-  // NOTE: Put Series
+  const episodesInSeries =
+    useSonarrStore.getState().sonarrEpisodeCache?.[data.id as number];
+
+  // NOTE: MONITORING
   const putSeries = usePutApiV3SeriesId({
     mutation: {
       onSuccess: (data) => {
@@ -160,11 +281,17 @@ export const SonarrActionPanel: React.FC<{
             },
           };
         });
-        toast.success(t("sonarr:success:monitoringStatusUpdated"));
+        toast.success(t("sonarr:success:monitoringStatusUpdated"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:unableToSetMonitoredStatus"));
-        toast.error(error.message);
+        toast.error(t("sonarr:error:unableToSetMonitoredStatus"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+        toast.error(error.message, {
+          providerKey: ToastModalProviderKey.Persists,
+        });
       },
     },
   });
@@ -202,25 +329,89 @@ export const SonarrActionPanel: React.FC<{
     }
   };
 
+  // NOTE: DELETE
   const deleteSeries = useDeleteApiV3SeriesId();
-  const deleteSeriesAction = (deleteFiles?: boolean) => {
-    deleteSeries.mutate({
-      id: data.id as number,
-      params: {
-        ...(deleteFiles ? { deleteFiles: deleteFiles } : {}),
+  const deleteEpisodes = useDeleteApiV3EpisodefileBulk({
+    mutation: {
+      onSuccess: () => {
+        refetchSeasons?.();
       },
-    });
+    },
+  });
+  const getEpisodeIdsForSeasonDeletion = (seasonNumber: number) => {
+    if (episodesInSeries) {
+      return Object.keys(episodesInSeries)
+        .filter(
+          (key: any) =>
+            episodesInSeries[Number(key)].seasonNumber === seasonNumber
+        )
+        .map((key: any) => episodesInSeries[Number(key)].episodeFileId)
+        .filter((val) => val !== 0);
+    }
+    return [];
   };
 
-  // NOTE: Post Command
+  const deleteAction = (deleteFiles: boolean = true) => {
+    Alert.alert(
+      `${t("sonarr:doYouWantToDelete")}`,
+      `${isSeries ? t("sonarr:series") : t("sonarr:season")}${
+        !isSeries ? " " + seasonNumber : ""
+      } ` +
+        `- ${data.title}\n` +
+        `${t("sonarr:thisHas")} ` +
+        `${getEpisodeIdsForSeasonDeletion(seasonNumber as number).length} ${t(
+          "sonarr:episodes"
+        )}`,
+      [
+        {
+          text: `${t("common:cancel")}`,
+          style: "default",
+        },
+        {
+          text: `${t("common:ok")}`,
+          onPress: () => {
+            isSeries
+              ? deleteSeries.mutate({
+                  id: data.id as number,
+                  params: {
+                    ...(deleteFiles ? { deleteFiles: deleteFiles } : {}),
+                  },
+                })
+              : () => {
+                  const episodeCount = getEpisodeIdsForSeasonDeletion(
+                    seasonNumber as number
+                  );
+                  if (episodeCount && episodeCount.length > 0) {
+                    deleteEpisodes.mutate({
+                      data: {
+                        episodeFileIds: episodeCount,
+                        deleteFiles: true,
+                      } as EpisodeFileListResource,
+                    });
+                  }
+                };
+          },
+          style: "destructive",
+        },
+      ]
+    );
+  };
+
+  // NOTE: AUTOMATIC SEARCH
   const postCommand = usePostApiV3Command({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:success:automaticSearchStarted"));
+        toast.success(t("sonarr:success:automaticSearchStarted"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:automaticSearchFailed)"));
-        toast.error(error.message);
+        toast.error(t("sonarr:error:automaticSearchFailed)"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+        toast.error(error.message, {
+          providerKey: ToastModalProviderKey.Persists,
+        });
       },
     },
   });
@@ -282,7 +473,7 @@ export const SonarrActionPanel: React.FC<{
         {/* NOTE: Automatic Search */}
         <SonarrActionPanelButton
           style={sonarrActionButtonColors.automaticSearch}
-          // onPress={() => postCommandAction(SonarrCommands.SERIES_SEARCH)}
+          onPress={() => postCommandAction()}
         >
           <Ionicons name="ios-search" size={23} color={iconColor} />
         </SonarrActionPanelButton>
@@ -315,30 +506,12 @@ export const SonarrActionPanel: React.FC<{
           <Ionicons name="time" size={23} color={iconColor} />
         </SonarrActionPanelButton>
         {/* NOTE: Delete */}
-        {isSeries && (
-          <SonarrActionPanelButton
-            style={sonarrActionButtonColors.delete}
-            onPress={() => {
-              Alert.alert(
-                `${t("common:areYouSure")}`,
-                `${t("common:thisWillDelete")} - ${data.title}`,
-                [
-                  {
-                    text: `${t("common:cancel")}`,
-                    style: "default",
-                  },
-                  {
-                    text: `${t("common:ok")}`,
-                    onPress: () => {},
-                    style: "destructive",
-                  },
-                ]
-              );
-            }}
-          >
-            <Ionicons name="trash-bin-sharp" size={23} color={iconColor} />
-          </SonarrActionPanelButton>
-        )}
+        <SonarrActionPanelButton
+          style={sonarrActionButtonColors.delete}
+          onPress={deleteAction}
+        >
+          <Ionicons name="trash-bin-sharp" size={23} color={iconColor} />
+        </SonarrActionPanelButton>
       </XStack>
     </XStack>
   );

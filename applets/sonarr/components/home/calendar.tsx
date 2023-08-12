@@ -156,7 +156,7 @@ const SonarrCalendar: React.FC = () => {
     },
   });
 
-  const refreshCalendar = () => {
+  const refetchCalendar = () => {
     setLoadingSpinner(SonarrCalendar.name, Actions.LOADING);
     calendarQuery.refetch();
   };
@@ -285,7 +285,7 @@ const SonarrCalendar: React.FC = () => {
           refreshControl={
             <RefreshControl
               refreshing={false}
-              onRefresh={refreshCalendar}
+              onRefresh={refetchCalendar}
               tintColor={sonarrColors.accentColor}
             />
           }

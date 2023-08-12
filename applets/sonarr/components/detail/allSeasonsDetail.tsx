@@ -1,7 +1,13 @@
 import React from "react";
-import { useNavigation, useRouter } from "expo-router";
+import { RefreshControl } from "react-native";
+import { useNavigation, useRouter, useFocusEffect } from "expo-router";
 import { XStack, YStack, Text, H3, Button } from "tamagui";
-import { SeriesResource } from "../../api";
+import {
+  EpisodeResource,
+  SeriesResource,
+  useGetApiV3Episode,
+  useGetApiV3SeriesId,
+} from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { useSonarrDetailHeader } from "../useHeader";
@@ -9,6 +15,8 @@ import { getSizeOnDisk, goToSonarrDetailScreen } from "../../utils";
 import { SonarrActionPanel } from "./actionPanel";
 import { TabContext } from "@astrysk/types";
 import { SonarrDetailScreenContext } from "../../types";
+import { sonarrColors } from "../../colors";
+import { useSonarrStore } from "../../store";
 
 const SonarrAllSeasonsDetail: React.FC<{
   forwardedData: SeriesResource;
@@ -18,6 +26,61 @@ const SonarrAllSeasonsDetail: React.FC<{
   const navigation = useNavigation();
   const router = useRouter();
 
+  const seriesData = useGetApiV3SeriesId(forwardedData.id as number, {
+    query: {
+      initialData: () => forwardedData,
+      onSuccess: (seriesData) => {
+        useSonarrStore.setState((state) => ({
+          sonarrSeriesCache: {
+            ...state.sonarrSeriesCache,
+            [forwardedData.id as number]: {
+              ...state.sonarrSeriesCache?.[forwardedData.id as number],
+              seasons: seriesData.seasons,
+            },
+          },
+        }));
+      },
+    },
+  });
+
+  useGetApiV3Episode(
+    {
+      seriesId: forwardedData.id,
+    },
+    {
+      query: {
+        onSuccess: (data) => {
+          useSonarrStore.setState((state) => ({
+            sonarrEpisodeCache: {
+              ...state.sonarrEpisodeCache,
+              [forwardedData.id as number]: {
+                ...state.sonarrEpisodeCache?.[forwardedData.id as number],
+                ...data.reduce(
+                  (acc: { [key: number]: EpisodeResource }, item) => {
+                    if (item.id) acc[item.id as number] = item;
+                    return acc;
+                  },
+                  {}
+                ),
+              },
+            },
+          }));
+        },
+      },
+    }
+  );
+
+  const refetchSeasons = () => {
+    seriesData.refetch();
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetchSeasons();
+      return () => {};
+    }, [])
+  );
+
   useSonarrDetailHeader(
     navigation,
     `${t("sonarr:allSeasons")} - ${forwardedData.title}`
@@ -26,7 +89,7 @@ const SonarrAllSeasonsDetail: React.FC<{
   return (
     <YStack flex={1}>
       <FlashList
-        data={(forwardedData.seasons as SeriesResource["seasons"])?.sort(
+        data={(seriesData.data?.seasons as SeriesResource["seasons"])?.sort(
           (a, b) => (b.seasonNumber as number) - (a.seasonNumber as number)
         )}
         extraData={new Date()} // Temporary - for testing
@@ -80,6 +143,7 @@ const SonarrAllSeasonsDetail: React.FC<{
                 <SonarrActionPanel
                   data={forwardedData}
                   seasonNumber={item.seasonNumber as number}
+                  refetchSeasons={refetchSeasons}
                 />
               </XStack>
             </YStack>
@@ -88,6 +152,13 @@ const SonarrAllSeasonsDetail: React.FC<{
         estimatedItemSize={136}
         ListFooterComponent={<XStack height="$0.75" />}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={refetchSeasons}
+            tintColor={sonarrColors.accentColor}
+          />
+        }
       />
     </YStack>
   );

@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
-import { useRouter } from "expo-router";
+import { RefreshControl } from "react-native";
+import { useRouter, useFocusEffect } from "expo-router";
 import { Animated } from "react-native";
 import { useNavigation } from "expo-router";
 import { TabContext } from "@astrysk/types";
@@ -45,9 +46,6 @@ const SonarrEpisodeItem: React.FC<{
     data.series?.runtime ?? 1
   );
 
-  // console.log(JSON.stringify(data, null, 2));
-  // console.log(JSON.stringify(fileData, null, 2));
-
   return (
     <Animated.View style={{ height: buttonHeight }}>
       <Button
@@ -65,14 +63,15 @@ const SonarrEpisodeItem: React.FC<{
           // setExpanded(!expanded);
           goToSonarrModalScreen({
             router,
-            searchItemId: data.id as number,
+            searchItemId: data.seriesId as number,
+            episodeId: data.id as number,
             seasonNumber: data.seasonNumber as number,
             screenContext: SonarrDetailScreenContext.EpisodeItem,
           });
         }}
       >
         <XStack flex={1} height="100%">
-          <XStack width="$1" marginTop="$1" justifyContent="center">
+          <XStack width="$1.5" marginTop="$1" justifyContent="center">
             <H6>{data.episodeNumber}</H6>
           </XStack>
           <YStack flex={1} marginLeft="$2.5" marginTop="$1">
@@ -147,17 +146,19 @@ const SonarrAllEpisodesDetail: React.FC<{
     {
       query: {
         onSuccess: (data) => {
-          // console.log(JSON.stringify(data, null, 2));
           useSonarrStore.setState((state) => ({
             sonarrEpisodeCache: {
               ...state.sonarrEpisodeCache,
-              ...data.reduce(
-                (acc: { [key: number]: EpisodeResource }, item) => {
-                  if (item.id) acc[item.id as number] = item;
-                  return acc;
-                },
-                {}
-              ),
+              [forwardedData.id as number]: {
+                ...state.sonarrEpisodeCache?.[forwardedData.id as number],
+                ...data.reduce(
+                  (acc: { [key: number]: EpisodeResource }, item) => {
+                    if (item.id) acc[item.id as number] = item;
+                    return acc;
+                  },
+                  {}
+                ),
+              },
             },
           }));
           setFileQueryEnabled(true);
@@ -169,18 +170,10 @@ const SonarrAllEpisodesDetail: React.FC<{
   const episodeFile = useGetApiV3Episodefile(
     {
       seriesId: forwardedData.id,
-      ...(episodes.data
-        ? {
-            episodeFileIds: episodes.data?.map(
-              (episode) => episode.episodeFileId as number
-            ),
-          }
-        : {}),
     },
     {
       query: {
         onSuccess: (data) => {
-          // console.log(JSON.stringify(data, null, 2));
           useSonarrStore.setState((state) => ({
             sonarrEpisodeFileCache: {
               ...state.sonarrEpisodeFileCache,
@@ -194,9 +187,21 @@ const SonarrAllEpisodesDetail: React.FC<{
             },
           }));
         },
-        enabled: fileQueryEnabled,
       },
     }
+  );
+
+  const refetchEpisodes = () => {
+    episodes.refetch();
+    episodeFile.refetch();
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Could check if data isStale first
+      refetchEpisodes();
+      return () => {};
+    }, [])
   );
 
   useSonarrDetailHeader(
@@ -246,6 +251,13 @@ const SonarrAllEpisodesDetail: React.FC<{
                 )}
               </XStack>
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={refetchEpisodes}
+                tintColor={sonarrColors.accentColor}
+              />
+            }
           />
         </XStack>
       </YStack>

@@ -7,6 +7,7 @@
   "interactiveSearch": "Interactive Search",
   "editSeries": "Edit Series",
 
+  "series": "Series",
   "season": "Season",
   "episode": "Episode",
   "episodes": "Episodes",
@@ -53,6 +54,11 @@
   "alternateTitles": "Alternative Titles",
 
   "noHistoryFound": "No History Found",
+  "doYouWantToDelete": "Do you want to delete?",
+  "thisHas": "This has",
+  "deleteCache": "Delete Cache",
+  "deleteCacheMessage": "This action will delete all media cache. Are you sure?",
+  "noSeriesFound": "No Series Found",
 
   "unknown": "Unknown",
   "grabbed": "Grabbed",

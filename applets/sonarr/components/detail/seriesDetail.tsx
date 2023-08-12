@@ -1,7 +1,8 @@
 import React from "react";
+import { RefreshControl } from "react-native";
 import { getLocales } from "expo-localization";
-import { useNavigation, useSearchParams } from "expo-router";
-import { SeriesResource } from "../../api";
+import { useNavigation, useFocusEffect } from "expo-router";
+import { SeriesResource, useGetApiV3SeriesId } from "../../api";
 import { XStack, YStack } from "tamagui";
 import { useSonarrStore } from "../../store";
 import { useSonarrDetailHeader } from "../useHeader";
@@ -11,6 +12,7 @@ import { SettingsOption } from "@astrysk/components";
 import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import SonarrSeriesDetailHeader from "./seriesDetailHeader";
+import { sonarrColors } from "../../colors";
 
 const getSonarrSeriesDetailOptions = (
   t: TFunction,
@@ -27,12 +29,12 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:seriesType",
       type: "label",
-      value: seriesData.seriesType,
+      value: seriesData?.seriesType,
     },
     {
       key: "common:path",
       type: "label",
-      value: seriesData.path as string,
+      value: seriesData?.path as string,
     },
     {
       key: "common:quality",
@@ -40,7 +42,7 @@ const getSonarrSeriesDetailOptions = (
       value: useSonarrStore
         .getState()
         ?.sonarrQualityProfiles?.find(
-          (profile) => profile.id === seriesData.qualityProfileId
+          (profile) => profile.id === seriesData?.qualityProfileId
         )?.name as string,
     },
     // {
@@ -55,12 +57,12 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "common:status",
       type: "label",
-      value: seriesData.status,
+      value: seriesData?.status,
     },
     {
       key: "sonarr:nextAiring",
       type: "label",
-      value: seriesData.nextAiring
+      value: seriesData?.nextAiring
         ? new Date(seriesData.nextAiring as string).toLocaleString(
             getLocales()[0].languageCode,
             {
@@ -73,33 +75,33 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "common:year",
       type: "label",
-      value: `${seriesData.year}`,
+      value: `${seriesData?.year}`,
     },
     {
       key: "sonarr:network",
       type: "label",
-      value: seriesData.network as string,
+      value: seriesData?.network as string,
     },
     {
       key: "sonarr:runtime",
       type: "label",
-      value: `${seriesData.runtime} ${t("sonarr:mins")}`,
+      value: `${seriesData?.runtime} ${t("sonarr:mins")}`,
     },
     {
       key: "sonarr:rating",
       type: "label",
-      value: `${seriesData.certification}`,
+      value: `${seriesData?.certification}`,
     },
     {
       key: "sonarr:genres",
       type: "label",
-      value: seriesData.genres as string[],
+      value: seriesData?.genres as string[],
     },
     {
       key: "sonarr:alternateTitles",
       type: "label",
       value:
-        seriesData.alternateTitles && seriesData.alternateTitles?.length > 0
+        seriesData?.alternateTitles && seriesData?.alternateTitles?.length > 0
           ? (seriesData.alternateTitles?.map(
               (alternateTitle) => alternateTitle.title
             ) as string[])
@@ -122,12 +124,42 @@ export const SonarrSeriesDetail: React.FC<{
         ?.monitored as boolean
   );
 
+  const seriesData = useGetApiV3SeriesId(forwardedData.id as number, {
+    query: {
+      initialData: () => forwardedData,
+      onSuccess: (seriesData) => {
+        useSonarrStore.setState((state) => ({
+          sonarrSeriesCache: {
+            ...state.sonarrSeriesCache,
+            [forwardedData.id as number]: seriesData,
+          },
+        }));
+      },
+    },
+  });
+
+  const refetchSeries = () => {
+    seriesData.refetch();
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Could check if data isStale first
+      refetchSeries();
+      return () => {};
+    }, [])
+  );
+
   useSonarrDetailHeader(navigation, forwardedData.title as string);
 
   return (
     <YStack flex={1}>
       <FlashList
-        data={getSonarrSeriesDetailOptions(t, forwardedData, monitoredStatus)}
+        data={getSonarrSeriesDetailOptions(
+          t,
+          seriesData.data as SeriesResource,
+          monitoredStatus
+        )}
         extraData={monitoredStatus}
         renderItem={({ item }) => {
           return (
@@ -145,11 +177,18 @@ export const SonarrSeriesDetail: React.FC<{
         estimatedItemSize={76}
         ListHeaderComponent={
           <SonarrSeriesDetailHeader
-            forwardedData={forwardedData}
+            forwardedData={seriesData.data as SeriesResource}
             tabContext={tabContext}
           />
         }
         ListFooterComponent={() => <XStack height="$5"></XStack>}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={refetchSeries}
+            tintColor={sonarrColors.accentColor}
+          />
+        }
       />
     </YStack>
   );

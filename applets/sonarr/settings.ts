@@ -47,7 +47,13 @@ export const SonarrSettingsOptions = (
         {
           text: alertOkText,
           onPress: () => {
-            // useSonarrStore.setState({ mediaCache: {} });
+            useSonarrStore.setState({
+              sonarrSeriesCache: {},
+              sonarrEpisodeCache: {},
+              sonarrEpisodeFileCache: {},
+              sonarrQualityProfiles: [],
+              sonarrLanguageProfiles: [],
+            });
           },
           style: "destructive",
         },

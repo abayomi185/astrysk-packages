@@ -1,9 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Toasts } from "@backpackapp-io/react-native-toast";
 import {
   EpisodeFileResource,
   EpisodeResource,
   SeriesResource,
+  useGetApiV3Episode,
   useGetApiV3HistorySeries,
 } from "../../api";
 import { useSonarrStore } from "../../store";
@@ -15,6 +17,7 @@ import { SettingsOptionProps } from "@astrysk/types";
 import { TFunction } from "i18next";
 import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
 import { SonarrHistoryItem } from "./history";
+import { ToastModalProviderKey } from "../../types";
 
 const getSonarrEpisodeModalOptions = (
   t: TFunction,
@@ -22,61 +25,67 @@ const getSonarrEpisodeModalOptions = (
   episodeFileData: EpisodeFileResource,
   monitored: boolean
 ): SettingsOptionProps[] => {
-  // console.log(JSON.stringify(episodeData, null, 2));
-  // console.log(JSON.stringify(episodeFileData, null, 2));
   return [
     {
       key: "sonarr:monitoring",
       type: "label",
       value: monitored ? `${t("common:yes")}` : `${t("common:no")}`,
       firstItem: true,
+      lastItem: episodeFileData ? false : true,
     },
-    {
-      key: "sonarr:relativePath",
-      type: "label",
-      value: episodeFileData?.relativePath as string,
-    },
-    {
-      key: "sonarr:video",
-      type: "label",
-      value: t(`sonarr:${episodeFileData?.mediaInfo?.videoCodec}`) as string,
-    },
-    {
-      key: "sonarr:audio",
-      type: "label",
-      value: `${t(`sonarr:${episodeFileData?.mediaInfo?.audioCodec}`)} • ${t(
-        `sonarr:channel${episodeFileData?.mediaInfo?.audioChannels}`
-      )}`,
-    },
-    {
-      key: "sonarr:audioLanguages",
-      type: "label",
-      value: episodeFileData.mediaInfo?.audioLanguages as string,
-    },
-    {
-      key: "sonarr:subtitles",
-      type: "label",
-      value: episodeFileData.mediaInfo?.subtitles as string,
-    },
-    {
-      key: "sonarr:size",
-      type: "label",
-      value: `${getSizeOnDisk(episodeFileData?.size as number)} ${t(
-        "sonarr:gb"
-      )}`,
-    },
-    {
-      key: "sonarr:added",
-      type: "label",
-      value: new Date(episodeFileData?.dateAdded as string).toLocaleString(
-        undefined,
-        {
-          dateStyle: "long",
-          timeStyle: "short",
-        }
-      ),
-      lastItem: true,
-    },
+    ...(episodeFileData
+      ? ([
+          {
+            key: "sonarr:relativePath",
+            type: "label",
+            value: episodeFileData?.relativePath as string,
+          },
+          {
+            key: "sonarr:video",
+            type: "label",
+            value: t(
+              `sonarr:${episodeFileData?.mediaInfo?.videoCodec}`
+            ) as string,
+          },
+          {
+            key: "sonarr:audio",
+            type: "label",
+            value:
+              `${episodeFileData?.mediaInfo?.audioCodec}` +
+              ` • ${t(
+                `sonarr:channel${episodeFileData?.mediaInfo?.audioChannels}`
+              )}`,
+          },
+          {
+            key: "sonarr:audioLanguages",
+            type: "label",
+            value: episodeFileData?.mediaInfo?.audioLanguages as string,
+          },
+          {
+            key: "sonarr:subtitles",
+            type: "label",
+            value: episodeFileData?.mediaInfo?.subtitles as string,
+          },
+          {
+            key: "sonarr:size",
+            type: "label",
+            value: `${getSizeOnDisk(episodeFileData?.size as number)} ${t(
+              "sonarr:gb"
+            )}`,
+          },
+          {
+            key: "sonarr:added",
+            type: "label",
+            value: new Date(
+              episodeFileData?.dateAdded as string
+            ).toLocaleString(undefined, {
+              dateStyle: "long",
+              timeStyle: "short",
+            }),
+            lastItem: true,
+          },
+        ] as SettingsOptionProps[])
+      : []),
   ];
 };
 
@@ -85,13 +94,14 @@ const SonarrEpisode: React.FC<{
 }> = ({ data }) => {
   const { t } = useTranslation();
 
-  const episodeFileData = useSonarrStore.getState().sonarrEpisodeFileCache?.[
-    data.episodeFileId as number
-  ] as EpisodeFileResource;
+  const episodeFileData = useSonarrStore(
+    (state) => state.sonarrEpisodeFileCache?.[data.episodeFileId as number]
+  ) as EpisodeFileResource;
 
   const monitoredStatus = useSonarrStore(
     (state) =>
-      state.sonarrEpisodeCache?.[data.id as number]?.monitored as boolean
+      state.sonarrEpisodeCache?.[data.seriesId as number]?.[data.id as number]
+        ?.monitored as boolean
   );
 
   const seriesData = useSonarrStore.getState().sonarrSeriesCache?.[
@@ -103,7 +113,29 @@ const SonarrEpisode: React.FC<{
     seriesData?.runtime ?? 1
   );
 
-  console.log(JSON.stringify(episodeFileData, null, 2));
+  const episode = useGetApiV3Episode(
+    {
+      seriesId: data.id,
+      seasonNumber: data.seasonNumber,
+      episodeIds: [data.id as number],
+    },
+    {
+      query: {
+        select: (episodeData) => episodeData[0],
+        onSuccess: (episodeData) => {
+          useSonarrStore.setState((state) => ({
+            sonarrEpisodeCache: {
+              ...state.sonarrEpisodeCache,
+              [data.seriesId as number]: {
+                ...state.sonarrEpisodeCache?.[data.seriesId as number],
+                [data.id as number]: episodeData ?? data,
+              },
+            },
+          }));
+        },
+      },
+    }
+  );
 
   const episodeHistory = useGetApiV3HistorySeries(
     {
@@ -121,8 +153,13 @@ const SonarrEpisode: React.FC<{
     }
   );
 
+  const refetchEpisodeData = () => {
+    episode.refetch();
+    episodeHistory.refetch();
+  };
+
   return (
-    <XStack width="100%" height="100%">
+    <XStack width="100%" height="100%" paddingTop="$2">
       <FlashList
         data={getSonarrEpisodeModalOptions(
           t,
@@ -172,10 +209,15 @@ const SonarrEpisode: React.FC<{
               <Text color="$gray11" marginTop="$2">{`${t("sonarr:season")} ${
                 data.seasonNumber
               } • ${t("sonarr:episode")} ${data.episodeNumber}`}</Text>
-              <Text color="$gray11" marginTop="$2">{`${data.overview}`}</Text>
+              {data.overview && (
+                <Text color="$gray11" marginTop="$2">{`${data.overview}`}</Text>
+              )}
             </YStack>
             <XStack marginTop="$4" marginBottom="$4" justifyContent="center">
-              <SonarrEpisodeActionPanel data={data} />
+              <SonarrEpisodeActionPanel
+                data={data}
+                refetchEpisodeData={refetchEpisodeData}
+              />
             </XStack>
           </YStack>
         }
@@ -195,6 +237,12 @@ const SonarrEpisode: React.FC<{
           </XStack>
         }
         estimatedItemSize={59}
+      />
+      <Toasts
+        providerKey={ToastModalProviderKey.Episode}
+        extraInsets={{
+          top: -50,
+        }}
       />
     </XStack>
   );
