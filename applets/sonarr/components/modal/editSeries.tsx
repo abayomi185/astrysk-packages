@@ -1,5 +1,5 @@
 import React from "react";
-import { SeriesResource } from "../../api";
+import { SeriesResource, usePostApiV3Series } from "../../api";
 import { useSonarrStore } from "../../store";
 import { TFunction } from "i18next";
 import { SettingsOptionProps } from "@astrysk/types";
@@ -40,6 +40,12 @@ const getSonarrEditDetailOptions = (
 const SonarrEditSeries: React.FC<{
   data: SeriesResource;
 }> = () => {
+  const series = usePostApiV3Series({
+    mutation: {
+      onSuccess: () => {},
+    },
+  });
+
   return <></>;
 };
 

@@ -39,14 +39,21 @@ const SonarrModal = () => {
     return <SonarrSeriesDescription data={data} />;
   }
 
-  // NOTE: Edit Series
-  if (params.context === SonarrDetailScreenContext.EditSeries) {
-    useSonarrModalHeader(navigation, t("sonarr:editSeries"));
+  // NOTE: EDIT SERIES
+  if (
+    params.context === SonarrDetailScreenContext.EditSeries ||
+    params.context === SonarrDetailScreenContext.AddSeries
+  ) {
+    const modalHeader =
+      params.context === SonarrDetailScreenContext.EditSeries
+        ? t("sonarr:editSeries")
+        : t("sonarr:addSeries");
+    useSonarrModalHeader(navigation, modalHeader);
 
     return <SonarrEditSeries data={data} />;
   }
 
-  // NOTE: Interactive Search
+  // NOTE: INTERACTIVE SEARCH
   if (params.context === SonarrDetailScreenContext.InteractiveSearch) {
     useSonarrModalHeader(navigation, t("sonarr:interactiveSearch"));
 

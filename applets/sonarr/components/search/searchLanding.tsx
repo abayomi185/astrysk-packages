@@ -16,7 +16,11 @@ import {
   SonarrSearchFilterContext,
 } from "../../types";
 import { useSonarrStore } from "../../store";
-import { filterSonarrSearchData, goToSonarrDetailScreen } from "../../utils";
+import {
+  filterSonarrSearchData,
+  goToSonarrDetailScreen,
+  goToSonarrModalScreen,
+} from "../../utils";
 import {
   setLoadingSpinner,
   useLoadingSpinner,
@@ -46,15 +50,22 @@ const SonarrSearchResultItem: React.FC<{
       padding="$2"
       pressStyle={{ scale: 0.97 }}
       animation="delay"
-      onPress={() =>
-        goToSonarrDetailScreen({
-          router,
-          searchItemId: data.id as number,
-          tabContext: TabContext.Search,
-          screenContext: SonarrDetailScreenContext.SearchItem,
-          searchContext,
-        })
-      }
+      onPress={() => {
+        if (new Date(data.added as string).getTime() > 0) {
+          goToSonarrDetailScreen({
+            router,
+            searchItemId: data.id as number,
+            tabContext: TabContext.Search,
+            screenContext: SonarrDetailScreenContext.SearchItem,
+            searchContext,
+          });
+        } else {
+          // TODO: Go to modal screen to add series
+          goToSonarrModalScreen({
+            router,
+          });
+        }
+      }}
     >
       <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
         <Image

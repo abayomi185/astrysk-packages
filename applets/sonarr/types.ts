@@ -44,6 +44,7 @@ export enum SonarrDetailScreenContext {
   History = "History",
   // SeasonHistory = "SeasonHistory",
   EditSeries = "EditSeries",
+  AddSeries = "AddSeries",
   EpisodesList = "EpisodesList",
   EpisodeItem = "EpisodeItem",
   SearchItem = "SearchItem",

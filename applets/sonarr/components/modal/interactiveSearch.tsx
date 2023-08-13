@@ -123,6 +123,7 @@ const SonarrInteractiveSearchItem: React.FC<{
     release.mutate({
       data: {
         guid: data.guid,
+        indexerId: data.indexerId,
       },
     });
   };
