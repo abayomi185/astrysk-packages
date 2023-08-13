@@ -1,4 +1,5 @@
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
+import { FilterOrder } from "./order";
 
 export interface SettingsOptionProps {
   key: string; // Locales string
@@ -7,6 +8,8 @@ export interface SettingsOptionProps {
   iconSize?: number;
   selectionHint?: string;
   selectedValue?: string | null;
+  supportsOrderBy?: boolean;
+  selectedValueOrder?: FilterOrder;
   value?: string | string[];
   route?: string;
   type: "label" | "toggle" | "item" | "action";

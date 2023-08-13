@@ -39,6 +39,15 @@
 
   "(special)": "(Special)",
 
+  "status": "Status",
+
+  "all": "All",
+  "monitored": "Monitored",
+  "unmonitored": "Unmonitored",
+  "continuing": "Countinuing",
+  "ended": "Ended",
+  "missing": "Missing",
+
   "upcoming": "Upcoming",
   "missing": "Missing",
   "available": "Available",
@@ -54,6 +63,7 @@
   "alternateTitles": "Alternative Titles",
 
   "noHistoryFound": "No History Found",
+  "noCalendarDataFound": "No Calendar Data Found",
   "doYouWantToDelete": "Do you want to delete?",
   "thisHas": "This has",
   "deleteCache": "Delete Cache",

@@ -8,6 +8,8 @@ import {
   SonarrSearchFilterContext,
   SonarrEpisodeCache,
   SonarrEpisodeFileCache,
+  SonarrFilterType,
+  SonarrFilterTypeValue,
 } from "./types";
 import { filterPersistState } from "@astrysk/utils";
 import {
@@ -59,7 +61,10 @@ interface SonarrState extends StateTypes.AppletState {
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;
   searchFilters?: Partial<
-    Record<SonarrSearchFilterContext, Record<string, string> | undefined>
+    Record<
+      SonarrSearchFilterContext,
+      Record<SonarrFilterType, SonarrFilterTypeValue> | undefined
+    >
   >;
   filterBarOptions?: Partial<Record<SonarrSearchFilterContext, SonarrFilter[]>>;
 }

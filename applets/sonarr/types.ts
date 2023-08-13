@@ -1,5 +1,6 @@
 import { TabContext } from "@astrysk/types";
 import { EpisodeFileResource, EpisodeResource, SeriesResource } from "./api";
+import { FilterOrder } from "@astrysk/types";
 
 export interface SonarrSeriesCache {
   [id: number]: SeriesResource;
@@ -85,9 +86,14 @@ export enum SonarrSettingsKeys {
   DeleteCache = "sonarr:deleteCache",
 }
 
+export interface SonarrFilterOption {
+  value: string;
+  supportsOrderBy?: boolean;
+}
+
 export interface SonarrFilter {
   id: string;
-  options: string[];
+  options: SonarrFilterOption[];
 }
 
 export enum SonarrSearchFilterContext {
@@ -102,4 +108,10 @@ export interface CalendarData {
   hasFile: boolean;
   timeUtc: string;
   time: string;
+}
+
+export type SonarrFilterType = string;
+export interface SonarrFilterTypeValue {
+  value?: string;
+  order?: FilterOrder;
 }

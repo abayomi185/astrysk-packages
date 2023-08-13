@@ -17,6 +17,7 @@ import {
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
+import { SeriesResource } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForSonarr = (
@@ -125,6 +126,59 @@ export const goToSonarrModalScreen = ({
       seasonNumber: seasonNumber,
     } as SonarrDetailScreenProps,
   });
+};
+
+export const filterSonarrSearchData = <T extends SeriesResource>(
+  data: T[],
+  searchFilters: Record<string, any> | undefined
+) => {
+  let filteredData = data;
+
+  if (searchFilters?.["jellyfin:status"]) {
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.Played === true
+      );
+    }
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.Played === false
+      );
+    }
+    if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
+      filteredData = filteredData.filter(
+        (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
+      );
+    }
+  }
+
+  if (searchFilters?.["jellyfin:order"]) {
+    if (searchFilters?.["jellyfin:order"] === "jellyfin:nameAscending") {
+      filteredData = filteredData.sort((a, b) =>
+        (a.Name as string).localeCompare(b.Name as string)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:nameDescending"
+    ) {
+      filteredData = filteredData.sort((a, b) =>
+        (b.Name as string).localeCompare(a.Name as string)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateAscending"
+    ) {
+      filteredData = filteredData.sort(
+        (a, b) => (a.ProductionYear as number) - (b.ProductionYear as number)
+      );
+    } else if (
+      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateDescending"
+    ) {
+      filteredData = filteredData.sort(
+        (a, b) => (b.ProductionYear as number) - (a.ProductionYear as number)
+      );
+    }
+  }
+
+  return filteredData;
 };
 
 // NOTE: STATISTICS UTILS

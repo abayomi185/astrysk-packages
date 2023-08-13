@@ -20,35 +20,26 @@ const getSonarrFilterBarOptions = (
     {
       id: "sonarr:status",
       options: [
-        "sonarr:all",
-        "sonarr:monitored",
-        "sonarr:unmonitored",
-        "sonarr:continuing",
-        "sonarr:ended",
-        "sonarr:missing",
+        { value: "sonarr:all" },
+        { value: "sonarr:monitored" },
+        { value: "sonarr:unmonitored" },
+        { value: "sonarr:continuing" },
+        { value: "sonarr:ended" },
+        { value: "sonarr:missing" },
       ],
     },
     {
       id: "sonarr:order",
       options: [
-        "sonarr:nameAscending",
-        "sonarr:nameDescending",
-        "sonarr:dateAddedAscending",
-        "sonarr:dateAddedDescending",
-        "sonarr:episodesAscending",
-        "sonarr:episodesDescending",
-        "sonarr:networkAscending",
-        "sonarr:networkDescending",
-        "sonarr:nextAiringAscending",
-        "sonarr:nextAiringDescending",
-        "sonarr:previousAiringAscending",
-        "sonarr:previousAiringDescending",
-        "sonarr:qualityProfileAscending",
-        "sonarr:qualityProfileDescending",
-        "sonarr:sizeAscending",
-        "sonarr:sizeDescending",
-        "sonarr:typeAscending",
-        "sonarr:typeDescending",
+        { value: "sonarr:alphabetical", supportsOrderBy: true },
+        { value: "sonarr:dateAdded", supportsOrderBy: true },
+        { value: "sonarr:episodes", supportsOrderBy: true },
+        { value: "sonarr:network", supportsOrderBy: true },
+        { value: "sonarr:nextAiring", supportsOrderBy: true },
+        { value: "sonarr:previousAiring", supportsOrderBy: true },
+        { value: "sonarr:qualityProfile", supportsOrderBy: true },
+        { value: "sonarr:size", supportsOrderBy: true },
+        { value: "sonarr:type", supportsOrderBy: true },
       ],
     },
   ];
@@ -60,7 +51,6 @@ const SonarrSearchFilterBar: React.FC<{
   style?: GetProps<typeof Stack>;
 }> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
-  // const userId = useSonarrStore.getState().userDetails?.Id as string;
 
   const searchFilters = useSonarrStore((state) => state.searchFilters);
 
@@ -116,7 +106,6 @@ const SonarrSearchFilterBar: React.FC<{
           renderItem={({ item }) => (
             <FilterButton
               id={item.id}
-              data={item.options}
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
               activeBackgroundColor="$blue7"

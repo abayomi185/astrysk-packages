@@ -11,7 +11,7 @@ import {
 import { useSonarrStore } from "../../store";
 import { XStack, YStack, Text, Spinner, H4 } from "tamagui";
 import { SonarrEpisodeActionPanel } from "../detail/actionPanel";
-import { SectionTitle, SettingsOption } from "@astrysk/components";
+import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
 import { FlashList } from "@shopify/flash-list";
 import { SettingsOptionProps } from "@astrysk/types";
 import { TFunction } from "i18next";
@@ -235,13 +235,11 @@ const SonarrEpisode: React.FC<{
               estimatedItemSize={55}
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={() => (
-                <XStack justifyContent="center" marginTop="$5">
-                  {episodeHistory.status === "loading" ? (
-                    <Spinner color={sonarrColors.accentColor} size="large" />
-                  ) : (
-                    <H4 color="$gray11">{t("sonarr:noHistoryFound")}</H4>
-                  )}
-                </XStack>
+                <EmptyList
+                  queryStatus={episodeHistory.status}
+                  text={t("sonarr:noHistoryFound")}
+                  accentColor={sonarrColors.accentColor}
+                />
               )}
             />
           </XStack>

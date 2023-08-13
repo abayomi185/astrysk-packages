@@ -2,7 +2,16 @@ import React from "react";
 import { useRouter } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
-import { YStack, Text, useTheme, XStack, H5, Button } from "tamagui";
+import {
+  YStack,
+  Text,
+  useTheme,
+  XStack,
+  H5,
+  Button,
+  Spinner,
+  H4,
+} from "tamagui";
 import {
   ExpandableCalendar,
   CalendarProvider,
@@ -22,7 +31,7 @@ import {
   useColorScheme,
   useLoadingSpinner,
 } from "@astrysk/utils";
-import { SectionTitle } from "@astrysk/components";
+import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import {
   MILLISECONDS_TO_MINUTES_MULTIPLIER,
@@ -180,6 +189,13 @@ const SonarrCalendar: React.FC = () => {
         {/*   hideKnob */}
         {/*   // onVisibleMonthsChange={onVisibleMonthsChange} */}
         {/* /> */}
+        {!calendarQuery.data && (
+          <EmptyList
+            queryStatus={calendarQuery.status}
+            text={t("sonarr:noCalendarDataFound")}
+            accentColor={sonarrColors.accentColor}
+          />
+        )}
         <AgendaList
           sections={
             calendarQuery.data

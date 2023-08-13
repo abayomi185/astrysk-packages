@@ -26,6 +26,7 @@ import { Actions } from "@astrysk/constants";
 import { sonarrColors } from "../../colors";
 import { TabContext } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
+import { EmptyList } from "@astrysk/components";
 
 const SonarrSearchResultItem: React.FC<{
   searchContext: SonarrSearchFilterContext;
@@ -206,14 +207,16 @@ const SonarrSearchLanding: React.FC<{
             />
           }
           ListEmptyComponent={() => (
-            <XStack justifyContent="center" marginTop="$5">
-              {seriesData.status === "loading" ||
-              searchResults.status === "loading" ? (
-                <Spinner color={sonarrColors.accentColor} size="large" />
-              ) : (
-                <H4 color="$gray11">{t("sonarr:noSeriesFound")}</H4>
-              )}
-            </XStack>
+            <EmptyList
+              queryStatus={
+                seriesData.status === "loading" ||
+                searchResults.status === "loading"
+                  ? "loading"
+                  : "success" // Success does not do anything in EmptyList
+              }
+              text={t("sonarr:noHistoryFound")}
+              accentColor={sonarrColors.accentColor}
+            />
           )}
         />
       </YStack>

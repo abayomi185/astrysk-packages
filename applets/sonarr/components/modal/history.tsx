@@ -19,6 +19,8 @@ import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { customTokens } from "@astrysk/styles";
 import { TFunction } from "i18next";
+import { sonarrColors } from "../../colors";
+import { EmptyList } from "@astrysk/components";
 
 const SonarrHistoryItemExpanded: React.FC<{
   t: TFunction;
@@ -263,13 +265,11 @@ const SonarrHistory: React.FC<{
             )}
             estimatedItemSize={64}
             ListEmptyComponent={() => (
-              <XStack justifyContent="center" marginTop="$5">
-                {seriesHistory.status === "loading" ? (
-                  <Spinner />
-                ) : (
-                  <H4 color="$gray11">{t("sonarr:noHistoryFound")}</H4>
-                )}
-              </XStack>
+              <EmptyList
+                queryStatus={seriesHistory.status}
+                text={t("sonarr:noHistoryFound")}
+                accentColor={sonarrColors.accentColor}
+              />
             )}
           />
         </XStack>

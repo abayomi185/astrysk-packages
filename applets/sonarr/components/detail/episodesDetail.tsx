@@ -25,6 +25,7 @@ import {
 } from "../../utils";
 import { SonarrEpisodeItemActionPanel } from "./actionPanel";
 import { useSonarrStore } from "../../store";
+import { EmptyList } from "@astrysk/components";
 
 const SonarrEpisodeItem: React.FC<{
   t: TFunction;
@@ -243,13 +244,11 @@ const SonarrAllEpisodesDetail: React.FC<{
             )}
             estimatedItemSize={64}
             ListEmptyComponent={() => (
-              <XStack justifyContent="center" marginTop="$5">
-                {episodes.status === "loading" ? (
-                  <Spinner color={sonarrColors.accentColor} size="large" />
-                ) : (
-                  <H4 color="$gray11">{t("sonarr:noHistoryFound")}</H4>
-                )}
-              </XStack>
+              <EmptyList
+                queryStatus={episodes.status}
+                text={t("sonarr:noHistoryFound")}
+                accentColor={sonarrColors.accentColor}
+              />
             )}
             refreshControl={
               <RefreshControl

@@ -5,11 +5,10 @@ import { ChevronDown } from "@tamagui/lucide-icons";
 
 export const FilterButton: React.FC<{
   id: string;
-  data: string[];
   handlePress: (id: string) => void;
   active: boolean;
   activeBackgroundColor: ColorTokens;
-}> = ({ id, data, handlePress, active, activeBackgroundColor }) => {
+}> = ({ id, handlePress, active, activeBackgroundColor }) => {
   const { t } = useTranslation();
 
   return (

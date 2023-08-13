@@ -8,8 +8,14 @@ import {
   SizeTokens,
   GetProps,
 } from "tamagui";
-import { SettingsOptionProps } from "@astrysk/types";
-import { CircleDot, Check, ChevronRight } from "@tamagui/lucide-icons";
+import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
+import {
+  CircleDot,
+  Check,
+  ChevronRight,
+  ArrowUp,
+  ArrowDown,
+} from "@tamagui/lucide-icons";
 import { TFunction } from "i18next";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { useColorScheme } from "react-native";
@@ -129,6 +135,7 @@ export const SettingsOption: React.FC<{
   if (item.type === "item") {
     const active =
       item.selectedValue === item.key || item.selectedValue === null;
+    const order = item.selectedValueOrder;
     return (
       <Button
         flex={1}
@@ -155,7 +162,24 @@ export const SettingsOption: React.FC<{
           </XStack>
           <XStack alignItems="center">
             {active ? (
-              <Check size={20} opacity={0.6} />
+              // Supports order by
+              item.supportsOrderBy ? (
+                // Order is set
+                order ? (
+                  order === FilterOrder.ASCENDING ? (
+                    // Ascending
+                    <ArrowUp size={20} opacity={0.6} />
+                  ) : (
+                    // Descending
+                    <ArrowDown size={20} opacity={0.6} />
+                  )
+                ) : (
+                  <CircleDot size={20} opacity={0.6} />
+                )
+              ) : (
+                // Active - check mark
+                <Check size={20} opacity={0.6} />
+              )
             ) : (
               <CircleDot size={20} opacity={0.6} />
             )}

@@ -6,7 +6,11 @@ import { useTranslation } from "react-i18next";
 import { useSonarrStore } from "../store";
 import { SettingsOption, SettingsOptionHeader } from "@astrysk/components";
 import { SettingsOptionProps } from "@astrysk/types";
-import { SonarrDetailScreenContext, SonarrDetailScreenProps } from "../types";
+import {
+  SonarrDetailScreenContext,
+  SonarrDetailScreenProps,
+  SonarrSearchFilterContext,
+} from "../types";
 
 import { useSonarrModalHeader } from "../components/useHeader";
 import SonarrInteractiveSearch from "../components/modal/interactiveSearch";
@@ -15,6 +19,7 @@ import SonarrHistory from "../components/modal/history";
 import SonarrSeriesDescription from "../components/modal/seriesDescription";
 import { EpisodeResource, SeriesResource } from "../api";
 import SonarrEpisode from "../components/modal/episode";
+import SonarrSearchFilterOptions from "../components/search/searchFilterOptions";
 
 const SonarrModal = () => {
   const { t } = useTranslation();
@@ -81,6 +86,23 @@ const SonarrModal = () => {
     );
 
     return <SonarrEpisode data={episodeData as EpisodeResource} />;
+  }
+
+  // NOTE: SEARCH FILTER
+  if (params.context === SonarrDetailScreenContext.SearchFilter) {
+    const filterType = params?.itemId as string;
+
+    const searchContext =
+      params.searchContext ?? SonarrSearchFilterContext.Search;
+
+    useSonarrModalHeader(navigation, t(filterType));
+
+    return (
+      <SonarrSearchFilterOptions
+        context={searchContext}
+        filterType={filterType}
+      />
+    );
   }
 
   return null;

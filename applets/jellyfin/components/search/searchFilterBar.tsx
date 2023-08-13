@@ -134,7 +134,6 @@ const JellyfinSearchFilterBar: React.FC<{
           renderItem={({ item }) => (
             <FilterButton
               id={item.id}
-              data={item.options}
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
               activeBackgroundColor="$purple7"
