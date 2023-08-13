@@ -118,7 +118,7 @@ const SonarrEpisodeItem: React.FC<{
                 )}
               </YStack>
               <XStack width="$5" justifyContent="center">
-                <SonarrEpisodeItemActionPanel data={data} />
+                <SonarrEpisodeItemActionPanel t={t} data={data} />
               </XStack>
             </XStack>
           </YStack>

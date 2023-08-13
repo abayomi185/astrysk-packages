@@ -13,6 +13,7 @@ import {
   useDeleteApiV3EpisodefileId,
   useDeleteApiV3SeriesId,
   usePostApiV3Command,
+  usePostApiV3Release,
   usePutApiV3EpisodeId,
   usePutApiV3SeriesId,
 } from "../../api";
@@ -27,6 +28,7 @@ import {
   ExtendedSeriesResource,
   ToastModalProviderKey,
 } from "../../types";
+import { TFunction } from "i18next";
 
 export const sonarrActionButtonColors = {
   monitoring: {
@@ -84,18 +86,43 @@ export const SonarrActionPanelButton: React.FC<{
 
 // NOTE: Need to completed this component
 export const SonarrEpisodeItemActionPanel: React.FC<{
+  t: TFunction;
   data: EpisodeResource;
-}> = ({ data }) => {
+}> = ({ t, data }) => {
   const iconColor = getSonarrIconColor();
+
+  // NOTE: AUTOMATIC SEARCH
+  const postCommand = usePostApiV3Command({
+    mutation: {
+      onSuccess: () => {
+        toast.success(t("sonarr:success:automaticSearchStarted"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+      },
+      onError: (error) => {
+        toast.error(t("sonarr:error:automaticSearchFailed)"), {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+        toast.error(error.message, {
+          providerKey: ToastModalProviderKey.Persists,
+        });
+      },
+    },
+  });
+  const postCommandAction = () => {
+    postCommand.mutate({
+      data: {
+        name: SonarrCommands.EPISODE_SEARCH,
+        // @ts-ignore
+        episodeIds: [data?.id as number],
+      },
+    });
+  };
 
   return (
     <YStack flex={1} justifyContent="center" alignItems="center">
       {/* NOTE: AUTOMATIC SEARCH */}
-      <SonarrActionPanelButton
-        first
-        vertical
-        // onPress={toggleMonitor}
-      >
+      <SonarrActionPanelButton first vertical onPress={postCommandAction}>
         <Ionicons name="ios-search" size={23} color={iconColor} />
       </SonarrActionPanelButton>
     </YStack>
