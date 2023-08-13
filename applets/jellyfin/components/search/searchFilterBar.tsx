@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useRouter } from "expo-router";
-import { XStack, Button, Text, GetProps, Stack } from "tamagui";
-import { X, ChevronDown } from "@tamagui/lucide-icons";
+import { XStack, Button, GetProps, Stack } from "tamagui";
+import { X } from "@tamagui/lucide-icons";
 import { useGetGenres } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -13,6 +13,8 @@ import {
 import { Screens } from "@astrysk/constants";
 import { useJellyfinStore } from "../../store";
 import { FilterButton } from "@astrysk/components";
+import { isEmpty } from "@astrysk/utils";
+import { jellyfinColors } from "../../colors";
 
 const getJellyfinFilterBarOptions = (
   context: JellyfinSearchFilterContext,
@@ -24,12 +26,12 @@ const getJellyfinFilterBarOptions = (
           {
             id: "jellyfin:type",
             options: [
-              "jellyfin:movie",
-              "jellyfin:series",
-              "jellyfin:episode",
-              "jellyfin:season",
-              "jellyfin:person",
-            ], // as BaseItemKind[],
+              { value: "jellyfin:movie" },
+              { value: "jellyfin:series" },
+              { value: "jellyfin:episode" },
+              { value: "jellyfin:season" },
+              { value: "jellyfin:person" },
+            ],
           },
         ]
       : []),
@@ -37,7 +39,7 @@ const getJellyfinFilterBarOptions = (
       ? [
           {
             id: "jellyfin:genre",
-            options: genres as string[],
+            options: genres?.map((genre) => ({ value: genre })) ?? [],
           },
         ]
       : []),
@@ -46,9 +48,9 @@ const getJellyfinFilterBarOptions = (
           {
             id: "jellyfin:status",
             options: [
-              "jellyfin:played",
-              "jellyfin:unplayed",
-              "jellyfin:favourite",
+              { value: "jellyfin:played" },
+              { value: "jellyfin:unplayed" },
+              { value: "jellyfin:favourite" },
             ],
           },
         ]
@@ -56,10 +58,8 @@ const getJellyfinFilterBarOptions = (
     {
       id: "jellyfin:order",
       options: [
-        "jellyfin:nameAscending",
-        "jellyfin:nameDescending",
-        "jellyfin:premiereDateAscending",
-        "jellyfin:premiereDateDescending",
+        { value: "jellyfin:alphabetical", supportsOrderBy: true },
+        { value: "jellyfin:premiereDate", supportsOrderBy: true },
       ],
     },
   ];
@@ -74,6 +74,7 @@ const JellyfinSearchFilterBar: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
+  console.log(searchFilters);
 
   const genres = useGetGenres({
     userId: userId,
@@ -129,6 +130,7 @@ const JellyfinSearchFilterBar: React.FC<{
       <XStack flex={1}>
         <FlashList
           horizontal
+          // contentContainerStyle={{ backgroundColor: "red" }}
           data={filterBarOptions}
           extraData={searchFilters?.[context]}
           renderItem={({ item }) => (
@@ -148,7 +150,9 @@ const JellyfinSearchFilterBar: React.FC<{
                 borderRadius="$8"
                 paddingHorizontal="$3"
                 backgroundColor={
-                  searchFilters?.[context] ? "$purple7" : "$gray5"
+                  isEmpty(searchFilters?.[context])
+                    ? "$gray5"
+                    : jellyfinColors.accentColor
                 }
                 onPress={() => clearFiltersForContext()}
               >

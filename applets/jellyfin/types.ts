@@ -1,3 +1,4 @@
+import { FilterOrder } from "@astrysk/types";
 import {
   BaseItemDto,
   BaseItemDtoQueryResult,
@@ -104,9 +105,20 @@ export enum JellyfinSearchFilterContext {
   Collection = "Collection",
 }
 
+export interface JellyfinFilterOption {
+  value: string;
+  supportsOrderBy?: boolean;
+}
+
 export interface JellyfinFilter {
   id: string;
-  options: string[];
+  options: JellyfinFilterOption[];
+}
+
+export type JellyfinFilterKind = string;
+export interface JellyfinFilterKindValue {
+  value?: string;
+  order?: FilterOrder;
 }
 
 export enum JellyfinMoreDetailContext {

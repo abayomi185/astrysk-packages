@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useRouter } from "expo-router";
-import { XStack, Button, Text, GetProps, Stack } from "tamagui";
+import { XStack, Button, GetProps, Stack } from "tamagui";
 import { X } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
 import { Screens } from "@astrysk/constants";
@@ -12,6 +12,8 @@ import {
   SonarrFilter,
   SonarrSearchFilterContext,
 } from "../../types";
+import { sonarrColors } from "../../colors";
+import { isEmpty } from "@astrysk/utils";
 
 const getSonarrFilterBarOptions = (
   context: SonarrSearchFilterContext
@@ -34,12 +36,12 @@ const getSonarrFilterBarOptions = (
         { value: "sonarr:alphabetical", supportsOrderBy: true },
         { value: "sonarr:dateAdded", supportsOrderBy: true },
         { value: "sonarr:episodes", supportsOrderBy: true },
-        { value: "sonarr:network", supportsOrderBy: true },
+        // { value: "sonarr:network", supportsOrderBy: true },
         { value: "sonarr:nextAiring", supportsOrderBy: true },
-        { value: "sonarr:previousAiring", supportsOrderBy: true },
-        { value: "sonarr:qualityProfile", supportsOrderBy: true },
+        // { value: "sonarr:previousAiring", supportsOrderBy: true },
+        // { value: "sonarr:qualityProfile", supportsOrderBy: true },
         { value: "sonarr:size", supportsOrderBy: true },
-        { value: "sonarr:type", supportsOrderBy: true },
+        // { value: "sonarr:type", supportsOrderBy: true },
       ],
     },
   ];
@@ -119,7 +121,11 @@ const SonarrSearchFilterBar: React.FC<{
                 height="$2.5"
                 borderRadius="$8"
                 paddingHorizontal="$3"
-                backgroundColor={searchFilters?.[context] ? "$blue7" : "$gray5"}
+                backgroundColor={
+                  isEmpty(searchFilters?.[context])
+                    ? "$gray5"
+                    : sonarrColors.accentColor
+                }
                 onPress={() => clearFiltersForContext()}
               >
                 <X size={18} opacity={0.8} />

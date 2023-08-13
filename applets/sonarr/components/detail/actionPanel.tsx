@@ -19,7 +19,7 @@ import {
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useSonarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
-import { goToSonarrModalScreen } from "../../utils";
+import { getSonarrIconColor, goToSonarrModalScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
@@ -27,9 +27,8 @@ import {
   ExtendedSeriesResource,
   ToastModalProviderKey,
 } from "../../types";
-import { useColorScheme } from "@astrysk/utils";
 
-const sonarrActionButtonColors = {
+export const sonarrActionButtonColors = {
   monitoring: {
     borderColor: "$red7",
     borderWidth: "$1.5",
@@ -83,10 +82,11 @@ export const SonarrActionPanelButton: React.FC<{
   );
 };
 
+// NOTE: Need to completed this component
 export const SonarrEpisodeItemActionPanel: React.FC<{
   data: EpisodeResource;
 }> = ({ data }) => {
-  const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+  const iconColor = getSonarrIconColor();
 
   return (
     <YStack flex={1} justifyContent="center" alignItems="center">
@@ -107,7 +107,9 @@ export const SonarrEpisodeActionPanel: React.FC<{
   refetchEpisodeData?: () => void;
 }> = ({ data, refetchEpisodeData }) => {
   const { t } = useTranslation();
-  const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+  const router = useRouter();
+
+  const iconColor = getSonarrIconColor();
 
   const monitoredStatus = useSonarrStore(
     (state) =>
@@ -230,7 +232,14 @@ export const SonarrEpisodeActionPanel: React.FC<{
       </SonarrActionPanelButton>
       <SonarrActionPanelButton
         style={sonarrActionButtonColors.interactiveSearch}
-        // onPress={toggleMonitor}
+        onPress={() =>
+          goToSonarrModalScreen({
+            router,
+            searchItemId: data.seriesId as number,
+            screenContext: SonarrDetailScreenContext.InteractiveSearch,
+            episodeId: data.id as number,
+          })
+        }
       >
         <Ionicons name="person" size={23} color={iconColor} />
       </SonarrActionPanelButton>
@@ -254,14 +263,14 @@ export const SonarrActionPanel: React.FC<{
   const router = useRouter();
   const baseURL = useSonarrStore.getState().baseURL as string;
 
-  const iconColor = useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+  const iconColor = getSonarrIconColor();
 
   const monitoredStatus = useSonarrStore(
     (state) => state.sonarrSeriesCache?.[data.id as number]?.monitored
   );
 
   const seasonData = useSonarrStore((state) =>
-    state.sonarrSeriesCache?.[data.id as number].seasons?.find(
+    state.sonarrSeriesCache?.[data.id as number]?.seasons?.find(
       (season) => season.seasonNumber === seasonNumber
     )
   );

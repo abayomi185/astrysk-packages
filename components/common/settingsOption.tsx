@@ -151,6 +151,8 @@ export const SettingsOption: React.FC<{
         borderRadius="$0"
         theme="dark_gray"
         backgroundColor={active ? "$gray5" : "$gray1"}
+        borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
+        borderTopRightRadius={item.firstItem ? "$5" : "$0"}
         borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
         borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         {...style}

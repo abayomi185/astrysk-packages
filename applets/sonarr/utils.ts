@@ -11,13 +11,14 @@ import {
   unregisterLoadingComponent,
 } from "@astrysk/components";
 import { Actions, Screens } from "@astrysk/constants";
-import { Router, TabContext } from "@astrysk/types";
+import { FilterOrder, Router, TabContext } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
 import { SeriesResource } from "./api";
+import { useColorScheme } from "@astrysk/utils";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForSonarr = (
@@ -134,47 +135,92 @@ export const filterSonarrSearchData = <T extends SeriesResource>(
 ) => {
   let filteredData = data;
 
-  if (searchFilters?.["jellyfin:status"]) {
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
-      filteredData = filteredData.filter(
-        (data) => isBaseItemDto(data) && data.UserData?.Played === true
-      );
-    }
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
-      filteredData = filteredData.filter(
-        (data) => isBaseItemDto(data) && data.UserData?.Played === false
-      );
-    }
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
-      filteredData = filteredData.filter(
-        (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
-      );
-    }
+  if (searchFilters?.["sonarr:status"]) {
+    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
+    //     filteredData = filteredData.filter(
+    //       (data) => isBaseItemDto(data) && data.UserData?.Played === true
+    //     );
+    //   }
+    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
+    //     filteredData = filteredData.filter(
+    //       (data) => isBaseItemDto(data) && data.UserData?.Played === false
+    //     );
+    //   }
+    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
+    //     filteredData = filteredData.filter(
+    //       (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
+    //     );
+    //   }
   }
 
-  if (searchFilters?.["jellyfin:order"]) {
-    if (searchFilters?.["jellyfin:order"] === "jellyfin:nameAscending") {
-      filteredData = filteredData.sort((a, b) =>
-        (a.Name as string).localeCompare(b.Name as string)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:nameDescending"
-    ) {
-      filteredData = filteredData.sort((a, b) =>
-        (b.Name as string).localeCompare(a.Name as string)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateAscending"
-    ) {
-      filteredData = filteredData.sort(
-        (a, b) => (a.ProductionYear as number) - (b.ProductionYear as number)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateDescending"
-    ) {
-      filteredData = filteredData.sort(
-        (a, b) => (b.ProductionYear as number) - (a.ProductionYear as number)
-      );
+  if (searchFilters?.["sonarr:order"]) {
+    const searchFilter = searchFilters?.["sonarr:order"];
+    if (searchFilter.value === "sonarr:alphabetical") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort((a, b) =>
+          (a.title as string).localeCompare(b.title as string)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort((a, b) =>
+          (b.title as string).localeCompare(a.title as string)
+        );
+      }
+    } else if (searchFilter.value === "sonarr:dateAdded") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            new Date(a.added as string).getTime() -
+            new Date(b.added as string).getTime()
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            new Date(b.added as string).getTime() -
+            new Date(a.added as string).getTime()
+        );
+      }
+    } else if (searchFilter.value === "sonarr:size") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            (a.statistics?.sizeOnDisk as number) -
+            (b.statistics?.sizeOnDisk as number)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            (b.statistics?.sizeOnDisk as number) -
+            (a.statistics?.sizeOnDisk as number)
+        );
+      }
+    } else if (searchFilter.value === "sonarr:nextAiring") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            new Date(a.nextAiring as string).getTime() -
+            new Date(b.nextAiring as string).getTime()
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            new Date(b.nextAiring as string).getTime() -
+            new Date(a.nextAiring as string).getTime()
+        );
+      }
+    } else if (searchFilter.value === "sonarr:episodes") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            (a.statistics?.episodeFileCount as number) -
+            (b.statistics?.episodeFileCount as number)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) =>
+            (b.statistics?.episodeFileCount as number) -
+            (a.statistics?.episodeFileCount as number)
+        );
+      }
     }
   }
 
@@ -209,6 +255,11 @@ export const checkEpisodeHasAired = (airDateUtc: string, runtime?: number) => {
     0
   );
 };
+
+export const getDateFromHours = (hours: number) => {
+  return (hours / 24).toFixed(2);
+};
+
 // export const getStartAndEndOfWeek = (date: Date) => {
 //   const day = date.getDay();
 //   const diffToMonday = date.getDate() - day + (day === 0 ? -6 : 1);
@@ -220,5 +271,9 @@ export const checkEpisodeHasAired = (airDateUtc: string, runtime?: number) => {
 //   const diffToSunday = date.getDate() - day + (day === 0 ? 0 : 7);
 //   const endOfWeek = new Date(date.setDate(diffToSunday));
 
-//   return [startOfWeek, endOfWeek];
-// };
+//   return
+
+// NOTE: STYLE UTILS
+export const getSonarrIconColor = () => {
+  return useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+};

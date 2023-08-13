@@ -3,14 +3,14 @@ import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { YStack, XStack } from "tamagui";
 import { onItemLayout } from "@astrysk/utils";
-import { SettingsOption } from "@astrysk/components";
+import { ClearFilterButton, SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
 import { NavigationProp } from "@react-navigation/native";
 import { useSonarrStore } from "../../store";
 import {
-  SonarrFilterType,
-  SonarrFilterTypeValue,
+  SonarrFilterKind,
+  SonarrFilterKindValue,
   SonarrSearchFilterContext,
 } from "../../types";
 import { TFunction } from "i18next";
@@ -21,8 +21,9 @@ const createSettingsOptionsObject = (
   item: string,
   supportsOrderBy: boolean,
   context: SonarrSearchFilterContext,
-  filterType: SonarrFilterType,
-  selectedValue: SonarrFilterTypeValue,
+  filterType: SonarrFilterKind,
+  selectedValue: SonarrFilterKindValue,
+  first?: boolean,
   last?: boolean
 ) => {
   return {
@@ -61,6 +62,7 @@ const createSettingsOptionsObject = (
       });
       navigation.goBack();
     },
+    firstItem: first,
     lastItem: last,
   } as SettingsOptionProps;
 };
@@ -93,10 +95,25 @@ const SonarrSearchFilterOptions: React.FC<{
         context,
         filterType,
         selectedValue,
+        index === 0,
         index === options.length - 1
       )
     );
   }, [filterBarOptions, filterType, selectedValue]);
+
+  const clearFilter = () => {
+    useSonarrStore.setState((state) => {
+      const newContextFilters = { ...state.searchFilters?.[context] };
+      delete newContextFilters[filterType];
+      return {
+        searchFilters: {
+          ...state.searchFilters,
+          [context]: newContextFilters,
+        },
+      };
+    });
+    navigation.goBack();
+  };
 
   return (
     <YStack height="100%" padding="$4">
@@ -115,6 +132,11 @@ const SonarrSearchFilterOptions: React.FC<{
             }}
             estimatedItemSize={51}
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={
+              <XStack>
+                <ClearFilterButton t={t} clearFilter={clearFilter} />
+              </XStack>
+            }
           />
         </XStack>
       </YStack>

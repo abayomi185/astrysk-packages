@@ -10,9 +10,11 @@ import { Screens } from "@astrysk/constants";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
+  JellyfinFilterKind,
+  JellyfinFilterKindValue,
   JellyfinSearchFilterContext,
 } from "./types";
-import { Router } from "@astrysk/types";
+import { FilterOrder, Router } from "@astrysk/types";
 import { BaseItemDto, BaseItemKind, SearchHint } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
@@ -124,7 +126,7 @@ const isBaseItemDto = (data: BaseItemDto | SearchHint): data is BaseItemDto => {
 // Intersection type to get typescript to stop complaining
 export const filterJellyfinSearchData = <T extends BaseItemDto | SearchHint>(
   data: T[],
-  searchFilters: Record<string, any> | undefined
+  searchFilters: Record<JellyfinFilterKind, JellyfinFilterKindValue> | undefined
 ) => {
   let filteredData = data;
 
@@ -138,17 +140,17 @@ export const filterJellyfinSearchData = <T extends BaseItemDto | SearchHint>(
   // WARN: This is not the best way to do this
   // isBaseItemDto type guard
   if (searchFilters?.["jellyfin:status"]) {
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
+    if (searchFilters?.["jellyfin:status"].value === "jellyfin:played") {
       filteredData = filteredData.filter(
         (data) => isBaseItemDto(data) && data.UserData?.Played === true
       );
     }
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
+    if (searchFilters?.["jellyfin:status"].value === "jellyfin:unplayed") {
       filteredData = filteredData.filter(
         (data) => isBaseItemDto(data) && data.UserData?.Played === false
       );
     }
-    if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
+    if (searchFilters?.["jellyfin:status"].value === "jellyfin:favourite") {
       filteredData = filteredData.filter(
         (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
       );
@@ -156,28 +158,27 @@ export const filterJellyfinSearchData = <T extends BaseItemDto | SearchHint>(
   }
 
   if (searchFilters?.["jellyfin:order"]) {
-    if (searchFilters?.["jellyfin:order"] === "jellyfin:nameAscending") {
-      filteredData = filteredData.sort((a, b) =>
-        (a.Name as string).localeCompare(b.Name as string)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:nameDescending"
-    ) {
-      filteredData = filteredData.sort((a, b) =>
-        (b.Name as string).localeCompare(a.Name as string)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateAscending"
-    ) {
-      filteredData = filteredData.sort(
-        (a, b) => (a.ProductionYear as number) - (b.ProductionYear as number)
-      );
-    } else if (
-      searchFilters?.["jellyfin:order"] === "jellyfin:premiereDateDescending"
-    ) {
-      filteredData = filteredData.sort(
-        (a, b) => (b.ProductionYear as number) - (a.ProductionYear as number)
-      );
+    const searchFilter = searchFilters?.["jellyfin:order"];
+    if (searchFilter.value === "jellyfin:alphabetical") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort((a, b) =>
+          (a.Name as string).localeCompare(b.Name as string)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort((a, b) =>
+          (b.Name as string).localeCompare(a.Name as string)
+        );
+      }
+    } else if (searchFilter.value === "jellyfin:premiereDate") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) => (a.ProductionYear as number) - (b.ProductionYear as number)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) => (b.ProductionYear as number) - (a.ProductionYear as number)
+        );
+      }
     }
   }
 

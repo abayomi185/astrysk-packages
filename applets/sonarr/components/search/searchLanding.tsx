@@ -16,7 +16,7 @@ import {
   SonarrSearchFilterContext,
 } from "../../types";
 import { useSonarrStore } from "../../store";
-import { goToSonarrDetailScreen } from "../../utils";
+import { filterSonarrSearchData, goToSonarrDetailScreen } from "../../utils";
 import {
   setLoadingSpinner,
   useLoadingSpinner,
@@ -27,10 +27,11 @@ import { sonarrColors } from "../../colors";
 import { TabContext } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
+import { Search } from "@tamagui/lucide-icons";
 
 const SonarrSearchResultItem: React.FC<{
   searchContext: SonarrSearchFilterContext;
-  index: number;
+  index?: number;
   data: SeriesResource;
   isSearching: boolean;
 }> = ({ searchContext, data, isSearching }) => {
@@ -96,6 +97,9 @@ const SonarrSearchLanding: React.FC<{
   searchTerm: string;
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
+
+  const searchFilters = useSonarrStore((state) => state.searchFilters);
+
   const seriesData = useGetApiV3Series(
     {},
     {
@@ -154,17 +158,26 @@ const SonarrSearchLanding: React.FC<{
 
   const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
 
-  const getSeries = React.useCallback(() => {
-    const seriesDataToReturn = seriesData.data || [];
+  const [searchAll, setSearchAll] = React.useState(false);
 
-    if (searchTerm && seriesDataToReturn.length > 0) {
-      const filteredSeries = seriesDataToReturn.filter((data) =>
+  React.useEffect(() => {
+    if (searchTerm === "") {
+      setSearchAll(false);
+    }
+  }, [searchTerm]);
+
+  const getSeries = React.useCallback(() => {
+    const initialSeriesData = seriesData.data || [];
+    let seriesDataToReturn = initialSeriesData;
+
+    if (searchTerm && initialSeriesData.length > 0) {
+      const filteredSeries = initialSeriesData.filter((data) =>
         data.title?.includes(searchTerm)
       );
-      if (filteredSeries.length > 0) {
-        return filteredSeries;
+      if (filteredSeries.length > 0 && !searchAll) {
+        seriesDataToReturn = filteredSeries;
       } else {
-        return (searchResults.data || []).sort((a, b) => {
+        seriesDataToReturn = (searchResults.data || []).sort((a, b) => {
           // Check if 'a' should be prioritized
           if (new Date(a.added as string).getTime() > 0) return -1;
           // Check if 'b' should be prioritized
@@ -173,10 +186,21 @@ const SonarrSearchLanding: React.FC<{
           return 0;
         });
       }
+
+      seriesDataToReturn = filterSonarrSearchData<SeriesResource>(
+        seriesDataToReturn,
+        searchFilters?.[SonarrSearchFilterContext.Search]
+      );
     }
 
     return seriesDataToReturn;
-  }, [seriesData.data, searchResults.data, searchTerm]);
+  }, [
+    seriesData.data,
+    searchResults.data,
+    searchTerm,
+    searchFilters,
+    searchAll,
+  ]);
 
   useLoadingSpinner(SonarrSearchLanding.name);
 
@@ -190,6 +214,7 @@ const SonarrSearchLanding: React.FC<{
           horizontal={false}
           numColumns={3}
           data={getSeries()}
+          extraData={searchFilters}
           renderItem={({ item, index }) => (
             <SonarrSearchResultItem
               searchContext={SonarrSearchFilterContext.Search}
@@ -218,6 +243,41 @@ const SonarrSearchLanding: React.FC<{
               accentColor={sonarrColors.accentColor}
             />
           )}
+          ListFooterComponent={
+            <>
+              {!searchAll && (
+                <YStack
+                  height="$18"
+                  width="$11"
+                  padding="$2"
+                  pressStyle={{ scale: 0.97 }}
+                  animation="delay"
+                  onPress={() => {
+                    setSearchAll(true);
+                  }}
+                >
+                  <YStack
+                    height="$13"
+                    borderRadius="$6"
+                    backgroundColor="$gray6"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Search size={32} color={sonarrColors.accentColor} />
+                  </YStack>
+                  <YStack
+                    paddingHorizontal="$1"
+                    paddingTop="$1"
+                    alignItems="center"
+                  >
+                    <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
+                      {t("sonarr:searchAll")}
+                    </H6>
+                  </YStack>
+                </YStack>
+              )}
+            </>
+          }
         />
       </YStack>
     </Suspense>

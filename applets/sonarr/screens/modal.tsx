@@ -54,7 +54,7 @@ const SonarrModal = () => {
       <SonarrInteractiveSearch
         data={data}
         seasonNumber={params?.seasonNumber}
-        episodeNumber={params?.episodeNumber}
+        episodeId={params?.episodeId}
       />
     );
   }

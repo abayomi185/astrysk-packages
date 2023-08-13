@@ -8,8 +8,8 @@ import {
   SonarrSearchFilterContext,
   SonarrEpisodeCache,
   SonarrEpisodeFileCache,
-  SonarrFilterType,
-  SonarrFilterTypeValue,
+  SonarrFilterKind,
+  SonarrFilterKindValue,
 } from "./types";
 import { filterPersistState } from "@astrysk/utils";
 import {
@@ -63,7 +63,7 @@ interface SonarrState extends StateTypes.AppletState {
   searchFilters?: Partial<
     Record<
       SonarrSearchFilterContext,
-      Record<SonarrFilterType, SonarrFilterTypeValue> | undefined
+      Record<SonarrFilterKind, SonarrFilterKindValue> | undefined
     >
   >;
   filterBarOptions?: Partial<Record<SonarrSearchFilterContext, SonarrFilter[]>>;

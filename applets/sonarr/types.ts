@@ -1,5 +1,10 @@
 import { TabContext } from "@astrysk/types";
-import { EpisodeFileResource, EpisodeResource, SeriesResource } from "./api";
+import {
+  EpisodeFileResource,
+  EpisodeResource,
+  ReleaseResource,
+  SeriesResource,
+} from "./api";
 import { FilterOrder } from "@astrysk/types";
 
 export interface SonarrSeriesCache {
@@ -18,6 +23,10 @@ export interface ExtendedSeriesResource extends SeriesResource {
   sonarrContext?: SonarrDetailScreenContext;
   sonarrTabContext?: TabContext;
   sonarrSeasonNumber?: number;
+}
+
+export interface ExtendedReleaseResource extends ReleaseResource {
+  language?: Record<string, string>;
 }
 
 export enum ToastModalProviderKey {
@@ -100,6 +109,12 @@ export enum SonarrSearchFilterContext {
   Search = "Search",
 }
 
+export enum SonarrInteractiveSearchContext {
+  Series = "Series",
+  Season = "Season",
+  Episode = "Episode",
+}
+
 export interface CalendarData {
   seriesData: SeriesResource;
   title: string;
@@ -110,8 +125,8 @@ export interface CalendarData {
   time: string;
 }
 
-export type SonarrFilterType = string;
-export interface SonarrFilterTypeValue {
+export type SonarrFilterKind = string;
+export interface SonarrFilterKindValue {
   value?: string;
   order?: FilterOrder;
 }

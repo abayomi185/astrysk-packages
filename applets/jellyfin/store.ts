@@ -5,6 +5,8 @@ import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import { AuthenticationResultUser } from "./api";
 import {
   JellyfinFilter,
+  JellyfinFilterKind,
+  JellyfinFilterKindValue,
   JellyfinMediaCache,
   JellyfinMediaItemSettings,
   JellyfinSearchFilterContext,
@@ -52,7 +54,10 @@ interface JellyfinState extends StateTypes.AppletState {
   mediaItemSettings?: JellyfinMediaItemSettings;
   customHeaders?: Record<string, string>;
   searchFilters?: Partial<
-    Record<JellyfinSearchFilterContext, Record<string, string> | undefined>
+    Record<
+      JellyfinSearchFilterContext,
+      Record<JellyfinFilterKind, JellyfinFilterKindValue> | undefined
+    >
   >;
   filterBarOptions?: Partial<
     Record<JellyfinSearchFilterContext, JellyfinFilter[]>

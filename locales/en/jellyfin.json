@@ -48,10 +48,8 @@
   "unplayed": "Unplayed",
   "liked": "Liked",
   "favorite": "Favorite",
-  "nameAscending": "Name (Ascending)",
-  "nameDescending": "Name (Descending)",
-  "premiereDateAscending": "Premiere Date (Ascending)",
-  "premiereDateDescending": "Premiere Date (Descending)",
+  "alphabetical": "Alphabetical",
+  "premiereDate": "Premiere Date",
 
   "error_episodeNotSelected": "Episode not selected",
 

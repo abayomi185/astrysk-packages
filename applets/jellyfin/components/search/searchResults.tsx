@@ -122,7 +122,7 @@ const JellyfinSearchResults: React.FC<{
               t(
                 searchFilters?.[JellyfinSearchFilterContext.Search]?.[
                   "jellyfin:type"
-                ]
+                ]?.value as string
               ),
             ] as BaseItemKind[],
           }

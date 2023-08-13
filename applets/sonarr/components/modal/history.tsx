@@ -196,7 +196,7 @@ export const SonarrHistoryItem: React.FC<{
           {expanded ? (
             <SonarrHistoryItemExpanded t={t} data={data} />
           ) : (
-            <YStack flex={1}>
+            <YStack flex={1} overflow="hidden">
               <Text color="$gray11" marginTop="$2" numberOfLines={1}>{`${t(
                 "sonarr:season"
               )} ${data.episode?.seasonNumber} • ${t("sonarr:episode")} ${

@@ -115,11 +115,18 @@ const SonarrSeriesDetailHeader: React.FC<{
               }
               marginTop="$1"
             >
-              {`${forwardedData.statistics?.percentOfEpisodes?.toFixed(2)}${t(
-                "sonarr:percent"
-              )} - ${forwardedData.statistics?.episodeFileCount}/${
-                forwardedData.statistics?.episodeCount
-              } ${t("sonarr:monitoredEpisodes")}`}
+              {`${
+                forwardedData.statistics?.percentOfEpisodes &&
+                forwardedData.statistics.percentOfEpisodes % 1 !== 0
+                  ? forwardedData.statistics.percentOfEpisodes.toFixed(2)
+                  : Math.floor(
+                      forwardedData.statistics?.percentOfEpisodes as number
+                    )
+              }${t("sonarr:percent")} - ${
+                forwardedData.statistics?.episodeFileCount
+              }/${forwardedData.statistics?.episodeCount} ${t(
+                "sonarr:monitoredEpisodes"
+              )}`}
             </Text>
           </YStack>
           <XStack alignItems="center">

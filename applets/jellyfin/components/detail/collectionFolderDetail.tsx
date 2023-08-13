@@ -35,7 +35,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
             genres: [
               searchFilters?.[JellyfinSearchFilterContext.Collection]?.[
                 "jellyfin:genre"
-              ],
+              ].value as string, // Only 1 genre can be selected at a time
             ],
           }
         : {}),

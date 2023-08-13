@@ -4,7 +4,7 @@ import config from "@astrysk/styles";
 export { default as LandingPage } from "./home/landingPage";
 
 // SEARCH
-export { FilterButton } from "./search/filterButton";
+export { FilterButton, ClearFilterButton } from "./search/filterButtons";
 
 // COMMON
 export { AppletButton, AppletButtonBanner } from "./common/appletButton";

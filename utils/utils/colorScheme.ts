@@ -13,7 +13,7 @@ export function useColorScheme(): NonNullable<ColorSchemeName> {
       () => {
         setColorScheme(Appearance.getColorScheme());
       },
-      100,
+      250,
       { leading: false, trailing: true }
     );
 

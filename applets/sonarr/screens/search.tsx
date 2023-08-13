@@ -22,16 +22,9 @@ const SonarrSearch: React.FC = () => {
   // Successfully debounce the search term
   const debouncedSetSearchTerm = debouncedSetter(setSearchTerm);
 
-  React.useMemo(() => {
+  React.useEffect(() => {
     if (searchPathName === "search") {
-      // Set searchTerm immediately if empty string
-      if (searchQuery == "") {
-        setSearchTerm(searchQuery);
-      }
-      // Otherwise debounce
-      else if (searchQuery !== searchTerm) {
-        debouncedSetSearchTerm(searchQuery as string);
-      }
+      debouncedSetSearchTerm(searchQuery as string);
     }
   }, [searchQuery]);
 

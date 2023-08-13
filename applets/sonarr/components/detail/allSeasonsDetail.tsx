@@ -133,11 +133,14 @@ const SonarrAllSeasonsDetail: React.FC<{
                 }
                 marginTop="$1"
               >
-                {`${item.statistics?.percentOfEpisodes}${t(
-                  "sonarr:percent"
-                )} - ${item.statistics?.episodeFileCount}/${
-                  item.statistics?.episodeCount
-                } ${t("sonarr:episodes")}`}
+                {`${
+                  item.statistics?.percentOfEpisodes &&
+                  item.statistics.percentOfEpisodes % 1 !== 0
+                    ? item.statistics.percentOfEpisodes.toFixed(2)
+                    : Math.floor(item.statistics?.percentOfEpisodes as number)
+                }${t("sonarr:percent")} - ${
+                  item.statistics?.episodeFileCount
+                }/${item.statistics?.episodeCount} ${t("sonarr:episodes")}`}
               </Text>
               <XStack flex={1} marginTop="$2.5" justifyContent="center">
                 <SonarrActionPanel

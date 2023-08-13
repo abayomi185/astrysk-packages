@@ -3,40 +3,66 @@ import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { YStack, XStack } from "tamagui";
 import { onItemLayout } from "@astrysk/utils";
-import { SettingsOption } from "@astrysk/components";
+import { ClearFilterButton, SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import { SettingsOptionProps } from "@astrysk/types";
+import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
 import { NavigationProp } from "@react-navigation/native";
 import { useJellyfinStore } from "../../store";
-import { JellyfinSearchFilterContext } from "../../types";
-import { TFunction, t } from "i18next";
+import {
+  JellyfinFilterKind,
+  JellyfinFilterKindValue,
+  JellyfinSearchFilterContext,
+} from "../../types";
+import { TFunction } from "i18next";
 
 const createSettingsOptionsObject = (
   t: TFunction,
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   item: string,
+  supportsOrderBy: boolean,
   context: JellyfinSearchFilterContext,
-  filterType: string,
-  selectedValue: string | null,
+  filterType: JellyfinFilterKind,
+  selectedValue: JellyfinFilterKindValue,
+  first?: boolean,
   last?: boolean
 ) => {
   return {
     key: item,
     name: t(item),
     type: "item",
-    selectedValue: selectedValue,
+    selectedValue: selectedValue.value,
+    supportsOrderBy,
+    selectedValueOrder: selectedValue.order,
     onPress: () => {
-      useJellyfinStore.setState((state) => ({
-        searchFilters: {
-          ...state.searchFilters,
-          [context]: {
-            ...state.searchFilters?.[context],
-            [filterType]: item,
+      useJellyfinStore.setState((state) => {
+        let selectedValueOrder;
+
+        if (supportsOrderBy) {
+          if (selectedValue.order === undefined) {
+            selectedValueOrder = FilterOrder.ASCENDING;
+          } else if (selectedValue.order === FilterOrder.ASCENDING) {
+            selectedValueOrder = FilterOrder.DESCENDING;
+          } else if (selectedValue.order === FilterOrder.DESCENDING) {
+            selectedValueOrder = FilterOrder.ASCENDING;
+          }
+        }
+
+        return {
+          searchFilters: {
+            ...state.searchFilters,
+            [context]: {
+              ...state.searchFilters?.[context],
+              [filterType]: {
+                value: item,
+                order: selectedValueOrder,
+              },
+            },
           },
-        },
-      }));
+        };
+      });
       navigation.goBack();
     },
+    firstItem: first,
     lastItem: last,
   } as SettingsOptionProps;
 };
@@ -53,7 +79,7 @@ const JellyfinSearchFilterOptions: React.FC<{
   const selectedValue =
     useJellyfinStore(
       (state) => state?.searchFilters?.[context]?.[filterType]
-    ) ?? "";
+    ) ?? {};
 
   // WARN: This is not ideal to get the filterBarOptions from the store here.
   const filterBarOptions = useJellyfinStore.getState().filterBarOptions;
@@ -66,14 +92,30 @@ const JellyfinSearchFilterOptions: React.FC<{
       createSettingsOptionsObject(
         t,
         navigation,
-        item,
+        item.value,
+        item.supportsOrderBy ?? false,
         context,
         filterType,
         selectedValue,
+        index === 0,
         index === options.length - 1
       )
     );
   }, [filterBarOptions, filterType, selectedValue]);
+
+  const clearFilter = () => {
+    useJellyfinStore.setState((state) => {
+      const newContextFilters = { ...state.searchFilters?.[context] };
+      delete newContextFilters[filterType];
+      return {
+        searchFilters: {
+          ...state.searchFilters,
+          [context]: newContextFilters,
+        },
+      };
+    });
+    navigation.goBack();
+  };
 
   return (
     <YStack height="100%" padding="$4">
@@ -92,6 +134,11 @@ const JellyfinSearchFilterOptions: React.FC<{
             }}
             estimatedItemSize={51}
             showsVerticalScrollIndicator={false}
+            ListHeaderComponent={
+              <XStack>
+                <ClearFilterButton t={t} clearFilter={clearFilter} />
+              </XStack>
+            }
           />
         </XStack>
       </YStack>
