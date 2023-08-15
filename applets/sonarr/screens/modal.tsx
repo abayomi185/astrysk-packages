@@ -50,7 +50,7 @@ const SonarrModal = () => {
         : t("sonarr:addSeries");
     useSonarrModalHeader(navigation, modalHeader);
 
-    return <SonarrEditSeries data={data} />;
+    return <SonarrEditSeries data={data} context={params.context} />;
   }
 
   // NOTE: INTERACTIVE SEARCH

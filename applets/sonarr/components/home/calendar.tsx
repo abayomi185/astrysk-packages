@@ -258,14 +258,16 @@ const SonarrCalendar: React.FC = () => {
                       // recyclingKey={`${data.id}`}
                     />
                   </XStack>
-                  <YStack flex={1} paddingHorizontal="$2" paddingVertical="$2">
-                    <H5 color="$gray12">{item.seriesData?.title}</H5>
+                  <YStack flex={1} marginLeft="$2" paddingVertical="$2">
+                    <H5 color="$gray12" numberOfLines={2}>
+                      {item.seriesData?.title}
+                    </H5>
                     <Text marginTop="$2" color="$gray11">{`${t(
                       "sonarr:season"
                     )} ${item.seasonNumber} • ${t("sonarr:episode")} ${
                       item.episodeNumber
                     }`}</Text>
-                    <Text marginTop="$1.5" color="$gray11">
+                    <Text marginTop="$1.5" color="$gray11" numberOfLines={1}>
                       {item.title}
                     </Text>
                     <Text
@@ -291,7 +293,7 @@ const SonarrCalendar: React.FC = () => {
                         : t("sonarr:notAired")}
                     </Text>
                   </YStack>
-                  <XStack marginHorizontal="$3" alignItems="center">
+                  <XStack marginLeft="$2" marginRight="$3" alignItems="center">
                     <Text color="$gray11">{item.time}</Text>
                   </XStack>
                 </XStack>

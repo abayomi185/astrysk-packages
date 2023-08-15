@@ -1,5 +1,6 @@
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 import { FilterOrder } from "./order";
+import { ColorTokens } from "tamagui";
 
 export interface SettingsOptionProps {
   key: string; // Locales string
@@ -13,6 +14,7 @@ export interface SettingsOptionProps {
   value?: string | string[];
   route?: string;
   type: "label" | "toggle" | "item" | "action";
+  accentColor?: ColorTokens | string;
   viewType?: "modal" | "detail";
   onPress?: () => void;
   firstItem?: boolean;

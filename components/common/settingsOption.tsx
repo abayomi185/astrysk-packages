@@ -7,6 +7,7 @@ import {
   Text,
   SizeTokens,
   GetProps,
+  Switch,
 } from "tamagui";
 import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
 import {
@@ -242,5 +243,49 @@ export const SettingsOption: React.FC<{
     );
   }
 
+  if (item.type === "toggle") {
+    const active =
+      item.selectedValue === item.key || item.selectedValue === null;
+
+    // const checkedState = item.checkedState;
+    // Or useState
+
+    return (
+      <Button
+        flex={1}
+        height="$5"
+        paddingVertical="$2"
+        paddingHorizontal="$4"
+        alignItems="center"
+        justifyContent="flex-start"
+        borderWidth="$0"
+        borderTopWidth="$0"
+        borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
+        borderBottomColor="$gray6"
+        borderRadius="$0"
+        theme="dark_gray"
+        backgroundColor={active ? "$gray5" : "$gray1"}
+        borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
+        borderTopRightRadius={item.firstItem ? "$5" : "$0"}
+        borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
+        borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
+        {...style}
+        onPress={item.onPress}
+      >
+        <XStack flex={1} justifyContent="space-between">
+          <XStack alignItems="center">
+            <H6 color="$color">{item.name ?? t(`${item.key}`)}</H6>
+          </XStack>
+          <XStack alignItems="center">
+            {
+              <Switch>
+                <Switch.Thumb animation="delay" />
+              </Switch>
+            }
+          </XStack>
+        </XStack>
+      </Button>
+    );
+  }
   return null;
 };
