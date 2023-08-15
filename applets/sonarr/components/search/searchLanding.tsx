@@ -63,6 +63,9 @@ const SonarrSearchResultItem: React.FC<{
           // TODO: Go to modal screen to add series
           goToSonarrModalScreen({
             router,
+            searchItemId: data.id as number,
+            screenContext: SonarrDetailScreenContext.AddSeries,
+            searchContext,
           });
         }
       }}
@@ -197,12 +200,11 @@ const SonarrSearchLanding: React.FC<{
           return 0;
         });
       }
-
-      seriesDataToReturn = filterSonarrSearchData<SeriesResource>(
-        seriesDataToReturn,
-        searchFilters?.[SonarrSearchFilterContext.Search]
-      );
     }
+    seriesDataToReturn = filterSonarrSearchData<SeriesResource>(
+      seriesDataToReturn,
+      searchFilters?.[SonarrSearchFilterContext.Search]
+    );
 
     return seriesDataToReturn;
   }, [
@@ -225,7 +227,6 @@ const SonarrSearchLanding: React.FC<{
           horizontal={false}
           numColumns={3}
           data={getSeries()}
-          extraData={searchFilters}
           renderItem={({ item, index }) => (
             <SonarrSearchResultItem
               searchContext={SonarrSearchFilterContext.Search}

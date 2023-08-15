@@ -110,7 +110,7 @@ const SonarrSearchFilterBar: React.FC<{
               id={item.id}
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
-              activeBackgroundColor="$blue7"
+              activeBackgroundColor="$blue8"
             />
           )}
           showsHorizontalScrollIndicator={false}
@@ -122,9 +122,7 @@ const SonarrSearchFilterBar: React.FC<{
                 borderRadius="$8"
                 paddingHorizontal="$3"
                 backgroundColor={
-                  isEmpty(searchFilters?.[context])
-                    ? "$gray5"
-                    : sonarrColors.accentColor
+                  isEmpty(searchFilters?.[context]) ? "$gray5" : "$blue8"
                 }
                 onPress={() => clearFiltersForContext()}
               >

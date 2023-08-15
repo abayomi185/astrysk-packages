@@ -8,7 +8,7 @@ export const FilterButton: React.FC<{
   id: string;
   handlePress: (id: string) => void;
   active: boolean;
-  activeBackgroundColor: ColorTokens;
+  activeBackgroundColor: ColorTokens | string;
 }> = ({ id, handlePress, active, activeBackgroundColor }) => {
   const { t } = useTranslation();
 
