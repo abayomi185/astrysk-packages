@@ -50,6 +50,24 @@ export const SettingsOption: React.FC<{
 }> = ({ t, item, alignCenter, style }) => {
   const colorScheme = useColorScheme();
 
+  React.useEffect(() => {
+    item.onLoad?.();
+  }, []);
+
+  const [toggled, setToggled] = React.useState<boolean>(
+    item.initialToggleState ?? false
+  );
+
+  React.useEffect(() => {
+    if (item.initialToggleState) {
+      setToggled(item.initialToggleState);
+    }
+  }, [item.initialToggleState]);
+
+  React.useEffect(() => {
+    item.setState?.({ [item.key]: toggled });
+  }, [toggled]);
+
   if (item.type === "label") {
     return (
       <Button
@@ -195,10 +213,6 @@ export const SettingsOption: React.FC<{
   }
 
   if (item.type === "action") {
-    React.useEffect(() => {
-      item.onLoad?.();
-    }, []);
-
     return (
       <Button
         flex={1}
@@ -267,20 +281,6 @@ export const SettingsOption: React.FC<{
     const active =
       item.selectedValue === item.key || item.selectedValue === null;
 
-    React.useEffect(() => {
-      if (item.initialToggleState) {
-        setChecked(item.initialToggleState);
-      }
-    }, [item.initialToggleState]);
-
-    const [checked, setChecked] = React.useState<boolean>(
-      item.initialToggleState ?? false
-    );
-
-    React.useEffect(() => {
-      item.setState?.({ [item.key]: checked });
-    }, [checked]);
-
     return (
       <Button
         flex={1}
@@ -315,9 +315,9 @@ export const SettingsOption: React.FC<{
                 size="$3"
                 native
                 onCheckedChange={(checked) => {
-                  setChecked(checked);
+                  setToggled(checked);
                 }}
-                checked={checked}
+                checked={toggled}
               >
                 <Switch.Thumb size="$3" animation="delay" />
               </Switch>
