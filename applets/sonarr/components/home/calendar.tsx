@@ -23,6 +23,7 @@ import {
   useGetApiV3Calendar,
   useGetApiV3Languageprofile,
   useGetApiV3Qualityprofile,
+  useGetApiV3Rootfolder,
   useGetApiV3Series,
 } from "../../api";
 import { sonarrColors } from "../../colors";
@@ -159,6 +160,16 @@ const SonarrCalendar: React.FC = () => {
       onSuccess: (data) => {
         useSonarrStore.setState({
           sonarrLanguageProfiles: data,
+        });
+      },
+      staleTime: Infinity,
+    },
+  });
+  useGetApiV3Rootfolder({
+    query: {
+      onSuccess: (data) => {
+        useSonarrStore.setState({
+          sonarrRootFolderCache: data.map((item) => item.path as string),
         });
       },
       staleTime: Infinity,

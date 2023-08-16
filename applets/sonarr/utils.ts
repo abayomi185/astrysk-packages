@@ -110,6 +110,7 @@ export const goToSonarrModalScreen = ({
   seasonNumber,
   screenContext,
   searchContext,
+  tvdbId,
 }: {
   router: Router;
   searchItemId: number;
@@ -117,6 +118,7 @@ export const goToSonarrModalScreen = ({
   seasonNumber?: number;
   screenContext?: SonarrDetailScreenContext;
   searchContext?: SonarrSearchFilterContext;
+  tvdbId?: number;
 }) => {
   router.push({
     pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
@@ -125,6 +127,7 @@ export const goToSonarrModalScreen = ({
       itemId: searchItemId,
       episodeId: episodeId,
       seasonNumber: seasonNumber,
+      tvdbId: tvdbId,
     } as SonarrDetailScreenProps,
   });
 };

@@ -12,11 +12,14 @@ export interface SettingsOptionProps {
   supportsOrderBy?: boolean;
   selectedValueOrder?: FilterOrder;
   value?: string | string[];
+  initialToggleState?: boolean;
   route?: string;
   type: "label" | "toggle" | "item" | "action";
   accentColor?: ColorTokens | string;
   viewType?: "modal" | "detail";
+  onLoad?: () => void;
   onPress?: () => void;
+  setState?: (value: { [key: string]: boolean }) => void;
   firstItem?: boolean;
   lastItem?: boolean;
 }

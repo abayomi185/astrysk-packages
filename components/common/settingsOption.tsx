@@ -124,7 +124,9 @@ export const SettingsOption: React.FC<{
               ))
             ) : (
               <XStack justifyContent={alignCenter ? undefined : "flex-end"}>
-                <Text color="$gray11">{item.value}</Text>
+                <Text selectable color="$gray11">
+                  {item.value}
+                </Text>
               </XStack>
             )}
           </YStack>
@@ -193,6 +195,10 @@ export const SettingsOption: React.FC<{
   }
 
   if (item.type === "action") {
+    React.useEffect(() => {
+      item.onLoad?.();
+    }, []);
+
     return (
       <Button
         flex={1}
@@ -206,6 +212,10 @@ export const SettingsOption: React.FC<{
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
         borderBottomColor="$gray6"
         borderRadius="$0"
+        borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
+        borderTopRightRadius={item.firstItem ? "$5" : "$0"}
+        borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
+        borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         // theme="gray"
         theme="dark_gray"
         backgroundColor="$gray1"
@@ -230,14 +240,24 @@ export const SettingsOption: React.FC<{
             )}
             <H6 color="$color">{item.name ?? t(`${item.key}`)}</H6>
           </XStack>
-          <XStack alignItems="center">
-            {item.selectionHint && (
-              <H6 color="$gray11" marginRight="$2">
+          <YStack
+            flex={alignCenter ? undefined : 1}
+            width={alignCenter ? "60%" : undefined}
+            // backgroundColor="red"
+            marginLeft="$3"
+            flexWrap="wrap"
+            justifyContent="center"
+          >
+            <XStack
+              alignItems="center"
+              justifyContent={alignCenter ? undefined : "flex-end"}
+            >
+              <Text color="$gray11" marginRight="$2">
                 {item.selectionHint}
-              </H6>
-            )}
-            <ChevronRight size={20} opacity={0.6} />
-          </XStack>
+              </Text>
+              <ChevronRight size={20} opacity={0.6} />
+            </XStack>
+          </YStack>
         </XStack>
       </Button>
     );
@@ -247,8 +267,19 @@ export const SettingsOption: React.FC<{
     const active =
       item.selectedValue === item.key || item.selectedValue === null;
 
-    // const checkedState = item.checkedState;
-    // Or useState
+    React.useEffect(() => {
+      if (item.initialToggleState) {
+        setChecked(item.initialToggleState);
+      }
+    }, [item.initialToggleState]);
+
+    const [checked, setChecked] = React.useState<boolean>(
+      item.initialToggleState ?? false
+    );
+
+    React.useEffect(() => {
+      item.setState?.({ [item.key]: checked });
+    }, [checked]);
 
     return (
       <Button
@@ -269,6 +300,7 @@ export const SettingsOption: React.FC<{
         borderTopRightRadius={item.firstItem ? "$5" : "$0"}
         borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
         borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
+        pressStyle={{}}
         {...style}
         onPress={item.onPress}
       >
@@ -278,8 +310,16 @@ export const SettingsOption: React.FC<{
           </XStack>
           <XStack alignItems="center">
             {
-              <Switch>
-                <Switch.Thumb animation="delay" />
+              // Animation and size do nothing for native switch
+              <Switch
+                size="$3"
+                native
+                onCheckedChange={(checked) => {
+                  setChecked(checked);
+                }}
+                checked={checked}
+              >
+                <Switch.Thumb size="$3" animation="delay" />
               </Switch>
             }
           </XStack>

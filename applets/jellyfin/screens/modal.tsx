@@ -134,6 +134,7 @@ const JellyfinModal = () => {
           key: "common:name",
           type: "label",
           value: useJellyfinStore.getState().userDetails?.ServerName as string,
+          firstItem: true,
         },
         {
           key: "common:url",
@@ -157,11 +158,18 @@ const JellyfinModal = () => {
         <YStack height="100%" width="100%">
           <XStack flex={1}>
             <FlashList
+              contentContainerStyle={{ paddingHorizontal: 12 }}
               data={serverSettingsOptions}
               renderItem={({ item }) => {
                 if (typeof item === "string") {
                   return (
-                    <SettingsOptionHeader t={t} headerTitle={item as string} />
+                    <SettingsOptionHeader
+                      t={t}
+                      headerTitle={item as string}
+                      style={{
+                        paddingHorizontal: "$2",
+                      }}
+                    />
                   );
                 } else {
                   return <SettingsOption t={t} item={item} />;

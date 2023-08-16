@@ -6,6 +6,13 @@
   "history": "History",
   "interactiveSearch": "Interactive Search",
   "editSeries": "Edit Series",
+  "addSeries": "Add Series",
+  "seasonFolders": "Season Folders",
+  "seriesPath": "Series Path",
+  "qualityProfile": "Quality Profile",
+
+  "seriesUpdated": "Series Updated",
+  "seriesAdded": "Series Added",
 
   "series": "Series",
   "season": "Season",
@@ -89,6 +96,8 @@
   "episodeFileDeleted": "Episode File Deleted",
   "episodeFileRenamed": "Episode File Renamed",
   "downloadIgnored": "Download Ignored",
+  "chooseTheSeriesType": "Choose the series type",
+  "chooseTheQualityProfile": "Choose the quality profile",
 
   "h264": "H.264",
   "h265": "H.265",
@@ -105,10 +114,16 @@
   "channel6": "6.1",
   "channel7": "7.1",
 
+  "anime": "Anime",
+  "daily": "Daily",
+  "standard": "Standard",
+
   "error": {
     "unableToSetMonitoredStatus": "Unable to set monitored status",
     "automaticSearchFailed": "Automatic search failed",
-    "requestFailed": "Request failed"
+    "requestFailed": "Request failed",
+    "seriesUpdateFailed": "Series update failed",
+    "addingSeriesFailed": "Adding series failed"
   },
   "success": {
     "monitoringStatusUpdated": "Monitoring status updated",

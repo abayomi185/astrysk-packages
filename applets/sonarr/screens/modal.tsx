@@ -50,7 +50,13 @@ const SonarrModal = () => {
         : t("sonarr:addSeries");
     useSonarrModalHeader(navigation, modalHeader);
 
-    return <SonarrEditSeries data={data} context={params.context} />;
+    return (
+      <SonarrEditSeries
+        data={data}
+        tvdbId={params?.tvdbId as number}
+        context={params.context}
+      />
+    );
   }
 
   // NOTE: INTERACTIVE SEARCH

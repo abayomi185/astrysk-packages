@@ -66,6 +66,7 @@ const SonarrSearchResultItem: React.FC<{
             searchItemId: data.id as number,
             screenContext: SonarrDetailScreenContext.AddSeries,
             searchContext,
+            tvdbId: data.tvdbId as number,
           });
         }
       }}
@@ -75,7 +76,13 @@ const SonarrSearchResultItem: React.FC<{
           style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
           source={
             {
-              uri: `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`,
+              uri: data.id
+                ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                : data.remotePoster,
+              // : `${baseURL}${
+              //     data.images?.find((image) => image.coverType === "poster")
+              //       ?.url
+              //   }`,
             } as ImageSource
           }
           transition={200}

@@ -59,6 +59,5 @@ export const SonarrSettingsOptions = (
         },
       ]);
     },
-    lastItem: true,
   },
 ];

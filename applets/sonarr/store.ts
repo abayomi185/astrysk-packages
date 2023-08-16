@@ -55,6 +55,7 @@ interface SonarrState extends StateTypes.AppletState {
   sonarrSeriesCache?: SonarrSeriesCache;
   sonarrEpisodeCache?: SonarrEpisodeCache;
   sonarrEpisodeFileCache?: SonarrEpisodeFileCache;
+  sonarrRootFolderCache?: string[];
   // Other
   sonarrQualityProfiles?: QualityProfileResource[];
   sonarrLanguageProfiles?: LanguageProfileResource[];

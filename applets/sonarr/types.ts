@@ -82,10 +82,7 @@ export interface SonarrDetailScreenProps extends Record<string, string> {
   seasonNumber?: number;
   episodeId?: number;
   episodeNumber?: number;
-  // itemName?: string;
-  // itemCacheIndex?: string; // For cache purposes
-  // itemData?: BaseItemDto | string;
-
+  tvdbId?: number;
   // CollectionItem Detail
   searchContext?: SonarrSearchFilterContext;
   [key: string]: any;
