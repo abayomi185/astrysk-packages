@@ -1,4 +1,5 @@
 import React from "react";
+import { LayoutAnimation } from "react-native";
 
 import { create_axios_instance } from "@astrysk/api";
 import * as DeviceInfo from "expo-device";
@@ -17,8 +18,9 @@ import {
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
-import { SeriesResource } from "./api";
+import { HistoryResource, SeriesResource } from "./api";
 import { useColorScheme } from "@astrysk/utils";
+import { FlashList } from "@shopify/flash-list";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForSonarr = (
@@ -279,4 +281,30 @@ export const getDateFromHours = (hours: number) => {
 // NOTE: STYLE UTILS
 export const getSonarrIconColor = () => {
   return useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+};
+
+// NOTE: HISTORY ITEM UTILS
+export const expandableItemAnimationHandler = <T>(
+  flashListRef: React.RefObject<FlashList<T>>
+) => {
+  flashListRef.current?.prepareForLayoutAnimationRender();
+  LayoutAnimation.configureNext({
+    duration: 150,
+    create: {
+      property: "scaleXY",
+      type: "spring",
+      duration: 200,
+      // springDamping: 0.5,
+    },
+    update: {
+      type: "spring",
+      springDamping: 1,
+      duration: 300,
+    },
+    delete: {
+      type: "linear",
+      property: "opacity",
+      duration: 200,
+    },
+  });
 };

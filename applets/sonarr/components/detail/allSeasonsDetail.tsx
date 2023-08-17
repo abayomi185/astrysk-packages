@@ -95,7 +95,7 @@ const SonarrAllSeasonsDetail: React.FC<{
         extraData={new Date()} // Temporary - for testing
         renderItem={({ item }) => (
           <Button
-            height="$11.5"
+            height="auto"
             marginHorizontal="$3"
             paddingVertical="$2.5"
             paddingHorizontal="$3.5"

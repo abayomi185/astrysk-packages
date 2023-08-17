@@ -32,7 +32,7 @@ export const SettingsOptionHeader: React.FC<{
       flex={1}
       marginTop="$5"
       paddingVertical="$2"
-      paddingHorizontal="$4"
+      paddingHorizontal="$3"
       {...style}
     >
       <Text color="$color" marginVertical="$1" fontSize={size ?? "$8"}>
@@ -142,7 +142,7 @@ export const SettingsOption: React.FC<{
               ))
             ) : (
               <XStack justifyContent={alignCenter ? undefined : "flex-end"}>
-                <Text selectable color="$gray11">
+                <Text selectable color="$gray11" numberOfLines={2}>
                   {item.value}
                 </Text>
               </XStack>
@@ -265,8 +265,14 @@ export const SettingsOption: React.FC<{
             <XStack
               alignItems="center"
               justifyContent={alignCenter ? undefined : "flex-end"}
+              overflow="hidden"
             >
-              <Text color="$gray11" marginRight="$2">
+              <Text
+                flex={1}
+                color="$gray11"
+                marginRight="$2"
+                ellipsizeMode="tail"
+              >
                 {item.selectionHint}
               </Text>
               <ChevronRight size={20} opacity={0.6} />

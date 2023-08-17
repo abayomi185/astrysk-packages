@@ -14,10 +14,10 @@ export const SonarrSettingsOptions = (
   Applets.SONARR,
   {
     key: SonarrSettingsKeys.Server,
-    type: "action",
+    type: "label",
     icon: faServer,
     iconSize: 22,
-    selectionHint: useSonarrStore.getState().baseURL as string,
+    value: useSonarrStore.getState().baseURL as string,
     onPress: () => {
       // router.push({
       //   pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
@@ -27,6 +27,7 @@ export const SonarrSettingsOptions = (
       //   } as JellyfinDetailScreenProps,
       // });
     },
+    firstItem: true,
   },
   {
     key: SonarrSettingsKeys.DeleteCache,
@@ -59,5 +60,6 @@ export const SonarrSettingsOptions = (
         },
       ]);
     },
+    lastItem: true,
   },
 ];

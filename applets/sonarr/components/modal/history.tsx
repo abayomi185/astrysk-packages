@@ -5,22 +5,14 @@ import {
   SeriesResource,
   useGetApiV3HistorySeries,
 } from "../../api";
-import {
-  XStack,
-  YStack,
-  Text,
-  H4,
-  Spinner,
-  Button,
-  H6,
-  ColorTokens,
-} from "tamagui";
+import { XStack, YStack, Text, Button, H6, ColorTokens } from "tamagui";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { customTokens } from "@astrysk/styles";
 import { TFunction } from "i18next";
 import { sonarrColors } from "../../colors";
 import { EmptyList } from "@astrysk/components";
+import { expandableItemAnimationHandler } from "../../utils";
 
 const SonarrHistoryItemExpanded: React.FC<{
   t: TFunction;
@@ -29,7 +21,7 @@ const SonarrHistoryItemExpanded: React.FC<{
   return (
     <XStack flex={1} marginTop="$2">
       <YStack flex={1}>
-        <Text color="$gray11" numberOfLines={1}>{`${t("sonarr:season")} ${
+        <Text color="$gray11" numberOfLines={2}>{`${t("sonarr:season")} ${
           data.episode?.seasonNumber
         } • ${t("sonarr:episode")} ${data.episode?.episodeNumber} - ${
           data.episode?.title
@@ -153,15 +145,8 @@ const SonarrHistoryItemExpanded: React.FC<{
 export const SonarrHistoryItem: React.FC<{
   t: TFunction;
   data: HistoryResource;
-}> = ({ t, data }) => {
-  const buttonDefaultHeight = customTokens.size[11].val;
-  const buttonExpandedHeight = customTokens.size[16].val;
-
-  const [buttonHeight] = React.useState(
-    new Animated.Value(buttonDefaultHeight)
-  );
-  const [expanded, setExpanded] = React.useState(false);
-
+  pressHandler: () => void;
+}> = ({ t, data, pressHandler }) => {
   const textColorMap: { [key: string]: ColorTokens } = {
     unknown: "$gray11",
     grabbed: "$green9",
@@ -173,62 +158,56 @@ export const SonarrHistoryItem: React.FC<{
     downloadIgnored: "$orange9",
   };
 
+  const [expanded, setExpanded] = React.useState(false);
+
   return (
-    <Animated.View style={{ height: buttonHeight }}>
-      <Button
-        flex={1}
-        marginVertical="$1.5"
-        paddingVertical="$2"
-        paddingHorizontal="$2.5"
-        backgroundColor="$gray1"
-        onPress={() => {
-          Animated.timing(buttonHeight, {
-            toValue: expanded ? buttonDefaultHeight : buttonExpandedHeight, // Set to whatever height values you need
-            duration: 200,
-            useNativeDriver: false, // height is not supported by the native driver
-          }).start();
-          setExpanded(!expanded);
-        }}
-        // animation="delay"
-      >
-        <YStack flex={1} marginTop="$1.5">
-          <H6 numberOfLines={expanded ? 2 : 1}>{data.sourceTitle}</H6>
-          {expanded ? (
-            <SonarrHistoryItemExpanded t={t} data={data} />
-          ) : (
-            <YStack flex={1} overflow="hidden">
-              <Text color="$gray11" marginTop="$2" numberOfLines={1}>{`${t(
-                "sonarr:season"
-              )} ${data.episode?.seasonNumber} • ${t("sonarr:episode")} ${
-                data.episode?.episodeNumber
-              } - ${data.episode?.title}`}</Text>
-              <Text color="$gray11" marginTop="$2">
-                {`${new Date(data.date as string).toLocaleString(undefined, {
-                  dateStyle: "long",
-                  timeStyle: "short",
-                })}`}
-              </Text>
-              <XStack alignItems="center" marginTop="$2.5">
-                <H6
-                  color={textColorMap[data.eventType as string]}
-                  lineHeight={0}
-                >
-                  {t(`sonarr:${data.eventType}`)}
-                </H6>
-                {data.eventType === "grabbed" && (
-                  <>
-                    <Text color="$gray11">{" • "}</Text>
-                    <H6 color={textColorMap[data.eventType]} lineHeight={0}>
-                      {`${data.quality?.quality?.name}`}
-                    </H6>
-                  </>
-                )}
-              </XStack>
-            </YStack>
-          )}
-        </YStack>
-      </Button>
-    </Animated.View>
+    <Button
+      height="auto"
+      marginVertical="$1.5"
+      paddingTop="$2"
+      paddingBottom="$2.5"
+      paddingHorizontal="$2.5"
+      backgroundColor="$gray1"
+      onPress={() => {
+        pressHandler();
+        setExpanded(!expanded);
+      }}
+      overflow="hidden"
+    >
+      <YStack flex={1} marginTop="$1.5">
+        <H6 numberOfLines={expanded ? undefined : 1}>{data.sourceTitle}</H6>
+        {expanded ? (
+          <SonarrHistoryItemExpanded t={t} data={data} />
+        ) : (
+          <YStack flex={1} overflow="hidden">
+            <Text color="$gray11" marginTop="$2" numberOfLines={1}>{`${t(
+              "sonarr:season"
+            )} ${data.episode?.seasonNumber} • ${t("sonarr:episode")} ${
+              data.episode?.episodeNumber
+            } - ${data.episode?.title}`}</Text>
+            <Text color="$gray11" marginTop="$2">
+              {`${new Date(data.date as string).toLocaleString(undefined, {
+                dateStyle: "long",
+                timeStyle: "short",
+              })}`}
+            </Text>
+            <XStack alignItems="center" marginTop="$2.5">
+              <H6 color={textColorMap[data.eventType as string]} lineHeight={0}>
+                {t(`sonarr:${data.eventType}`)}
+              </H6>
+              {data.eventType === "grabbed" && (
+                <>
+                  <Text color="$gray11">{" • "}</Text>
+                  <H6 color={textColorMap[data.eventType]} lineHeight={0}>
+                    {`${data.quality?.quality?.name}`}
+                  </H6>
+                </>
+              )}
+            </XStack>
+          </YStack>
+        )}
+      </YStack>
+    </Button>
   );
 };
 
@@ -237,6 +216,8 @@ const SonarrHistory: React.FC<{
   seasonNumber?: number;
 }> = ({ data, seasonNumber }) => {
   const { t } = useTranslation();
+
+  const flashListRef = React.useRef<FlashList<HistoryResource>>(null);
 
   const seriesHistory = useGetApiV3HistorySeries(
     {
@@ -261,7 +242,13 @@ const SonarrHistory: React.FC<{
             }}
             data={seriesHistory.data}
             renderItem={({ item }: { item: HistoryResource }) => (
-              <SonarrHistoryItem t={t} data={item} />
+              <SonarrHistoryItem
+                t={t}
+                data={item}
+                pressHandler={() =>
+                  expandableItemAnimationHandler<HistoryResource>(flashListRef)
+                }
+              />
             )}
             estimatedItemSize={64}
             ListEmptyComponent={() => (

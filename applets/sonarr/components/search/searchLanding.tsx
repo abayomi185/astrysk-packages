@@ -45,7 +45,7 @@ const SonarrSearchResultItem: React.FC<{
 
   return (
     <YStack
-      height="$18"
+      height="auto"
       width="$11"
       padding="$2"
       pressStyle={{ scale: 0.97 }}

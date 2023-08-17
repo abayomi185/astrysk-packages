@@ -82,11 +82,12 @@ const SonarrSeriesDetailHeader: React.FC<{
         <SonarrActionPanel data={forwardedData} isSeries />
       </XStack>
       <Button
-        height="$8"
+        height="auto"
         marginTop="$4"
         marginBottom="$2"
         paddingHorizontal="$3"
-        paddingVertical="$0"
+        paddingTop="$2"
+        paddingBottom="$2.5"
         backgroundColor="$gray1"
         onPress={() =>
           goToSonarrDetailScreen({

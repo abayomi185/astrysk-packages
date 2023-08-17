@@ -48,83 +48,79 @@ const SonarrEpisodeItem: React.FC<{
   );
 
   return (
-    <Animated.View style={{ height: buttonHeight }}>
-      <Button
-        flex={1}
-        marginVertical="$1.5"
-        paddingVertical="$2"
-        paddingHorizontal="$2.5"
-        backgroundColor="$gray1"
-        onPress={() => {
-          // Animated.timing(buttonHeight, {
-          //   toValue: expanded ? buttonDefaultHeight : buttonExpandedHeight, // Set to whatever height values you need
-          //   duration: 200,
-          //   useNativeDriver: false, // height is not supported by the native driver
-          // }).start();
-          // setExpanded(!expanded);
-          goToSonarrModalScreen({
-            router,
-            searchItemId: data.seriesId as number,
-            episodeId: data.id as number,
-            seasonNumber: data.seasonNumber as number,
-            screenContext: SonarrDetailScreenContext.EpisodeItem,
-          });
-        }}
-      >
-        <XStack flex={1} height="100%">
-          <XStack width="$1.5" marginTop="$1" justifyContent="center">
-            <H6>{data.episodeNumber}</H6>
-          </XStack>
-          <YStack flex={1} marginLeft="$2.5" marginTop="$1">
-            <XStack flex={1}>
-              <YStack flex={1}>
-                <H6 numberOfLines={expanded ? 2 : 1}>{data.title}</H6>
-                {expanded ? (
-                  <></>
-                ) : (
-                  <YStack flex={1}>
-                    <Text color="$gray11" marginTop="$2" numberOfLines={1}>
-                      {new Date(data.airDateUtc as string).toLocaleString(
-                        undefined,
-                        {
-                          dateStyle: "long",
-                        }
-                      )}
-                    </Text>
-
-                    <H6
-                      color={
-                        data.hasFile
-                          ? "$green9"
-                          : episodeHasAired
-                          ? "$red9"
-                          : "$blue9"
-                      }
-                      marginTop="$2"
-                    >
-                      {data.hasFile
-                        ? fileData &&
-                          `${
-                            fileData?.quality?.quality?.name
-                          } • ${getSizeOnDisk(fileData?.size as number)} ${t(
-                            "sonarr:gb"
-                          )}`
-                        : episodeHasAired
-                        ? t("sonarr:missing")
-                        : t("sonarr:notAired")}
-                    </H6>
-                    <XStack alignItems="center" marginTop="$2.5"></XStack>
-                  </YStack>
-                )}
-              </YStack>
-              <XStack width="$5" justifyContent="center">
-                <SonarrEpisodeItemActionPanel t={t} data={data} />
-              </XStack>
-            </XStack>
-          </YStack>
+    <Button
+      height="auto"
+      marginVertical="$1.5"
+      paddingVertical="$2"
+      paddingHorizontal="$2.5"
+      backgroundColor="$gray1"
+      onPress={() => {
+        // Animated.timing(buttonHeight, {
+        //   toValue: expanded ? buttonDefaultHeight : buttonExpandedHeight, // Set to whatever height values you need
+        //   duration: 200,
+        //   useNativeDriver: false, // height is not supported by the native driver
+        // }).start();
+        // setExpanded(!expanded);
+        goToSonarrModalScreen({
+          router,
+          searchItemId: data.seriesId as number,
+          episodeId: data.id as number,
+          seasonNumber: data.seasonNumber as number,
+          screenContext: SonarrDetailScreenContext.EpisodeItem,
+        });
+      }}
+    >
+      <XStack flex={1} height="100%">
+        <XStack width="auto" marginTop="$1" justifyContent="center">
+          <H6>{data.episodeNumber}</H6>
         </XStack>
-      </Button>
-    </Animated.View>
+        <YStack flex={1} marginLeft="$2.5" marginTop="$1">
+          <XStack flex={1}>
+            <YStack flex={1}>
+              <H6 numberOfLines={expanded ? 2 : 1}>{data.title}</H6>
+              {expanded ? (
+                <></>
+              ) : (
+                <YStack flex={1}>
+                  <Text color="$gray11" marginTop="$2" numberOfLines={1}>
+                    {new Date(data.airDateUtc as string).toLocaleString(
+                      undefined,
+                      {
+                        dateStyle: "long",
+                      }
+                    )}
+                  </Text>
+
+                  <H6
+                    color={
+                      data.hasFile
+                        ? "$green9"
+                        : episodeHasAired
+                        ? "$red9"
+                        : "$blue9"
+                    }
+                    marginTop="$2"
+                  >
+                    {data.hasFile
+                      ? fileData &&
+                        `${fileData?.quality?.quality?.name} • ${getSizeOnDisk(
+                          fileData?.size as number
+                        )} ${t("sonarr:gb")}`
+                      : episodeHasAired
+                      ? t("sonarr:missing")
+                      : t("sonarr:notAired")}
+                  </H6>
+                  <XStack alignItems="center" marginTop="$2.5"></XStack>
+                </YStack>
+              )}
+            </YStack>
+            <XStack width="$5" justifyContent="center">
+              <SonarrEpisodeItemActionPanel t={t} data={data} />
+            </XStack>
+          </XStack>
+        </YStack>
+      </XStack>
+    </Button>
   );
 };
 

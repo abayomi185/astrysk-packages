@@ -28,6 +28,7 @@ import {
 } from "../../api";
 import { sonarrColors } from "../../colors";
 import {
+  onItemLayout,
   setLoadingSpinner,
   useColorScheme,
   useLoadingSpinner,
@@ -207,124 +208,134 @@ const SonarrCalendar: React.FC = () => {
             accentColor={sonarrColors.accentColor}
           />
         )}
-        <AgendaList
-          sections={
-            calendarQuery.data
-              ? calendarQuery.data.map((calendarData) => ({
-                  // Attempt to convert to local datetime
-                  title: new Date(
-                    calendarData.airDateUtc as string
-                  ).toISOString(),
-                  data: [
-                    {
-                      seriesData:
-                        useSonarrStore.getState().sonarrSeriesCache?.[
-                          calendarData.seriesId as number
-                        ],
-                      title: calendarData.title,
-                      seasonNumber: calendarData.seasonNumber,
-                      episodeNumber: calendarData.episodeNumber,
-                      hasFile: calendarData.hasFile,
-                      timeUtc: calendarData.airDateUtc,
-                      time: new Date(
-                        calendarData.airDateUtc as string
-                      ).toLocaleTimeString("en-US", {
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      }),
-                    } as CalendarData,
-                  ],
-                }))
-              : []
-          }
-          renderItem={({ item }: { item: CalendarData }) => {
-            return (
-              <Button
-                height="$11"
-                padding="$0"
-                marginHorizontal="$2"
-                marginTop="$2"
-                backgroundColor="$gray1"
-                borderRadius="$5"
-                onPress={() => {
-                  goToSonarrDetailScreen({
-                    router,
-                    searchItemId: item.seriesData.id as number,
-                    tabContext: TabContext.Home,
-                    screenContext: SonarrDetailScreenContext.SearchItem,
-                  });
-                }}
-              >
-                <XStack flex={1}>
-                  <XStack width="$8" height="$11" padding="$2">
-                    <Image
-                      style={{ flex: 1, overflow: "hidden", borderRadius: 6 }}
-                      source={
-                        {
-                          uri: `${baseURL}/api/MediaCover/${item?.seriesData?.id}/poster.jpg?apikey=${token}`,
-                        } as ImageSource
-                      }
-                      transition={200}
-                      // recyclingKey={`${data.id}`}
-                    />
-                  </XStack>
-                  <YStack flex={1} marginLeft="$2" paddingVertical="$2">
-                    <H5 color="$gray12" numberOfLines={2}>
-                      {item.seriesData?.title}
-                    </H5>
-                    <Text marginTop="$2" color="$gray11">{`${t(
-                      "sonarr:season"
-                    )} ${item.seasonNumber} • ${t("sonarr:episode")} ${
-                      item.episodeNumber
-                    }`}</Text>
-                    <Text marginTop="$1.5" color="$gray11" numberOfLines={1}>
-                      {item.title}
-                    </Text>
-                    <Text
-                      marginTop="$1.5"
-                      color={
-                        item.hasFile
-                          ? "$green9"
+        <XStack flexGrow={1}>
+          <AgendaList
+            sections={
+              calendarQuery.data
+                ? calendarQuery.data.map((calendarData) => ({
+                    // Attempt to convert to local datetime
+                    title: new Date(
+                      calendarData.airDateUtc as string
+                    ).toISOString(),
+                    data: [
+                      {
+                        seriesData:
+                          useSonarrStore.getState().sonarrSeriesCache?.[
+                            calendarData.seriesId as number
+                          ],
+                        title: calendarData.title,
+                        seasonNumber: calendarData.seasonNumber,
+                        episodeNumber: calendarData.episodeNumber,
+                        hasFile: calendarData.hasFile,
+                        timeUtc: calendarData.airDateUtc,
+                        time: new Date(
+                          calendarData.airDateUtc as string
+                        ).toLocaleTimeString("en-US", {
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
+                        }),
+                      } as CalendarData,
+                    ],
+                  }))
+                : []
+            }
+            renderItem={({ item }: { item: CalendarData }) => {
+              return (
+                <Button
+                  height="auto"
+                  padding="$0"
+                  marginHorizontal="$2"
+                  marginTop="$2"
+                  backgroundColor="$gray1"
+                  borderRadius="$5"
+                  onPress={() => {
+                    goToSonarrDetailScreen({
+                      router,
+                      searchItemId: item.seriesData.id as number,
+                      tabContext: TabContext.Home,
+                      screenContext: SonarrDetailScreenContext.SearchItem,
+                    });
+                  }}
+                >
+                  <XStack flex={1}>
+                    <XStack width="$8" height="$11" padding="$2">
+                      <Image
+                        style={{
+                          flex: 1,
+                          overflow: "hidden",
+                          borderRadius: 6,
+                        }}
+                        source={
+                          {
+                            uri: `${baseURL}/api/MediaCover/${item?.seriesData?.id}/poster.jpg?apikey=${token}`,
+                          } as ImageSource
+                        }
+                        transition={200}
+                        // recyclingKey={`${data.id}`}
+                      />
+                    </XStack>
+                    <YStack flex={1} marginLeft="$2" paddingVertical="$2">
+                      <H5 color="$gray12" numberOfLines={2}>
+                        {item.seriesData?.title}
+                      </H5>
+                      <Text marginTop="$2" color="$gray11">{`${t(
+                        "sonarr:season"
+                      )} ${item.seasonNumber} • ${t("sonarr:episode")} ${
+                        item.episodeNumber
+                      }`}</Text>
+                      <Text marginTop="$1.5" color="$gray11" numberOfLines={1}>
+                        {item.title}
+                      </Text>
+                      <Text
+                        marginTop="$1.5"
+                        color={
+                          item.hasFile
+                            ? "$green9"
+                            : checkEpisodeHasAired(
+                                item.timeUtc,
+                                item.seriesData?.runtime ?? 1
+                              )
+                            ? "$red9"
+                            : "$blue9"
+                        }
+                      >
+                        {item.hasFile
+                          ? t("sonarr:available")
                           : checkEpisodeHasAired(
                               item.timeUtc,
                               item.seriesData?.runtime ?? 1
                             )
-                          ? "$red9"
-                          : "$blue9"
-                      }
+                          ? t("sonarr:missing")
+                          : t("sonarr:notAired")}
+                      </Text>
+                    </YStack>
+                    <XStack
+                      marginLeft="$2"
+                      marginRight="$3"
+                      alignItems="center"
                     >
-                      {item.hasFile
-                        ? t("sonarr:available")
-                        : checkEpisodeHasAired(
-                            item.timeUtc,
-                            item.seriesData?.runtime ?? 1
-                          )
-                        ? t("sonarr:missing")
-                        : t("sonarr:notAired")}
-                    </Text>
-                  </YStack>
-                  <XStack marginLeft="$2" marginRight="$3" alignItems="center">
-                    <Text color="$gray11">{item.time}</Text>
+                      <Text color="$gray11">{item.time}</Text>
+                    </XStack>
                   </XStack>
-                </XStack>
-              </Button>
-            );
-          }}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={refetchCalendar}
-              tintColor={sonarrColors.accentColor}
-            />
-          }
-          // For manual section header rendering
-          // renderSectionHeader={(info) => {
-          //   console.log(info);
-          //   return <XStack height="$3" backgroundColor="red"></XStack>;
-          // }}
-          sectionStyle={agendaListTheme}
-        />
+                </Button>
+              );
+            }}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={refetchCalendar}
+                tintColor={sonarrColors.accentColor}
+              />
+            }
+            // For manual section header rendering
+            // renderSectionHeader={(info) => {
+            //   console.log(info);
+            //   return <XStack height="$3" backgroundColor="red"></XStack>;
+            // }}
+            sectionStyle={agendaListTheme}
+          />
+        </XStack>
       </CalendarProvider>
     </YStack>
   );

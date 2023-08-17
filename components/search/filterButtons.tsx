@@ -13,25 +13,22 @@ export const FilterButton: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <Suspense>
-      <XStack flex={1} width="$8" marginLeft="$2" alignItems="center">
-        <Button
-          flex={1}
-          height="$2.5"
-          borderRadius="$8"
-          paddingHorizontal="$3"
-          onPress={() => handlePress(id)}
-          backgroundColor={active ? activeBackgroundColor : "$gray5"}
-        >
-          <XStack flex={1} alignItems="center" justifyContent="space-between">
-            <Text numberOfLines={1} ellipsizeMode="tail" opacity={0.8}>
-              {t(id)}
-            </Text>
-            <ChevronDown size={18} opacity={0.8} />
-          </XStack>
-        </Button>
-      </XStack>
-    </Suspense>
+    <XStack flex={1} width="auto" marginLeft="$2" alignItems="center">
+      <Button
+        height="$2.5"
+        borderRadius="$8"
+        paddingHorizontal="$3"
+        onPress={() => handlePress(id)}
+        backgroundColor={active ? activeBackgroundColor : "$gray5"}
+      >
+        <XStack alignItems="center" justifyContent="space-between">
+          <Text numberOfLines={1} opacity={0.8}>
+            {t(id)}
+          </Text>
+          <ChevronDown size={18} opacity={0.8} />
+        </XStack>
+      </Button>
+    </XStack>
   );
 };
 

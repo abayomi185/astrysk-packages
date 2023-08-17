@@ -4,6 +4,7 @@ import { Toasts } from "@backpackapp-io/react-native-toast";
 import {
   EpisodeFileResource,
   EpisodeResource,
+  HistoryResource,
   SeriesResource,
   useGetApiV3Episode,
   useGetApiV3HistorySeries,
@@ -15,7 +16,11 @@ import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
 import { FlashList } from "@shopify/flash-list";
 import { SettingsOptionProps } from "@astrysk/types";
 import { TFunction } from "i18next";
-import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
+import {
+  checkEpisodeHasAired,
+  getSizeOnDisk,
+  expandableItemAnimationHandler,
+} from "../../utils";
 import { SonarrHistoryItem } from "./history";
 import { ToastModalProviderKey } from "../../types";
 import { sonarrColors } from "../../colors";
@@ -94,6 +99,8 @@ const SonarrEpisode: React.FC<{
   data: EpisodeResource;
 }> = ({ data }) => {
   const { t } = useTranslation();
+
+  const flashListRef = React.useRef<FlashList<HistoryResource>>(null);
 
   const episodeFileData = useSonarrStore(
     (state) => state.sonarrEpisodeFileCache?.[data.episodeFileId as number]
@@ -230,7 +237,17 @@ const SonarrEpisode: React.FC<{
                 paddingHorizontal: "12",
               }}
               renderItem={({ item }) => {
-                return <SonarrHistoryItem t={t} data={item} />;
+                return (
+                  <SonarrHistoryItem
+                    t={t}
+                    data={item}
+                    pressHandler={() =>
+                      expandableItemAnimationHandler<HistoryResource>(
+                        flashListRef
+                      )
+                    }
+                  />
+                );
               }}
               estimatedItemSize={55}
               showsVerticalScrollIndicator={false}

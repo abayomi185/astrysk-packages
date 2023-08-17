@@ -53,6 +53,7 @@
   "leechers": "Leechers",
 
   "status": "Status",
+  "reason": "Reason",
 
   "all": "All",
   "monitored": "Monitored",
