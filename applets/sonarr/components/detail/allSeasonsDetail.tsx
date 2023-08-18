@@ -26,6 +26,10 @@ const SonarrAllSeasonsDetail: React.FC<{
   const navigation = useNavigation();
   const router = useRouter();
 
+  const seriesDataFromCache = useSonarrStore(
+    (state) => state.sonarrSeriesCache?.[forwardedData.id as number]
+  );
+
   const seriesData = useGetApiV3SeriesId(forwardedData.id as number, {
     query: {
       initialData: () => forwardedData,
@@ -89,7 +93,7 @@ const SonarrAllSeasonsDetail: React.FC<{
   return (
     <YStack flex={1}>
       <FlashList
-        data={(seriesData.data?.seasons as SeriesResource["seasons"])?.sort(
+        data={(seriesDataFromCache?.seasons as SeriesResource["seasons"])?.sort(
           (a, b) => (b.seasonNumber as number) - (a.seasonNumber as number)
         )}
         extraData={new Date()} // Temporary - for testing
@@ -144,7 +148,7 @@ const SonarrAllSeasonsDetail: React.FC<{
               </Text>
               <XStack flex={1} marginTop="$2.5" justifyContent="center">
                 <SonarrActionPanel
-                  data={forwardedData}
+                  data={seriesDataFromCache as SeriesResource}
                   seasonNumber={item.seasonNumber as number}
                   refetchSeasons={refetchSeasons}
                 />

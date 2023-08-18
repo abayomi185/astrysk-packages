@@ -3,9 +3,9 @@ import { AppletColors } from "@astrysk/types";
 // Sonarr colors
 export const sonarrColors: AppletColors = {
   // primary: "$blue7",
-  primary: "#5cc9fa",
+  primary: "#4599bf",
   secondary: "$blue5",
-  accentColor: "#5CC9FA",
+  accentColor: "#4599bf",
 
   // WARN: Other potential color options
   // accent: config.colors.sonarr,

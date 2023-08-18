@@ -150,9 +150,7 @@ const JellyfinSearchFilterBar: React.FC<{
                 borderRadius="$8"
                 paddingHorizontal="$3"
                 backgroundColor={
-                  isEmpty(searchFilters?.[context])
-                    ? "$gray5"
-                    : jellyfinColors.accentColor
+                  isEmpty(searchFilters?.[context]) ? "$gray5" : "$purple7"
                 }
                 onPress={() => clearFiltersForContext()}
               >

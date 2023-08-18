@@ -22,7 +22,6 @@ const getSonarrFilterBarOptions = (
     {
       id: "sonarr:status",
       options: [
-        { value: "sonarr:all" },
         { value: "sonarr:monitored" },
         { value: "sonarr:unmonitored" },
         { value: "sonarr:continuing" },
@@ -110,7 +109,8 @@ const SonarrSearchFilterBar: React.FC<{
               id={item.id}
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
-              activeBackgroundColor="$blue8"
+              activeBackgroundColor={sonarrColors.primary}
+              // activeBackgroundColor={sonarrColors.accentColor}
             />
           )}
           showsHorizontalScrollIndicator={false}
@@ -122,7 +122,9 @@ const SonarrSearchFilterBar: React.FC<{
                 borderRadius="$8"
                 paddingHorizontal="$3"
                 backgroundColor={
-                  isEmpty(searchFilters?.[context]) ? "$gray5" : "$blue8"
+                  isEmpty(searchFilters?.[context])
+                    ? "$gray5"
+                    : sonarrColors.primary
                 }
                 onPress={() => clearFiltersForContext()}
               >

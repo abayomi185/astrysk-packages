@@ -120,6 +120,7 @@ const JellyfinSearchLanding = () => {
         height="100%"
         alignItems="center"
         justifyContent="center"
+        paddingTop="$2"
       >
         <Suspense>
           <FlashList
@@ -131,7 +132,7 @@ const JellyfinSearchLanding = () => {
               <JellyfinSearchLandingItem index={index} data={item} />
             )}
             ListHeaderComponent={
-              <XStack flex={1} marginTop="$6" justifyContent="center">
+              <XStack flex={1} marginTop="$4" justifyContent="center">
                 <H3>{t("jellyfin:suggestions")}</H3>
               </XStack>
             }

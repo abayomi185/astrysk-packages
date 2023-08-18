@@ -18,7 +18,7 @@ import {
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
-import { HistoryResource, SeriesResource } from "./api";
+import { HistoryResource, SeriesResource, SeriesStatusType } from "./api";
 import { useColorScheme } from "@astrysk/utils";
 import { FlashList } from "@shopify/flash-list";
 
@@ -141,21 +141,24 @@ export const filterSonarrSearchData = <T extends SeriesResource>(
   let filteredData = data;
 
   if (searchFilters?.["sonarr:status"]) {
-    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:played") {
-    //     filteredData = filteredData.filter(
-    //       (data) => isBaseItemDto(data) && data.UserData?.Played === true
-    //     );
-    //   }
-    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:unplayed") {
-    //     filteredData = filteredData.filter(
-    //       (data) => isBaseItemDto(data) && data.UserData?.Played === false
-    //     );
-    //   }
-    //   if (searchFilters?.["jellyfin:status"] === "jellyfin:favourite") {
-    //     filteredData = filteredData.filter(
-    //       (data) => isBaseItemDto(data) && data.UserData?.IsFavorite === true
-    //     );
-    //   }
+    const searchFilter = searchFilters?.["sonarr:status"];
+    if (searchFilter.value === "sonarr:monitored") {
+      filteredData = filteredData.filter((data) => data.monitored === true);
+    } else if (searchFilter.value === "sonarr:unmonitored") {
+      filteredData = filteredData.filter((data) => data.monitored === false);
+    } else if (searchFilter.value === "sonarr:continuing") {
+      filteredData = filteredData.filter(
+        (data) => data.status === SeriesStatusType.continuing
+      );
+    } else if (searchFilter.value === "sonarr:ended") {
+      filteredData = filteredData.filter((data) => {
+        return data.status === SeriesStatusType.ended;
+      });
+    } else if (searchFilter.value === "sonarr:missing") {
+      filteredData = filteredData.filter(
+        (data) => data.statistics?.percentOfEpisodes !== 100
+      );
+    }
   }
 
   if (searchFilters?.["sonarr:order"]) {

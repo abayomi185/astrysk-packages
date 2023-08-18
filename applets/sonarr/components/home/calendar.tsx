@@ -65,6 +65,7 @@ const getAgendaListTheme = (
   color: colors.textColor,
   fontSize: 15 * fontScale,
   paddingTop: 10,
+  // weekVerticalMargin: 10,
   paddingLeft: 13,
   paddingRight: 13,
   paddingBottom: 3,

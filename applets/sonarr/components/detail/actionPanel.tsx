@@ -29,6 +29,8 @@ import {
   ToastModalProviderKey,
 } from "../../types";
 import { TFunction } from "i18next";
+import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import { Actions } from "@astrysk/constants";
 
 export const sonarrActionButtonColors = {
   monitoring: {
@@ -319,6 +321,7 @@ export const SonarrActionPanel: React.FC<{
         toast.success(t("sonarr:success:monitoringStatusUpdated"), {
           providerKey: ToastModalProviderKey.Persists,
         });
+        setLoadingSpinner(SonarrActionPanel.name, Actions.DONE);
       },
       onError: (error) => {
         toast.error(t("sonarr:error:unableToSetMonitoredStatus"), {
@@ -327,12 +330,14 @@ export const SonarrActionPanel: React.FC<{
         toast.error(error.message, {
           providerKey: ToastModalProviderKey.Persists,
         });
+        setLoadingSpinner(SonarrActionPanel.name, Actions.DONE);
       },
     },
   });
   const toggleMonitor = () => {
     const { sonarrContext, sonarrTabContext, sonarrSeasonNumber, ...newData } =
       data;
+    setLoadingSpinner(SonarrActionPanel.name, Actions.LOADING);
     // Check if season number exists
     if (seasonNumber !== undefined) {
       putSeries.mutate({
