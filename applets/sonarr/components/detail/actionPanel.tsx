@@ -288,7 +288,6 @@ export const SonarrActionPanel: React.FC<{
 }> = ({ data, isSeries, seasonNumber, refetchSeasons }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const baseURL = useSonarrStore.getState().baseURL as string;
 
   const iconColor = getSonarrIconColor();
 
@@ -363,6 +362,7 @@ export const SonarrActionPanel: React.FC<{
         },
       });
     }
+    refetchSeasons?.();
   };
 
   // NOTE: DELETE
