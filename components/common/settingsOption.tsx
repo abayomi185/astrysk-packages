@@ -91,6 +91,7 @@ export const SettingsOption: React.FC<{
         borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         {...style}
         onPress={item.onPress}
+        pressStyle={{}} // Remove press style
       >
         <XStack flex={1} justifyContent="space-between">
           <XStack
@@ -272,6 +273,7 @@ export const SettingsOption: React.FC<{
                 color="$gray11"
                 marginRight="$2"
                 ellipsizeMode="tail"
+                textAlign="right"
               >
                 {item.selectionHint}
               </Text>

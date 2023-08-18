@@ -53,6 +53,7 @@
   "leechers": "Leechers",
 
   "status": "Status",
+  "order": "Order",
   "reason": "Reason",
 
   "all": "All",

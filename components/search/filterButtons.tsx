@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { PixelRatio } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Button, XStack, Text, ColorTokens } from "tamagui";
 import { X, ChevronDown } from "@tamagui/lucide-icons";
@@ -46,7 +47,7 @@ export const ClearFilterButton: React.FC<{
       <XStack alignItems="center">
         <Text>{t("common:clearFilter")}</Text>
         <XStack marginLeft="$1">
-          <X size={18} opacity={0.8} color="red" />
+          <X size={20 * PixelRatio.getFontScale()} opacity={0.8} color="red" />
         </XStack>
       </XStack>
     </Button>

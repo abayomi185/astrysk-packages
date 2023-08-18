@@ -1,4 +1,5 @@
 import React from "react";
+import { PixelRatio } from "react-native";
 import { useRouter } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
@@ -56,11 +57,13 @@ const getExpandableCalendarTheme = (darkMode: boolean): Theme => ({
 
 const getAgendaListTheme = (
   darkMode: boolean,
-  colors: { [key: string]: string }
+  colors: { [key: string]: string },
+  fontScale: number
 ): Theme => ({
   backgroundColor: darkMode ? "#000000" : "#f2f2f2",
   // @ts-ignore
   color: colors.textColor,
+  fontSize: 15 * fontScale,
   paddingTop: 10,
   paddingLeft: 13,
   paddingRight: 13,
@@ -83,12 +86,18 @@ const SonarrCalendar: React.FC = () => {
   const backgroundColor = useTheme().background.get().val;
   const textColor = useTheme().gray11.get().val;
 
+  const fontScale = PixelRatio.getFontScale();
+
   const agendaListTheme = React.useMemo(() => {
-    return getAgendaListTheme(colorScheme === "dark", {
-      backgroundColor,
-      textColor,
-    });
-  }, [colorScheme]);
+    return getAgendaListTheme(
+      colorScheme === "dark",
+      {
+        backgroundColor,
+        textColor,
+      },
+      fontScale
+    );
+  }, [colorScheme, fontScale]);
 
   const weekRange = getStartAndEndOfWeek(new Date());
   // console.log(getStartAndEndOfWeek(new Date()));

@@ -30,6 +30,7 @@ export const JellyfinSettingsOptions = (
     icon: faUser,
     iconSize: 22,
     value: useJellyfinStore.getState().userDetails?.Name as string,
+    firstItem: true,
   },
   {
     key: JellyfinSettingsKeys.Server,
