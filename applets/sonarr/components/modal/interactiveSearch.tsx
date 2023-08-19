@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import { Animated } from "react-native";
 import { useRouter } from "expo-router";
 import {
   ReleaseResource,
@@ -18,11 +17,7 @@ import {
   ExtendedReleaseResource,
   SonarrInteractiveSearchContext,
 } from "../../types";
-import { customTokens } from "@astrysk/styles";
-import {
-  SonarrActionPanelButton,
-  sonarrActionButtonColors,
-} from "../detail/actionPanel";
+import { SonarrActionPanelButton } from "../detail/actionPanel";
 import {
   expandableItemAnimationHandler,
   getDateFromHours,

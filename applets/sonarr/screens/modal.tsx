@@ -4,8 +4,6 @@ import { useSearchParams, useNavigation } from "expo-router";
 import { useTranslation } from "react-i18next";
 
 import { useSonarrStore } from "../store";
-import { SettingsOption, SettingsOptionHeader } from "@astrysk/components";
-import { SettingsOptionProps } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,

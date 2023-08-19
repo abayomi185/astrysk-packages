@@ -74,7 +74,6 @@ const JellyfinSearchFilterBar: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
-  console.log(searchFilters);
 
   const genres = useGetGenres({
     userId: userId,

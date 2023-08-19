@@ -1,5 +1,4 @@
 import React from "react";
-import { RefreshControl } from "react-native";
 import { YStack } from "tamagui";
 
 import { useSonarrConfigurator } from "../utils";
@@ -12,15 +11,6 @@ const SonarrHome: React.FC = () => {
   useSonarrConfigurator();
 
   const navigation = useNavigation();
-
-  const [refreshing, setRefreshing] = React.useState<boolean>(false);
-  const onRefresh = React.useCallback(async () => {
-    setRefreshing(true);
-
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 0);
-  }, []);
 
   useSonarrHomeHeader(navigation);
 

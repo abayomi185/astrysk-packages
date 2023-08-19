@@ -182,7 +182,7 @@ const SonarrSearchLanding: React.FC<{
   const [searchAll, setSearchAll] = React.useState(false);
 
   React.useEffect(() => {
-    if (searchTerm === "") {
+    if (searchTerm === "" || searchTerm === undefined) {
       setSearchAll(false);
     }
   }, [searchTerm]);
@@ -264,7 +264,7 @@ const SonarrSearchLanding: React.FC<{
           )}
           ListFooterComponent={
             <>
-              {!searchAll && (
+              {!searchAll && searchTerm && (
                 <YStack
                   height="$18"
                   width="$11"

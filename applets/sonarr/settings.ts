@@ -19,15 +19,6 @@ export const SonarrSettingsOptions = (
     icon: faServer,
     iconSize: 22,
     value: useSonarrStore.getState().baseURL as string,
-    onPress: () => {
-      // router.push({
-      //   pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
-      //   params: {
-      //     context: JellyfinDetailScreenContext.SettingsOption,
-      //     itemId: JellyfinSettingsKeys.Server,
-      //   } as JellyfinDetailScreenProps,
-      // });
-    },
     firstItem: true,
   },
   {

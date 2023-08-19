@@ -74,7 +74,7 @@ const SonarrSeriesDetailHeader: React.FC<{
               goToDescriptionScreen(forwardedData.id as number);
             }}
           >
-            {t("jellyfin:readMore")}
+            {t("common:readMore")}
           </Text>
         </YStack>
       </XStack>

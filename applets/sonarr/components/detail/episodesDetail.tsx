@@ -6,7 +6,7 @@ import { useNavigation } from "expo-router";
 import { TabContext } from "@astrysk/types";
 import { useSonarrDetailHeader } from "../useHeader";
 import { useTranslation } from "react-i18next";
-import { YStack, H3, H4, XStack, Spinner, Button, H6, Text, H5 } from "tamagui";
+import { YStack, XStack, Button, H6, Text } from "tamagui";
 import { ExtendedSeriesResource, SonarrDetailScreenContext } from "../../types";
 import { FlashList } from "@shopify/flash-list";
 import {

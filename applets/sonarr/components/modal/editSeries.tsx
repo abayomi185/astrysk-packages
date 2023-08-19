@@ -165,7 +165,7 @@ const getSonarrEditDetailOptions = (
             ...getPathOptions(),
             {
               text: t("common:cancel") as string,
-              style: "default",
+              style: "cancel",
             },
             {
               text: t("common:ok") as string,

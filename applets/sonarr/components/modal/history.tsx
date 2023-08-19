@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Animated, LayoutAnimation } from "react-native";
 import {
+  EpisodeHistoryEventType,
   HistoryResource,
   SeriesResource,
   useGetApiV3HistorySeries,
@@ -147,7 +148,7 @@ export const SonarrHistoryItem: React.FC<{
   data: HistoryResource;
   pressHandler: () => void;
 }> = ({ t, data, pressHandler }) => {
-  const textColorMap: { [key: string]: ColorTokens } = {
+  const textColorMap: { [key in EpisodeHistoryEventType]: ColorTokens } = {
     unknown: "$gray11",
     grabbed: "$green9",
     seriesFolderImported: "$green9",
@@ -192,7 +193,10 @@ export const SonarrHistoryItem: React.FC<{
               })}`}
             </Text>
             <XStack alignItems="center" marginTop="$2.5">
-              <H6 color={textColorMap[data.eventType as string]} lineHeight={0}>
+              <H6
+                color={textColorMap[data.eventType as EpisodeHistoryEventType]}
+                lineHeight={0}
+              >
                 {t(`sonarr:${data.eventType}`)}
               </H6>
               {data.eventType === "grabbed" && (

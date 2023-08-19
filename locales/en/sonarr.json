@@ -61,13 +61,13 @@
   "unmonitored": "Unmonitored",
   "continuing": "Countinuing",
   "ended": "Ended",
-  "missing": "Missing",
 
   "upcoming": "Upcoming",
   "missing": "Missing",
   "available": "Available",
   "notAired": "Not Aired",
   "upcomingEpisodes": "Upcoming Episodes",
+  "upcomingEpisodesThisWeek": "Upcoming Episodes This Week",
   "seriesType": "Series Type",
   "monitoring": "Monitoring",
   "nextAiring": "Next Airing",
@@ -82,6 +82,7 @@
 
   "noHistoryFound": "No History Found",
   "noCalendarDataFound": "No Calendar Data Found",
+  "noCalendarDataFoundForThisWeek": "No Calendar Data Found For This Week",
   "noDataFound": "No Data Found",
   "noSeriesFound": "No Series Found",
   "doYouWantToDelete": "Do you want to delete?",

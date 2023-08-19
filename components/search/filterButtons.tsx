@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { PixelRatio } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Button, XStack, Text, ColorTokens } from "tamagui";
@@ -12,7 +12,6 @@ export const FilterButton: React.FC<{
   activeBackgroundColor: ColorTokens | string;
 }> = ({ id, handlePress, active, activeBackgroundColor }) => {
   const { t } = useTranslation();
-
   return (
     <XStack flex={1} width="auto" marginLeft="$2" alignItems="center">
       <Button

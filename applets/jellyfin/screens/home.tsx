@@ -86,6 +86,8 @@ const JellyfinHome: React.FC = () => {
         refreshControl={
           <RefreshControl
             refreshing={
+              // WARN: Change this
+              // This does not work as imagined
               debounce(() => refreshing, 100, {
                 leading: false,
                 trailing: true,

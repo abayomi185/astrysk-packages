@@ -1,5 +1,5 @@
 module.exports = {
-  jellyfin: {
+  radarr: {
     output: {
       mode: "single",
       workspace: "api",

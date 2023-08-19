@@ -228,6 +228,38 @@ export const filterSonarrSearchData = <T extends SeriesResource>(
             (b.statistics?.episodeFileCount as number) -
             (a.statistics?.episodeFileCount as number)
         );
+      } else if (searchFilter.value === "sonarr:network") {
+        if (searchFilter.order === FilterOrder.ASCENDING) {
+          filteredData = filteredData.sort((a, b) =>
+            (a.network as string).localeCompare(b.network as string)
+          );
+        } else if (searchFilter.order === FilterOrder.DESCENDING) {
+          filteredData = filteredData.sort((a, b) =>
+            (b.network as string).localeCompare(a.network as string)
+          );
+        }
+      } else if (searchFilter.value === "sonarr:qualityProfile") {
+        if (searchFilter.order === FilterOrder.ASCENDING) {
+          filteredData = filteredData.sort(
+            (a, b) =>
+              (a.qualityProfileId as number) - (b.qualityProfileId as number)
+          );
+        } else if (searchFilter.order === FilterOrder.DESCENDING) {
+          filteredData = filteredData.sort(
+            (a, b) =>
+              (b.qualityProfileId as number) - (a.qualityProfileId as number)
+          );
+        }
+      } else if (searchFilter.value === "sonarr:type") {
+        if (searchFilter.order === FilterOrder.ASCENDING) {
+          filteredData = filteredData.sort((a, b) =>
+            (a.seriesType as string).localeCompare(b.seriesType as string)
+          );
+        } else if (searchFilter.order === FilterOrder.DESCENDING) {
+          filteredData = filteredData.sort((a, b) =>
+            (a.seriesType as string).localeCompare(b.seriesType as string)
+          );
+        }
       }
     }
   }

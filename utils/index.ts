@@ -12,7 +12,11 @@ export { useColorScheme } from "./utils/colorScheme";
 
 export { filterPersistState } from "./utils/store";
 
-export { setLoadingSpinner, useLoadingSpinner } from "./utils/loading";
+export {
+  setLoadingSpinner,
+  useLoadingSpinner,
+  useSetLoadingSpinner,
+} from "./utils/loading";
 
 export {
   useHomeHeader,

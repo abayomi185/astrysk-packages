@@ -3,16 +3,7 @@ import { PixelRatio } from "react-native";
 import { useRouter } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
-import {
-  YStack,
-  Text,
-  useTheme,
-  XStack,
-  H5,
-  Button,
-  Spinner,
-  H4,
-} from "tamagui";
+import { YStack, Text, useTheme, XStack, H5, Button } from "tamagui";
 import {
   ExpandableCalendar,
   CalendarProvider,
@@ -46,14 +37,6 @@ import { useSonarrStore } from "../../store";
 import { CalendarData, SonarrDetailScreenContext } from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
-
-const getExpandableCalendarTheme = (darkMode: boolean): Theme => ({
-  arrowColor: sonarrColors.accentColor,
-  monthTextColor: darkMode ? "#d1d1d1" : undefined,
-  dayTextColor: darkMode ? "#808080" : undefined,
-  calendarBackground: darkMode ? "#151515" : "#f9f9f9",
-  // agendaKnobColor: "red",
-});
 
 const getAgendaListTheme = (
   darkMode: boolean,
@@ -101,7 +84,6 @@ const SonarrCalendar: React.FC = () => {
   }, [colorScheme, fontScale]);
 
   const weekRange = getStartAndEndOfWeek(new Date());
-  // console.log(getStartAndEndOfWeek(new Date()));
 
   useGetApiV3Series(
     {},
@@ -214,7 +196,7 @@ const SonarrCalendar: React.FC = () => {
         {!calendarQuery.data && (
           <EmptyList
             queryStatus={calendarQuery.status}
-            text={t("sonarr:noCalendarDataFound")}
+            text={t("sonarr:noCalendarDataFoundForThisWeek")}
             accentColor={sonarrColors.accentColor}
           />
         )}

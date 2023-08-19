@@ -10,6 +10,7 @@ const resources = {
     common: en.common,
     jellyfin: en.jellyfin,
     sonarr: en.sonarr,
+    radarr: en.radarr,
   },
 };
 

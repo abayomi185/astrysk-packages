@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert } from "react-native";
-import { ToastPosition } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
 import { Button, GetProps, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
@@ -8,12 +7,10 @@ import {
   EpisodeFileListResource,
   EpisodeResource,
   SeasonResource,
-  SeriesResource,
   useDeleteApiV3EpisodefileBulk,
   useDeleteApiV3EpisodefileId,
   useDeleteApiV3SeriesId,
   usePostApiV3Command,
-  usePostApiV3Release,
   usePutApiV3EpisodeId,
   usePutApiV3SeriesId,
 } from "../../api";
@@ -29,7 +26,7 @@ import {
   ToastModalProviderKey,
 } from "../../types";
 import { TFunction } from "i18next";
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import { setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 
 export const sonarrActionButtonColors = {

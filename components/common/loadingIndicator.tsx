@@ -4,10 +4,12 @@ import { useAppStateStore } from "@astrysk/stores";
 import { XStack, Spinner, ColorTokens } from "tamagui";
 import { sonarrColors } from "@astrysk/applets/sonarr/colors";
 import { jellyfinColors } from "@astrysk/applets/jellyfin/colors";
+import { radarrColors } from "@astrysk/applets/radarr/colors";
 
 const spinnerColorMapping: { [applet: string]: ColorTokens | string } = {
   [Applets.JELLYFIN]: jellyfinColors.accentColor,
   [Applets.SONARR]: sonarrColors.accentColor,
+  [Applets.RADARR]: radarrColors.accentColor,
 };
 
 export const registerLoadingComponent = (componentId: string) => {
