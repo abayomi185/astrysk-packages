@@ -9,8 +9,13 @@ import { FlashList } from "@shopify/flash-list";
 import { JellyfinSearchResultItem } from "../search/searchResults";
 import { useJellyfinStore } from "../../store";
 import { filterJellyfinSearchData } from "../../utils";
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import {
+  setLoadingSpinner,
+  useGetListColumnNumber,
+  useLoadingSpinner,
+} from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
+import { customTokens } from "@astrysk/styles";
 
 const JellyfinCollectionFolderDetail: React.FC<{
   userId: string;
@@ -18,6 +23,8 @@ const JellyfinCollectionFolderDetail: React.FC<{
   forwardedData: BaseItemDto;
 }> = ({ userId, serverId, forwardedData }) => {
   const navigation = useNavigation();
+
+  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
 
   const collectionId = forwardedData?.Id as string;
   const headerTitle = forwardedData?.Name as string;
@@ -96,7 +103,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
       <YStack flex={1}>
         <FlashList
           horizontal={false}
-          numColumns={3}
+          numColumns={flashListColumns}
           data={collectionData.data}
           renderItem={({ item, index }) => (
             <JellyfinSearchResultItem
