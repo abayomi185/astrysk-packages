@@ -96,7 +96,7 @@ const SonarrAllSeasonsDetail: React.FC<{
         data={(seriesDataFromCache?.seasons as SeriesResource["seasons"])?.sort(
           (a, b) => (b.seasonNumber as number) - (a.seasonNumber as number)
         )}
-        extraData={new Date()} // Temporary - for testing
+        // extraData={new Date()} // Temporary - for testing
         renderItem={({ item }) => (
           <Button
             height="auto"
