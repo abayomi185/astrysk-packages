@@ -136,26 +136,20 @@ const SonarrCalendar: React.FC = () => {
 
   useGetApiV3Qualityprofile({
     query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
       onSuccess: (data) => {
         useSonarrStore.setState({
           sonarrQualityProfiles: data,
         });
       },
-      staleTime: Infinity,
     },
   });
   useGetApiV3Languageprofile({
     query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
       onSuccess: (data) => {
         useSonarrStore.setState({
           sonarrLanguageProfiles: data,
         });
       },
-      staleTime: Infinity,
     },
   });
   useGetApiV3Rootfolder({
@@ -165,7 +159,6 @@ const SonarrCalendar: React.FC = () => {
           sonarrRootFolderCache: data.map((item) => item.path as string),
         });
       },
-      staleTime: Infinity,
     },
   });
 

@@ -223,7 +223,7 @@ const JellyfinMovieDetail: React.FC<{
                     <XStack alignItems="center">
                       <Ionicons name="star" color="gray" />
                       <Text marginLeft="$1.5" color="$gray10">
-                        {movieData.data?.CommunityRating}
+                        {movieData.data?.CommunityRating?.toFixed(1)}
                       </Text>
                     </XStack>
                     <Text marginLeft="$3" color="$gray10">

@@ -2,7 +2,11 @@ import React from "react";
 import { RefreshControl } from "react-native";
 import { getLocales } from "expo-localization";
 import { useNavigation, useFocusEffect } from "expo-router";
-import { SeriesResource, useGetApiV3SeriesId } from "../../api";
+import {
+  SeriesResource,
+  useGetApiV3Qualityprofile,
+  useGetApiV3SeriesId,
+} from "../../api";
 import { XStack, YStack } from "tamagui";
 import { useSonarrStore } from "../../store";
 import { useSonarrDetailHeader } from "../useHeader";
@@ -29,7 +33,7 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:seriesType",
       type: "label",
-      value: seriesData?.seriesType,
+      value: t(`sonarr:${seriesData?.seriesType}`) as string,
     },
     {
       key: "common:path",
@@ -57,7 +61,7 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "common:status",
       type: "label",
-      value: seriesData?.status,
+      value: t(`sonarr:${seriesData?.status}`) as string,
     },
     {
       key: "sonarr:nextAiring",
@@ -90,7 +94,9 @@ const getSonarrSeriesDetailOptions = (
     {
       key: "sonarr:rating",
       type: "label",
-      value: `${seriesData?.certification}`,
+      value: seriesData?.certification
+        ? `${seriesData?.certification}`
+        : `${t("sonarr:na")}`,
     },
     {
       key: "sonarr:genres",

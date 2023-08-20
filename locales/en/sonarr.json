@@ -59,8 +59,9 @@
   "all": "All",
   "monitored": "Monitored",
   "unmonitored": "Unmonitored",
-  "continuing": "Countinuing",
+  "continuing": "Continuing",
   "ended": "Ended",
+  "deleted": "Deleted",
 
   "upcoming": "Upcoming",
   "missing": "Missing",

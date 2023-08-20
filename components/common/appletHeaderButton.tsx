@@ -1,5 +1,5 @@
 import React from "react";
-import { StackActions } from "@react-navigation/native";
+import { StackActions, CommonActions } from "@react-navigation/native";
 import { useRouter, useNavigation } from "expo-router";
 import { styled, XStack } from "tamagui";
 import { appletUtils } from "@astrysk/utils";
@@ -59,13 +59,7 @@ export const AppletHeaderButton = () => {
           }}
         >
           <SCAppletHeaderButton>
-            {applet && (
-              <AppletIcon
-                width="100%"
-                height="100%"
-                preserveAspectRatio="xMidYMid slice"
-              />
-            )}
+            {applet && <AppletIcon width="100%" height="100%" />}
           </SCAppletHeaderButton>
         </ContextMenu>
       )}

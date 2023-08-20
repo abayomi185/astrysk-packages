@@ -188,7 +188,7 @@ const SonarrSearchLanding: React.FC<{
   }, [searchTerm]);
 
   const getSeries = React.useCallback(() => {
-    const initialSeriesData = seriesData.data || [];
+    const initialSeriesData = seriesData.data ?? [];
     let seriesDataToReturn = initialSeriesData;
 
     if (searchTerm && initialSeriesData.length > 0) {
@@ -198,7 +198,7 @@ const SonarrSearchLanding: React.FC<{
       if (filteredSeries.length > 0 && !searchAll) {
         seriesDataToReturn = filteredSeries;
       } else {
-        seriesDataToReturn = (searchResults.data || []).sort((a, b) => {
+        seriesDataToReturn = (searchResults.data ?? []).sort((a, b) => {
           // Check if 'a' should be prioritized
           if (new Date(a.added as string).getTime() > 0) return -1;
           // Check if 'b' should be prioritized

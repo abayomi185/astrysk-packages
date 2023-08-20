@@ -67,7 +67,9 @@ const getRadarrSeriesDetailOptions = (
     {
       key: "radarr:rating",
       type: "label",
-      value: `${movieData?.certification}`,
+      value: movieData?.certification
+        ? `${movieData?.certification}`
+        : `${t("radarr:na")}`,
     },
     {
       key: "radarr:genres",

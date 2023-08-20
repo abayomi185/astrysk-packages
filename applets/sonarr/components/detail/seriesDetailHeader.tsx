@@ -68,7 +68,13 @@ const SonarrSeriesDetailHeader: React.FC<{
             {forwardedData.overview ?? t("sonarr:noDescriptionAvailable")}
           </Text>
           <Text
-            display={!readMore && summaryLines >= 5 ? "flex" : "none"}
+            display={
+              !readMore &&
+              ((titleLines == 1 && summaryLines > 6) ||
+                (titleLines == 2 && summaryLines > 4))
+                ? "flex"
+                : "none"
+            }
             color="$blue10Dark"
             onPress={() => {
               goToDescriptionScreen(forwardedData.id as number);

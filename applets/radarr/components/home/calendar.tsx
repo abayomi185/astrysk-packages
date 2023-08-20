@@ -137,26 +137,20 @@ const RadarrCalendar: React.FC = () => {
 
   useGetApiV3Qualityprofile({
     query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
       onSuccess: (data) => {
         useRadarrStore.setState({
           radarrQualityProfiles: data,
         });
       },
-      staleTime: Infinity,
     },
   });
   useGetApiV3Language({
     query: {
-      refetchOnMount: false,
-      refetchOnReconnect: false,
       onSuccess: (data) => {
         useRadarrStore.setState({
           radarrLanguageProfiles: data,
         });
       },
-      staleTime: Infinity,
     },
   });
   useGetApiV3Rootfolder({
@@ -166,7 +160,6 @@ const RadarrCalendar: React.FC = () => {
           radarrRootFolderCache: data.map((item) => item.path as string),
         });
       },
-      staleTime: Infinity,
     },
   });
 

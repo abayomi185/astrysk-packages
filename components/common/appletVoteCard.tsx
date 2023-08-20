@@ -145,7 +145,7 @@ const SCAppletVoteCard = styled(YStack, {
   backgroundColor: "$gray1",
   borderRadius: "$8",
   borderWidth: "$0",
-  elevation: "$2",
+  // elevation: "$2",
   // padding: "$0",
   // overflow: "hidden",
   // pressStyle: { scale: 0.97 },
