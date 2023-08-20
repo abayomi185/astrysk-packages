@@ -23,6 +23,7 @@ import {
 } from "../../utils";
 import {
   setLoadingSpinner,
+  useGetListColumnNumber,
   useLoadingSpinner,
   useRefreshHandler,
   useSetLoadingSpinner,
@@ -33,6 +34,7 @@ import { TabContext } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
+import { customTokens } from "@astrysk/styles";
 
 const RadarrSearchResultItem: React.FC<{
   searchContext: RadarrSearchFilterContext;
@@ -115,6 +117,8 @@ const RadarrSearchLanding: React.FC<{
   searchTerm: string;
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
+
+  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
 
   const searchFilters = useRadarrStore((state) => state.searchFilters);
 
@@ -233,7 +237,7 @@ const RadarrSearchLanding: React.FC<{
             paddingHorizontal: "7",
           }}
           horizontal={false}
-          numColumns={3}
+          numColumns={flashListColumns}
           data={getMovies()}
           renderItem={({ item, index }) => (
             <RadarrSearchResultItem

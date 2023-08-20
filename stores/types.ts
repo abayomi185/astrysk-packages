@@ -20,6 +20,9 @@ export interface AppState {
   componentsLoading: Set<string>;
   // Header
   detailScreenHeader?: string;
+  // IAP
+  donationsAvailable?: boolean;
+  iapOfferings?: Record<string, any>;
 }
 
 type PersistAppStateOmittedKeys = "showSpinner";

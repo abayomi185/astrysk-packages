@@ -42,6 +42,10 @@
   "general": "General",
   "default": "Default",
   "global": "Global",
+  "extras": "Extras",
+
+  "donations": "Donations",
+  "thankYou!": "Thank you!",
 
   "name": "Name",
   "user": "User",

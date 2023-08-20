@@ -67,6 +67,7 @@ const initialAppState: AppState = {
   votedApplets: {},
   showSpinner: false,
   componentsLoading: new Set(),
+  donationsAvailable: false,
 };
 
 export default useAppStateStore;

@@ -18,6 +18,7 @@ export {
   registerLoadingComponent,
   unregisterLoadingComponent,
   resetLoadingComponent,
+  useResetLoadingComponent,
 } from "./common/loadingIndicator";
 
 export { AppletVoteCard } from "./common/appletVoteCard";

@@ -24,6 +24,7 @@ import {
 import { SonarrHistoryItem } from "./history";
 import { ToastModalProviderKey } from "../../types";
 import { sonarrColors } from "../../colors";
+import { TOAST_TOP_OFFSET } from "@astrysk/utils";
 
 const getSonarrEpisodeModalOptions = (
   t: TFunction,
@@ -266,7 +267,7 @@ const SonarrEpisode: React.FC<{
       <Toasts
         providerKey={ToastModalProviderKey.Episode}
         extraInsets={{
-          top: -50,
+          top: TOAST_TOP_OFFSET,
         }}
       />
     </XStack>

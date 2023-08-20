@@ -42,6 +42,12 @@ export const resetLoadingComponent = () => {
   });
 };
 
+export const useResetLoadingComponent = () => {
+  React.useEffect(() => {
+    resetLoadingComponent();
+  }, []);
+};
+
 export const LoadingIndicator = () => {
   const applet = useAppStateStore((state) => state.activeApplet) as string;
   const showSpinner = useAppStateStore((state) => state.showSpinner);

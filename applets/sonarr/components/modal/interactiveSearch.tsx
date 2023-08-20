@@ -26,6 +26,7 @@ import {
 } from "../../utils";
 import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import { ToastModalProviderKey } from "../../types";
+import { TOAST_TOP_OFFSET } from "@astrysk/utils";
 
 const SonarrInteractiveSearchItemExpanded: React.FC<{
   t: TFunction;
@@ -246,7 +247,7 @@ const SonarrInteractiveSearch: React.FC<{
       <Toasts
         providerKey={ToastModalProviderKey.Episode}
         extraInsets={{
-          top: -50,
+          top: TOAST_TOP_OFFSET,
         }}
       />
     </Suspense>

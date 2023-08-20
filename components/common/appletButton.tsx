@@ -72,7 +72,7 @@ const SCAppletButton = styled(XStack, {
   defaultVariants: {
     height: "$12",
     // elevation: "$2", // Cannot calculate shadow efficiently
-    marginTop: "$3",
+    marginVertical: "$1.5",
     maxWidth: "$24",
     justifyContent: "center",
     alignItems: "center",

@@ -23,6 +23,7 @@ import {
 } from "../../utils";
 import {
   setLoadingSpinner,
+  useGetListColumnNumber,
   useLoadingSpinner,
   useRefreshHandler,
 } from "@astrysk/utils";
@@ -32,6 +33,7 @@ import { TabContext } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
+import { customTokens } from "@astrysk/styles";
 
 const SonarrSearchResultItem: React.FC<{
   searchContext: SonarrSearchFilterContext;
@@ -118,6 +120,8 @@ const SonarrSearchLanding: React.FC<{
   searchTerm: string;
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
+
+  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
 
   const searchFilters = useSonarrStore((state) => state.searchFilters);
 
@@ -232,7 +236,7 @@ const SonarrSearchLanding: React.FC<{
             paddingHorizontal: "7",
           }}
           horizontal={false}
-          numColumns={3}
+          numColumns={flashListColumns}
           data={getSeries()}
           renderItem={({ item, index }) => (
             <SonarrSearchResultItem

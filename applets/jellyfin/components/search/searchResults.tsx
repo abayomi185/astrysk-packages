@@ -15,6 +15,8 @@ import {
   JellyfinSearchFilterContext,
 } from "../../types";
 import { useTranslation } from "react-i18next";
+import { useGetListColumnNumber } from "@astrysk/utils";
+import { customTokens } from "@astrysk/styles";
 
 export const JellyfinSearchResultItem: React.FC<{
   searchContext: JellyfinSearchFilterContext;
@@ -108,6 +110,8 @@ const JellyfinSearchResults: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;
 
+  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
 
   const [isLoading, setIsLoading] = React.useState(true);
@@ -200,7 +204,7 @@ const JellyfinSearchResults: React.FC<{
               paddingHorizontal: "7",
             }}
             horizontal={false}
-            numColumns={3}
+            numColumns={flashListColumns}
             data={sortedSearchResults}
             renderItem={({ item, index }) => (
               <JellyfinSearchResultItem
