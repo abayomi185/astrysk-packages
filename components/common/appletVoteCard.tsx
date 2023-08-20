@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import {
   styled,
   Card,
@@ -33,8 +34,20 @@ const getAppletLogo = (applet: string) => {
       return Assets.SonarrAssets.Logo;
     case Applets.RADARR:
       return Assets.RadarrAssets.LogoDark;
+    case Applets.LIDARR:
+      return Assets.LidarrAssets.Logo;
     case Applets.PLEX:
       return Assets.PlexAssets.Logo;
+    case Applets.PROXMOX:
+      return Assets.ProxmoxAssets.Logo;
+    case Applets.DOCKER:
+      return Assets.DockerAssets.Logo;
+    case Applets.PHOTOPRISM:
+      return Assets.PhotoprismAssets.Logo;
+    case Applets.ADGUARD_HOME:
+      return Assets.AdguardHomeAssets.Logo;
+    case Applets.FIREFLY_III:
+      return Assets.FireflyIIIAssets.Logo;
     default:
       return Assets.RadarrAssets.LogoDark;
   }
@@ -50,6 +63,13 @@ const AppletVoteCardItem = ({ applet }: AppletVoteCardItemProps) => {
 
   const voteStatus = useAppStateStore((state) => state.votedApplets);
 
+  const discordVoteAlert = () => {
+    Alert.alert(
+      "Make Your Vote Count!",
+      "The vote button does nothing yet. Join our Discord and vote there!"
+    );
+  };
+
   return (
     <YStack animation="delay" pressStyle={{ scale: 0.97 }}>
       <XStack marginTop="$5">
@@ -57,7 +77,7 @@ const AppletVoteCardItem = ({ applet }: AppletVoteCardItemProps) => {
           <AppletButtonLogo
             width="100%"
             height="100%"
-            preserveAspectRatio="xMidYMid slice"
+            // preserveAspectRatio="xMidYMid meet"
           />
         </XStack>
         <YStack flex={1}>
@@ -78,6 +98,7 @@ const AppletVoteCardItem = ({ applet }: AppletVoteCardItemProps) => {
             useAppStateStore.setState({
               votedApplets: { ...voteStatus, [applet]: !voteStatus?.[applet] },
             });
+            discordVoteAlert();
           }}
         >
           {voteStatus?.[applet] ? (
@@ -120,6 +141,7 @@ const SCAppletVoteCard = styled(YStack, {
   minHeight: "$16",
   marginTop: "$3",
   marginHorizontal: "$3",
+  marginBottom: "$3",
   backgroundColor: "$gray1",
   borderRadius: "$8",
   borderWidth: "$0",

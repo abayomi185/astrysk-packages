@@ -200,7 +200,8 @@ const RadarrCalendar: React.FC = () => {
                     return {
                       // Attempt to convert to local datetime
                       title: new Date(
-                        calendarData.inCinemas as string
+                        (calendarData.digitalRelease as string) ??
+                          (calendarData.inCinemas as string)
                       ).toISOString(),
                       data: [
                         {

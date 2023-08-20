@@ -84,5 +84,6 @@ const SCAppletButton = styled(XStack, {
     pressStyle: { scale: 0.97 },
     // animation: "bouncy", // This causes out of order hook error
     animation: "delay",
+    elevation: "$2",
   },
 });
