@@ -191,8 +191,10 @@ const RadarrSearchLanding: React.FC<{
 
   const getMovies = React.useCallback(() => {
     // Consider using this if there are performance issues with copying the array
-    // const initialMovieData = movieData.data || [];
-    const initialMovieData = [...(movieData.data as MovieResource[])] || [];
+    // copying the array is necessary to avoid mutating the original data
+    // Allowing for the movies to be restored when the search term is cleared
+    const initialMovieData = movieData.data ?? [];
+    // const initialMovieData = [...((movieData.data as MovieResource[]) ?? [])];
     let movieDataToReturn = initialMovieData;
 
     if (searchTerm && initialMovieData.length > 0) {
