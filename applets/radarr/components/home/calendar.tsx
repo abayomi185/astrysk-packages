@@ -115,7 +115,8 @@ const RadarrCalendar: React.FC = () => {
     },
     {
       query: {
-        onSettled: () => {
+        onSettled: (_data) => {
+          console.log(JSON.stringify(_data, null, 2));
           setLoadingSpinner(RadarrCalendar.name, Actions.DONE);
         },
         staleTime: 60_000,
@@ -168,6 +169,15 @@ const RadarrCalendar: React.FC = () => {
     calendarQuery.refetch();
   };
 
+  const groupBy = (array, key) => {
+    return array.reduce((result, currentValue) => {
+      (result[currentValue[key]] = result[currentValue[key]] || []).push(
+        currentValue
+      );
+      return result;
+    }, {});
+  };
+
   useLoadingSpinner(RadarrCalendar.name);
   useSetLoadingSpinner(RadarrCalendar.name, calendarQuery.isSuccess);
 
@@ -190,12 +200,25 @@ const RadarrCalendar: React.FC = () => {
             sections={
               calendarQuery.data
                 ? calendarQuery.data.map((calendarData) => {
+                    const closestDate = [
+                      calendarData.physicalRelease,
+                      calendarData.digitalRelease,
+                      calendarData.inCinemas,
+                    ].reduce((closest, date) => {
+                      if (date) {
+                        const movieDate = new Date(date);
+                        if (
+                          movieDate > weekRange[0] &&
+                          movieDate < weekRange[1]
+                        ) {
+                          return movieDate;
+                        }
+                      }
+                      return closest;
+                    }, weekRange[0]);
                     return {
                       // Attempt to convert to local datetime
-                      title: new Date(
-                        (calendarData.digitalRelease as string) ??
-                          (calendarData.inCinemas as string)
-                      ).toISOString(),
+                      title: closestDate.toISOString(),
                       data: [
                         {
                           movieData:
