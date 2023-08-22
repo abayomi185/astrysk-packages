@@ -257,7 +257,7 @@ const RadarrSearchLanding: React.FC<{
               tintColor={radarrColors.primary}
             />
           }
-          ListEmptyComponent={() => (
+          ListEmptyComponent={
             <EmptyList
               queryStatus={
                 movieData.status === "loading" ||
@@ -268,7 +268,7 @@ const RadarrSearchLanding: React.FC<{
               text={t("radarr:noHistoryFound")}
               accentColor={radarrColors.accentColor}
             />
-          )}
+          }
           ListFooterComponent={
             <>
               {!searchAll && searchTerm && (

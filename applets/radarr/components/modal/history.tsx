@@ -243,13 +243,13 @@ const RadarrHistory: React.FC<{
               />
             )}
             estimatedItemSize={64}
-            ListEmptyComponent={() => (
+            ListEmptyComponent={
               <EmptyList
                 queryStatus={movieHistory.status}
                 text={t("radarr:noHistoryFound")}
                 accentColor={radarrColors.accentColor}
               />
-            )}
+            }
           />
         </XStack>
       </YStack>

@@ -255,13 +255,13 @@ const SonarrHistory: React.FC<{
               />
             )}
             estimatedItemSize={64}
-            ListEmptyComponent={() => (
+            ListEmptyComponent={
               <EmptyList
                 queryStatus={seriesHistory.status}
                 text={t("sonarr:noHistoryFound")}
                 accentColor={sonarrColors.accentColor}
               />
-            )}
+            }
           />
         </XStack>
       </YStack>

@@ -29,7 +29,11 @@ import {
   goToRadarrDetailScreen,
 } from "../../utils";
 import { useRadarrStore } from "../../store";
-import { CalendarData, RadarrDetailScreenContext } from "../../types";
+import {
+  CalendarData,
+  RadarrAgendaList,
+  RadarrDetailScreenContext,
+} from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
 import { useSetLoadingSpinner } from "@astrysk/utils/utils/loading";
@@ -169,13 +173,28 @@ const RadarrCalendar: React.FC = () => {
     calendarQuery.refetch();
   };
 
-  const groupBy = (array, key) => {
-    return array.reduce((result, currentValue) => {
-      (result[currentValue[key]] = result[currentValue[key]] || []).push(
-        currentValue
-      );
-      return result;
-    }, {});
+  const groupBy = (
+    array: RadarrAgendaList[],
+    key: keyof RadarrAgendaList
+  ): { [key: string]: RadarrAgendaList[] } => {
+    // Reduce the array to a map of keys and arrays of items
+    // The key is the key of the item (title)
+    return array.reduce(
+      (
+        result: { [key: string]: RadarrAgendaList[] },
+        currentValue: RadarrAgendaList
+      ) => {
+        // Uses the key (title) from RadarrAgendaList to create a key in the result object
+        // It gets the value of the key (title) on the current item (currentValue)
+        // If an array already exists for that key, it uses that array, otherwise it creates a new one
+        // It then pushes the current item to that array and returns the result
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      },
+      {}
+    );
   };
 
   useLoadingSpinner(RadarrCalendar.name);
@@ -188,50 +207,53 @@ const RadarrCalendar: React.FC = () => {
         // theme={calendarTheme.current}
       >
         <SectionTitle subtle>{t("radarr:upcomingMovies")}</SectionTitle>
-        {!calendarQuery.data && (
-          <EmptyList
-            queryStatus={calendarQuery.status}
-            text={t("radarr:noCalendarDataFoundForThisWeek")}
-            accentColor={radarrColors.accentColor}
-          />
-        )}
         <XStack flexGrow={1}>
           <AgendaList
             sections={
               calendarQuery.data
-                ? calendarQuery.data.map((calendarData) => {
-                    const closestDate = [
-                      calendarData.physicalRelease,
-                      calendarData.digitalRelease,
-                      calendarData.inCinemas,
-                    ].reduce((closest, date) => {
-                      if (date) {
-                        const movieDate = new Date(date);
-                        if (
-                          movieDate > weekRange[0] &&
-                          movieDate < weekRange[1]
-                        ) {
-                          return movieDate;
-                        }
-                      }
-                      return closest;
-                    }, weekRange[0]);
-                    return {
-                      // Attempt to convert to local datetime
-                      title: closestDate.toISOString(),
-                      data: [
-                        {
-                          movieData:
-                            useRadarrStore.getState().radarrMovieCache?.[
-                              calendarData.id as number
-                            ],
-                          title: calendarData.title,
-                          hasFile: calendarData.hasFile,
-                          inCinemas: calendarData.inCinemas,
-                        } as CalendarData,
-                      ],
-                    };
-                  })
+                ? // Object.values are the values of the object only
+                  Object.values(
+                    groupBy(
+                      calendarQuery.data.map((calendarData) => {
+                        const closestDate = [
+                          calendarData.physicalRelease,
+                          calendarData.digitalRelease,
+                          calendarData.inCinemas,
+                        ].reduce((closest: Date, date) => {
+                          if (date) {
+                            const movieDate = new Date(date);
+                            if (
+                              movieDate > weekRange[0] &&
+                              movieDate < weekRange[1]
+                            ) {
+                              return movieDate;
+                            }
+                          }
+                          return closest;
+                        }, weekRange[0]);
+
+                        return {
+                          // Attempt to convert to local datetime
+                          title: closestDate.toISOString(),
+                          data: [
+                            {
+                              movieData:
+                                useRadarrStore.getState().radarrMovieCache?.[
+                                  calendarData.id as number
+                                ],
+                              title: calendarData.title,
+                              hasFile: calendarData.hasFile,
+                              inCinemas: calendarData.inCinemas,
+                            } as CalendarData,
+                          ],
+                        } as RadarrAgendaList;
+                      }),
+                      "title" // Group by title
+                    )
+                  ).map((group: RadarrAgendaList[]) => ({
+                    title: group[0].title,
+                    data: group.map((item: RadarrAgendaList) => item.data[0]),
+                  }))
                 : []
             }
             renderItem={({ item }: { item: CalendarData }) => {
@@ -312,6 +334,13 @@ const RadarrCalendar: React.FC = () => {
                 refreshing={false}
                 onRefresh={refetchCalendar}
                 tintColor={radarrColors.accentColor}
+              />
+            }
+            ListEmptyComponent={
+              <EmptyList
+                queryStatus={calendarQuery.status}
+                text={t("sonarr:noCalendarDataFoundForThisWeek")}
+                accentColor={radarrColors.accentColor}
               />
             }
             // For manual section header rendering

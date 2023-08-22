@@ -29,6 +29,12 @@ export interface ExtendedReleaseResource extends ReleaseResource {
   language?: Record<string, string>;
 }
 
+export interface SonarrAgendaList {
+  title: string;
+  data: Partial<SeriesResource>[];
+  [key: string]: any;
+}
+
 export enum ToastModalProviderKey {
   Persists = "PERSISTS",
   Episode = "Episode",

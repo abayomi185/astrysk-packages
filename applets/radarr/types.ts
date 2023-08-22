@@ -18,6 +18,12 @@ export interface ExtendedReleaseResource extends ReleaseResource {
   language?: Record<string, string>;
 }
 
+export interface RadarrAgendaList {
+  title: string;
+  data: Partial<MovieResource>[];
+  [key: string]: any;
+}
+
 export enum ToastModalProviderKey {
   Persists = "PERSISTS",
   Movie = "Movie",

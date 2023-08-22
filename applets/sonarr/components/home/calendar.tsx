@@ -34,7 +34,11 @@ import {
   goToSonarrDetailScreen,
 } from "../../utils";
 import { useSonarrStore } from "../../store";
-import { CalendarData, SonarrDetailScreenContext } from "../../types";
+import {
+  CalendarData,
+  SonarrAgendaList,
+  SonarrDetailScreenContext,
+} from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
 
@@ -167,6 +171,30 @@ const SonarrCalendar: React.FC = () => {
     calendarQuery.refetch();
   };
 
+  const groupBy = (
+    array: SonarrAgendaList[],
+    key: keyof SonarrAgendaList
+  ): { [key: string]: SonarrAgendaList[] } => {
+    // Reduce the array to a map of keys and arrays of items
+    // The key is the key of the item (title)
+    return array.reduce(
+      (
+        result: { [key: string]: SonarrAgendaList[] },
+        currentValue: SonarrAgendaList
+      ) => {
+        // Uses the key (title) from SonarrAgendaList to create a key in the result object
+        // It gets the value of the key (title) on the current item (currentValue)
+        // If an array already exists for that key, it uses that array, otherwise it creates a new one
+        // It then pushes the current item to that array and returns the result
+        (result[currentValue[key]] = result[currentValue[key]] || []).push(
+          currentValue
+        );
+        return result;
+      },
+      {}
+    );
+  };
+
   useLoadingSpinner(SonarrCalendar.name);
 
   return (
@@ -186,42 +214,46 @@ const SonarrCalendar: React.FC = () => {
         {/*   hideKnob */}
         {/*   // onVisibleMonthsChange={onVisibleMonthsChange} */}
         {/* /> */}
-        {!calendarQuery.data && (
-          <EmptyList
-            queryStatus={calendarQuery.status}
-            text={t("sonarr:noCalendarDataFoundForThisWeek")}
-            accentColor={sonarrColors.accentColor}
-          />
-        )}
         <XStack flexGrow={1}>
           <AgendaList
             sections={
               calendarQuery.data
-                ? calendarQuery.data.map((calendarData) => ({
-                    // Attempt to convert to local datetime
-                    title: new Date(
-                      calendarData.airDateUtc as string
-                    ).toISOString(),
-                    data: [
-                      {
-                        seriesData:
-                          useSonarrStore.getState().sonarrSeriesCache?.[
-                            calendarData.seriesId as number
+                ? // Object.values are the values of the object only
+                  Object.values(
+                    groupBy(
+                      calendarQuery.data.map((calendarData) => {
+                        return {
+                          // Attempt to convert to local datetime
+                          title: new Date(calendarData.airDateUtc as string)
+                            .toISOString()
+                            .split("T")[0],
+                          data: [
+                            {
+                              seriesData:
+                                useSonarrStore.getState().sonarrSeriesCache?.[
+                                  calendarData.seriesId as number
+                                ],
+                              title: calendarData.title,
+                              seasonNumber: calendarData.seasonNumber,
+                              episodeNumber: calendarData.episodeNumber,
+                              hasFile: calendarData.hasFile,
+                              timeUtc: calendarData.airDateUtc,
+                              time: new Date(
+                                calendarData.airDateUtc as string
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }),
+                            } as CalendarData,
                           ],
-                        title: calendarData.title,
-                        seasonNumber: calendarData.seasonNumber,
-                        episodeNumber: calendarData.episodeNumber,
-                        hasFile: calendarData.hasFile,
-                        timeUtc: calendarData.airDateUtc,
-                        time: new Date(
-                          calendarData.airDateUtc as string
-                        ).toLocaleTimeString("en-US", {
-                          hour: "numeric",
-                          minute: "numeric",
-                          hour12: true,
-                        }),
-                      } as CalendarData,
-                    ],
+                        } as SonarrAgendaList;
+                      }),
+                      "title" // Group by title
+                    )
+                  ).map((group: SonarrAgendaList[]) => ({
+                    title: group[0].title,
+                    data: group.map((item: SonarrAgendaList) => item.data[0]),
                   }))
                 : []
             }
@@ -311,6 +343,13 @@ const SonarrCalendar: React.FC = () => {
                 refreshing={false}
                 onRefresh={refetchCalendar}
                 tintColor={sonarrColors.accentColor}
+              />
+            }
+            ListEmptyComponent={
+              <EmptyList
+                queryStatus={calendarQuery.status}
+                text={t("sonarr:noCalendarDataFoundForThisWeek")}
+                accentColor={sonarrColors.accentColor}
               />
             }
             // For manual section header rendering

@@ -234,13 +234,13 @@ const SonarrInteractiveSearch: React.FC<{
               />
             )}
             estimatedItemSize={64}
-            ListEmptyComponent={() => (
+            ListEmptyComponent={
               <EmptyList
                 queryStatus={releaseQuery.status}
                 text={t("sonarr:noDataFound")}
                 accentColor={sonarrColors.accentColor}
               />
-            )}
+            }
           />
         </XStack>
       </YStack>

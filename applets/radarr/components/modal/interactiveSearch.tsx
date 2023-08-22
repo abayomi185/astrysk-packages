@@ -250,13 +250,13 @@ const RadarrInteractiveSearch: React.FC<{
               />
             )}
             estimatedItemSize={64}
-            ListEmptyComponent={() => (
+            ListEmptyComponent={
               <EmptyList
                 queryStatus={releaseQuery.status}
                 text={t("radarr:noDataFound")}
                 accentColor={radarrColors.accentColor}
               />
-            )}
+            }
             // refreshControl={
             //   <RefreshControl
             //     refreshing={false}
