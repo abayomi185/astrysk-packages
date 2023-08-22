@@ -24,7 +24,6 @@ const RadarrMovieDetailHeader: React.FC<{
   const baseURL = useRadarrStore.getState().baseURL as string;
   const token = useRadarrStore.getState().token as string;
 
-  const [readMore, _] = React.useState(false);
   const [titleLines, setTitleLines] = React.useState(2);
   const [summaryLines, setSummaryLines] = React.useState(5);
 
@@ -61,26 +60,23 @@ const RadarrMovieDetailHeader: React.FC<{
           </H3>
           <Text
             color="$gray11"
-            numberOfLines={readMore ? 0 : titleLines == 2 ? 5 : 7}
+            numberOfLines={titleLines === 2 ? 5 : 7}
             onTextLayout={(e) => setSummaryLines(e.nativeEvent.lines.length)}
           >
             {forwardedData.overview ?? t("radarr:noDescriptionAvailable")}
           </Text>
-          <Text
-            display={
-              !readMore &&
-              ((titleLines == 1 && summaryLines > 6) ||
-                (titleLines == 2 && summaryLines > 4))
-                ? "flex"
-                : "none"
-            }
-            color="$blue10Dark"
-            onPress={() => {
-              goToDescriptionScreen(forwardedData.id as number);
-            }}
-          >
-            {t("common:readMore")}
-          </Text>
+          {((titleLines === 1 && summaryLines > 6) ||
+            (titleLines === 2 && summaryLines > 4)) && (
+            <Text
+              display={"flex"}
+              color="$blue10Dark"
+              onPress={() => {
+                goToDescriptionScreen(forwardedData.id as number);
+              }}
+            >
+              {t("common:readMore")}
+            </Text>
+          )}
         </YStack>
       </XStack>
       <XStack marginTop="$4" justifyContent="center">
