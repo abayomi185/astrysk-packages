@@ -34,7 +34,6 @@ const RadarrInteractiveSearchItemExpanded: React.FC<{
   t: TFunction;
   data: ExtendedReleaseResource;
 }> = ({ t, data }) => {
-  console.log(JSON.stringify(data, null, 2));
   return (
     <XStack flex={1} marginTop="$1">
       <YStack flex={1}>

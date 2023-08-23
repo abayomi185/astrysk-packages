@@ -120,7 +120,6 @@ const RadarrCalendar: React.FC = () => {
     {
       query: {
         onSettled: (_data) => {
-          console.log(JSON.stringify(_data, null, 2));
           setLoadingSpinner(RadarrCalendar.name, Actions.DONE);
         },
         staleTime: 60_000,

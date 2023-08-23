@@ -94,7 +94,12 @@ const getRadarrEditDetailOptions = (
           )?.name as string) ?? (qualityProfiles[0]?.name as string),
       onLoad: () => {
         setState({
-          qualityProfileId: qualityProfiles[0]?.id as number,
+          qualityProfileId:
+            (useRadarrStore
+              .getState()
+              ?.radarrQualityProfiles?.find(
+                (profile) => profile.id === movieData?.qualityProfileId
+              )?.id as number) ?? (qualityProfiles[0]?.id as number),
         });
       },
       onPress: () => {

@@ -98,7 +98,12 @@ const getSonarrEditDetailOptions = (
           )?.name as string) ?? (qualityProfiles[0]?.name as string),
       onLoad: () => {
         setState({
-          qualityProfileId: qualityProfiles[0]?.id as number,
+          qualityProfileId:
+            (useSonarrStore
+              .getState()
+              ?.sonarrQualityProfiles?.find(
+                (profile) => profile.id === seriesData?.qualityProfileId
+              )?.id as number) ?? (qualityProfiles[0]?.id as number),
         });
       },
       onPress: () => {
@@ -285,6 +290,10 @@ const SonarrEditSeries: React.FC<{
       rootFolders,
       setStateHelper
     );
+  }, [dataState]);
+
+  React.useEffect(() => {
+    console.log(dataState.qualityProfileId);
   }, [dataState]);
 
   return (
