@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import { Button, GetProps, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -134,6 +134,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
 }> = ({ data, refetchEpisodeData }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
 
   const iconColor = getSonarrIconColor();
 
@@ -287,6 +288,7 @@ export const SonarrActionPanel: React.FC<{
 }> = ({ data, isSeries, seasonNumber, refetchSeasons }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
 
   const iconColor = getSonarrIconColor();
 
@@ -368,7 +370,13 @@ export const SonarrActionPanel: React.FC<{
   };
 
   // NOTE: DELETE
-  const deleteSeries = useDeleteApiV3SeriesId();
+  const deleteSeries = useDeleteApiV3SeriesId({
+    mutation: {
+      onSuccess: () => {
+        navigation.goBack();
+      },
+    },
+  });
   const deleteEpisodes = useDeleteApiV3EpisodefileBulk({
     mutation: {
       onSuccess: () => {

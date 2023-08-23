@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigation } from "expo-router";
 import { Alert, AlertButton } from "react-native";
-import { toast } from "@backpackapp-io/react-native-toast";
+import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import {
+  LanguageProfileResource,
   QualityProfileResource,
   SeriesResource,
   useGetApiV3SeriesLookup,
@@ -18,6 +19,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { SectionTitle, SettingsOption } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
+import { TOAST_TOP_OFFSET } from "@astrysk/utils";
 
 const getSonarrEditDetailOptions = (
   t: TFunction,
@@ -135,14 +137,7 @@ const getSonarrEditDetailOptions = (
     {
       key: "common:path",
       type: "action",
-      selectionHint:
-        (seriesData?.path as string) ??
-        `${rootFolders[0]}/${seriesData?.title}`,
-      onLoad: () => {
-        setState({
-          path: `${rootFolders[0]}/${seriesData?.title}`,
-        });
-      },
+      selectionHint: (seriesData?.path as string) ?? t("common:choosePath"),
       onPress: () => {
         const getPathOptions = () => {
           return rootFolders.map(
@@ -249,9 +244,17 @@ const SonarrEditSeries: React.FC<{
     },
   });
   const saveSeries = () => {
+    if (!dataState.path) {
+      Alert.alert(t("common:pleaseChooseAPath"));
+      return;
+    }
     if (context === SonarrDetailScreenContext.AddSeries) {
       addSeries.mutate({
-        data: dataState,
+        data: {
+          ...dataState,
+          // Sonarr API requires language profile id to be set
+          languageProfileId: languageProfiles[0]?.id as number,
+        },
       });
     }
     if (context === SonarrDetailScreenContext.EditSeries) {
@@ -264,6 +267,8 @@ const SonarrEditSeries: React.FC<{
 
   const qualityProfiles = useSonarrStore.getState()
     .sonarrQualityProfiles as QualityProfileResource[];
+  const languageProfiles = useSonarrStore.getState()
+    .sonarrLanguageProfiles as LanguageProfileResource[];
   const rootFolders = useSonarrStore.getState()
     .sonarrRootFolderCache as string[];
 
@@ -346,6 +351,11 @@ const SonarrEditSeries: React.FC<{
           estimatedItemSize={43}
         />
       </XStack>
+      <Toasts
+        extraInsets={{
+          top: TOAST_TOP_OFFSET,
+        }}
+      />
     </YStack>
   );
 };

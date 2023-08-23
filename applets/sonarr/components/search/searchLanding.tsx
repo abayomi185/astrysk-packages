@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import {
   SeriesResource,
   useGetApiV3Languageprofile,
@@ -8,7 +8,7 @@ import {
   useGetApiV3Series,
   useGetApiV3SeriesLookup,
 } from "../../api";
-import { H6, YStack, Text, XStack, Spinner, H4 } from "tamagui";
+import { H6, YStack, Text, XStack } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -225,6 +225,14 @@ const SonarrSearchLanding: React.FC<{
     searchFilters,
     searchAll,
   ]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      seriesData.refetch();
+      searchResults.refetch();
+      return () => {};
+    }, [])
+  );
 
   useLoadingSpinner(SonarrSearchLanding.name);
 

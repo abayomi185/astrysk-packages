@@ -58,6 +58,8 @@
   "type": "Type",
   "status": "Status",
   "path": "Path",
+  "choosePath": "Choose Path",
+  "pleaseChooseAPath": "Please choose a path",
   "quality": "Quality",
   "language": "Language",
   "year": "Year",

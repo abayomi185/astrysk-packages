@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "expo-router";
 import { Alert, AlertButton } from "react-native";
-import { toast } from "@backpackapp-io/react-native-toast";
+import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import {
   QualityProfileResource,
   MovieResource,
@@ -20,6 +20,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { SectionTitle, SettingsOption } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
+import { TOAST_TOP_OFFSET } from "@astrysk/utils";
 
 const getRadarrEditDetailOptions = (
   t: TFunction,
@@ -132,13 +133,7 @@ const getRadarrEditDetailOptions = (
     {
       key: "common:path",
       type: "action",
-      selectionHint:
-        (movieData?.path as string) ?? `${rootFolders[0]}/${movieData?.title}`,
-      onLoad: () => {
-        setState({
-          path: `${rootFolders[0]}/${movieData?.title}`,
-        });
-      },
+      selectionHint: (movieData?.path as string) ?? t("common:choosePath"),
       onPress: () => {
         const getPathOptions = () => {
           return rootFolders.map(
@@ -257,6 +252,10 @@ const RadarrEditMovie: React.FC<{
     },
   });
   const saveMovie = () => {
+    if (!dataState.path) {
+      Alert.alert(t("common:pleaseChooseAPath"));
+      return;
+    }
     if (context === RadarrDetailScreenContext.AddMovie) {
       addMovie.mutate({
         data: dataState,
@@ -357,6 +356,11 @@ const RadarrEditMovie: React.FC<{
           estimatedItemSize={43}
         />
       </XStack>
+      <Toasts
+        extraInsets={{
+          top: TOAST_TOP_OFFSET,
+        }}
+      />
     </YStack>
   );
 };

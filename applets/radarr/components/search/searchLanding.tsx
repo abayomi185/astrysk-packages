@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import {
   MovieResource,
   useGetApiV3Language,
@@ -227,6 +227,14 @@ const RadarrSearchLanding: React.FC<{
     searchFilters,
     searchAll,
   ]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      movieData.refetch();
+      searchResults.refetch();
+      return () => {};
+    }, [])
+  );
 
   useLoadingSpinner(RadarrSearchLanding.name);
   useSetLoadingSpinner(RadarrSearchLanding.name, movieData.isSuccess);

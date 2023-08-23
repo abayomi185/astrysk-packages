@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useNavigation } from "expo-router";
 import { Button, GetProps, XStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import {
@@ -82,6 +82,7 @@ export const RadarrActionPanel: React.FC<{
 }> = ({ data, refetchMovie }) => {
   const { t } = useTranslation();
   const router = useRouter();
+  const navigation = useNavigation();
 
   const iconColor = getRadarrIconColor();
 
@@ -131,7 +132,13 @@ export const RadarrActionPanel: React.FC<{
   };
 
   // NOTE: DELETE
-  const deleteMovie = useDeleteApiV3MovieId();
+  const deleteMovie = useDeleteApiV3MovieId({
+    mutation: {
+      onSuccess: () => {
+        navigation.goBack();
+      },
+    },
+  });
   const deleteAction = (deleteFiles: boolean = true) => {
     Alert.alert(
       `${t("radarr:doYouWantToDelete")}`,
@@ -144,8 +151,9 @@ export const RadarrActionPanel: React.FC<{
         {
           text: `${t("common:ok")}`,
           onPress: () => {
+            const id = data.id as number;
             deleteMovie.mutate({
-              id: data.id as number,
+              id: id,
               params: {
                 ...(deleteFiles ? { deleteFiles: deleteFiles } : {}),
               },
