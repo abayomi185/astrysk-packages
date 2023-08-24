@@ -80,9 +80,10 @@ const SonarrAuth = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    const serverURL = data.serverURL.replace(/\\+$/, "");
     // WARN: See Jellyfin applet for why this implementation for auth is terrible
-    useSonarrStore.setState({ baseURL: data.serverURL });
-    configureAxiosForSonarr(data.serverURL, data.apiKey, undefined, () => {
+    useSonarrStore.setState({ baseURL: serverURL });
+    configureAxiosForSonarr(serverURL, data.apiKey, undefined, () => {
       setApikey(data.apiKey);
     });
   };

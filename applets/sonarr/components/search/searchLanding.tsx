@@ -81,10 +81,6 @@ const SonarrSearchResultItem: React.FC<{
               uri: data.id
                 ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
                 : data.remotePoster,
-              // : `${baseURL}${
-              //     data.images?.find((image) => image.coverType === "poster")
-              //       ?.url
-              //   }`,
             } as ImageSource
           }
           transition={200}
@@ -229,7 +225,7 @@ const SonarrSearchLanding: React.FC<{
   useFocusEffect(
     React.useCallback(() => {
       seriesData.refetch();
-      searchResults.refetch();
+      searchTerm && searchResults.refetch();
       return () => {};
     }, [])
   );

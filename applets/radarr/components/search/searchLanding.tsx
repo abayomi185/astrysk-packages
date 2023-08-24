@@ -231,7 +231,7 @@ const RadarrSearchLanding: React.FC<{
   useFocusEffect(
     React.useCallback(() => {
       movieData.refetch();
-      searchResults.refetch();
+      searchTerm && searchResults.refetch();
       return () => {};
     }, [])
   );

@@ -81,9 +81,10 @@ const RadarrAuth = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+    const serverURL = data.serverURL.replace(/\\+$/, "");
     // WARN: See Jellyfin applet for why this implementation for auth is terrible
-    useRadarrStore.setState({ baseURL: data.serverURL });
-    configureAxiosForRadarr(data.serverURL, data.apiKey, undefined, () => {
+    useRadarrStore.setState({ baseURL: serverURL });
+    configureAxiosForRadarr(serverURL, data.apiKey, undefined, () => {
       setApikey(data.apiKey);
     });
   };
