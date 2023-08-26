@@ -266,7 +266,7 @@ const SonarrSearchLanding: React.FC<{
                   ? "loading"
                   : "success" // Success does not do anything in EmptyList
               }
-              text={t("sonarr:noHistoryFound")}
+              text={t("sonarr:noDataFound")}
               accentColor={sonarrColors.accentColor}
             />
           )}

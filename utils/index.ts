@@ -29,3 +29,5 @@ export { isEmpty } from "./utils/object";
 export { useGetListColumnNumber } from "./utils/list";
 
 export { TOAST_TOP_OFFSET, getToastTopOffset } from "./utils/toast";
+
+export { UrlRegexPattern } from "./utils/validate";

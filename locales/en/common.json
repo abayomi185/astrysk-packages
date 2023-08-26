@@ -64,6 +64,9 @@
   "language": "Language",
   "year": "Year",
 
+  "required": "Required",
+  "invalidURL": "Invalid URL",
+
   "unexpectedResponseFormat_message": "Unexpected response format from server.",
 
   "settings_joinDiscord": "Join our Discord",

@@ -18,12 +18,13 @@ import { Applets } from "@astrysk/constants";
 
 // import { useAuthenticateUserByName } from "../api";
 import { useSonarrStore } from "../store";
-import { configureAxiosForSonarr, configureSonarr } from "../utils";
+import { configureAxiosForSonarr } from "../utils";
 import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useGetApiV3Health } from "../api";
+import { UrlRegexPattern } from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -39,10 +40,12 @@ const SonarrAuth = () => {
     control,
     handleSubmit,
     setError,
+    register,
     formState: { errors },
   } = useForm<Inputs>();
 
   const [apikey, setApikey] = React.useState<string>();
+  const [showApiKey, setShowApiKey] = React.useState(false);
 
   const auth = useGetApiV3Health({
     query: {
@@ -66,8 +69,11 @@ const SonarrAuth = () => {
             `${error.response.status}: ${error.code}`
           );
           // WARN: Make use of ReactHookForm to show error in fields
-          setError("root.serverError", {
-            type: error.response.status.toString(),
+          setError("serverURL", {
+            type: "manual",
+          });
+          setError("apiKey", {
+            type: "manual",
           });
         }
       },
@@ -85,6 +91,7 @@ const SonarrAuth = () => {
     useSonarrStore.setState({ baseURL: serverURL });
     configureAxiosForSonarr(serverURL, data.apiKey, undefined, () => {
       setApikey(data.apiKey);
+      auth.refetch();
     });
   };
 
@@ -120,57 +127,88 @@ const SonarrAuth = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <YStack>
-          <Text color="$color" fontSize={16} paddingBottom="$2" marginLeft="$1">
-            {t("common:serverURL")}
-          </Text>
+          <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+            <Text color="$color" fontSize={16}>
+              {t("common:serverURL")}
+            </Text>
+            <Text color="$red9" marginLeft="$2">
+              {errors.serverURL && errors.serverURL.message}
+            </Text>
+          </XStack>
           <Controller
             name="serverURL"
             control={control}
             rules={{
               required: true,
+              validate: (value) =>
+                !!UrlRegexPattern.test(value) ||
+                (t("common:invalidURL") as string),
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <Input
                 size="$4"
                 width="100%"
                 borderWidth={2}
-                borderColor="$gray6"
+                borderColor={errors.serverURL ? "$red8" : "$gray6"}
                 placeholder={`${t("common:serverURL")}...`}
-                onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                {...register("serverURL", {
+                  required: t("common:required") as string,
+                })}
               />
             )}
           />
         </YStack>
         <YStack>
-          <Text color="$color" fontSize={16} paddingBottom="$2" marginLeft="$1">
-            {t("common:apiKey")}
-          </Text>
+          <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+            <Text color="$color" fontSize={16}>
+              {t("common:apiKey")}
+            </Text>
+            <Text color="$red9" marginLeft="$2">
+              {errors.apiKey && errors.apiKey.message}
+            </Text>
+          </XStack>
           <Controller
             name="apiKey"
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                size="$4"
-                width="100%"
-                borderWidth={2}
-                borderColor="$gray6"
-                placeholder={`${t("common:apiKey")}...`}
-                secureTextEntry={true}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
+            render={({ field: { onChange, value } }) => (
+              <XStack width="100%">
+                <Input
+                  flex={1}
+                  size="$4"
+                  borderWidth={2}
+                  borderColor={errors.apiKey ? "$red8" : "$gray6"}
+                  placeholder={`${t("common:apiKey")}...`}
+                  textContentType="password"
+                  secureTextEntry={!showApiKey}
+                  onChangeText={onChange}
+                  value={value}
+                  {...register("apiKey", {
+                    required: t("common:required") as string,
+                  })}
+                />
+                <Button
+                  width="$4"
+                  marginLeft="$1.5"
+                  borderWidth={2}
+                  borderColor="$gray6"
+                  padding="$0"
+                  backgroundColor={showApiKey ? "$gray8" : "$gray1"}
+                  onPress={() => setShowApiKey(!showApiKey)}
+                >
+                  <Ionicons name={showApiKey ? "eye" : "eye-off"} size={24} />
+                </Button>
+              </XStack>
             )}
           />
         </YStack>
         <Form.Trigger asChild>
           <Button theme="blue" width="100%">
-            {auth.isFetching ? <Spinner /> : t("common:signIn")}
+            {auth.fetchStatus === "fetching" ? <Spinner /> : t("common:signIn")}
           </Button>
         </Form.Trigger>
         <YStack>

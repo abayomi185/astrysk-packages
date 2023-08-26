@@ -23,6 +23,7 @@ import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
+import { UrlRegexPattern } from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -39,8 +40,11 @@ const JellyfinAuth = () => {
     control,
     handleSubmit,
     setError,
+    register,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const auth = useAuthenticateUserByName({
     mutation: {
@@ -64,6 +68,7 @@ const JellyfinAuth = () => {
       },
       onError: (error) => {
         useAppStateStore.setState({ activeApplet: undefined });
+        useJellyfinStore.setState({ baseURL: undefined });
         // WARN: Show error message or prompt
         if (error.response?.status) {
           // error.response.status >= 400 &&
@@ -73,8 +78,14 @@ const JellyfinAuth = () => {
             `${error.response.status}: ${error.code}`
           );
           // WARN: Make use of ReactHookForm to show error in fields
-          setError("root.serverError", {
-            type: error.response.status.toString(),
+          setError("serverURL", {
+            type: "manual",
+          });
+          setError("username", {
+            type: "manual",
+          });
+          setError("password", {
+            type: "manual",
           });
         }
       },
@@ -133,75 +144,113 @@ const JellyfinAuth = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <YStack>
-          <Text color="$color" fontSize={16} paddingBottom="$2" marginLeft="$1">
-            {t("common:serverURL")}
-          </Text>
+          <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+            <Text color="$color" fontSize={16}>
+              {t("common:serverURL")}
+            </Text>
+            <Text color="$red9" marginLeft="$2">
+              {errors.serverURL && errors.serverURL.message}
+            </Text>
+          </XStack>
           <Controller
             name="serverURL"
             control={control}
             rules={{
               required: true,
+              validate: (value) =>
+                !!UrlRegexPattern.test(value) ||
+                (t("common:invalidURL") as string),
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <Input
                 size="$4"
                 width="100%"
                 borderWidth={2}
-                borderColor="$gray6"
+                borderColor={errors.serverURL ? "$red8" : "$gray6"}
                 placeholder={`${t("common:serverURL")}...`}
-                onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                {...register("serverURL", {
+                  required: t("common:required") as string,
+                })}
               />
             )}
           />
         </YStack>
         <YStack>
-          <Text color="$color" fontSize={16} paddingBottom="$2" marginLeft="$1">
-            {t("common:username")}
-          </Text>
+          <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+            <Text color="$color" fontSize={16}>
+              {t("common:username")}
+            </Text>
+            <Text color="$red9" marginLeft="$2">
+              {errors.username && errors.username.message}
+            </Text>
+          </XStack>
           <Controller
             name="username"
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({ field: { onChange, value } }) => (
               <Input
                 size="$4"
                 width="100%"
                 borderWidth={2}
-                borderColor="$gray6"
+                borderColor={errors.username ? "$red8" : "$gray6"}
                 placeholder={`${t("common:username")}...`}
-                onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                {...register("username", {
+                  required: t("common:required") as string,
+                })}
               />
             )}
           />
         </YStack>
         <YStack>
-          <Text color="$color" fontSize={16} paddingBottom="$2" marginLeft="$1">
-            {t("common:password")}
-          </Text>
+          <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+            <Text color="$color" fontSize={16}>
+              {t("common:password")}
+            </Text>
+            <Text color="$red9" marginLeft="$2">
+              {errors.password && errors.password.message}
+            </Text>
+          </XStack>
           <Controller
             name="password"
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                size="$4"
-                width="100%"
-                borderWidth={2}
-                borderColor="$gray6"
-                placeholder={`${t("common:password")}...`}
-                secureTextEntry={true}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
+            render={({ field: { onChange, value } }) => (
+              <XStack width="100%">
+                <Input
+                  flex={1}
+                  size="$4"
+                  borderWidth={2}
+                  borderColor={errors.password ? "$red8" : "$gray6"}
+                  placeholder={`${t("common:password")}...`}
+                  textContentType="password"
+                  secureTextEntry={!showPassword}
+                  onChangeText={onChange}
+                  value={value}
+                  {...register("password", {
+                    required: t("common:required") as string,
+                  })}
+                />
+                <Button
+                  width="$4"
+                  marginLeft="$1.5"
+                  borderWidth={2}
+                  borderColor="$gray6"
+                  padding="$0"
+                  backgroundColor={showPassword ? "$gray8" : "$gray1"}
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} />
+                </Button>
+              </XStack>
             )}
           />
         </YStack>

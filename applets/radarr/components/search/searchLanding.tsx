@@ -273,7 +273,7 @@ const RadarrSearchLanding: React.FC<{
                   ? "loading"
                   : "success" // Success does not do anything in EmptyList
               }
-              text={t("radarr:noHistoryFound")}
+              text={t("radarr:noDataFound")}
               accentColor={radarrColors.accentColor}
             />
           }
