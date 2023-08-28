@@ -139,6 +139,10 @@ export const AppletVoteCard: React.FC<{ otherApplets: string[] }> = ({
 
 const SCAppletVoteCard = styled(YStack, {
   minHeight: "$16",
+  width: "100%",
+  maxWidth: "$30",
+  flex: 1,
+  alignSelf: "center",
   marginTop: "$3",
   marginHorizontal: "$3",
   marginBottom: "$3",
