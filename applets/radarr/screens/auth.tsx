@@ -24,7 +24,7 @@ import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useGetApiV3Health } from "../api";
-import { UrlRegexPattern } from "@astrysk/utils";
+import { UrlRegexPattern, getIconColor } from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -35,6 +35,8 @@ interface Inputs {
 const RadarrAuth = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  const iconColor = getIconColor();
 
   const {
     control,
@@ -86,7 +88,7 @@ const RadarrAuth = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    const serverURL = data.serverURL.replace(/\\+$/, "");
+    const serverURL = data.serverURL.replace(/\/$/, "");
     // WARN: See Jellyfin applet for why this implementation for auth is terrible
     useRadarrStore.setState({ baseURL: serverURL });
     configureAxiosForRadarr(serverURL, data.apiKey, undefined, () => {
@@ -199,7 +201,11 @@ const RadarrAuth = () => {
                   backgroundColor={showApiKey ? "$gray8" : "$gray1"}
                   onPress={() => setShowApiKey(!showApiKey)}
                 >
-                  <Ionicons name={showApiKey ? "eye" : "eye-off"} size={24} />
+                  <Ionicons
+                    name={showApiKey ? "eye" : "eye-off"}
+                    size={24}
+                    color={iconColor}
+                  />
                 </Button>
               </XStack>
             )}

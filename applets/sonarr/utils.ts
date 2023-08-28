@@ -313,11 +313,6 @@ export const getDateFromHours = (hours: number) => {
 
 //   return
 
-// NOTE: STYLE UTILS
-export const getSonarrIconColor = () => {
-  return useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
-};
-
 // NOTE: HISTORY ITEM UTILS
 export const expandableItemAnimationHandler = <T>(
   flashListRef: React.RefObject<FlashList<T>>

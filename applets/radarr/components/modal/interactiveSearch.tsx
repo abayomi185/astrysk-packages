@@ -23,11 +23,14 @@ import {
   expandableItemAnimationHandler,
   getDateFromHours,
   getSizeOnDisk,
-  getRadarrIconColor,
 } from "../../utils";
 import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import { ToastModalProviderKey } from "../../types";
-import { TOAST_TOP_OFFSET, setLoadingSpinner } from "@astrysk/utils";
+import {
+  TOAST_TOP_OFFSET,
+  getIconColor,
+  setLoadingSpinner,
+} from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 
 const RadarrInteractiveSearchItemExpanded: React.FC<{
@@ -94,7 +97,7 @@ const RadarrInteractiveSearchItem: React.FC<{
 }> = ({ t, data, context, pressHandler }) => {
   const router = useRouter();
 
-  const iconColor = getRadarrIconColor();
+  const iconColor = getIconColor();
 
   const [expanded, setExpanded] = React.useState(false);
 

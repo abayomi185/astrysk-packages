@@ -22,11 +22,10 @@ import {
   expandableItemAnimationHandler,
   getDateFromHours,
   getSizeOnDisk,
-  getSonarrIconColor,
 } from "../../utils";
 import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import { ToastModalProviderKey } from "../../types";
-import { TOAST_TOP_OFFSET } from "@astrysk/utils";
+import { TOAST_TOP_OFFSET, getIconColor } from "@astrysk/utils";
 
 const SonarrInteractiveSearchItemExpanded: React.FC<{
   t: TFunction;
@@ -90,7 +89,7 @@ const SonarrInteractiveSearchItem: React.FC<{
 }> = ({ t, data, context, pressHandler }) => {
   const router = useRouter();
 
-  const iconColor = getSonarrIconColor();
+  const iconColor = getIconColor();
 
   const [expanded, setExpanded] = React.useState(false);
 

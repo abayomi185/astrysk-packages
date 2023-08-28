@@ -8,7 +8,7 @@ export { useRefreshHandler } from "./utils/refresh";
 
 export { onItemLayout } from "./utils/layout";
 
-export { useColorScheme } from "./utils/colorScheme";
+export { useColorScheme, getIconColor } from "./utils/colorScheme";
 
 export { filterPersistState } from "./utils/store";
 

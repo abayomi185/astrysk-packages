@@ -11,7 +11,7 @@ import {
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useRadarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
-import { getRadarrIconColor, goToRadarrModalScreen } from "../../utils";
+import { goToRadarrModalScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
 import {
   RadarrDetailScreenContext,
@@ -19,7 +19,7 @@ import {
   ExtendedMovieResource,
   ToastModalProviderKey,
 } from "../../types";
-import { setLoadingSpinner } from "@astrysk/utils";
+import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 
 export const radarrActionButtonColors = {
@@ -84,7 +84,7 @@ export const RadarrActionPanel: React.FC<{
   const router = useRouter();
   const navigation = useNavigation();
 
-  const iconColor = getRadarrIconColor();
+  const iconColor = getIconColor();
 
   const monitoredStatus = useRadarrStore(
     (state) => state.radarrMovieCache?.[data.id as number]?.monitored

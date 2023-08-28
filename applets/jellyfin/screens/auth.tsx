@@ -23,7 +23,7 @@ import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
-import { UrlRegexPattern } from "@astrysk/utils";
+import { UrlRegexPattern, getIconColor } from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -35,6 +35,8 @@ interface Inputs {
 const JellyfinAuth = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+
+  const iconColor = getIconColor();
 
   const {
     control,
@@ -98,7 +100,7 @@ const JellyfinAuth = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    const serverURL = data.serverURL.replace(/\\+$/, "");
+    const serverURL = data.serverURL.replace(/\/$/, "");
     // WARN: This implementation for authentication is terrible. Needs a proper rework
     // From this onSubmit to the mutation
 
@@ -248,7 +250,11 @@ const JellyfinAuth = () => {
                   backgroundColor={showPassword ? "$gray8" : "$gray1"}
                   onPress={() => setShowPassword(!showPassword)}
                 >
-                  <Ionicons name={showPassword ? "eye" : "eye-off"} size={24} />
+                  <Ionicons
+                    name={showPassword ? "eye" : "eye-off"}
+                    size={24}
+                    color={iconColor}
+                  />
                 </Button>
               </XStack>
             )}

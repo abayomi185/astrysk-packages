@@ -17,7 +17,7 @@ import {
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useSonarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
-import { getSonarrIconColor, goToSonarrModalScreen } from "../../utils";
+import { goToSonarrModalScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
@@ -26,7 +26,7 @@ import {
   ToastModalProviderKey,
 } from "../../types";
 import { TFunction } from "i18next";
-import { setLoadingSpinner } from "@astrysk/utils";
+import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 
 export const sonarrActionButtonColors = {
@@ -88,7 +88,7 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
   t: TFunction;
   data: EpisodeResource;
 }> = ({ t, data }) => {
-  const iconColor = getSonarrIconColor();
+  const iconColor = getIconColor();
 
   // NOTE: AUTOMATIC SEARCH
   const postCommand = usePostApiV3Command({
@@ -136,7 +136,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
   const router = useRouter();
   const navigation = useNavigation();
 
-  const iconColor = getSonarrIconColor();
+  const iconColor = getIconColor();
 
   const monitoredStatus = useSonarrStore(
     (state) =>
@@ -290,7 +290,7 @@ export const SonarrActionPanel: React.FC<{
   const router = useRouter();
   const navigation = useNavigation();
 
-  const iconColor = getSonarrIconColor();
+  const iconColor = getIconColor();
 
   const monitoredStatus = useSonarrStore(
     (state) => state.sonarrSeriesCache?.[data.id as number]?.monitored

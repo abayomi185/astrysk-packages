@@ -27,3 +27,7 @@ export function useColorScheme(): NonNullable<ColorSchemeName> {
 
   return colorScheme as NonNullable<ColorSchemeName>;
 }
+
+export const getIconColor = () => {
+  return useColorScheme() === "dark" ? "#d9d9d9" : "#000000";
+};
