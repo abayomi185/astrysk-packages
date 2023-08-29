@@ -292,10 +292,6 @@ const SonarrEditSeries: React.FC<{
     );
   }, [dataState]);
 
-  React.useEffect(() => {
-    console.log(dataState.qualityProfileId);
-  }, [dataState]);
-
   return (
     <YStack height="100%" width="100%">
       <XStack flex={1}>
