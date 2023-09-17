@@ -15,9 +15,6 @@
     "@astrysk/utils": "*",
     "@shopify/flash-list": "^1.4.3",
     "@tanstack/react-query": "^4.28.0",
-    "expo": "^48.0.0",
-    "expo-crypto": "^12.2.1",
-    "expo-localization": "~14.1.1",
     "i18next": "^22.4.14",
     "iso-language-codes": "^1.1.0",
     "lodash.debounce": "^4.0.7",
@@ -25,14 +22,14 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.0",
-    "tamagui": "^1.28.1"
+    "tamagui": "^1.68.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@types/lodash.debounce": "^4.0.7",
-    "@types/react": "~18.0.33",
+    "@types/react": "~18.2.14",
     "burnt": "^0.10.0",
     "tsup": "^6.7.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.1.3"
   }
 }

@@ -15,7 +15,7 @@
     "@astrysk/utils": "*",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
-    "tamagui": "^1.28.1"
+    "tamagui": "^1.68.0"
   },
   "devDependencies": {
     "tsup": "^6.7.0"

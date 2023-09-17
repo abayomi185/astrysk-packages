@@ -28,9 +28,9 @@ export const configureAxiosForJellyfin = (
     baseURL: baseURL,
     headers: {
       "Content-Type": "application/json",
-      "x-emby-authorization": `MediaBrowser , Client="${Constants.manifest?.name}", \
+      "x-emby-authorization": `MediaBrowser , Client="${Constants.expoConfig?.name}", \
         Device="${DeviceInfo.deviceName}", DeviceId="${DeviceInfo.modelId}", \
-        Version="${Constants.manifest?.version}"`,
+        Version="${Constants.expoConfig?.version}"`,
       ...(token ? { "x-mediabrowser-token": token } : {}),
       ...(customHeaders ? customHeaders : {}),
     },

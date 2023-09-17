@@ -4,20 +4,20 @@
   "main": "tamagui.config.ts",
   "dependencies": {
     "react": "18.2.0",
-    "@tamagui/animations-react-native": "^1.28.1",
-    "@tamagui/animations-reanimated": "^1.28.1",
-    "@tamagui/babel-plugin": "^1.28.1",
-    "@tamagui/config": "^1.28.1",
-    "@tamagui/font-inter": "^1.28.1",
-    "@tamagui/lucide-icons": "^1.28.1",
-    "@tamagui/shorthands": "^1.28.1",
-    "@tamagui/theme-base": "^1.28.1",
-    "@tamagui/themes": "^1.28.1",
-    "@tamagui/toast": "^1.28.1",
-    "tamagui": "^1.28.1"
+    "@tamagui/animations-react-native": "^1.68.0",
+    "@tamagui/animations-moti": "^1.68.0",
+    "@tamagui/babel-plugin": "^1.68.0",
+    "@tamagui/config": "^1.68.0",
+    "@tamagui/font-inter": "^1.68.0",
+    "@tamagui/lucide-icons": "^1.68.0",
+    "@tamagui/shorthands": "^1.68.0",
+    "@tamagui/theme-base": "^1.68.0",
+    "@tamagui/themes": "^1.68.0",
+    "@tamagui/toast": "^1.68.0",
+    "tamagui": "^1.68.0"
   },
   "devDependencies": {
-    "@types/react": "~18.0.33"
+    "@types/react": "~18.2.14"
   },
   "private": true
 }

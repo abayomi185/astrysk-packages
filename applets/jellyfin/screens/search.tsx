@@ -1,6 +1,6 @@
 import React from "react";
 import debounce from "lodash.debounce";
-import { useNavigation, useSearchParams } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { useJellyfinConfigurator } from "../utils";
 import { useJellyfinSearchHeader } from "../components/useHeader";
 import JellyfinSearchLanding from "../components/search/searchLanding";
@@ -28,7 +28,7 @@ const JellyfinSearch: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const { searchPathName, searchQuery } = useSearchParams();
+  const { searchPathName, searchQuery } = useLocalSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
 

@@ -9,8 +9,6 @@
     "@astrysk/api": "*",
     "@astrysk/types": "*",
     "@astrysk/components": "*",
-    "tamagui": "^1.28.1",
-    "react-native": "0.71.6",
     "zustand": "^4.3.3"
   },
   "devDependencies": {

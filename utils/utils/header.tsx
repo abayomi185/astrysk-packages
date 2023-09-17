@@ -12,7 +12,7 @@ export const useHomeHeader = (
   largeTitle?: boolean
 ) => {
   const applet = useAppStateStore((state) => state.activeApplet) as string;
-  return React.useEffect(() => {
+  return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: applet ?? Screens.ASTRYSK,
       headerLargeTitle: true,
@@ -28,7 +28,7 @@ export const useSearchHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   HeaderRightComponent: React.FC
 ) => {
-  return React.useEffect(() => {
+  return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: t(`common:${Screens.SEARCH_SCREEN}`),
       headerTransparent: true,
@@ -52,7 +52,7 @@ export const useSettingsHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   HeaderRightComponent: React.FC
 ) => {
-  return React.useEffect(() => {
+  return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: Screens.SETTINGS_SCREEN,
       headerLargeTitle: true,

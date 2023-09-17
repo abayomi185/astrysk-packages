@@ -38,11 +38,11 @@ export const useJellyfinDetailHeader = (
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
-  return React.useEffect(() => {
+  return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
       headerTransparent: headerOpacity ? true : false,
-      // headerBackTitleVisible: false,
+      headerBackTitleVisible: false,
       // headerBackTitle: "",
       headerBackground: () => (
         <Animated.View
@@ -84,7 +84,7 @@ export const useJellyfinModalHeader = (
   gestureEnabled?: boolean,
   dependencies?: any[]
 ) => {
-  return React.useEffect(() => {
+  return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: headerTitle,
       gestureEnabled: gestureEnabled,

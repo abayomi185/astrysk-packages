@@ -37,7 +37,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.astrysk-runner.astrysk"
+      "package": "com.astrysk_runner.astrysk"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -58,7 +58,8 @@
         {
           "initialOrientation": "PORTRAIT_UP"
         }
-      ]
+      ],
+      "expo-router"
     ]
   },
   "runtimeVersion": "0.2.0"

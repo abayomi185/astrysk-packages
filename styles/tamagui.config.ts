@@ -7,7 +7,7 @@ import { shorthands } from "@tamagui/shorthands";
 import { themes, color, radius, zIndex, space, size } from "@tamagui/themes";
 // import { themes, tokens } from "@tamagui/theme-base";
 
-import { createAnimations } from "@tamagui/animations-reanimated";
+import { createAnimations } from "@tamagui/animations-moti";
 import { Easing } from "react-native-reanimated";
 
 const animations = createAnimations({
@@ -135,6 +135,6 @@ export type ThemeConfig = typeof config;
 declare module "tamagui" {
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
-  interface TamaguiCustomConfig extends ThemeConfig {}
+  interface TamaguiCustomConfig extends ThemeConfig { }
 }
 export default config;
