@@ -213,19 +213,27 @@ const RadarrAuth = () => {
         </YStack>
         <Form.Trigger asChild>
           <Button theme="blue" width="100%">
-            {auth.fetchStatus === "fetching" ? <Spinner /> : t("common:signIn")}
+            <XStack flex={1} alignItems="center" justifyContent="center">
+              <Text>
+                {auth.fetchStatus === "fetching" ? (
+                  <Spinner />
+                ) : (
+                  t("common:signIn")
+                )}
+              </Text>
+            </XStack>
           </Button>
         </Form.Trigger>
         <YStack>
           <Button
-            theme="dark_gray"
+            theme="dark"
             backgroundColor="$gray6"
             onPress={() => {
               Alert.prompt(
                 t("common:addCustomHeader"),
                 t("common:addCustomHeader_description") as string,
                 [
-                  { text: t("common:cancel") as string, onPress: () => {} },
+                  { text: t("common:cancel") as string, onPress: () => { } },
                   {
                     text: t("common:add") as string,
                     onPress: (value) => {
@@ -261,7 +269,7 @@ const RadarrAuth = () => {
           data={customHeaders}
           renderItem={({ item, index }) => (
             <Button
-              theme="dark_gray"
+              theme="dark"
               backgroundColor="$gray6"
               width="$10"
               height="$2"

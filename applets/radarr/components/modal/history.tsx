@@ -18,7 +18,7 @@ const RadarrHistoryItemExpanded: React.FC<{
   data: HistoryResource;
 }> = ({ t, data }) => {
   return (
-    <XStack flex={1} marginTop="$2">
+    <XStack flex={1}>
       <YStack flex={1}>
         {data.eventType === "grabbed" && (
           <XStack marginTop="$3">
@@ -43,18 +43,18 @@ const RadarrHistoryItemExpanded: React.FC<{
         </XStack>
         {(data.eventType === "downloadFolderImported" ||
           data.eventType === "grabbed") && (
-          <XStack marginTop="$2.5">
-            <Text
-              color="$gray11"
-              width="30%"
-              textAlign="right"
-              marginRight="$3"
-            >
-              {t("radarr:client")}
-            </Text>
-            <Text color="$gray11">{data.data?.downloadClient}</Text>
-          </XStack>
-        )}
+            <XStack marginTop="$2.5">
+              <Text
+                color="$gray11"
+                width="30%"
+                textAlign="right"
+                marginRight="$3"
+              >
+                {t("radarr:client")}
+              </Text>
+              <Text color="$gray11">{data.data?.downloadClient}</Text>
+            </XStack>
+          )}
         {data.eventType === "grabbed" && (
           <XStack marginTop="$2.5">
             <Text
@@ -219,7 +219,7 @@ const RadarrHistory: React.FC<{
     },
     {
       query: {
-        onSuccess: () => {},
+        onSuccess: () => { },
       },
     }
   );

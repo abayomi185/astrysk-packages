@@ -112,13 +112,13 @@ const getRadarrEditDetailOptions = (
           return (
             qualityProfiles.map(
               (profile) =>
-                ({
-                  text: profile.name as string,
-                  style: "default",
-                  onPress: () => {
-                    selectQuality(profile.id as number);
-                  },
-                } as AlertButton)
+              ({
+                text: profile.name as string,
+                style: "default",
+                onPress: () => {
+                  selectQuality(profile.id as number);
+                },
+              } as AlertButton)
             ) ?? []
           );
         };
@@ -143,15 +143,15 @@ const getRadarrEditDetailOptions = (
         const getPathOptions = () => {
           return rootFolders.map(
             (folder) =>
-              ({
-                text: `${folder}/${movieData?.title}`,
-                style: "default",
-                onPress: () => {
-                  setState({
-                    path: `${folder}/${movieData?.title}`,
-                  });
-                },
-              } as AlertButton)
+            ({
+              text: `${folder}/${movieData?.title}`,
+              style: "default",
+              onPress: () => {
+                setState({
+                  path: `${folder}/${movieData?.title}`,
+                });
+              },
+            } as AlertButton)
           );
         };
         Alert.prompt(
@@ -326,8 +326,8 @@ const RadarrEditMovie: React.FC<{
                     (!imdbId &&
                       !!tmdbId &&
                       newMovieDataTmdb.status === "loading")) && (
-                    <Spinner marginRight="$3" />
-                  )}
+                      <Spinner marginRight="$3" />
+                    )}
                 </XStack>
               )}
             </XStack>
@@ -336,7 +336,7 @@ const RadarrEditMovie: React.FC<{
             <Button
               flex={1}
               marginTop="$3"
-              backgroundColor="$blue7"
+              backgroundColor="$yellow7"
               onPress={saveMovie}
             >
               <XStack flex={1} alignItems="center" justifyContent="center">
