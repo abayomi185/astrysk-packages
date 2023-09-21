@@ -63,7 +63,7 @@ export const useSonarrDetailHeader = (
             justifyContent="flex-end"
           >
             <XStack
-              width="55%"
+              width="50%"
               height="$4"
               alignItems="center"
               justifyContent="center"

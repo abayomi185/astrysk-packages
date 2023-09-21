@@ -18,7 +18,12 @@ import {
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
-import { HistoryResource, SeriesResource, SeriesStatusType } from "./api";
+import {
+  HistoryResource,
+  SeriesResource,
+  SeriesStatusType,
+  postApiV3Command,
+} from "./api";
 import { useColorScheme } from "@astrysk/utils";
 import { FlashList } from "@shopify/flash-list";
 
@@ -337,4 +342,28 @@ export const expandableItemAnimationHandler = <T>(
       duration: 200,
     },
   });
+};
+
+// NOTE: SEARCH ALL MISSING
+export const searchAllMissing = () => {
+  // id?: number;
+  // name?: string | null;
+  // commandName?: string | null;
+  // message?: string | null;
+  // body?: Command;
+  // priority?: CommandPriority;
+  // status?: CommandStatus;
+  // result?: CommandResult;
+  // queued?: string;
+  // started?: string | null;
+  // ended?: string | null;
+  // duration?: TimeSpan;
+  // exception?: string | null;
+  // trigger?: CommandTrigger;
+  // clientUserAgent?: string | null;
+  // stateChangeTime?: string | null;
+  // sendUpdatesToClient?: boolean;
+  // updateScheduledTask?: boolean;
+  // lastExecutionTime?: string | null;
+  postApiV3Command({});
 };

@@ -15,6 +15,11 @@ export const SonarrContextMenuOptions: ContextMenuOptions = {
         systemIcon: "x.circle",
         destructive: true,
       },
+      {
+        index: 1,
+        title: `${t("radarr:searchAllMissing")}`,
+        systemIcon: "magnifyingglass.circle",
+      },
     ];
   },
   getContextHandler(indexPath: number[]): void {
@@ -28,6 +33,9 @@ export const SonarrContextMenuOptions: ContextMenuOptions = {
             customHeaders: undefined,
           });
           useAppStateStore.setState({ activeApplet: undefined });
+          break;
+        case 1:
+          console.log("Search all missing");
           break;
       }
   },
