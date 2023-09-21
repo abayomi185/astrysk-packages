@@ -16,7 +16,12 @@ import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useGetApiV3Health } from "../api";
-import { UrlRegexPattern, getIconColor } from "@astrysk/utils";
+import {
+  UrlRegexPattern,
+  getIconColor,
+  promptUserForURLSchemaIfNotExists,
+  updateURLWithSchema,
+} from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -35,6 +40,7 @@ const SonarrAuth = () => {
     handleSubmit,
     setError,
     register,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -81,6 +87,16 @@ const SonarrAuth = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const serverURL = data.serverURL.replace(/\/$/, "");
+
+    const urlInputFieldName = "serverURL";
+    const hasUrlSchema = promptUserForURLSchemaIfNotExists(
+      t,
+      serverURL,
+      urlInputFieldName,
+      setValue
+    );
+    if (!hasUrlSchema) return;
+
     // WARN: See Jellyfin applet for why this implementation for auth is terrible
     useSonarrStore.setState({ baseURL: serverURL });
     configureAxiosForSonarr(serverURL, data.apiKey, undefined, () => {

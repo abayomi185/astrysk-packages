@@ -16,7 +16,11 @@ import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useGetApiV3Health } from "../api";
-import { UrlRegexPattern, getIconColor } from "@astrysk/utils";
+import {
+  UrlRegexPattern,
+  getIconColor,
+  promptUserForURLSchemaIfNotExists,
+} from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -34,6 +38,7 @@ const RadarrAuth = () => {
     control,
     handleSubmit,
     setError,
+    setValue,
     register,
     formState: { errors },
   } = useForm<Inputs>();
@@ -81,6 +86,16 @@ const RadarrAuth = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
     const serverURL = data.serverURL.replace(/\/$/, "");
+
+    const urlInputFieldName = "serverURL";
+    const hasUrlSchema = promptUserForURLSchemaIfNotExists(
+      t,
+      serverURL,
+      urlInputFieldName,
+      setValue
+    );
+    if (!hasUrlSchema) return;
+
     // WARN: See Jellyfin applet for why this implementation for auth is terrible
     useRadarrStore.setState({ baseURL: serverURL });
     configureAxiosForRadarr(serverURL, data.apiKey, undefined, () => {

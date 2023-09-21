@@ -15,7 +15,11 @@ import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
-import { UrlRegexPattern, getIconColor } from "@astrysk/utils";
+import {
+  UrlRegexPattern,
+  getIconColor,
+  promptUserForURLSchemaIfNotExists,
+} from "@astrysk/utils";
 
 interface Inputs {
   serverURL: string;
@@ -34,6 +38,7 @@ const JellyfinAuth = () => {
     control,
     handleSubmit,
     setError,
+    setValue,
     register,
     formState: { errors },
   } = useForm<Inputs>();
@@ -95,6 +100,15 @@ const JellyfinAuth = () => {
     const serverURL = data.serverURL.replace(/\/$/, "");
     // WARN: This implementation for authentication is terrible. Needs a proper rework
     // From this onSubmit to the mutation
+
+    const urlInputFieldName = "serverURL";
+    const hasUrlSchema = promptUserForURLSchemaIfNotExists(
+      t,
+      serverURL,
+      urlInputFieldName,
+      setValue
+    );
+    if (!hasUrlSchema) return;
 
     // Essentially setting up axios without token and headers such that it has the
     // correct structure when configureJellyfin is called on each tab

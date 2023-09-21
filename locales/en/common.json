@@ -67,6 +67,11 @@
   "required": "Required",
   "invalidURL": "Invalid URL",
 
+  "validation": {
+    "urlSchemaRequired": "URL Schema is required",
+    "pleaseSelectSchema": "Please select a schema"
+  },
+
   "unexpectedResponseFormat_message": "Unexpected response format from server.",
 
   "settings_joinDiscord": "Join our Discord",

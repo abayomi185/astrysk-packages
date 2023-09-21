@@ -30,4 +30,8 @@ export { useGetListColumnNumber } from "./utils/list";
 
 export { TOAST_TOP_OFFSET, getToastTopOffset } from "./utils/toast";
 
-export { UrlRegexPattern } from "./utils/validate";
+export {
+  UrlRegexPattern,
+  updateURLWithSchema,
+  promptUserForURLSchemaIfNotExists,
+} from "./utils/validation";
