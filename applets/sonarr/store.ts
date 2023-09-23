@@ -17,6 +17,7 @@ import {
   QualityProfileResource,
   SeriesResource,
 } from "./api";
+import { ViewType } from "@astrysk/types";
 
 const MMKVStore = new MMKV({
   id: "sonarr",
@@ -70,7 +71,7 @@ interface SonarrState extends StateTypes.AppletState {
   filterBarOptions?: Partial<Record<SonarrSearchFilterContext, SonarrFilter[]>>;
 }
 
-// NOTE: Make sure to add key to jellyfinPersistStateKeys too
+// NOTE: Make sure to add key to sonarrPersistStateKeys too
 interface SonarrPersistState
   extends Pick<SonarrState, "baseURL" | "token" | "customHeaders"> {}
 
@@ -82,4 +83,5 @@ export const sonarrPersistStateKeys = Array.from(
 const initialAppState: SonarrState = {
   authenticated: false, // Not sure this is needed anymore
   isConfigured: false, // Use this state to configure if not configured
+  viewType: ViewType.Grid,
 };

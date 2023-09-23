@@ -12,6 +12,7 @@ import {
 } from "./types";
 import { filterPersistState } from "@astrysk/utils";
 import { LanguageResource, QualityProfileResource } from "./api";
+import { ViewType } from "@astrysk/types";
 
 const MMKVStore = new MMKV({
   id: "radarr",
@@ -66,14 +67,18 @@ interface RadarrState extends StateTypes.AppletState {
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too
 interface RadarrPersistState
-  extends Pick<RadarrState, "baseURL" | "token" | "customHeaders"> {}
+  extends Pick<
+    RadarrState,
+    "baseURL" | "token" | "customHeaders" | "viewType"
+  > {}
 
 // NOTE: Persist key needs to be added here too
 export const radarrPersistStateKeys = Array.from(
-  new Set<keyof RadarrState>(["baseURL", "token", "customHeaders"])
+  new Set<keyof RadarrState>(["baseURL", "token", "customHeaders", "viewType"])
 );
 
 const initialAppState: RadarrState = {
   authenticated: false, // Not sure this is needed anymore
   isConfigured: false, // Use this state to configure if not configured
+  viewType: ViewType.Grid,
 };

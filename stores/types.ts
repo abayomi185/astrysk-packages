@@ -1,4 +1,4 @@
-import { Applet } from "@astrysk/types";
+import { Applet, ViewType } from "@astrysk/types";
 import { ColorSchemeName } from "react-native";
 
 export interface votedAppletState {
@@ -39,4 +39,5 @@ export interface AppletState {
   token?: string | null;
   authenticated?: boolean;
   isConfigured?: boolean;
+  viewType?: ViewType;
 }

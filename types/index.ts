@@ -7,3 +7,5 @@ export type { SettingsSection, SettingsOptionProps } from "./types/settings";
 export { TabContext } from "./types/tab";
 
 export { FilterOrder } from "./types/order";
+
+export { ViewType } from "./types/view";
