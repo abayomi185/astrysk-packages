@@ -352,7 +352,7 @@ const JellyfinVideoPlayer: React.FC<{
                 <YStack
                   height="90%"
                   width="80%"
-                  onPress={() => presentFullscreenPlayer()}
+                  onPress={presentFullscreenPlayer}
                 />
               </YStack>
               <YStack
