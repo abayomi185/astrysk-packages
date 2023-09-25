@@ -24,7 +24,10 @@ import {
   SeriesStatusType,
   postApiV3Command,
 } from "./api";
-import { useColorScheme } from "@astrysk/utils";
+import {
+  MILLISECONDS_TO_MINUTES_MULTIPLIER,
+  useColorScheme,
+} from "@astrysk/utils";
 import { FlashList } from "@shopify/flash-list";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
@@ -279,30 +282,13 @@ export const getSizeOnDisk = (size: number) => {
 };
 
 // NOTE: DATE UTILS
-export const MILLISECONDS_TO_MINUTES_MULTIPLIER = 60 * 1000;
-
-export const getStartAndEndOfWeek = (date: Date) => {
-  const day = date.getDay();
-  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is Sunday
-  const startOfWeek = new Date(date.getFullYear(), date.getMonth(), diff);
-  startOfWeek.setHours(0, 0, 0, 0); // set the start of week to the first hour
-  const endOfWeek = new Date(date.getFullYear(), date.getMonth(), diff + 6);
-  endOfWeek.setHours(23, 59, 59, 999); // set the end of week to the last hour
-
-  return [startOfWeek, endOfWeek];
-};
-
 export const checkEpisodeHasAired = (airDateUtc: string, runtime?: number) => {
   return (
     new Date().getTime() -
-      (new Date(airDateUtc).getTime() +
-        (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
+    (new Date(airDateUtc).getTime() +
+      (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
     0
   );
-};
-
-export const getDateFromHours = (hours: number) => {
-  return (hours / 24).toFixed(2);
 };
 
 // export const getStartAndEndOfWeek = (date: Date) => {
@@ -317,32 +303,6 @@ export const getDateFromHours = (hours: number) => {
 //   const endOfWeek = new Date(date.setDate(diffToSunday));
 
 //   return
-
-// NOTE: HISTORY ITEM UTILS
-export const expandableItemAnimationHandler = <T>(
-  flashListRef: React.RefObject<FlashList<T>>
-) => {
-  flashListRef.current?.prepareForLayoutAnimationRender();
-  LayoutAnimation.configureNext({
-    duration: 150,
-    create: {
-      property: "scaleXY",
-      type: "spring",
-      duration: 200,
-      // springDamping: 0.5,
-    },
-    update: {
-      type: "spring",
-      springDamping: 1,
-      duration: 300,
-    },
-    delete: {
-      type: "linear",
-      property: "opacity",
-      duration: 200,
-    },
-  });
-};
 
 // NOTE: SEARCH ALL MISSING
 export const searchAllMissing = () => {

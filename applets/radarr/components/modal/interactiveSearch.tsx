@@ -19,11 +19,8 @@ import {
   RadarrInteractiveSearchContext,
 } from "../../types";
 import { RadarrActionPanelButton } from "../detail/actionPanel";
-import {
-  expandableItemAnimationHandler,
-  getDateFromHours,
-  getSizeOnDisk,
-} from "../../utils";
+import { getSizeOnDisk } from "../../utils";
+import { expandableItemAnimationHandler, getDateFromHours } from "@astrysk/utils";
 import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import { ToastModalProviderKey } from "../../types";
 import {
@@ -159,9 +156,8 @@ const RadarrInteractiveSearchItem: React.FC<{
                       marginTop="$2"
                       numberOfLines={1}
                     >
-                      {`${t(`radarr:${data.protocol}`)} (${data.seeders}/${
-                        data.leechers
-                      })`}
+                      {`${t(`radarr:${data.protocol}`)} (${data.seeders}/${data.leechers
+                        })`}
                     </Text>
                     <Text color="$gray11" marginTop="$2" numberOfLines={1}>
                       {` • ${data.indexer}`}
@@ -173,11 +169,10 @@ const RadarrInteractiveSearchItem: React.FC<{
                     )} • ${data.title}`}
                   </Text>
                   <H6 color="$gray11" marginTop="$2" numberOfLines={1}>
-                    {`${data?.quality?.quality?.name} • ${
-                      data.languages?.[0]?.name
-                    } • ${getSizeOnDisk(data.size as number)} ${t(
-                      "radarr:gb"
-                    )}`}
+                    {`${data?.quality?.quality?.name} • ${data.languages?.[0]?.name
+                      } • ${getSizeOnDisk(data.size as number)} ${t(
+                        "radarr:gb"
+                      )}`}
                   </H6>
                   <XStack alignItems="center" marginTop="$2.5"></XStack>
                 </YStack>
@@ -259,13 +254,13 @@ const RadarrInteractiveSearch: React.FC<{
                 accentColor={radarrColors.accentColor}
               />
             }
-            // refreshControl={
-            //   <RefreshControl
-            //     refreshing={false}
-            //     onRefresh={refetchRelease}
-            //     tintColor={radarrColors.accentColor}
-            //   />
-            // }
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={false}
+          //     onRefresh={refetchRelease}
+          //     tintColor={radarrColors.accentColor}
+          //   />
+          // }
           />
         </XStack>
       </YStack>

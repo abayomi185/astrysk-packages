@@ -20,6 +20,7 @@ import {
 } from "../../api";
 import { sonarrColors } from "../../colors";
 import {
+  getStartAndEndOfWeek,
   onItemLayout,
   setLoadingSpinner,
   useColorScheme,
@@ -27,12 +28,7 @@ import {
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import {
-  MILLISECONDS_TO_MINUTES_MULTIPLIER,
-  checkEpisodeHasAired,
-  getStartAndEndOfWeek,
-  goToSonarrDetailScreen,
-} from "../../utils";
+import { checkEpisodeHasAired, goToSonarrDetailScreen } from "../../utils";
 import { useSonarrStore } from "../../store";
 import {
   CalendarData,

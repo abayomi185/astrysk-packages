@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import { radarrColors } from "../../colors";
 import { EmptyList } from "@astrysk/components";
-import { expandableItemAnimationHandler } from "../../utils";
+import { expandableItemAnimationHandler } from "@astrysk/utils";
 
 const RadarrHistoryItemExpanded: React.FC<{
   t: TFunction;

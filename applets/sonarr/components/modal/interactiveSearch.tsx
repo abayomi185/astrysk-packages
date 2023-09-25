@@ -18,11 +18,11 @@ import {
   SonarrInteractiveSearchContext,
 } from "../../types";
 import { SonarrActionPanelButton } from "../detail/actionPanel";
+import { getSizeOnDisk } from "../../utils";
 import {
   expandableItemAnimationHandler,
   getDateFromHours,
-  getSizeOnDisk,
-} from "../../utils";
+} from "@astrysk/utils";
 import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import { ToastModalProviderKey } from "../../types";
 import { TOAST_TOP_OFFSET, getIconColor } from "@astrysk/utils";
@@ -151,9 +151,8 @@ const SonarrInteractiveSearchItem: React.FC<{
                       marginTop="$2"
                       numberOfLines={1}
                     >
-                      {`${t(`sonarr:${data.protocol}`)} (${data.seeders}/${
-                        data.leechers
-                      })`}
+                      {`${t(`sonarr:${data.protocol}`)} (${data.seeders}/${data.leechers
+                        })`}
                     </Text>
                     <Text color="$gray11" marginTop="$2" numberOfLines={1}>
                       {` • ${data.indexer}`}
@@ -165,11 +164,10 @@ const SonarrInteractiveSearchItem: React.FC<{
                     )} • ${data.seriesTitle}`}
                   </Text>
                   <H6 color="$gray11" marginTop="$2" numberOfLines={1}>
-                    {`${data?.quality?.quality?.name} • ${
-                      data?.language?.name
-                    } • ${getSizeOnDisk(data.size as number)} ${t(
-                      "sonarr:gb"
-                    )}`}
+                    {`${data?.quality?.quality?.name} • ${data?.language?.name
+                      } • ${getSizeOnDisk(data.size as number)} ${t(
+                        "sonarr:gb"
+                      )}`}
                   </H6>
                   <XStack alignItems="center" marginTop="$2.5"></XStack>
                 </YStack>
@@ -210,8 +208,8 @@ const SonarrInteractiveSearch: React.FC<{
   const interactiveSearchContext = seasonNumber
     ? SonarrInteractiveSearchContext.Season
     : episodeId
-    ? SonarrInteractiveSearchContext.Episode
-    : SonarrInteractiveSearchContext.Series;
+      ? SonarrInteractiveSearchContext.Episode
+      : SonarrInteractiveSearchContext.Series;
 
   return (
     <Suspense>

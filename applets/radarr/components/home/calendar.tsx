@@ -16,6 +16,7 @@ import {
 } from "../../api";
 import { radarrColors } from "../../colors";
 import {
+  getStartAndEndOfWeek,
   onItemLayout,
   setLoadingSpinner,
   useColorScheme,
@@ -23,11 +24,7 @@ import {
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import {
-  MILLISECONDS_TO_MINUTES_MULTIPLIER,
-  getStartAndEndOfWeek,
-  goToRadarrDetailScreen,
-} from "../../utils";
+import { goToRadarrDetailScreen } from "../../utils";
 import { useRadarrStore } from "../../store";
 import {
   CalendarData,

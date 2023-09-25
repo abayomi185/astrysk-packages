@@ -16,11 +16,8 @@ import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
 import { FlashList } from "@shopify/flash-list";
 import { SettingsOptionProps } from "@astrysk/types";
 import { TFunction } from "i18next";
-import {
-  checkEpisodeHasAired,
-  getSizeOnDisk,
-  expandableItemAnimationHandler,
-} from "../../utils";
+import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
+import { expandableItemAnimationHandler } from "@astrysk/utils";
 import { SonarrHistoryItem } from "./history";
 import { ToastModalProviderKey } from "../../types";
 import { sonarrColors } from "../../colors";
