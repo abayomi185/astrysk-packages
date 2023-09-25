@@ -2,7 +2,7 @@ import { MMKV } from "react-native-mmkv";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
-import {} from "./types";
+import { LidarrFilter, LidarrFilterKind, LidarrFilterKindValue, LidarrSearchFilterContext } from "./types";
 import { filterPersistState } from "@astrysk/utils";
 import { LanguageResource, QualityProfileResource } from "./api";
 import { ViewType } from "@astrysk/types";
@@ -41,8 +41,8 @@ export const useLidarrStore = create<LidarrState>()(
 
 interface LidarrState extends StateTypes.AppletState {
   // Main cache
-  lidarrMusicCache?: LidarrMovieCache;
-  lidarrMusicFileCache?: LidarrMovieFileCache;
+  // lidarrMusicCache?: LidarrMovieCache;
+  // lidarrMusicFileCache?: LidarrMovieFileCache;
   // Other
   lidarrQualityProfiles?: QualityProfileResource[];
   lidarrLanguageProfiles?: LanguageResource[];
@@ -50,10 +50,10 @@ interface LidarrState extends StateTypes.AppletState {
   searchFilters?: Partial<
     Record<
       LidarrSearchFilterContext,
-      Record<LidarrFilterKind, RadarrFilterKindValue> | undefined
+      Record<LidarrFilterKind, LidarrFilterKindValue> | undefined
     >
   >;
-  filterBarOptions?: Partial<Record<LidarrSearchFilterContext, RadarrFilter[]>>;
+  filterBarOptions?: Partial<Record<LidarrSearchFilterContext, LidarrFilter[]>>;
 }
 
 // NOTE: Make sure to add key to jellyfinPersistStateKeys too
@@ -61,10 +61,10 @@ interface LidarrPersistState
   extends Pick<
     LidarrState,
     "baseURL" | "token" | "customHeaders" | "viewType"
-  > {}
+  > { }
 
 // NOTE: Persist key needs to be added here too
-export const radarrPersistStateKeys = Array.from(
+export const lidarrPersistStateKeys = Array.from(
   new Set<keyof LidarrState>(["baseURL", "token", "customHeaders", "viewType"])
 );
 
