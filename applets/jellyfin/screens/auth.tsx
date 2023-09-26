@@ -116,7 +116,12 @@ const JellyfinAuth = () => {
     // which is less than ideal
     useJellyfinStore.setState({ baseURL: serverURL });
     configureAxiosForJellyfin(serverURL, undefined, undefined, () => {
-      auth.mutate({ data: { Username: data.username, Pw: data.password } });
+      auth.mutate({
+        data: {
+          Username: data.username,
+          Pw: data.password === "" ? undefined : data.password,
+        },
+      });
     });
   };
 
@@ -225,7 +230,7 @@ const JellyfinAuth = () => {
               name="password"
               control={control}
               rules={{
-                required: true,
+                required: false,
               }}
               render={({ field: { onChange, value } }) => (
                 <XStack width="100%">
@@ -238,10 +243,6 @@ const JellyfinAuth = () => {
                     textContentType="password"
                     secureTextEntry={!showPassword}
                     onChangeText={onChange}
-                    value={value}
-                    {...register("password", {
-                      required: t("common:required") as string,
-                    })}
                   />
                   <Button
                     width="$4"
@@ -280,7 +281,7 @@ const JellyfinAuth = () => {
                   t("common:addCustomHeader"),
                   t("common:addCustomHeader_description") as string,
                   [
-                    { text: t("common:cancel") as string, onPress: () => {} },
+                    { text: t("common:cancel") as string, onPress: () => { } },
                     {
                       text: t("common:add") as string,
                       onPress: (value) => {
