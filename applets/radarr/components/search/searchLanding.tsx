@@ -30,13 +30,90 @@ import {
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { radarrColors } from "../../colors";
-import { TabContext } from "@astrysk/types";
+import { TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
 import { customTokens } from "@astrysk/styles";
 
-const RadarrSearchResultItem: React.FC<{
+const RadarrSearchResultGridItem: React.FC<{
+  searchContext: RadarrSearchFilterContext;
+  index?: number;
+  data: MovieResource;
+  isSearching: boolean;
+}> = ({ searchContext, data, isSearching }) => {
+  const router = useRouter();
+  const token = useRadarrStore.getState().token;
+  const baseURL = useRadarrStore.getState().baseURL;
+
+  return (
+    <YStack
+      height="auto"
+      width="$11"
+      padding="$2"
+      pressStyle={{ scale: 0.97 }}
+      animation="delay"
+      onPress={() => {
+        if (new Date(data.added as string).getTime() > 0) {
+          goToRadarrDetailScreen({
+            router,
+            searchItemId: data.id as number,
+            tabContext: TabContext.Search,
+            screenContext: RadarrDetailScreenContext.SearchItem,
+            searchContext,
+          });
+        } else {
+          goToRadarrModalScreen({
+            router,
+            searchItemId: data.id as number,
+            screenContext: RadarrDetailScreenContext.AddMovie,
+            searchContext,
+            imdbId: data.imdbId as string,
+            tmdbId: data.tmdbId as number,
+          });
+        }
+      }}
+    >
+      <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
+        <Image
+          style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
+          source={
+            {
+              uri: data.id
+                ? `${baseURL}/api/v3/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                : data.remotePoster,
+            } as ImageSource
+          }
+          transition={200}
+          recyclingKey={`${data.id}`}
+        />
+      </YStack>
+      <YStack paddingHorizontal="$1" paddingTop="$1">
+        <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
+          {data.title}
+        </H6>
+        <XStack alignItems="center">
+          <Text color="$color" opacity={0.6} numberOfLines={1}>
+            {data.year}
+          </Text>
+          {new Date(data.added as string).getTime() > 0 && isSearching && (
+            <Text
+              color="$green9"
+              fontSize={22}
+              lineHeight={22}
+              marginLeft="$1"
+              opacity={0.9}
+            >
+              {"•"}
+            </Text>
+          )}
+        </XStack>
+      </YStack>
+    </YStack>
+  );
+};
+
+const RadarrSearchResultListItem: React.FC<{
   searchContext: RadarrSearchFilterContext;
   index?: number;
   data: MovieResource;
@@ -119,6 +196,8 @@ const RadarrSearchLanding: React.FC<{
   const { t } = useTranslation();
 
   const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+
+  const viewType = useRadarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useRadarrStore((state) => state.searchFilters);
 
@@ -249,14 +328,28 @@ const RadarrSearchLanding: React.FC<{
           horizontal={false}
           numColumns={flashListColumns}
           data={getMovies()}
-          renderItem={({ item, index }) => (
-            <RadarrSearchResultItem
-              searchContext={RadarrSearchFilterContext.Search}
-              index={index}
-              data={item}
-              isSearching={!!searchTerm}
-            />
-          )}
+          extraData={viewType}
+          renderItem={({ item, index }) => {
+            if (viewType === ViewType.List) {
+              return (
+                <RadarrSearchResultGridItem
+                  searchContext={RadarrSearchFilterContext.Search}
+                  index={index}
+                  data={item}
+                  isSearching={!!searchTerm}
+                />
+              );
+            } else {
+              return (
+                <RadarrSearchResultListItem
+                  searchContext={RadarrSearchFilterContext.Search}
+                  index={index}
+                  data={item}
+                  isSearching={!!searchTerm}
+                />
+              );
+            }
+          }}
           estimatedItemSize={208}
           refreshControl={
             <RefreshControl

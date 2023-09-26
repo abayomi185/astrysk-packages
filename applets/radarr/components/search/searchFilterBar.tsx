@@ -1,11 +1,11 @@
 import React from "react";
 import { useRouter } from "expo-router";
 import { XStack, Button, GetProps, Stack } from "tamagui";
-import { X } from "@tamagui/lucide-icons";
+import { X, LayoutGrid, List } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
 import { Screens } from "@astrysk/constants";
 import { useRadarrStore } from "../../store";
-import { FilterButton } from "@astrysk/components";
+import { FilterButton, ViewTypeButton } from "@astrysk/components";
 import {
   RadarrDetailScreenContext,
   RadarrDetailScreenProps,
@@ -14,6 +14,9 @@ import {
 } from "../../types";
 import { radarrColors } from "../../colors";
 import { isEmpty } from "@astrysk/utils";
+import { ViewType } from "@astrysk/types";
+import { changeViewType } from "@astrysk/components/common/viewTypeButton";
+import { RADARR_SUPPORTED_VIEW_TYPES } from "../../utils";
 
 const getRadarrFilterBarOptions = (
   context: RadarrSearchFilterContext
@@ -54,6 +57,8 @@ const RadarrSearchFilterBar: React.FC<{
   style?: GetProps<typeof Stack>;
 }> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
+
+  const viewType = useRadarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useRadarrStore((state) => state.searchFilters);
 
@@ -100,7 +105,12 @@ const RadarrSearchFilterBar: React.FC<{
   }, [context]);
 
   return (
-    <XStack height="$4" backgroundColor="$backgroundTransparent" {...style}>
+    <XStack
+      height="$4"
+      backgroundColor="$backgroundTransparent"
+      {...style}
+      justifyContent="space-between"
+    >
       <XStack flex={1}>
         <FlashList
           horizontal
@@ -112,7 +122,6 @@ const RadarrSearchFilterBar: React.FC<{
               handlePress={handleFilterPress}
               active={checkActiveStatus(item.id)}
               activeBackgroundColor={radarrColors.primary}
-              // activeBackgroundColor={radarrColors.accentColor}
             />
           )}
           showsHorizontalScrollIndicator={false}
@@ -134,8 +143,20 @@ const RadarrSearchFilterBar: React.FC<{
               </Button>
             </XStack>
           }
-          ListFooterComponent={() => <XStack marginLeft="$3" />}
+          ListFooterComponent={() => <XStack marginRight="$3" />}
           estimatedItemSize={69}
+        />
+      </XStack>
+      <XStack width="$3" marginLeft="$2.5" marginRight="$3" alignItems="center">
+        <ViewTypeButton
+          viewType={viewType}
+          onPressHandler={() => {
+            changeViewType(
+              viewType,
+              RADARR_SUPPORTED_VIEW_TYPES,
+              useRadarrStore
+            );
+          }}
         />
       </XStack>
     </XStack>

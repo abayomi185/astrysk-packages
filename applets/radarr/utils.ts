@@ -1,32 +1,17 @@
 import React from "react";
-import { LayoutAnimation } from "react-native";
 
 import { create_axios_instance } from "@astrysk/api";
-import * as DeviceInfo from "expo-device";
-import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import { useRadarrStore } from "./store";
 
-import {
-  registerLoadingComponent,
-  unregisterLoadingComponent,
-} from "@astrysk/components";
-import { Actions, Screens } from "@astrysk/constants";
-import { FilterOrder, Router, TabContext } from "@astrysk/types";
+import { Screens } from "@astrysk/constants";
+import { FilterOrder, Router, TabContext, ViewType } from "@astrysk/types";
 import {
   RadarrDetailScreenContext,
   RadarrDetailScreenProps,
   RadarrSearchFilterContext,
 } from "./types";
-import {
-  CommandResource,
-  HistoryResource,
-  MovieResource,
-  MovieStatusType,
-  postApiV3Command,
-} from "./api";
-import { useColorScheme } from "@astrysk/utils";
-import { FlashList } from "@shopify/flash-list";
+import { MovieResource, MovieStatusType, postApiV3Command } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForRadarr = (
@@ -345,3 +330,6 @@ export const searchAllMissing = () => {
   // lastExecutionTime?: string | null;
   postApiV3Command({});
 };
+
+// NOTE: VIEW TYPE
+export const RADARR_SUPPORTED_VIEW_TYPES = [ViewType.Grid, ViewType.List];

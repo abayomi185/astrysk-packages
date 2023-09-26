@@ -12,11 +12,7 @@ import {
   SonarrFilterKindValue,
 } from "./types";
 import { filterPersistState } from "@astrysk/utils";
-import {
-  LanguageProfileResource,
-  QualityProfileResource,
-  SeriesResource,
-} from "./api";
+import { LanguageProfileResource, QualityProfileResource } from "./api";
 import { ViewType } from "@astrysk/types";
 
 const MMKVStore = new MMKV({

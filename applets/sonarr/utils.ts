@@ -1,34 +1,18 @@
 import React from "react";
-import { LayoutAnimation } from "react-native";
 
 import { create_axios_instance } from "@astrysk/api";
-import * as DeviceInfo from "expo-device";
-import Constants from "expo-constants";
 import * as Crypto from "expo-crypto";
 import { useSonarrStore } from "./store";
 
-import {
-  registerLoadingComponent,
-  unregisterLoadingComponent,
-} from "@astrysk/components";
-import { Actions, Screens } from "@astrysk/constants";
+import { Screens } from "@astrysk/constants";
 import { FilterOrder, Router, TabContext } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,
   SonarrSearchFilterContext,
 } from "./types";
-import {
-  HistoryResource,
-  SeriesResource,
-  SeriesStatusType,
-  postApiV3Command,
-} from "./api";
-import {
-  MILLISECONDS_TO_MINUTES_MULTIPLIER,
-  useColorScheme,
-} from "@astrysk/utils";
-import { FlashList } from "@shopify/flash-list";
+import { SeriesResource, SeriesStatusType, postApiV3Command } from "./api";
+import { MILLISECONDS_TO_MINUTES_MULTIPLIER } from "@astrysk/utils";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForSonarr = (
@@ -285,8 +269,8 @@ export const getSizeOnDisk = (size: number) => {
 export const checkEpisodeHasAired = (airDateUtc: string, runtime?: number) => {
   return (
     new Date().getTime() -
-    (new Date(airDateUtc).getTime() +
-      (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
+      (new Date(airDateUtc).getTime() +
+        (runtime ?? 1) * MILLISECONDS_TO_MINUTES_MULTIPLIER) >
     0
   );
 };
