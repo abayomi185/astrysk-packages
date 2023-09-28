@@ -14,7 +14,6 @@ import {
   usePutApiV3EpisodeId,
   usePutApiV3SeriesId,
 } from "../../api";
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useSonarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { goToSonarrModalScreen } from "../../utils";
@@ -23,11 +22,12 @@ import {
   SonarrDetailScreenContext,
   SonarrCommands,
   ExtendedSeriesResource,
-  ToastModalProviderKey,
 } from "../../types";
 import { TFunction } from "i18next";
 import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
+import { useToastController } from "@tamagui/toast";
+import { showToast } from "@astrysk/components";
 
 export const sonarrActionButtonColors = {
   monitoring: {
@@ -88,22 +88,21 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
   t: TFunction;
   data: EpisodeResource;
 }> = ({ t, data }) => {
+  const toast = useToastController();
   const iconColor = getIconColor();
 
   // NOTE: AUTOMATIC SEARCH
   const postCommand = usePostApiV3Command({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:success:automaticSearchStarted"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:success:automaticSearchStarted"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:automaticSearchFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:automaticSearchFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -135,6 +134,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -175,16 +175,14 @@ export const SonarrEpisodeActionPanel: React.FC<{
   const postCommand = usePostApiV3Command({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:success:automaticSearchStarted"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:success:automaticSearchStarted"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:automaticSearchFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:automaticSearchFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -218,7 +216,8 @@ export const SonarrEpisodeActionPanel: React.FC<{
   const deleteEpisodeFile = () => {
     Alert.alert(
       `${t("common:areYouSure")}`,
-      `${t("common:thisWillDelete")} - ${t("sonarr:episode")} ${data.episodeNumber
+      `${t("common:thisWillDelete")} - ${t("sonarr:episode")} ${
+        data.episodeNumber
       } - ${data.title}`,
       [
         {
@@ -288,6 +287,7 @@ export const SonarrActionPanel: React.FC<{
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -316,17 +316,16 @@ export const SonarrActionPanel: React.FC<{
             },
           };
         });
-        toast.success(t("sonarr:success:monitoringStatusUpdated"), {
-          providerKey: ToastModalProviderKey.Persists,
+
+        showToast(toast, t("sonarr:success:monitoringStatusUpdated"), {
+          type: "success",
         });
         setLoadingSpinner(SonarrActionPanel.name, Actions.DONE);
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:unableToSetMonitoredStatus"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:unableToSetMonitoredStatus"), {
+          message: error.message,
+          type: "error",
         });
         setLoadingSpinner(SonarrActionPanel.name, Actions.DONE);
       },
@@ -399,7 +398,8 @@ export const SonarrActionPanel: React.FC<{
   const deleteAction = (deleteFiles: boolean = true) => {
     Alert.alert(
       `${t("sonarr:doYouWantToDelete")}`,
-      `${isSeries ? t("sonarr:series") : t("sonarr:season")}${!isSeries ? " " + seasonNumber : ""
+      `${isSeries ? t("sonarr:series") : t("sonarr:season")}${
+        !isSeries ? " " + seasonNumber : ""
       } ` + `- ${data.title}\n`,
       [
         {
@@ -411,24 +411,24 @@ export const SonarrActionPanel: React.FC<{
           onPress: () => {
             isSeries
               ? deleteSeries.mutate({
-                id: data.id as number,
-                params: {
-                  ...(deleteFiles ? { deleteFiles: deleteFiles } : {}),
-                },
-              })
+                  id: data.id as number,
+                  params: {
+                    ...(deleteFiles ? { deleteFiles: deleteFiles } : {}),
+                  },
+                })
               : () => {
-                const episodeCount = getEpisodeIdsForSeasonDeletion(
-                  seasonNumber as number
-                );
-                if (episodeCount && episodeCount.length > 0) {
-                  deleteEpisodes.mutate({
-                    data: {
-                      episodeFileIds: episodeCount,
-                      deleteFiles: true,
-                    } as EpisodeFileListResource,
-                  });
-                }
-              };
+                  const episodeCount = getEpisodeIdsForSeasonDeletion(
+                    seasonNumber as number
+                  );
+                  if (episodeCount && episodeCount.length > 0) {
+                    deleteEpisodes.mutate({
+                      data: {
+                        episodeFileIds: episodeCount,
+                        deleteFiles: true,
+                      } as EpisodeFileListResource,
+                    });
+                  }
+                };
           },
           style: "destructive",
         },
@@ -440,16 +440,14 @@ export const SonarrActionPanel: React.FC<{
   const postCommand = usePostApiV3Command({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:success:automaticSearchStarted"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:success:automaticSearchStarted"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:automaticSearchFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:automaticSearchFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -464,9 +462,9 @@ export const SonarrActionPanel: React.FC<{
         ...(isSeries ? { id: data.id as number } : {}),
         ...(seasonNumber !== undefined
           ? {
-            seriesId: data.id as number,
-            seasonNumber: seasonNumber,
-          }
+              seriesId: data.id as number,
+              seasonNumber: seasonNumber,
+            }
           : {}),
       },
     });
@@ -486,8 +484,8 @@ export const SonarrActionPanel: React.FC<{
                   ? "$red7"
                   : "$gray5"
                 : monitoredStatus
-                  ? "$red7"
-                  : "$gray5",
+                ? "$red7"
+                : "$gray5",
           }}
           onPress={toggleMonitor}
         >

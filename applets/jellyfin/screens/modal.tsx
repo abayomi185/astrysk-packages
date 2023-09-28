@@ -24,7 +24,6 @@ import { JellyfinLanguageBottomSheet } from "../components/detail/bottomSheet";
 import { JellyfinMediaItemSettingsOptions } from "../settings";
 import { onItemLayout } from "@astrysk/utils";
 import JellyfinMoreDetail from "../components/detail/moreDetail";
-import { toast, Toasts } from "@backpackapp-io/react-native-toast";
 
 const JellyfinModal = () => {
   const navigation = useNavigation();
@@ -228,14 +227,6 @@ const JellyfinModal = () => {
   if (params.context === JellyfinDetailScreenContext.EpisodeMoreDetail) {
     const episodeId = params?.episodeId as string;
     const seriesId = params?.itemId as string;
-
-    // React.useEffect(() => {
-    //   toast("Hello", {
-    //     providerKey: "MODAL::1",
-    //   });
-    //   // toast.error("Hello");
-    // }, []);
-    // <Toasts providerKey="MODAL::1" />
 
     return (
       <JellyfinMoreDetail

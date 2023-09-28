@@ -10,7 +10,7 @@ import {
 import { XStack, YStack, Text, Button, H6 } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
-import { EmptyList } from "@astrysk/components";
+import { EmptyList, showToast } from "@astrysk/components";
 import { radarrColors } from "../../colors";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
@@ -20,15 +20,12 @@ import {
 } from "../../types";
 import { RadarrActionPanelButton } from "../detail/actionPanel";
 import { getSizeOnDisk } from "../../utils";
-import { expandableItemAnimationHandler, getDateFromHours } from "@astrysk/utils";
-import { Toasts, toast } from "@backpackapp-io/react-native-toast";
-import { ToastModalProviderKey } from "../../types";
 import {
-  TOAST_TOP_OFFSET,
-  getIconColor,
-  setLoadingSpinner,
+  expandableItemAnimationHandler,
+  getDateFromHours,
 } from "@astrysk/utils";
-import { Actions } from "@astrysk/constants";
+import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 const RadarrInteractiveSearchItemExpanded: React.FC<{
   t: TFunction;
@@ -93,6 +90,7 @@ const RadarrInteractiveSearchItem: React.FC<{
   pressHandler: () => void;
 }> = ({ t, data, context, pressHandler }) => {
   const router = useRouter();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -101,16 +99,14 @@ const RadarrInteractiveSearchItem: React.FC<{
   const release = usePostApiV3Release({
     mutation: {
       onSuccess: () => {
-        toast.success(t("radarr:success:requested"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:success:requested"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("radarr:error:requestFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:error:requestFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -156,8 +152,9 @@ const RadarrInteractiveSearchItem: React.FC<{
                       marginTop="$2"
                       numberOfLines={1}
                     >
-                      {`${t(`radarr:${data.protocol}`)} (${data.seeders}/${data.leechers
-                        })`}
+                      {`${t(`radarr:${data.protocol}`)} (${data.seeders}/${
+                        data.leechers
+                      })`}
                     </Text>
                     <Text color="$gray11" marginTop="$2" numberOfLines={1}>
                       {` • ${data.indexer}`}
@@ -169,10 +166,11 @@ const RadarrInteractiveSearchItem: React.FC<{
                     )} • ${data.title}`}
                   </Text>
                   <H6 color="$gray11" marginTop="$2" numberOfLines={1}>
-                    {`${data?.quality?.quality?.name} • ${data.languages?.[0]?.name
-                      } • ${getSizeOnDisk(data.size as number)} ${t(
-                        "radarr:gb"
-                      )}`}
+                    {`${data?.quality?.quality?.name} • ${
+                      data.languages?.[0]?.name
+                    } • ${getSizeOnDisk(data.size as number)} ${t(
+                      "radarr:gb"
+                    )}`}
                   </H6>
                   <XStack alignItems="center" marginTop="$2.5"></XStack>
                 </YStack>
@@ -199,6 +197,7 @@ const RadarrInteractiveSearch: React.FC<{
   data: MovieResource;
 }> = ({ data }) => {
   const { t } = useTranslation();
+  const toast = useToastController();
 
   const flashListRef = React.useRef<FlashList<ReleaseResource>>(null);
 
@@ -209,11 +208,9 @@ const RadarrInteractiveSearch: React.FC<{
     {
       query: {
         onError: (error) => {
-          toast.error(t("radarr:error:interactiveSearchFailed"), {
-            providerKey: ToastModalProviderKey.Persists,
-          });
-          toast.error(error.message, {
-            providerKey: ToastModalProviderKey.Persists,
+          showToast(toast, t("radarr:error:interactiveSearchFailed"), {
+            message: error.message,
+            type: "error",
           });
         },
       },
@@ -254,22 +251,16 @@ const RadarrInteractiveSearch: React.FC<{
                 accentColor={radarrColors.accentColor}
               />
             }
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={false}
-          //     onRefresh={refetchRelease}
-          //     tintColor={radarrColors.accentColor}
-          //   />
-          // }
+            // refreshControl={
+            //   <RefreshControl
+            //     refreshing={false}
+            //     onRefresh={refetchRelease}
+            //     tintColor={radarrColors.accentColor}
+            //   />
+            // }
           />
         </XStack>
       </YStack>
-      <Toasts
-        providerKey={ToastModalProviderKey.Movie}
-        extraInsets={{
-          top: TOAST_TOP_OFFSET,
-        }}
-      />
     </Suspense>
   );
 };

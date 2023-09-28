@@ -35,11 +35,6 @@ export interface SonarrAgendaList {
   [key: string]: any;
 }
 
-export enum ToastModalProviderKey {
-  Persists = "PERSISTS",
-  Episode = "Episode",
-}
-
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
 export enum SonarrDetailScreenContext {

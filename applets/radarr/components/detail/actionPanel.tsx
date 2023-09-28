@@ -8,7 +8,6 @@ import {
   usePostApiV3Command,
   usePutApiV3MovieId,
 } from "../../api";
-import { toast } from "@backpackapp-io/react-native-toast";
 import { useRadarrStore } from "../../store";
 import { useTranslation } from "react-i18next";
 import { goToRadarrModalScreen } from "../../utils";
@@ -17,10 +16,11 @@ import {
   RadarrDetailScreenContext,
   RadarrCommands,
   ExtendedMovieResource,
-  ToastModalProviderKey,
 } from "../../types";
 import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
+import { showToast } from "@astrysk/components";
+import { useToastController } from "@tamagui/toast";
 
 export const radarrActionButtonColors = {
   monitoring: {
@@ -83,6 +83,7 @@ export const RadarrActionPanel: React.FC<{
   const { t } = useTranslation();
   const router = useRouter();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -102,17 +103,15 @@ export const RadarrActionPanel: React.FC<{
             },
           };
         });
-        toast.success(t("radarr:success:monitoringStatusUpdated"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:success:monitoringStatusUpdated"), {
+          type: "success",
         });
         setLoadingSpinner(RadarrActionPanel.name, Actions.DONE);
       },
       onError: (error) => {
-        toast.error(t("radarr:error:unableToSetMonitoredStatus"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:error:unableToSetMonitoredStatus"), {
+          message: error.message,
+          type: "error",
         });
         setLoadingSpinner(RadarrActionPanel.name, Actions.DONE);
       },
@@ -169,16 +168,14 @@ export const RadarrActionPanel: React.FC<{
   const postCommand = usePostApiV3Command({
     mutation: {
       onSuccess: () => {
-        toast.success(t("radarr:success:automaticSearchStarted"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:success:automaticSearchStarted"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("radarr:error:automaticSearchFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:error:automaticSearchFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },

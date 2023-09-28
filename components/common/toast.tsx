@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Toast, useToastState, ToastViewport } from "@tamagui/toast";
 
 type ShowOptions = {
-  message: string;
+  message?: string;
   duration?: number;
   // customData?: CustomData;
   viewportName?: string | "default";
@@ -21,13 +21,19 @@ type ToastContext = {
 export const showToast = (
   toast: ToastContext,
   title: string,
-  message: string,
-  type: "success" | "warning" | "error" | "none",
-  duration?: number
+  {
+    message,
+    type,
+    duration,
+  }: {
+    message?: string;
+    type: "success" | "warning" | "error" | "none";
+    duration?: number;
+  }
 ) => {
   toast.show(title, {
     message,
-    duration: duration,
+    duration,
     burntOptions: {
       preset:
         type === "success"

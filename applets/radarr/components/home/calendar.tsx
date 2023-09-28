@@ -200,7 +200,7 @@ const RadarrCalendar: React.FC = () => {
     <YStack flex={1}>
       <CalendarProvider
         date={new Date().toISOString().split("T")[0]}
-      // theme={calendarTheme.current}
+        // theme={calendarTheme.current}
       >
         <SectionTitle subtle>{t("radarr:upcomingMovies")}</SectionTitle>
         <XStack flexGrow={1}>
@@ -208,48 +208,48 @@ const RadarrCalendar: React.FC = () => {
             sections={
               calendarQuery.data
                 ? // Object.values are the values of the object only
-                Object.values(
-                  groupBy(
-                    calendarQuery.data.map((calendarData) => {
-                      const closestDate = [
-                        calendarData.physicalRelease,
-                        calendarData.digitalRelease,
-                        calendarData.inCinemas,
-                      ].reduce((closest: Date, date) => {
-                        if (date) {
-                          const movieDate = new Date(date);
-                          if (
-                            movieDate > weekRange[0] &&
-                            movieDate < weekRange[1]
-                          ) {
-                            return movieDate;
+                  Object.values(
+                    groupBy(
+                      calendarQuery.data.map((calendarData) => {
+                        const closestDate = [
+                          calendarData.physicalRelease,
+                          calendarData.digitalRelease,
+                          calendarData.inCinemas,
+                        ].reduce((closest: Date, date) => {
+                          if (date) {
+                            const movieDate = new Date(date);
+                            if (
+                              movieDate > weekRange[0] &&
+                              movieDate < weekRange[1]
+                            ) {
+                              return movieDate;
+                            }
                           }
-                        }
-                        return closest;
-                      }, weekRange[0]);
+                          return closest;
+                        }, weekRange[0]);
 
-                      return {
-                        // Attempt to convert to local datetime
-                        title: closestDate.toISOString(),
-                        data: [
-                          {
-                            movieData:
-                              useRadarrStore.getState().radarrMovieCache?.[
-                              calendarData.id as number
-                              ],
-                            title: calendarData.title,
-                            hasFile: calendarData.hasFile,
-                            inCinemas: calendarData.inCinemas,
-                          } as CalendarData,
-                        ],
-                      } as RadarrAgendaList;
-                    }),
-                    "title" // Group by title
-                  )
-                ).map((group: RadarrAgendaList[]) => ({
-                  title: group[0].title,
-                  data: group.map((item: RadarrAgendaList) => item.data[0]),
-                }))
+                        return {
+                          // Attempt to convert to local datetime
+                          title: closestDate.toISOString(),
+                          data: [
+                            {
+                              movieData:
+                                useRadarrStore.getState().radarrMovieCache?.[
+                                  calendarData.id as number
+                                ],
+                              title: calendarData.title,
+                              hasFile: calendarData.hasFile,
+                              inCinemas: calendarData.inCinemas,
+                            } as CalendarData,
+                          ],
+                        } as RadarrAgendaList;
+                      }),
+                      "title" // Group by title
+                    )
+                  ).map((group: RadarrAgendaList[]) => ({
+                    title: group[0].title,
+                    data: group.map((item: RadarrAgendaList) => item.data[0]),
+                  }))
                 : []
             }
             renderItem={({ item }: { item: CalendarData }) => {
@@ -284,7 +284,7 @@ const RadarrCalendar: React.FC = () => {
                           } as ImageSource
                         }
                         transition={200}
-                      // recyclingKey={`${item.movieData.id}`}
+                        // recyclingKey={`${item.movieData.id}`}
                       />
                     </XStack>
                     <YStack

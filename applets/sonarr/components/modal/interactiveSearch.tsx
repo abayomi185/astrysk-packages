@@ -9,7 +9,7 @@ import {
 import { XStack, YStack, Text, Button, H6 } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
-import { EmptyList } from "@astrysk/components";
+import { EmptyList, showToast } from "@astrysk/components";
 import { sonarrColors } from "../../colors";
 import { useTranslation } from "react-i18next";
 import { TFunction } from "i18next";
@@ -23,9 +23,8 @@ import {
   expandableItemAnimationHandler,
   getDateFromHours,
 } from "@astrysk/utils";
-import { Toasts, toast } from "@backpackapp-io/react-native-toast";
-import { ToastModalProviderKey } from "../../types";
-import { TOAST_TOP_OFFSET, getIconColor } from "@astrysk/utils";
+import { getIconColor } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 const SonarrInteractiveSearchItemExpanded: React.FC<{
   t: TFunction;
@@ -88,6 +87,7 @@ const SonarrInteractiveSearchItem: React.FC<{
   pressHandler: () => void;
 }> = ({ t, data, context, pressHandler }) => {
   const router = useRouter();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -96,16 +96,14 @@ const SonarrInteractiveSearchItem: React.FC<{
   const release = usePostApiV3Release({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:success:requested"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:success:requested"), {
+          type: "success",
         });
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:requestFailed)"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:requestFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -151,8 +149,9 @@ const SonarrInteractiveSearchItem: React.FC<{
                       marginTop="$2"
                       numberOfLines={1}
                     >
-                      {`${t(`sonarr:${data.protocol}`)} (${data.seeders}/${data.leechers
-                        })`}
+                      {`${t(`sonarr:${data.protocol}`)} (${data.seeders}/${
+                        data.leechers
+                      })`}
                     </Text>
                     <Text color="$gray11" marginTop="$2" numberOfLines={1}>
                       {` • ${data.indexer}`}
@@ -164,10 +163,11 @@ const SonarrInteractiveSearchItem: React.FC<{
                     )} • ${data.seriesTitle}`}
                   </Text>
                   <H6 color="$gray11" marginTop="$2" numberOfLines={1}>
-                    {`${data?.quality?.quality?.name} • ${data?.language?.name
-                      } • ${getSizeOnDisk(data.size as number)} ${t(
-                        "sonarr:gb"
-                      )}`}
+                    {`${data?.quality?.quality?.name} • ${
+                      data?.language?.name
+                    } • ${getSizeOnDisk(data.size as number)} ${t(
+                      "sonarr:gb"
+                    )}`}
                   </H6>
                   <XStack alignItems="center" marginTop="$2.5"></XStack>
                 </YStack>
@@ -208,8 +208,8 @@ const SonarrInteractiveSearch: React.FC<{
   const interactiveSearchContext = seasonNumber
     ? SonarrInteractiveSearchContext.Season
     : episodeId
-      ? SonarrInteractiveSearchContext.Episode
-      : SonarrInteractiveSearchContext.Series;
+    ? SonarrInteractiveSearchContext.Episode
+    : SonarrInteractiveSearchContext.Series;
 
   return (
     <Suspense>
@@ -241,12 +241,6 @@ const SonarrInteractiveSearch: React.FC<{
           />
         </XStack>
       </YStack>
-      <Toasts
-        providerKey={ToastModalProviderKey.Episode}
-        extraInsets={{
-          top: TOAST_TOP_OFFSET,
-        }}
-      />
     </Suspense>
   );
 };

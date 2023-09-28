@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigation } from "expo-router";
 import { Alert, AlertButton } from "react-native";
-import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import {
   LanguageProfileResource,
   QualityProfileResource,
@@ -13,13 +12,13 @@ import {
 import { useSonarrStore } from "../../store";
 import { TFunction } from "i18next";
 import { SettingsOptionProps } from "@astrysk/types";
-import { SonarrDetailScreenContext, ToastModalProviderKey } from "../../types";
+import { SonarrDetailScreenContext } from "../../types";
 import { Button, XStack, YStack, Text, Spinner } from "tamagui";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
-import { SectionTitle, SettingsOption } from "@astrysk/components";
+import { SectionTitle, SettingsOption, showToast } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
-import { TOAST_TOP_OFFSET } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 const getSonarrEditDetailOptions = (
   t: TFunction,
@@ -196,6 +195,7 @@ const SonarrEditSeries: React.FC<{
 }> = ({ data, tvdbId, context }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const newSeriesData = useGetApiV3SeriesLookup(
     {
@@ -215,17 +215,15 @@ const SonarrEditSeries: React.FC<{
   const addSeries = usePostApiV3Series({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:seriesAdded"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:seriesAdded"), {
+          type: "success",
         });
         navigation.goBack();
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:addingSeriesFailed"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:addingSeriesFailed"), {
+          message: error.message,
+          type: "success",
         });
       },
     },
@@ -233,17 +231,15 @@ const SonarrEditSeries: React.FC<{
   const updateSeries = usePutApiV3SeriesId({
     mutation: {
       onSuccess: () => {
-        toast.success(t("sonarr:seriesUpdated"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:seriesUpdated"), {
+          type: "success",
         });
         navigation.goBack();
       },
       onError: (error) => {
-        toast.error(t("sonarr:error:seriesUpdateFailed"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("sonarr:error:seriesUpdateFailed"), {
+          message: error.message,
+          type: "success",
         });
       },
     },
@@ -356,11 +352,6 @@ const SonarrEditSeries: React.FC<{
           estimatedItemSize={43}
         />
       </XStack>
-      <Toasts
-        extraInsets={{
-          top: TOAST_TOP_OFFSET,
-        }}
-      />
     </YStack>
   );
 };

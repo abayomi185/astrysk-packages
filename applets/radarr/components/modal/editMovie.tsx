@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigation } from "expo-router";
 import { Alert, AlertButton } from "react-native";
-import { Toasts, toast } from "@backpackapp-io/react-native-toast";
 import {
   QualityProfileResource,
   MovieResource,
@@ -14,13 +13,13 @@ import {
 import { useRadarrStore } from "../../store";
 import { TFunction } from "i18next";
 import { SettingsOptionProps } from "@astrysk/types";
-import { RadarrDetailScreenContext, ToastModalProviderKey } from "../../types";
+import { RadarrDetailScreenContext } from "../../types";
 import { Button, XStack, YStack, Text, Spinner } from "tamagui";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
-import { SectionTitle, SettingsOption } from "@astrysk/components";
+import { SectionTitle, SettingsOption, showToast } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
-import { TOAST_TOP_OFFSET } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 const getRadarrEditDetailOptions = (
   t: TFunction,
@@ -112,13 +111,13 @@ const getRadarrEditDetailOptions = (
           return (
             qualityProfiles.map(
               (profile) =>
-              ({
-                text: profile.name as string,
-                style: "default",
-                onPress: () => {
-                  selectQuality(profile.id as number);
-                },
-              } as AlertButton)
+                ({
+                  text: profile.name as string,
+                  style: "default",
+                  onPress: () => {
+                    selectQuality(profile.id as number);
+                  },
+                } as AlertButton)
             ) ?? []
           );
         };
@@ -143,15 +142,15 @@ const getRadarrEditDetailOptions = (
         const getPathOptions = () => {
           return rootFolders.map(
             (folder) =>
-            ({
-              text: `${folder}/${movieData?.title}`,
-              style: "default",
-              onPress: () => {
-                setState({
-                  path: `${folder}/${movieData?.title}`,
-                });
-              },
-            } as AlertButton)
+              ({
+                text: `${folder}/${movieData?.title}`,
+                style: "default",
+                onPress: () => {
+                  setState({
+                    path: `${folder}/${movieData?.title}`,
+                  });
+                },
+              } as AlertButton)
           );
         };
         Alert.prompt(
@@ -192,6 +191,7 @@ const RadarrEditMovie: React.FC<{
 }> = ({ data, imdbId, tmdbId, context }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const toast = useToastController();
 
   const newMovieDataImdb = useGetApiV3MovieLookupImdb(
     {
@@ -223,17 +223,15 @@ const RadarrEditMovie: React.FC<{
   const addMovie = usePostApiV3Movie({
     mutation: {
       onSuccess: () => {
-        toast.success(t("radarr:movieAdded"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:movieAdded"), {
+          type: "success",
         });
         navigation.goBack();
       },
       onError: (error) => {
-        toast.error(t("radarr:error:addingMovieFailed"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:error:addingMovieFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -241,17 +239,15 @@ const RadarrEditMovie: React.FC<{
   const updateMovie = usePutApiV3MovieId({
     mutation: {
       onSuccess: () => {
-        toast.success(t("radarr:movieUpdated"), {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:movieUpdated"), {
+          type: "success",
         });
         navigation.goBack();
       },
       onError: (error) => {
-        toast.error(t("radarr:error:movieUpdateFailed"), {
-          providerKey: ToastModalProviderKey.Persists,
-        });
-        toast.error(error.message, {
-          providerKey: ToastModalProviderKey.Persists,
+        showToast(toast, t("radarr:error:movieUpdateFailed"), {
+          message: error.message,
+          type: "error",
         });
       },
     },
@@ -326,8 +322,8 @@ const RadarrEditMovie: React.FC<{
                     (!imdbId &&
                       !!tmdbId &&
                       newMovieDataTmdb.status === "loading")) && (
-                      <Spinner marginRight="$3" />
-                    )}
+                    <Spinner marginRight="$3" />
+                  )}
                 </XStack>
               )}
             </XStack>
@@ -361,11 +357,6 @@ const RadarrEditMovie: React.FC<{
           estimatedItemSize={43}
         />
       </XStack>
-      <Toasts
-        extraInsets={{
-          top: TOAST_TOP_OFFSET,
-        }}
-      />
     </YStack>
   );
 };

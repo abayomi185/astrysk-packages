@@ -19,9 +19,7 @@ import { TFunction } from "i18next";
 import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
 import { expandableItemAnimationHandler } from "@astrysk/utils";
 import { SonarrHistoryItem } from "./history";
-import { ToastModalProviderKey } from "../../types";
 import { sonarrColors } from "../../colors";
-import { TOAST_TOP_OFFSET } from "@astrysk/utils";
 
 const getSonarrEpisodeModalOptions = (
   t: TFunction,
@@ -260,12 +258,6 @@ const SonarrEpisode: React.FC<{
           </XStack>
         }
         estimatedItemSize={59}
-      />
-      <Toasts
-        providerKey={ToastModalProviderKey.Episode}
-        extraInsets={{
-          top: TOAST_TOP_OFFSET,
-        }}
       />
     </XStack>
   );

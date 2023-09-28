@@ -18,9 +18,10 @@ import { queryClient } from "@astrysk/api";
 import { Screens } from "@astrysk/constants";
 import { AuthProvider } from "@astrysk/api";
 import { useAppStateStore } from "@astrysk/stores";
+import { ToastProvider } from "@tamagui/toast";
 
 import { activeApplet } from "@applet";
-import { Toasts } from "@backpackapp-io/react-native-toast";
+import { SafeToastViewport, UniversalToast } from "@astrysk/components";
 
 // Prevent hiding the splash screen
 SplashScreen.preventAutoHideAsync();
@@ -82,34 +83,43 @@ export default (() => {
         config={themeConfig}
         defaultTheme={colorScheme as string}
       >
-        <Theme name={colorScheme === "dark" ? "dark" : "light"}>
-          <AuthProvider>
-            <QueryClientProvider client={queryClient}>
-              <Stack>
-                <Stack.Screen name="(root)" options={{ headerShown: false }} />
-                <Stack.Screen
-                  name={Screens.ROOT_MODAL_ROUTE}
-                  options={{ presentation: "modal", orientation: "portrait" }}
-                />
-                <Stack.Screen
-                  name={Screens.ROOT_FS_MODAL_ROUTE}
-                  options={{
-                    presentation: "fullScreenModal",
-                    headerShown: false,
-                    autoHideHomeIndicator: true,
-                  }}
-                />
-                <Stack.Screen
-                  name={Screens.ROOT_DETAIL_ROUTE}
-                  options={{
-                    headerTitle: "Root Detail",
-                  }}
-                />
-              </Stack>
-              <Toasts />
-            </QueryClientProvider>
-          </AuthProvider>
-        </Theme>
+        <ToastProvider native={true}>
+          <>
+            {/* NOTE: TOASTS */}
+            <SafeToastViewport />
+            <UniversalToast />
+          </>
+          <Theme name={colorScheme === "dark" ? "dark" : "light"}>
+            <AuthProvider>
+              <QueryClientProvider client={queryClient}>
+                <Stack>
+                  <Stack.Screen
+                    name="(root)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name={Screens.ROOT_MODAL_ROUTE}
+                    options={{ presentation: "modal", orientation: "portrait" }}
+                  />
+                  <Stack.Screen
+                    name={Screens.ROOT_FS_MODAL_ROUTE}
+                    options={{
+                      presentation: "fullScreenModal",
+                      headerShown: false,
+                      autoHideHomeIndicator: true,
+                    }}
+                  />
+                  <Stack.Screen
+                    name={Screens.ROOT_DETAIL_ROUTE}
+                    options={{
+                      headerTitle: "Root Detail",
+                    }}
+                  />
+                </Stack>
+              </QueryClientProvider>
+            </AuthProvider>
+          </Theme>
+        </ToastProvider>
       </TamaguiProvider>
     </ThemeProvider>
   );

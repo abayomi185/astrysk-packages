@@ -24,11 +24,6 @@ export interface RadarrAgendaList {
   [key: string]: any;
 }
 
-export enum ToastModalProviderKey {
-  Persists = "PERSISTS",
-  Movie = "Movie",
-}
-
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
 export enum RadarrDetailScreenContext {
