@@ -100,7 +100,7 @@ const RadarrInteractiveSearchItem: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("radarr:success:requested"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {

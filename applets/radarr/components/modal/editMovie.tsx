@@ -224,7 +224,7 @@ const RadarrEditMovie: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("radarr:movieAdded"), {
-          type: "success",
+          type: "done",
         });
         navigation.goBack();
       },
@@ -240,7 +240,7 @@ const RadarrEditMovie: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("radarr:movieUpdated"), {
-          type: "success",
+          type: "done",
         });
         navigation.goBack();
       },

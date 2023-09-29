@@ -96,7 +96,7 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:success:automaticSearchStarted"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {
@@ -176,7 +176,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:success:automaticSearchStarted"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {
@@ -318,7 +318,7 @@ export const SonarrActionPanel: React.FC<{
         });
 
         showToast(toast, t("sonarr:success:monitoringStatusUpdated"), {
-          type: "success",
+          type: "done",
         });
         setLoadingSpinner(SonarrActionPanel.name, Actions.DONE);
       },
@@ -441,7 +441,7 @@ export const SonarrActionPanel: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:success:automaticSearchStarted"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {

@@ -24,10 +24,12 @@ export const showToast = (
   {
     message,
     type,
+    haptic,
     duration,
   }: {
     message?: string;
-    type: "success" | "warning" | "error" | "none";
+    type: "done" | "error" | "none";
+    haptic?: "success" | "warning" | "error" | "none";
     duration?: number;
   }
 ) => {
@@ -35,13 +37,8 @@ export const showToast = (
     message,
     duration,
     burntOptions: {
-      preset:
-        type === "success"
-          ? "done"
-          : type === "warning" || type === "error"
-          ? "error"
-          : "none",
-      haptic: type,
+      preset: type,
+      haptic: haptic,
     },
   });
 };

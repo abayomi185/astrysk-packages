@@ -216,14 +216,14 @@ const SonarrEditSeries: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:seriesAdded"), {
-          type: "success",
+          type: "done",
         });
         navigation.goBack();
       },
       onError: (error) => {
         showToast(toast, t("sonarr:error:addingSeriesFailed"), {
           message: error.message,
-          type: "success",
+          type: "error",
         });
       },
     },
@@ -232,14 +232,14 @@ const SonarrEditSeries: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:seriesUpdated"), {
-          type: "success",
+          type: "done",
         });
         navigation.goBack();
       },
       onError: (error) => {
         showToast(toast, t("sonarr:error:seriesUpdateFailed"), {
           message: error.message,
-          type: "success",
+          type: "error",
         });
       },
     },

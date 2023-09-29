@@ -97,7 +97,7 @@ const SonarrInteractiveSearchItem: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("sonarr:success:requested"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {

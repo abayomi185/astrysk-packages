@@ -104,7 +104,7 @@ export const RadarrActionPanel: React.FC<{
           };
         });
         showToast(toast, t("radarr:success:monitoringStatusUpdated"), {
-          type: "success",
+          type: "done",
         });
         setLoadingSpinner(RadarrActionPanel.name, Actions.DONE);
       },
@@ -169,7 +169,7 @@ export const RadarrActionPanel: React.FC<{
     mutation: {
       onSuccess: () => {
         showToast(toast, t("radarr:success:automaticSearchStarted"), {
-          type: "success",
+          type: "done",
         });
       },
       onError: (error) => {
