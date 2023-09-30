@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { AppletButtonBanner } from "@astrysk/components";
+import { AppletButtonBanner, showToast } from "@astrysk/components";
 import { Applets } from "@astrysk/constants";
 
 import { useAuthenticateUserByName } from "../api";
@@ -20,6 +20,7 @@ import {
   getIconColor,
   promptUserForURLSchemaIfNotExists,
 } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 interface Inputs {
   serverURL: string;
@@ -31,6 +32,7 @@ interface Inputs {
 const JellyfinAuth = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -72,10 +74,10 @@ const JellyfinAuth = () => {
         if (error.response?.status) {
           // error.response.status >= 400 &&
           //   error.response.status < 500 &&
-          Alert.alert(
-            `${t("common:error")}`,
-            `${error.response.status}: ${error.code}`
-          );
+          showToast(toast, `${t("common:error")}`, {
+            message: `${error.response.status}: ${error.code}`,
+            type: "error",
+          });
           // WARN: Make use of ReactHookForm to show error in fields
           setError("serverURL", {
             type: "manual",
@@ -243,6 +245,8 @@ const JellyfinAuth = () => {
                     textContentType="password"
                     secureTextEntry={!showPassword}
                     onChangeText={onChange}
+                    value={value}
+                    {...register("password")}
                   />
                   <Button
                     width="$4"
@@ -281,7 +285,7 @@ const JellyfinAuth = () => {
                   t("common:addCustomHeader"),
                   t("common:addCustomHeader_description") as string,
                   [
-                    { text: t("common:cancel") as string, onPress: () => { } },
+                    { text: t("common:cancel") as string, onPress: () => {} },
                     {
                       text: t("common:add") as string,
                       onPress: (value) => {
@@ -309,7 +313,7 @@ const JellyfinAuth = () => {
                 );
               }}
             >
-              {t("common:addCustomHeaders")}
+              <Text>{t("common:addCustomHeaders")}</Text>
             </Button>
           </YStack>
         </Form>

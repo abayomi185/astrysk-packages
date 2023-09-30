@@ -1,6 +1,7 @@
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Toast, useToastState, ToastViewport } from "@tamagui/toast";
+import { Button, Text } from "tamagui";
 
 type ShowOptions = {
   message?: string;
@@ -30,12 +31,12 @@ export const showToast = (
     message?: string;
     type: "done" | "error" | "none";
     haptic?: "success" | "warning" | "error" | "none";
-    duration?: number;
+    duration?: number; // number in milliseconds
   }
 ) => {
   toast.show(title, {
     message,
-    duration,
+    duration: duration ?? 2500,
     burntOptions: {
       preset: type,
       haptic: haptic,

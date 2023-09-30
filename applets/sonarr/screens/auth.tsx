@@ -5,10 +5,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { useTranslation } from "react-i18next";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { AppletButtonBanner } from "@astrysk/components";
+import { AppletButtonBanner, showToast } from "@astrysk/components";
 import { Applets } from "@astrysk/constants";
 
-// import { useAuthenticateUserByName } from "../api";
 import { useSonarrStore } from "../store";
 import { configureAxiosForSonarr } from "../utils";
 import { useAppStateStore } from "@astrysk/stores";
@@ -20,8 +19,8 @@ import {
   UrlRegexPattern,
   getIconColor,
   promptUserForURLSchemaIfNotExists,
-  updateURLWithSchema,
 } from "@astrysk/utils";
+import { useToastController } from "@tamagui/toast";
 
 interface Inputs {
   serverURL: string;
@@ -32,6 +31,7 @@ interface Inputs {
 const SonarrAuth = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const toast = useToastController();
 
   const iconColor = getIconColor();
 
@@ -64,10 +64,10 @@ const SonarrAuth = () => {
         useAppStateStore.setState({ activeApplet: undefined });
         // WARN: Show error message or prompt
         if (error.response?.status) {
-          Alert.alert(
-            `${t("common:error")}`,
-            `${error.response.status}: ${error.code}`
-          );
+          showToast(toast, `${t("common:error")}`, {
+            message: `${error.response.status}: ${error.code}`,
+            type: "error",
+          });
           // WARN: Make use of ReactHookForm to show error in fields
           setError("serverURL", {
             type: "manual",
