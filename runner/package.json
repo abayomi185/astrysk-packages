@@ -54,7 +54,7 @@
     "qs": "^6.11.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.9",
+    "react-hook-form": "^7.46.2",
     "react-i18next": "^12.2.0",
     "react-native": "0.72.4",
     "react-native-context-menu-view": "^1.9.1",
@@ -67,7 +67,7 @@
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-svg": "13.9.0",
     "react-native-web": "~0.19.6",
-    "tamagui": "^1.68.0"
+    "tamagui": "~1.68.6"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
