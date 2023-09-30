@@ -8,6 +8,7 @@ import { ColorTokens } from "tamagui";
 export interface Applet {
   configure: () => boolean;
   deconfigure?: () => void;
+  loadLocales?: () => void;
   configureView: React.FC;
   homeView: React.FC;
   searchView: React.FC;
@@ -25,4 +26,5 @@ export interface AppletColors {
   primary: string | ColorTokens;
   secondary: string | ColorTokens;
   accentColor: string | ColorTokens;
+  [key: string]: string | ColorTokens;
 }

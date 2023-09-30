@@ -8,9 +8,6 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     common: en.common,
-    jellyfin: en.jellyfin,
-    sonarr: en.sonarr,
-    radarr: en.radarr,
   },
 };
 
@@ -29,5 +26,3 @@ i18n.use(initReactI18next).init({
 });
 
 export default i18n;
-
-// i18n.loadNamespaces('jellyfin')

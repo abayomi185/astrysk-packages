@@ -1,3 +1,4 @@
+import i18next from "i18next";
 import { Applet } from "@astrysk/types";
 
 import JellyfinAuth from "./screens/auth";
@@ -7,11 +8,15 @@ import JellyfinDetail from "./screens/detail";
 import JellyfinModal from "./screens/modal";
 import JellyfinFullScreenModal from "./screens/fullScreenModal";
 import { configureJellyfin, deConfigureJellyfin } from "./utils";
+import jellyfinLocales from "./locales";
 import { JellyfinContextMenuOptions } from "./context";
 import { JellyfinSettingsOptions } from "./settings";
 import { jellyfinColors } from "./colors";
 
-export const Jellyfin: Applet = {
+const Jellyfin: Applet = {
+  loadLocales: () => {
+    i18next.addResourceBundle("en", "jellyfin", jellyfinLocales, true);
+  },
   configure: configureJellyfin,
   deconfigure: deConfigureJellyfin,
   configureView: JellyfinAuth,
