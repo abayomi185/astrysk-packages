@@ -23,6 +23,8 @@ export interface AppState {
   // IAP
   donationsAvailable?: boolean;
   iapOfferings?: Record<string, any>;
+  // Toast
+  setToast?: Record<string, any>;
 }
 
 type PersistAppStateOmittedKeys = "showSpinner";

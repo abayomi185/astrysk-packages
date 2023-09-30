@@ -16,7 +16,7 @@ export const JellyfinContextMenuOptions: ContextMenuOptions = {
       },
     ];
   },
-  getContextHandler(indexPath: number[]): void {
+  getContextHandler(t: TFunction, indexPath: number[]): void {
     if (indexPath[0] === APPLET_INDEX)
       switch (indexPath[1]) {
         case 0:

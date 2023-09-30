@@ -19,27 +19,24 @@ type ToastContext = {
   show: (title: string, options?: ShowOptions) => boolean;
 };
 
+export interface ShowToastOptions {
+  message?: string;
+  type: "done" | "error" | "none";
+  haptic?: "success" | "warning" | "error" | "none";
+  duration?: number; // number in milliseconds
+}
+
 export const showToast = (
   toast: ToastContext,
   title: string,
-  {
-    message,
-    type,
-    haptic,
-    duration,
-  }: {
-    message?: string;
-    type: "done" | "error" | "none";
-    haptic?: "success" | "warning" | "error" | "none";
-    duration?: number; // number in milliseconds
-  }
+  options: ShowToastOptions
 ) => {
   toast.show(title, {
-    message,
-    duration: duration ?? 2500,
+    message: options.message,
+    duration: options.duration ?? 2500,
     burntOptions: {
-      preset: type,
-      haptic: haptic,
+      preset: options.type,
+      haptic: options.haptic,
     },
   });
 };

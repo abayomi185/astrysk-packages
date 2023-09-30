@@ -2,6 +2,8 @@ import { useAppStateStore } from "@astrysk/stores";
 import { ContextMenuOptions } from "@astrysk/utils";
 import { TFunction } from "i18next";
 import { useRadarrStore } from "./store";
+import { RadarrCommands } from "./types";
+import { postApiV3Command } from "./api";
 
 // This is used to determine the index of the applet in the context menu
 const APPLET_INDEX = 1;
@@ -22,7 +24,7 @@ export const RadarrContextMenuOptions: ContextMenuOptions = {
       },
     ];
   },
-  getContextHandler(indexPath: number[]): void {
+  getContextHandler(t: TFunction, indexPath: number[]): void {
     if (indexPath[0] === APPLET_INDEX)
       switch (indexPath[1]) {
         case 0:
@@ -35,7 +37,30 @@ export const RadarrContextMenuOptions: ContextMenuOptions = {
           useAppStateStore.setState({ activeApplet: undefined });
           break;
         case 1:
-          console.log("Search all missing");
+          postApiV3Command({
+            name: RadarrCommands.MISSING_MOVIES_SEARCH,
+          })
+            .then((_res) => {
+              useAppStateStore.setState({
+                setToast: {
+                  title: t("radarr:alert:startedSearchForAllMissing"),
+                  options: {
+                    type: "done",
+                  },
+                },
+              });
+            })
+            .catch((err) => {
+              useAppStateStore.setState({
+                setToast: {
+                  title: t("radarr:alert:failedSearchForAllMissing"),
+                  options: {
+                    type: "done",
+                    message: err.message,
+                  },
+                },
+              });
+            });
           break;
       }
   },

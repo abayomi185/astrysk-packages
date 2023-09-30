@@ -55,7 +55,7 @@ export const AppletHeaderButton = () => {
                   });
                   break;
               }
-            applets[applet].contextMenu.getContextHandler(indexPath);
+            applets[applet].contextMenu.getContextHandler(t, indexPath);
           }}
         >
           <SCAppletHeaderButton>

@@ -7,5 +7,5 @@ import { TFunction } from "i18next";
 
 export interface ContextMenuOptions {
   getContextActions: (t: TFunction) => any[];
-  getContextHandler: (indexPath: number[]) => void;
+  getContextHandler: (t: TFunction, indexPath: number[]) => void;
 }

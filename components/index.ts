@@ -39,6 +39,11 @@ export { SectionTitle } from "./common/sectionTitle";
 
 export { EmptyList } from "./common/emptyList";
 
-export { ViewTypeButton } from "./common/viewTypeButton";
+export { ViewTypeButton, changeViewType } from "./common/viewTypeButton";
 
-export { showToast, SafeToastViewport, UniversalToast } from "./common/toast";
+export {
+  showToast,
+  type ShowToastOptions,
+  SafeToastViewport,
+  UniversalToast,
+} from "./common/toast";
