@@ -6,7 +6,7 @@ export { useDebounce } from "./utils/debounce";
 
 export { useRefreshHandler } from "./utils/refresh";
 
-export { onItemLayout } from "./utils/layout";
+export { onItemLayout, getFlashListColumnsFromViewType } from "./utils/layout";
 
 export { useColorScheme, getIconColor } from "./utils/colorScheme";
 
@@ -43,3 +43,5 @@ export {
   getDateFromHours,
   getStartAndEndOfWeek,
 } from "./utils/datetime";
+
+export { isTestflightBuild } from "./utils/testflight";
