@@ -17,7 +17,11 @@ import {
   RadarrCommands,
   ExtendedMovieResource,
 } from "../../types";
-import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
+import {
+  getIconColor,
+  isTestflightBuild,
+  setLoadingSpinner,
+} from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { showToast } from "@astrysk/components";
 import { useToastController } from "@tamagui/toast";
@@ -205,6 +209,7 @@ export const RadarrActionPanel: React.FC<{
         >
           <Ionicons name="ios-bookmark" size={23} color={iconColor} />
         </RadarrActionPanelButton>
+
         {/* NOTE: Edit */}
         <RadarrActionPanelButton
           style={radarrActionButtonColors.edit}
@@ -218,26 +223,33 @@ export const RadarrActionPanel: React.FC<{
         >
           <Ionicons name="brush" size={23} color={iconColor} />
         </RadarrActionPanelButton>
+
         {/* NOTE: Automatic Search */}
-        <RadarrActionPanelButton
-          style={radarrActionButtonColors.automaticSearch}
-          onPress={() => postCommandAction()}
-        >
-          <Ionicons name="ios-search" size={23} color={iconColor} />
-        </RadarrActionPanelButton>
+        {isTestflightBuild && (
+          <RadarrActionPanelButton
+            style={radarrActionButtonColors.automaticSearch}
+            onPress={() => postCommandAction()}
+          >
+            <Ionicons name="ios-search" size={23} color={iconColor} />
+          </RadarrActionPanelButton>
+        )}
+
         {/* NOTE: Interactive Search */}
-        <RadarrActionPanelButton
-          style={radarrActionButtonColors.interactiveSearch}
-          onPress={() =>
-            goToRadarrModalScreen({
-              router,
-              searchItemId: data.id as number,
-              screenContext: RadarrDetailScreenContext.InteractiveSearch,
-            })
-          }
-        >
-          <Ionicons name="person" size={23} color={iconColor} />
-        </RadarrActionPanelButton>
+        {isTestflightBuild && (
+          <RadarrActionPanelButton
+            style={radarrActionButtonColors.interactiveSearch}
+            onPress={() =>
+              goToRadarrModalScreen({
+                router,
+                searchItemId: data.id as number,
+                screenContext: RadarrDetailScreenContext.InteractiveSearch,
+              })
+            }
+          >
+            <Ionicons name="person" size={23} color={iconColor} />
+          </RadarrActionPanelButton>
+        )}
+
         {/* NOTE: History */}
         <RadarrActionPanelButton
           style={radarrActionButtonColors.history}
@@ -251,6 +263,7 @@ export const RadarrActionPanel: React.FC<{
         >
           <Ionicons name="time" size={23} color={iconColor} />
         </RadarrActionPanelButton>
+
         {/* NOTE: Delete */}
         <RadarrActionPanelButton
           style={radarrActionButtonColors.delete}

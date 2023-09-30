@@ -24,7 +24,11 @@ import {
   ExtendedSeriesResource,
 } from "../../types";
 import { TFunction } from "i18next";
-import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
+import {
+  getIconColor,
+  isTestflightBuild,
+  setLoadingSpinner,
+} from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { useToastController } from "@tamagui/toast";
 import { showToast } from "@astrysk/components";
@@ -120,9 +124,11 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
   return (
     <YStack flex={1} justifyContent="center" alignItems="center">
       {/* NOTE: AUTOMATIC SEARCH */}
-      <SonarrActionPanelButton first vertical onPress={postCommandAction}>
-        <Ionicons name="ios-search" size={23} color={iconColor} />
-      </SonarrActionPanelButton>
+      {isTestflightBuild && (
+        <SonarrActionPanelButton first vertical onPress={postCommandAction}>
+          <Ionicons name="ios-search" size={23} color={iconColor} />
+        </SonarrActionPanelButton>
+      )}
     </YStack>
   );
 };
@@ -239,6 +245,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
 
   return (
     <XStack flex={1} justifyContent="center" alignItems="center">
+      {/* NOTE: Monitoring */}
       <SonarrActionPanelButton
         first
         style={{
@@ -249,25 +256,35 @@ export const SonarrEpisodeActionPanel: React.FC<{
       >
         <Ionicons name="ios-bookmark" size={23} color={iconColor} />
       </SonarrActionPanelButton>
-      <SonarrActionPanelButton
-        style={sonarrActionButtonColors.automaticSearch}
-        onPress={postCommandAction}
-      >
-        <Ionicons name="ios-search" size={23} color={iconColor} />
-      </SonarrActionPanelButton>
-      <SonarrActionPanelButton
-        style={sonarrActionButtonColors.interactiveSearch}
-        onPress={() =>
-          goToSonarrModalScreen({
-            router,
-            searchItemId: data.seriesId as number,
-            screenContext: SonarrDetailScreenContext.InteractiveSearch,
-            episodeId: data.id as number,
-          })
-        }
-      >
-        <Ionicons name="person" size={23} color={iconColor} />
-      </SonarrActionPanelButton>
+
+      {/* NOTE: Automatic Search */}
+      {isTestflightBuild && (
+        <SonarrActionPanelButton
+          style={sonarrActionButtonColors.automaticSearch}
+          onPress={postCommandAction}
+        >
+          <Ionicons name="ios-search" size={23} color={iconColor} />
+        </SonarrActionPanelButton>
+      )}
+
+      {/* NOTE: Interactive Search */}
+      {isTestflightBuild && (
+        <SonarrActionPanelButton
+          style={sonarrActionButtonColors.interactiveSearch}
+          onPress={() =>
+            goToSonarrModalScreen({
+              router,
+              searchItemId: data.seriesId as number,
+              screenContext: SonarrDetailScreenContext.InteractiveSearch,
+              episodeId: data.id as number,
+            })
+          }
+        >
+          <Ionicons name="person" size={23} color={iconColor} />
+        </SonarrActionPanelButton>
+      )}
+
+      {/* NOTE: Delete Episode */}
       <SonarrActionPanelButton
         style={sonarrActionButtonColors.delete}
         onPress={deleteEpisodeFile}
@@ -491,6 +508,7 @@ export const SonarrActionPanel: React.FC<{
         >
           <Ionicons name="ios-bookmark" size={23} color={iconColor} />
         </SonarrActionPanelButton>
+
         {/* NOTE: Edit */}
         {isSeries && (
           <SonarrActionPanelButton
@@ -507,27 +525,34 @@ export const SonarrActionPanel: React.FC<{
             <Ionicons name="brush" size={23} color={iconColor} />
           </SonarrActionPanelButton>
         )}
+
         {/* NOTE: Automatic Search */}
-        <SonarrActionPanelButton
-          style={sonarrActionButtonColors.automaticSearch}
-          onPress={() => postCommandAction()}
-        >
-          <Ionicons name="ios-search" size={23} color={iconColor} />
-        </SonarrActionPanelButton>
+        {isTestflightBuild && (
+          <SonarrActionPanelButton
+            style={sonarrActionButtonColors.automaticSearch}
+            onPress={() => postCommandAction()}
+          >
+            <Ionicons name="ios-search" size={23} color={iconColor} />
+          </SonarrActionPanelButton>
+        )}
+
         {/* NOTE: Interactive Search */}
-        <SonarrActionPanelButton
-          style={sonarrActionButtonColors.interactiveSearch}
-          onPress={() =>
-            goToSonarrModalScreen({
-              router,
-              searchItemId: data.id as number,
-              screenContext: SonarrDetailScreenContext.InteractiveSearch,
-              seasonNumber: seasonNumber,
-            })
-          }
-        >
-          <Ionicons name="person" size={23} color={iconColor} />
-        </SonarrActionPanelButton>
+        {isTestflightBuild && (
+          <SonarrActionPanelButton
+            style={sonarrActionButtonColors.interactiveSearch}
+            onPress={() =>
+              goToSonarrModalScreen({
+                router,
+                searchItemId: data.id as number,
+                screenContext: SonarrDetailScreenContext.InteractiveSearch,
+                seasonNumber: seasonNumber,
+              })
+            }
+          >
+            <Ionicons name="person" size={23} color={iconColor} />
+          </SonarrActionPanelButton>
+        )}
+
         {/* NOTE: History */}
         <SonarrActionPanelButton
           style={sonarrActionButtonColors.history}
@@ -542,6 +567,7 @@ export const SonarrActionPanel: React.FC<{
         >
           <Ionicons name="time" size={23} color={iconColor} />
         </SonarrActionPanelButton>
+
         {/* NOTE: Delete */}
         <SonarrActionPanelButton
           style={sonarrActionButtonColors.delete}

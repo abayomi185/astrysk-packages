@@ -22,7 +22,11 @@ import {
   useMarkUnplayedItem,
 } from "../../api";
 import { Actions, Screens } from "@astrysk/constants";
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import {
+  isTestflightBuild,
+  setLoadingSpinner,
+  useLoadingSpinner,
+} from "@astrysk/utils";
 import { useNavigation, useRouter, useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { JellyfinEpisodeActionPanel } from "../../components/detail/videoActionPanel";
@@ -251,7 +255,7 @@ const JellyfinSeriesDetail: React.FC<{
             userId: userId,
             itemId: episodeData.Id as string,
           })
-      : Alert.alert(t("jellyfin:error_episodeNotSelected"));
+      : Alert.alert(t("jellyfin:error:episodeNotSelected"));
 
     // Optimistically update cache before mutation
     queryClient.setQueryData<BaseItemDtoQueryResult>(
@@ -302,7 +306,7 @@ const JellyfinSeriesDetail: React.FC<{
             episodeId: episodeData?.Id,
           } as JellyfinDetailScreenProps,
         })
-      : Alert.alert(t("jellyfin:error_episodeNotSelected"));
+      : Alert.alert(t("jellyfin:error:episodeNotSelected"));
   };
 
   const goToDescriptionScreen = (seriesId: string) => {
@@ -316,29 +320,36 @@ const JellyfinSeriesDetail: React.FC<{
   };
 
   const goToPlayScreen = () => {
-    // selectedSeasonID
-    const episodeData = episodesData.data?.Items?.find(
-      (episode) =>
-        episode.SeasonId === selectedSeasonID &&
-        episode.IndexNumber === selectedEpisodeIndex
-    );
-    episodeData
-      ? router.push({
-          pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
-          params: {
-            context: JellyfinDetailScreenContext.SeriesDetail,
-            itemId: episodeData?.Id,
-            itemName:
-              `${seriesName} - ` +
-              `${
-                episodeData?.ParentIndexNumber
-                  ? `S${episodeData?.ParentIndexNumber}:`
-                  : ""
-              }` +
-              `E${episodeData?.IndexNumber} - ${episodeData?.Name}`,
-          } as JellyfinDetailScreenProps,
-        })
-      : Alert.alert(t("jellyfin:error_episodeNotSelected"));
+    if (isTestflightBuild) {
+      // selectedSeasonID
+      const episodeData = episodesData.data?.Items?.find(
+        (episode) =>
+          episode.SeasonId === selectedSeasonID &&
+          episode.IndexNumber === selectedEpisodeIndex
+      );
+      episodeData
+        ? router.push({
+            pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
+            params: {
+              context: JellyfinDetailScreenContext.SeriesDetail,
+              itemId: episodeData?.Id,
+              itemName:
+                `${seriesName} - ` +
+                `${
+                  episodeData?.ParentIndexNumber
+                    ? `S${episodeData?.ParentIndexNumber}:`
+                    : ""
+                }` +
+                `E${episodeData?.IndexNumber} - ${episodeData?.Name}`,
+            } as JellyfinDetailScreenProps,
+          })
+        : Alert.alert(t("jellyfin:error:episodeNotSelected"));
+    } else {
+      Alert.alert(
+        t("jellyfin:alert:playbackNotAvailable"),
+        t("jellyfin:alert:playbackNotAvailableReason") as string
+      );
+    }
   };
 
   const getSeriesWatchedStatus = () => seriesData?.data?.UserData?.Played;

@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { Alert } from "react-native";
 import { useRouter, useNavigation, useFocusEffect } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { Text, YStack, XStack, H6, Progress, ProgressIndicator } from "tamagui";
@@ -7,7 +8,11 @@ import { Image } from "expo-image";
 
 import { BaseItemDto, BaseItemKind, useGetResumeItems } from "../../api";
 
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import {
+  isTestflightBuild,
+  setLoadingSpinner,
+  useLoadingSpinner,
+} from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Actions, Screens } from "@astrysk/constants";
 import { onItemLayout } from "@astrysk/utils";
@@ -21,6 +26,7 @@ const JellyfinResumeMediaItem: React.FC<{
   resumeItem: BaseItemDto;
 }> = ({ resumeItem }) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const token = useJellyfinStore.getState().token;
   const baseURL = useJellyfinStore.getState().baseURL;
@@ -45,14 +51,21 @@ const JellyfinResumeMediaItem: React.FC<{
   };
 
   const continuePlayingMedia = () => {
-    router.push({
-      pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
-      params: {
-        context: JellyfinDetailScreenContext.SeriesDetail,
-        itemId: resumeItem?.Id,
-        itemName: getItemNameForVideoPlayer(),
-      } as JellyfinDetailScreenProps,
-    });
+    if (isTestflightBuild) {
+      router.push({
+        pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
+        params: {
+          context: JellyfinDetailScreenContext.SeriesDetail,
+          itemId: resumeItem?.Id,
+          itemName: getItemNameForVideoPlayer(),
+        } as JellyfinDetailScreenProps,
+      });
+    } else {
+      Alert.alert(
+        t("jellyfin:alert:playbackNotAvailable"),
+        t("jellyfin:alert:playbackNotAvailableReason") as string
+      );
+    }
   };
 
   const imageId = backdropImageId ? backdropImageId : primaryImageId;

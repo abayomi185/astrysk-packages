@@ -1,4 +1,5 @@
 import React from "react";
+import { Alert } from "react-native";
 import { BaseItemDto, BaseItemPerson, useGetItem } from "../../api";
 import { useJellyfinStore } from "../../store";
 
@@ -7,7 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Animated } from "react-native";
 import { YStack, Text, XStack, H2, H4, H6 } from "tamagui";
 import { roundToNearestStandardResolution } from "../../utils";
-import { setLoadingSpinner } from "@astrysk/utils";
+import { isTestflightBuild, setLoadingSpinner } from "@astrysk/utils";
 import { Actions, Screens } from "@astrysk/constants";
 import { useTranslation } from "react-i18next";
 import JellyfinDetailSection from "./section";
@@ -127,14 +128,21 @@ const JellyfinMovieDetail: React.FC<{
   };
 
   const goToPlayScreen = () => {
-    router.push({
-      pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
-      params: {
-        context: JellyfinDetailScreenContext.MovieDetail,
-        itemId: movieId,
-        itemName: movieName,
-      } as JellyfinDetailScreenProps,
-    });
+    if (isTestflightBuild) {
+      router.push({
+        pathname: `/${Screens.ROOT_FS_MODAL_ROUTE}`,
+        params: {
+          context: JellyfinDetailScreenContext.MovieDetail,
+          itemId: movieId,
+          itemName: movieName,
+        } as JellyfinDetailScreenProps,
+      });
+    } else {
+      Alert.alert(
+        t("jellyfin:alert:playbackNotAvailable"),
+        t("jellyfin:alert:playbackNotAvailableReason") as string
+      );
+    }
   };
 
   // useLoadingSpinner(JellyfinSeriesDetail.name);
