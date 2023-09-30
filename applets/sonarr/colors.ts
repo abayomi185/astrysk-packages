@@ -6,6 +6,8 @@ export const sonarrColors: AppletColors = {
   primary: "#4599bf",
   secondary: "$blue5",
   accentColor: "#4599bf",
+  activeCheckFillColor: "#9fdfc3",
+  activeBookmarkFillColor: "#e4aaae",
 
   // WARN: Other potential color options
   // accent: config.colors.sonarr,

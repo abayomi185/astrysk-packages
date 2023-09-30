@@ -8,7 +8,7 @@ import {
   useGetApiV3Movie,
   useGetApiV3MovieLookup,
 } from "../../api";
-import { H6, YStack, Text, XStack } from "tamagui";
+import { H6, YStack, Text, XStack, Button, useTheme } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -22,6 +22,7 @@ import {
   goToRadarrModalScreen,
 } from "../../utils";
 import {
+  getFlashListColumnsFromViewType,
   setLoadingSpinner,
   useGetListColumnNumber,
   useLoadingSpinner,
@@ -35,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
 import { customTokens } from "@astrysk/styles";
+import { Bookmark, CheckCircle2 } from "@tamagui/lucide-icons";
 
 const RadarrSearchResultGridItem: React.FC<{
   searchContext: RadarrSearchFilterContext;
@@ -120,16 +122,19 @@ const RadarrSearchResultListItem: React.FC<{
   isSearching: boolean;
 }> = ({ searchContext, data, isSearching }) => {
   const router = useRouter();
+  const { t } = useTranslation();
   const token = useRadarrStore.getState().token;
   const baseURL = useRadarrStore.getState().baseURL;
 
   return (
-    <YStack
+    <Button
+      flex={1}
       height="auto"
-      width="$11"
       padding="$2"
-      pressStyle={{ scale: 0.97 }}
       animation="delay"
+      marginBottom="$2"
+      borderRadius="$6"
+      backgroundColor="$gray1"
       onPress={() => {
         if (new Date(data.added as string).getTime() > 0) {
           goToRadarrDetailScreen({
@@ -151,42 +156,60 @@ const RadarrSearchResultListItem: React.FC<{
         }
       }}
     >
-      <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
-        <Image
-          style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
-          source={
-            {
-              uri: data.id
-                ? `${baseURL}/api/v3/MediaCover/${data.id}/poster.jpg?apikey=${token}`
-                : data.remotePoster,
-            } as ImageSource
-          }
-          transition={200}
-          recyclingKey={`${data.id}`}
-        />
-      </YStack>
-      <YStack paddingHorizontal="$1" paddingTop="$1">
-        <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-          {data.title}
-        </H6>
-        <XStack alignItems="center">
+      <XStack>
+        <YStack
+          height="$11"
+          width="$8"
+          borderRadius="$5"
+          backgroundColor="$gray6"
+        >
+          <Image
+            style={{ flex: 1, overflow: "hidden", borderRadius: 10 }}
+            source={
+              {
+                uri: data.id
+                  ? `${baseURL}/api/v3/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                  : data.remotePoster,
+              } as ImageSource
+            }
+            transition={200}
+            recyclingKey={`${data.id}`}
+          />
+        </YStack>
+        <YStack flex={1} marginLeft="$2.5" paddingHorizontal="$1">
+          <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
+            {data.title}
+          </H6>
           <Text color="$color" opacity={0.6} numberOfLines={1}>
             {data.year}
           </Text>
-          {new Date(data.added as string).getTime() > 0 && isSearching && (
-            <Text
-              color="$green9"
-              fontSize={22}
-              lineHeight={22}
-              marginLeft="$1"
-              opacity={0.9}
-            >
-              {"•"}
-            </Text>
-          )}
-        </XStack>
-      </YStack>
-    </YStack>
+          <Text color="$color" marginTop="$2.5" opacity={0.6} numberOfLines={1}>
+            {`${data.runtime} ${t("radarr:mins")}`}
+          </Text>
+          <Text color="$color" marginTop="$1.5" opacity={0.6} numberOfLines={1}>
+            {data.studio}
+          </Text>
+          <XStack marginTop="$1.5" marginLeft="$-0.75" alignItems="center">
+            <Bookmark
+              size={16}
+              color={data.monitored ? "$red8" : "$gray9"}
+              fill={
+                data.monitored
+                  ? radarrColors.activeBookmarkFillColor
+                  : "transparent"
+              }
+            />
+            <CheckCircle2
+              size={15}
+              color={data.hasFile ? "$green8" : "$gray9"}
+              fill={
+                data.hasFile ? radarrColors.activeCheckFillColor : "transparent"
+              }
+            />
+          </XStack>
+        </YStack>
+      </XStack>
+    </Button>
   );
 };
 
@@ -269,11 +292,10 @@ const RadarrSearchLanding: React.FC<{
   }, [searchTerm]);
 
   const getMovies = React.useCallback(() => {
-    // Consider using this if there are performance issues with copying the array
-    // copying the array is necessary to avoid mutating the original data
+    // Copying the array is necessary to avoid mutating the original data
     // Allowing for the movies to be restored when the search term is cleared
-    const initialMovieData = movieData.data ?? [];
-    // const initialMovieData = [...((movieData.data as MovieResource[]) ?? [])];
+    // Or when data is refetched and only modifies nested properties
+    const initialMovieData = [...((movieData.data as MovieResource[]) ?? [])];
     let movieDataToReturn = initialMovieData;
 
     if (searchTerm && initialMovieData.length > 0) {
@@ -326,11 +348,13 @@ const RadarrSearchLanding: React.FC<{
             paddingHorizontal: "7",
           }}
           horizontal={false}
-          numColumns={flashListColumns}
+          numColumns={getFlashListColumnsFromViewType(
+            viewType,
+            flashListColumns
+          )}
           data={getMovies()}
-          extraData={viewType}
           renderItem={({ item, index }) => {
-            if (viewType === ViewType.List) {
+            if (viewType === ViewType.Grid) {
               return (
                 <RadarrSearchResultGridItem
                   searchContext={RadarrSearchFilterContext.Search}

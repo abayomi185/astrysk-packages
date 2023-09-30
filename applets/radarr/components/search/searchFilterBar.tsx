@@ -5,7 +5,11 @@ import { X, LayoutGrid, List } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
 import { Screens } from "@astrysk/constants";
 import { useRadarrStore } from "../../store";
-import { FilterButton, ViewTypeButton } from "@astrysk/components";
+import {
+  FilterButton,
+  ViewTypeButton,
+  changeViewType,
+} from "@astrysk/components";
 import {
   RadarrDetailScreenContext,
   RadarrDetailScreenProps,
@@ -15,7 +19,6 @@ import {
 import { radarrColors } from "../../colors";
 import { isEmpty } from "@astrysk/utils";
 import { ViewType } from "@astrysk/types";
-import { changeViewType } from "@astrysk/components/common/viewTypeButton";
 import { RADARR_SUPPORTED_VIEW_TYPES } from "../../utils";
 
 const getRadarrFilterBarOptions = (

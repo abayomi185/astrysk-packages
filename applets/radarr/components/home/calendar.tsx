@@ -17,7 +17,6 @@ import {
 import { radarrColors } from "../../colors";
 import {
   getStartAndEndOfWeek,
-  onItemLayout,
   setLoadingSpinner,
   useColorScheme,
   useLoadingSpinner,
@@ -33,7 +32,7 @@ import {
 } from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
-import { useSetLoadingSpinner } from "@astrysk/utils/utils/loading";
+import { useSetLoadingSpinner } from "@astrysk/utils";
 
 const getExpandableCalendarTheme = (darkMode: boolean): Theme => ({
   arrowColor: radarrColors.accentColor,

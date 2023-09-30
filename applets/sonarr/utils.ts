@@ -5,7 +5,7 @@ import * as Crypto from "expo-crypto";
 import { useSonarrStore } from "./store";
 
 import { Screens } from "@astrysk/constants";
-import { FilterOrder, Router, TabContext } from "@astrysk/types";
+import { FilterOrder, Router, TabContext, ViewType } from "@astrysk/types";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,
@@ -311,3 +311,6 @@ export const searchAllMissing = () => {
   // lastExecutionTime?: string | null;
   postApiV3Command({});
 };
+
+// NOTE: VIEW TYPE
+export const SONARR_SUPPORTED_VIEW_TYPES = [ViewType.Grid, ViewType.List];

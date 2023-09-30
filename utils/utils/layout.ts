@@ -1,3 +1,4 @@
+import { ViewType } from "@astrysk/types";
 import { SetStateAction } from "react";
 import { LayoutChangeEvent } from "react-native";
 
@@ -9,3 +10,13 @@ export const onItemLayout =
       setHeight(itemHeight);
     }
   };
+
+export const getFlashListColumnsFromViewType = (
+  viewType: ViewType,
+  flashListGridColumns: number
+) => {
+  if (viewType === ViewType.Grid) {
+    return flashListGridColumns;
+  }
+  return 1;
+};

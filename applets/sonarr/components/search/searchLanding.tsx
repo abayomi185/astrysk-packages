@@ -8,7 +8,7 @@ import {
   useGetApiV3Series,
   useGetApiV3SeriesLookup,
 } from "../../api";
-import { H6, YStack, Text, XStack } from "tamagui";
+import { H6, YStack, Text, XStack, Button } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -22,6 +22,7 @@ import {
   goToSonarrModalScreen,
 } from "../../utils";
 import {
+  getFlashListColumnsFromViewType,
   setLoadingSpinner,
   useGetListColumnNumber,
   useLoadingSpinner,
@@ -29,13 +30,14 @@ import {
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { sonarrColors } from "../../colors";
-import { TabContext } from "@astrysk/types";
+import { TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
 import { customTokens } from "@astrysk/styles";
+import { Bookmark, CheckCircle2 } from "@tamagui/lucide-icons";
 
-const SonarrSearchResultItem: React.FC<{
+const SonarrSearchResultGridItem: React.FC<{
   searchContext: SonarrSearchFilterContext;
   index?: number;
   data: SeriesResource;
@@ -112,12 +114,102 @@ const SonarrSearchResultItem: React.FC<{
   );
 };
 
+const SonarrSearchResultListItem: React.FC<{
+  searchContext: SonarrSearchFilterContext;
+  index?: number;
+  data: SeriesResource;
+  isSearching: boolean;
+}> = ({ searchContext, data, isSearching }) => {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const token = useSonarrStore.getState().token;
+  const baseURL = useSonarrStore.getState().baseURL;
+
+  return (
+    <Button
+      flex={1}
+      height="auto"
+      padding="$2"
+      animation="delay"
+      marginBottom="$2"
+      borderRadius="$6"
+      backgroundColor="$gray1"
+      onPress={() => {
+        if (new Date(data.added as string).getTime() > 0) {
+          goToSonarrDetailScreen({
+            router,
+            searchItemId: data.id as number,
+            tabContext: TabContext.Search,
+            screenContext: SonarrDetailScreenContext.SearchItem,
+            searchContext,
+          });
+        } else {
+          // TODO: Go to modal screen to add series
+          goToSonarrModalScreen({
+            router,
+            searchItemId: data.id as number,
+            screenContext: SonarrDetailScreenContext.AddSeries,
+            searchContext,
+            tvdbId: data.tvdbId as number,
+          });
+        }
+      }}
+    >
+      <XStack>
+        <YStack
+          height="$11"
+          width="$8"
+          borderRadius="$5"
+          backgroundColor="$gray6"
+        >
+          <Image
+            style={{ flex: 1, overflow: "hidden", borderRadius: 10 }}
+            source={
+              {
+                uri: data.id
+                  ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                  : data.remotePoster,
+              } as ImageSource
+            }
+            transition={200}
+            recyclingKey={`${data.id}`}
+          />
+        </YStack>
+        <YStack flex={1} marginLeft="$2.5" paddingHorizontal="$1">
+          <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
+            {data.title}
+          </H6>
+          <Text color="$color" opacity={0.6} numberOfLines={1}>
+            {data.year}
+          </Text>
+          <Text color="$color" marginTop="$1.5" opacity={0.6} numberOfLines={1}>
+            {t(`sonarr:${data?.seriesType}`) + " • " + data.network}
+          </Text>
+          <XStack marginTop="$1.5" marginLeft="$-0.75" alignItems="center">
+            <Bookmark
+              size={16}
+              color={data.monitored ? "$red8" : "$gray9"}
+              fill={
+                data.monitored
+                  ? sonarrColors.activeBookmarkFillColor
+                  : "transparent"
+              }
+            />
+          </XStack>
+        </YStack>
+      </XStack>
+    </Button>
+  );
+};
+
 const SonarrSearchLanding: React.FC<{
   searchTerm: string;
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
   const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+
+  const viewType = useSonarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useSonarrStore((state) => state.searchFilters);
 
@@ -188,7 +280,9 @@ const SonarrSearchLanding: React.FC<{
   }, [searchTerm]);
 
   const getSeries = React.useCallback(() => {
-    const initialSeriesData = seriesData.data ?? [];
+    const initialSeriesData = [
+      ...((seriesData.data as SeriesResource[]) ?? []),
+    ];
     let seriesDataToReturn = initialSeriesData;
 
     if (searchTerm && initialSeriesData.length > 0) {
@@ -240,16 +334,32 @@ const SonarrSearchLanding: React.FC<{
             paddingHorizontal: "7",
           }}
           horizontal={false}
-          numColumns={flashListColumns}
-          data={getSeries()}
-          renderItem={({ item, index }) => (
-            <SonarrSearchResultItem
-              searchContext={SonarrSearchFilterContext.Search}
-              index={index}
-              data={item}
-              isSearching={!!searchTerm}
-            />
+          numColumns={getFlashListColumnsFromViewType(
+            viewType,
+            flashListColumns
           )}
+          data={getSeries()}
+          renderItem={({ item, index }) => {
+            if (viewType === ViewType.Grid) {
+              return (
+                <SonarrSearchResultGridItem
+                  searchContext={SonarrSearchFilterContext.Search}
+                  index={index}
+                  data={item}
+                  isSearching={!!searchTerm}
+                />
+              );
+            } else {
+              return (
+                <SonarrSearchResultListItem
+                  searchContext={SonarrSearchFilterContext.Search}
+                  index={index}
+                  data={item}
+                  isSearching={!!searchTerm}
+                />
+              );
+            }
+          }}
           estimatedItemSize={208}
           refreshControl={
             <RefreshControl

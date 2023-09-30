@@ -5,7 +5,11 @@ import { X } from "@tamagui/lucide-icons";
 import { FlashList } from "@shopify/flash-list";
 import { Screens } from "@astrysk/constants";
 import { useSonarrStore } from "../../store";
-import { FilterButton } from "@astrysk/components";
+import {
+  FilterButton,
+  ViewTypeButton,
+  changeViewType,
+} from "@astrysk/components";
 import {
   SonarrDetailScreenContext,
   SonarrDetailScreenProps,
@@ -14,6 +18,8 @@ import {
 } from "../../types";
 import { sonarrColors } from "../../colors";
 import { isEmpty } from "@astrysk/utils";
+import { ViewType } from "@astrysk/types";
+import { SONARR_SUPPORTED_VIEW_TYPES } from "../../utils";
 
 const getSonarrFilterBarOptions = (
   context: SonarrSearchFilterContext
@@ -52,6 +58,8 @@ const SonarrSearchFilterBar: React.FC<{
   style?: GetProps<typeof Stack>;
 }> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
+
+  const viewType = useSonarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useSonarrStore((state) => state.searchFilters);
 
@@ -134,6 +142,18 @@ const SonarrSearchFilterBar: React.FC<{
           }
           ListFooterComponent={() => <XStack marginLeft="$3" />}
           estimatedItemSize={69}
+        />
+      </XStack>
+      <XStack width="$3" marginLeft="$2.5" marginRight="$3" alignItems="center">
+        <ViewTypeButton
+          viewType={viewType}
+          onPressHandler={() => {
+            changeViewType(
+              viewType,
+              SONARR_SUPPORTED_VIEW_TYPES,
+              useSonarrStore
+            );
+          }}
         />
       </XStack>
     </XStack>
