@@ -1,5 +1,5 @@
 import { useAppStateStore } from "@astrysk/stores";
-import { ContextMenuOptions } from "@astrysk/utils";
+import { ContextMenuOptions, isTestflightBuild } from "@astrysk/utils";
 import { TFunction } from "i18next";
 import { useRadarrStore } from "./store";
 import { RadarrCommands } from "./types";
@@ -17,11 +17,15 @@ export const RadarrContextMenuOptions: ContextMenuOptions = {
         systemIcon: "x.circle",
         destructive: true,
       },
-      {
-        index: 1,
-        title: `${t("radarr:searchAllMissing")}`,
-        systemIcon: "magnifyingglass.circle",
-      },
+      ...(isTestflightBuild
+        ? [
+            {
+              index: 1,
+              title: `${t("radarr:searchAllMissing")}`,
+              systemIcon: "magnifyingglass.circle",
+            },
+          ]
+        : []),
     ];
   },
   getContextHandler(t: TFunction, indexPath: number[]): void {

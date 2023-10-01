@@ -1,5 +1,5 @@
 import { useAppStateStore } from "@astrysk/stores";
-import { ContextMenuOptions } from "@astrysk/utils";
+import { ContextMenuOptions, isTestflightBuild } from "@astrysk/utils";
 import { TFunction } from "i18next";
 import { useSonarrStore } from "./store";
 import { postApiV3Command } from "./api";
@@ -17,11 +17,15 @@ export const SonarrContextMenuOptions: ContextMenuOptions = {
         systemIcon: "x.circle",
         destructive: true,
       },
-      {
-        index: 1,
-        title: `${t("radarr:searchAllMissing")}`,
-        systemIcon: "magnifyingglass.circle",
-      },
+      ...(isTestflightBuild
+        ? [
+            {
+              index: 1,
+              title: `${t("sonarr:searchAllMissing")}`,
+              systemIcon: "magnifyingglass.circle",
+            },
+          ]
+        : []),
     ];
   },
   getContextHandler(t: TFunction, indexPath: number[]): void {
