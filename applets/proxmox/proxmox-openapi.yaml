@@ -17888,6 +17888,10 @@ components:
               data:
                 type: array
                 description: ''
+                items:
+                  type: object
+                  description: ''
+                  properties: {}
     GetClusterHaStatusManagerstatusResponse:
       description: GetClusterHaStatusManagerstatusResponse
       content:
@@ -22300,14 +22304,26 @@ components:
                     description: >-
                       List nodes allowed for offline migration, only passed if
                       VM is offline
+                    items:
+                      type: object
+                      description: ''
+                      properties: {}
                   local_disks:
                     type: array
                     description: >-
                       List local disks including CD-Rom, unsused and not
                       referenced disks
+                    items:
+                      type: object
+                      description: ''
+                      properties: {}
                   local_resources:
                     type: array
                     description: 'List local resources e.g. pci, usb'
+                    items:
+                      type: object
+                      description: ''
+                      properties: {}
                   not_allowed_nodes:
                     type: object
                     description: >-
@@ -26277,6 +26293,10 @@ components:
                   attributes:
                     type: array
                     description: ''
+                    items:
+                      type: object
+                      description: ''
+                      properties: {}
                   health:
                     type: string
                     description: ''
@@ -27113,6 +27133,10 @@ components:
               data:
                 type: array
                 description: ''
+                items:
+                  type: object
+                  description: ''
+                  properties: {}
     CreateNodesSingleWakeonlanResponse:
       description: CreateNodesSingleWakeonlanResponse
       content:
