@@ -13,7 +13,7 @@ import {
   useHomeHeader,
   useSearchHeader,
   useSettingsHeader,
-} from "@astrysk/utils";
+} from "@astrysk/components";
 import { radarrColors } from "../colors";
 
 export const useRadarrHomeHeader = (

@@ -11,7 +11,7 @@ import {
   useHomeHeader,
   useSearchHeader,
   useSettingsHeader,
-} from "@astrysk/utils";
+} from "@astrysk/components";
 import { lidarrColors } from "../colors";
 
 export const useLidarrHomeHeader = (

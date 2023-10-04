@@ -12,6 +12,13 @@ export { AppletButton, AppletButtonBanner } from "./common/appletButton";
 export { debouncedSetter } from "./common/debouncer";
 
 export { HeaderRightWrapper } from "./common/headerRightWrapper";
+export {
+  useHomeHeader,
+  useSearchHeader,
+  useSettingsHeader,
+  useDetailHeader,
+  useModalHeader,
+} from "./common/header";
 export { AppletHeaderButton } from "./common/appletHeaderButton";
 export {
   LoadingIndicator,

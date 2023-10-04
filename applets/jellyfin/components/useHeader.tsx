@@ -10,7 +10,7 @@ import {
   useHomeHeader,
   useSearchHeader,
   useSettingsHeader,
-} from "@astrysk/utils";
+} from "@astrysk/components";
 import { TFunction } from "i18next";
 import { jellyfinColors } from "../colors";
 
