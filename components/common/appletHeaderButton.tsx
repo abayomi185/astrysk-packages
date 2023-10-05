@@ -11,7 +11,7 @@ import { Screens } from "@astrysk/constants";
 export const AppletHeaderButton = () => {
   const applets = useAppStateStore.getState().applets; // Static applets
   const applet = useAppStateStore((state) => state.activeApplet); //Changes on applet change
-  const AppletIcon = appletUtils.getAppletIcon(applet);
+  const { AppletIcon, bannerColor } = appletUtils.getAppletIcon(applet);
 
   const { t } = useTranslation();
   const router = useRouter();

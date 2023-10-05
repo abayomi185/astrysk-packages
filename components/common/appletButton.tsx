@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "expo-router";
-import { styled, XStack } from "tamagui";
+import { styled, XStack, Text } from "tamagui";
 import { Screens } from "@astrysk/constants";
 
 import { appletUtils } from "@astrysk/utils";
@@ -12,7 +12,9 @@ interface AppletButtonProps {
 }
 export const AppletButton = ({ applet, isBanner }: AppletButtonProps) => {
   const applets = useAppStateStore.getState().applets;
-  const AppletButtonLogo = appletUtils.getAppletLogo(applet as string);
+  const { AppletIcon, bannerColor } = appletUtils.getAppletIcon(
+    applet as string
+  );
 
   const router = useRouter();
 
@@ -39,11 +41,18 @@ export const AppletButton = ({ applet, isBanner }: AppletButtonProps) => {
         !isBanner && configureApplet();
       }}
     >
-      <AppletButtonLogo
-        width="100%"
-        height="100%"
-        preserveAspectRatio="xMidYMid slice"
-      />
+      <XStack width="100%" height="100%" backgroundColor={bannerColor}>
+        <XStack flex={1} maxWidth="$11" justifyContent="flex-end">
+          <XStack flex={1} marginHorizontal="$3" maxWidth="$8">
+            <AppletIcon width="100%" height="100%" />
+          </XStack>
+        </XStack>
+        <XStack flex={1} marginLeft="$3" alignItems="center">
+          <Text color="white" fontWeight="200" fontSize="$12">
+            {applet}
+          </Text>
+        </XStack>
+      </XStack>
     </SCAppletButton>
   );
 };

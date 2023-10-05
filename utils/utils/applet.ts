@@ -1,32 +1,22 @@
 import * as Assets from "@astrysk/assets";
-// import { DefaultAppletLogo, DefaultAppletIcon } from "@astrysk/components"; // Cycle
 import { DefaultAppletLogo, DefaultAppletIcon } from "./default";
 import { Applets } from "@astrysk/constants";
 import { TFunction } from "i18next";
 
-export const getAppletLogo = (applet: string | undefined) => {
+export const getAppletIcon = (
+  applet: string | undefined
+): { AppletIcon: any; bannerColor: string } => {
   switch (applet) {
     case Applets.JELLYFIN:
-      return Assets.JellyfinAssets.Applet_Large_Logo;
+      return { AppletIcon: Assets.JellyfinAssets.Logo, bannerColor: "#000B25" };
     case Applets.SONARR:
-      return Assets.SonarrAssets.Applet_Large_Logo;
+      return { AppletIcon: Assets.SonarrAssets.Logo, bannerColor: "#213E44" };
     case Applets.RADARR:
-      return Assets.RadarrAssets.Applet_Large_Logo;
+      return { AppletIcon: Assets.RadarrAssets.Logo, bannerColor: "#483C1F" };
+    case Applets.PROXMOX:
+      return { AppletIcon: Assets.ProxmoxAssets.Logo, bannerColor: "#432C16" };
     default:
-      return DefaultAppletLogo;
-  }
-};
-
-export const getAppletIcon = (applet: string | undefined) => {
-  switch (applet) {
-    case Applets.JELLYFIN:
-      return Assets.JellyfinAssets.Logo;
-    case Applets.SONARR:
-      return Assets.SonarrAssets.Logo;
-    case Applets.RADARR:
-      return Assets.RadarrAssets.Logo;
-    default:
-      return DefaultAppletIcon;
+      return { AppletIcon: DefaultAppletIcon, bannerColor: "#000000" };
   }
 };
 
