@@ -7,4 +7,5 @@ export const proxmoxColors: AppletColors = {
   accentColor: "#4599bf",
   activeCheckFillColor: "#9fdfc3",
   activeBookmarkFillColor: "#e4aaae",
+  bannerBackground: "#432C16",
 };

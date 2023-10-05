@@ -24,7 +24,9 @@ import { useToastController } from "@tamagui/toast";
 
 interface Inputs {
   serverURL: string;
-  apiKey: string;
+  user_realm: string;
+  token: string;
+  tokenId: string;
   customHeaders?: { key: string; value: string }[];
 }
 
@@ -45,12 +47,13 @@ const ProxmoxAuth = () => {
   } = useForm<Inputs>();
 
   const [apikey, setApikey] = React.useState<string>();
-  const [showApiKey, setShowApiKey] = React.useState(false);
+  const [showToken, setShowToken] = React.useState(false);
 
   const auth = useGetVersion({
     query: {
       enabled: !!apikey,
       onSuccess: (_data) => {
+        console.log(_data);
         useProxmoxStore.setState({
           authenticated: true,
           token: apikey,
@@ -61,6 +64,7 @@ const ProxmoxAuth = () => {
         navigation.goBack();
       },
       onError: (error) => {
+        console.log(error);
         useAppStateStore.setState({ activeApplet: undefined });
         // WARN: Show error message or prompt
         if (error.response?.status) {
@@ -72,7 +76,7 @@ const ProxmoxAuth = () => {
           setError("serverURL", {
             type: "manual",
           });
-          setError("apiKey", {
+          setError("token", {
             type: "manual",
           });
         }
@@ -98,10 +102,17 @@ const ProxmoxAuth = () => {
     if (!hasUrlSchema) return;
 
     useProxmoxStore.setState({ baseURL: serverURL });
-    configureAxiosForProxmox(serverURL, data.apiKey, undefined, () => {
-      setApikey(data.apiKey);
-      auth.refetch();
-    });
+    configureAxiosForProxmox(
+      serverURL,
+      data.user_realm,
+      data.tokenId,
+      data.token,
+      undefined,
+      () => {
+        setApikey(data.token);
+        auth.refetch();
+      }
+    );
   };
 
   const [customHeaders, setCustomHeaders] = React.useState<
@@ -168,14 +179,14 @@ const ProxmoxAuth = () => {
           <YStack>
             <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
               <Text color="$color" fontSize={16}>
-                {t("common:apiKey")}
+                {t("common:user@realm")}
               </Text>
               <Text color="$red9" marginLeft="$2">
-                {errors.apiKey && errors.apiKey.message}
+                {errors.user_realm && errors.user_realm.message}
               </Text>
             </XStack>
             <Controller
-              name="apiKey"
+              name="user_realm"
               control={control}
               rules={{
                 required: true,
@@ -186,13 +197,79 @@ const ProxmoxAuth = () => {
                     flex={1}
                     size="$4"
                     borderWidth={2}
-                    borderColor={errors.apiKey ? "$red8" : "$gray6"}
-                    placeholder={`${t("common:apiKey")}...`}
-                    textContentType="password"
-                    secureTextEntry={!showApiKey}
+                    borderColor={errors.tokenId ? "$red8" : "$gray6"}
+                    placeholder={`${t("common:user@realm")}...`}
                     onChangeText={onChange}
                     value={value}
-                    {...register("apiKey", {
+                    {...register("user_realm", {
+                      required: t("common:required") as string,
+                    })}
+                  />
+                </XStack>
+              )}
+            />
+          </YStack>
+          <YStack>
+            <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+              <Text color="$color" fontSize={16}>
+                {t("common:tokenId")}
+              </Text>
+              <Text color="$red9" marginLeft="$2">
+                {errors.tokenId && errors.tokenId.message}
+              </Text>
+            </XStack>
+            <Controller
+              name="tokenId"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, value } }) => (
+                <XStack width="100%">
+                  <Input
+                    flex={1}
+                    size="$4"
+                    borderWidth={2}
+                    borderColor={errors.tokenId ? "$red8" : "$gray6"}
+                    placeholder={`${t("common:tokenId")}...`}
+                    onChangeText={onChange}
+                    value={value}
+                    {...register("tokenId", {
+                      required: t("common:required") as string,
+                    })}
+                  />
+                </XStack>
+              )}
+            />
+          </YStack>
+          <YStack>
+            <XStack paddingBottom="$2" marginLeft="$1" alignItems="flex-end">
+              <Text color="$color" fontSize={16}>
+                {t("common:token")}
+              </Text>
+              <Text color="$red9" marginLeft="$2">
+                {errors.token && errors.token.message}
+              </Text>
+            </XStack>
+            <Controller
+              name="token"
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, value } }) => (
+                <XStack width="100%">
+                  <Input
+                    flex={1}
+                    size="$4"
+                    borderWidth={2}
+                    borderColor={errors.token ? "$red8" : "$gray6"}
+                    placeholder={`${t("common:token")}...`}
+                    textContentType="password"
+                    secureTextEntry={!showToken}
+                    onChangeText={onChange}
+                    value={value}
+                    {...register("token", {
                       required: t("common:required") as string,
                     })}
                   />
@@ -202,11 +279,11 @@ const ProxmoxAuth = () => {
                     borderWidth={2}
                     borderColor="$gray6"
                     padding="$0"
-                    backgroundColor={showApiKey ? "$gray8" : "$gray1"}
-                    onPress={() => setShowApiKey(!showApiKey)}
+                    backgroundColor={showToken ? "$gray8" : "$gray1"}
+                    onPress={() => setShowToken(!showToken)}
                   >
                     <Ionicons
-                      name={showApiKey ? "eye" : "eye-off"}
+                      name={showToken ? "eye" : "eye-off"}
                       size={24}
                       color={iconColor}
                     />

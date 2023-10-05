@@ -15,14 +15,18 @@ import {
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const configureAxiosForProxmox = (
   baseURL: string,
+  user_realm: string,
+  tokenId: string,
   token?: string | null,
   customHeaders?: object,
   callback?: () => void
 ) => {
+  console.log(`PVEAPIToken=${user_realm}!${tokenId}=${token}`);
   const axiosConfig = {
     baseURL: baseURL,
-    params: {
-      apikey: token,
+    headers: {
+      Authorization: `PVEAPIToken=${user_realm}!${tokenId}=${token}`,
+      ...(customHeaders ? customHeaders : {}),
     },
   };
   create_axios_instance(axiosConfig);
