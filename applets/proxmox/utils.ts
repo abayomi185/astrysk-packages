@@ -13,19 +13,20 @@ import {
 } from "./types";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
+export const API2_JSON_PATH = "/api2/json";
+
 export const configureAxiosForProxmox = (
   baseURL: string,
-  user_realm: string,
-  tokenId: string,
+  userRealm?: string,
+  tokenId?: string,
   token?: string | null,
   customHeaders?: object,
   callback?: () => void
 ) => {
-  console.log(`PVEAPIToken=${user_realm}!${tokenId}=${token}`);
   const axiosConfig = {
     baseURL: baseURL,
     headers: {
-      Authorization: `PVEAPIToken=${user_realm}!${tokenId}=${token}`,
+      Authorization: `PVEAPIToken=${userRealm}!${tokenId}=${token}`,
       ...(customHeaders ? customHeaders : {}),
     },
   };
@@ -43,6 +44,10 @@ export const configureProxmox = () => {
   const token = useProxmoxStore.getState().token;
   const customHeaders = useProxmoxStore.getState().customHeaders;
 
+  // Proxmox specific configuration
+  const userRealm = useProxmoxStore.getState().userRealm;
+  const tokenId = useProxmoxStore.getState().tokenId;
+
   if (!baseURL) {
     return false;
   }
@@ -51,7 +56,7 @@ export const configureProxmox = () => {
     return true;
   }
 
-  configureAxiosForProxmox(baseURL, token, customHeaders);
+  configureAxiosForProxmox(baseURL, userRealm, tokenId, token, customHeaders);
 
   useProxmoxStore.setState({ isConfigured: true });
 

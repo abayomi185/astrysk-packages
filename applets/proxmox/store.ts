@@ -34,6 +34,8 @@ export const useProxmoxStore = create<ProxmoxState>()(
 );
 
 interface ProxmoxState extends StateTypes.AppletState {
+  userRealm?: string;
+  tokenId?: string;
   // Main cache
   // proxmoxSeriesCache?: ProxmoxSeriesCache;
   // proxmoxEpisodeCache?: ProxmoxEpisodeCache;
@@ -53,13 +55,22 @@ interface ProxmoxState extends StateTypes.AppletState {
   >;
 }
 
-// NOTE: Make sure to add key to sonarrPersistStateKeys too
+// NOTE: Make sure to add key to proxmoxPersistStateKeys too
 interface ProxmoxPersistState
-  extends Pick<ProxmoxState, "baseURL" | "token" | "customHeaders"> {}
+  extends Pick<
+    ProxmoxState,
+    "baseURL" | "token" | "tokenId" | "userRealm" | "customHeaders"
+  > {}
 
 // NOTE: Persist key needs to be added here too
 export const proxmoxPersistStateKeys = Array.from(
-  new Set<keyof ProxmoxState>(["baseURL", "token", "customHeaders"])
+  new Set<keyof ProxmoxState>([
+    "baseURL",
+    "token",
+    "tokenId",
+    "userRealm",
+    "customHeaders",
+  ])
 );
 
 const initialAppState: ProxmoxState = {

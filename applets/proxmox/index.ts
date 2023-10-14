@@ -7,14 +7,14 @@ import ProxmoxSearch from "./screens/search";
 import ProxmoxDetail from "./screens/detail";
 import ProxmoxModal from "./screens/modal";
 import { configureProxmox, deConfigureProxmox } from "./utils";
-import sonarrLocales from "./locales";
+import proxmoxLocales from "./locales";
 import { ProxmoxContextMenuOptions } from "./context";
 import { ProxmoxSettingsOptions } from "./settings";
 import { proxmoxColors } from "./colors";
 
 const Proxmox: Applet = {
   loadLocales: () => {
-    i18next.addResourceBundle("en", "sonarr", sonarrLocales, true);
+    i18next.addResourceBundle("en", "proxmox", proxmoxLocales, true);
   },
   configure: configureProxmox,
   deconfigure: deConfigureProxmox,

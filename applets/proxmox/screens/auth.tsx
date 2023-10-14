@@ -9,7 +9,7 @@ import { AppletButtonBanner, showToast } from "@astrysk/components";
 import { Applets } from "@astrysk/constants";
 
 import { useProxmoxStore } from "../store";
-import { configureAxiosForProxmox } from "../utils";
+import { API2_JSON_PATH, configureAxiosForProxmox } from "../utils";
 import { useAppStateStore } from "@astrysk/stores";
 import { Alert } from "react-native";
 import { useNavigation } from "expo-router";
@@ -24,7 +24,7 @@ import { useToastController } from "@tamagui/toast";
 
 interface Inputs {
   serverURL: string;
-  user_realm: string;
+  userRealm: string;
   token: string;
   tokenId: string;
   customHeaders?: { key: string; value: string }[];
@@ -81,8 +81,8 @@ const ProxmoxAuth = () => {
           });
         }
       },
-      onSettled: (data, error) => {
-        if (!Array.isArray(data) || error) {
+      onSettled: (_data, error) => {
+        if (error) {
           useProxmoxStore.setState({ baseURL: undefined });
         }
       },
@@ -90,21 +90,23 @@ const ProxmoxAuth = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-    const serverURL = data.serverURL.replace(/\/$/, "");
+    const partialServerURL = data.serverURL.replace(/\/$/, "");
 
     const urlInputFieldName = "serverURL";
     const hasUrlSchema = promptUserForURLSchemaIfNotExists(
       t,
-      serverURL,
+      partialServerURL,
       urlInputFieldName,
       setValue
     );
     if (!hasUrlSchema) return;
 
+    const serverURL = partialServerURL + API2_JSON_PATH;
+
     useProxmoxStore.setState({ baseURL: serverURL });
     configureAxiosForProxmox(
       serverURL,
-      data.user_realm,
+      data.userRealm,
       data.tokenId,
       data.token,
       undefined,
@@ -182,11 +184,11 @@ const ProxmoxAuth = () => {
                 {t("common:user@realm")}
               </Text>
               <Text color="$red9" marginLeft="$2">
-                {errors.user_realm && errors.user_realm.message}
+                {errors.userRealm && errors.userRealm.message}
               </Text>
             </XStack>
             <Controller
-              name="user_realm"
+              name="userRealm"
               control={control}
               rules={{
                 required: true,
@@ -201,7 +203,7 @@ const ProxmoxAuth = () => {
                     placeholder={`${t("common:user@realm")}...`}
                     onChangeText={onChange}
                     value={value}
-                    {...register("user_realm", {
+                    {...register("userRealm", {
                       required: t("common:required") as string,
                     })}
                   />

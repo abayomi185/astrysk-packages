@@ -7,6 +7,7 @@ import { faServer, faDatabase } from "@fortawesome/free-solid-svg-icons";
 import { useProxmoxStore } from "./store";
 import i18next from "i18next";
 import { ProxmoxSettingsKeys } from "./types";
+import { API2_JSON_PATH } from "./utils";
 
 export const ProxmoxSettingsOptions = (
   router: Router
@@ -17,7 +18,10 @@ export const ProxmoxSettingsOptions = (
     type: "label",
     icon: faServer,
     iconSize: 22,
-    value: useProxmoxStore.getState().baseURL as string,
+    value: (useProxmoxStore.getState().baseURL as string).replace(
+      API2_JSON_PATH,
+      ""
+    ),
     firstItem: true,
   },
   {
