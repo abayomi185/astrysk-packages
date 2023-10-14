@@ -197,7 +197,7 @@ const SonarrCalendar: React.FC = () => {
     <YStack flex={1}>
       <CalendarProvider
         date={new Date().toISOString().split("T")[0]}
-      // theme={calendarTheme.current}
+        // theme={calendarTheme.current}
       >
         <SectionTitle subtle>{t("sonarr:upcomingEpisodes")}</SectionTitle>
         {/* <ExpandableCalendar */}
@@ -210,47 +210,47 @@ const SonarrCalendar: React.FC = () => {
         {/*   hideKnob */}
         {/*   // onVisibleMonthsChange={onVisibleMonthsChange} */}
         {/* /> */}
-        <XStack flexGrow={1}>
+        <XStack flexGrow={1} marginBottom="$10">
           <AgendaList
             sections={
               calendarQuery.data
                 ? // Object.values are the values of the object only
-                Object.values(
-                  groupBy(
-                    calendarQuery.data.map((calendarData) => {
-                      return {
-                        // Attempt to convert to local datetime
-                        title: new Date(calendarData.airDateUtc as string)
-                          .toISOString()
-                          .split("T")[0],
-                        data: [
-                          {
-                            seriesData:
-                              useSonarrStore.getState().sonarrSeriesCache?.[
-                              calendarData.seriesId as number
-                              ],
-                            title: calendarData.title,
-                            seasonNumber: calendarData.seasonNumber,
-                            episodeNumber: calendarData.episodeNumber,
-                            hasFile: calendarData.hasFile,
-                            timeUtc: calendarData.airDateUtc,
-                            time: new Date(
-                              calendarData.airDateUtc as string
-                            ).toLocaleTimeString("en-US", {
-                              hour: "numeric",
-                              minute: "numeric",
-                              hour12: true,
-                            }),
-                          } as CalendarData,
-                        ],
-                      } as SonarrAgendaList;
-                    }),
-                    "title" // Group by title
-                  )
-                ).map((group: SonarrAgendaList[]) => ({
-                  title: group[0].title,
-                  data: group.map((item: SonarrAgendaList) => item.data[0]),
-                }))
+                  Object.values(
+                    groupBy(
+                      calendarQuery.data.map((calendarData) => {
+                        return {
+                          // Attempt to convert to local datetime
+                          title: new Date(calendarData.airDateUtc as string)
+                            .toISOString()
+                            .split("T")[0],
+                          data: [
+                            {
+                              seriesData:
+                                useSonarrStore.getState().sonarrSeriesCache?.[
+                                  calendarData.seriesId as number
+                                ],
+                              title: calendarData.title,
+                              seasonNumber: calendarData.seasonNumber,
+                              episodeNumber: calendarData.episodeNumber,
+                              hasFile: calendarData.hasFile,
+                              timeUtc: calendarData.airDateUtc,
+                              time: new Date(
+                                calendarData.airDateUtc as string
+                              ).toLocaleTimeString("en-US", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }),
+                            } as CalendarData,
+                          ],
+                        } as SonarrAgendaList;
+                      }),
+                      "title" // Group by title
+                    )
+                  ).map((group: SonarrAgendaList[]) => ({
+                    title: group[0].title,
+                    data: group.map((item: SonarrAgendaList) => item.data[0]),
+                  }))
                 : []
             }
             renderItem={({ item }: { item: CalendarData }) => {
@@ -285,7 +285,7 @@ const SonarrCalendar: React.FC = () => {
                           } as ImageSource
                         }
                         transition={200}
-                      // recyclingKey={`${data.id}`}
+                        // recyclingKey={`${data.id}`}
                       />
                     </XStack>
                     <YStack flex={1} marginLeft="$2" paddingVertical="$2">
@@ -294,8 +294,9 @@ const SonarrCalendar: React.FC = () => {
                       </H5>
                       <Text marginTop="$2" color="$gray11">{`${t(
                         "sonarr:season"
-                      )} ${item.seasonNumber} • ${t("sonarr:episode")} ${item.episodeNumber
-                        }`}</Text>
+                      )} ${item.seasonNumber} • ${t("sonarr:episode")} ${
+                        item.episodeNumber
+                      }`}</Text>
                       <Text marginTop="$1.5" color="$gray11" numberOfLines={1}>
                         {item.title}
                       </Text>
@@ -305,21 +306,21 @@ const SonarrCalendar: React.FC = () => {
                           item.hasFile
                             ? "$green9"
                             : checkEpisodeHasAired(
-                              item.timeUtc,
-                              item.seriesData?.runtime ?? 1
-                            )
-                              ? "$red9"
-                              : "$blue9"
+                                item.timeUtc,
+                                item.seriesData?.runtime ?? 1
+                              )
+                            ? "$red9"
+                            : "$blue9"
                         }
                       >
                         {item.hasFile
                           ? t("sonarr:available")
                           : checkEpisodeHasAired(
-                            item.timeUtc,
-                            item.seriesData?.runtime ?? 1
-                          )
-                            ? t("sonarr:missing")
-                            : t("sonarr:notAired")}
+                              item.timeUtc,
+                              item.seriesData?.runtime ?? 1
+                            )
+                          ? t("sonarr:missing")
+                          : t("sonarr:notAired")}
                       </Text>
                     </YStack>
                     <XStack
