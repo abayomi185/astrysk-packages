@@ -12,6 +12,7 @@ import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import RadarrMovieDetailHeader from "./movieDetailHeader";
 import { radarrColors } from "../../colors";
+import { useSetLoadingSpinner } from "@astrysk/utils";
 
 const getRadarrSeriesDetailOptions = (
   t: TFunction,
@@ -90,7 +91,7 @@ const getRadarrSeriesDetailOptions = (
   ];
 };
 
-export const RadarrSeriesDetail: React.FC<{
+export const RadarrMovieDetail: React.FC<{
   forwardedData: MovieResource;
   tabContext: TabContext;
 }> = ({ forwardedData, tabContext }) => {
@@ -102,7 +103,7 @@ export const RadarrSeriesDetail: React.FC<{
       state.radarrMovieCache?.[forwardedData.id as number]?.monitored as boolean
   );
 
-  const seriesData = useGetApiV3MovieId(forwardedData.id as number, {
+  const movieData = useGetApiV3MovieId(forwardedData.id as number, {
     query: {
       initialData: () => forwardedData,
       onSuccess: (seriesData) => {
@@ -117,7 +118,7 @@ export const RadarrSeriesDetail: React.FC<{
   });
 
   const refetchSeries = () => {
-    seriesData.refetch();
+    movieData.refetch();
   };
 
   useFocusEffect(
@@ -130,12 +131,14 @@ export const RadarrSeriesDetail: React.FC<{
 
   useRadarrDetailHeader(navigation, forwardedData.title as string);
 
+  useSetLoadingSpinner(movieData);
+
   return (
     <YStack flex={1}>
       <FlashList
         data={getRadarrSeriesDetailOptions(
           t,
-          seriesData.data as MovieResource,
+          movieData.data as MovieResource,
           monitoredStatus
         )}
         extraData={monitoredStatus}
@@ -155,7 +158,7 @@ export const RadarrSeriesDetail: React.FC<{
         estimatedItemSize={76}
         ListHeaderComponent={
           <RadarrMovieDetailHeader
-            forwardedData={seriesData.data as MovieResource}
+            forwardedData={movieData.data as MovieResource}
             tabContext={tabContext}
           />
         }
@@ -172,4 +175,4 @@ export const RadarrSeriesDetail: React.FC<{
   );
 };
 
-export default RadarrSeriesDetail;
+export default RadarrMovieDetail;

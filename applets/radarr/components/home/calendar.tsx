@@ -192,8 +192,7 @@ const RadarrCalendar: React.FC = () => {
     );
   };
 
-  useLoadingSpinner(RadarrCalendar.name);
-  useSetLoadingSpinner(RadarrCalendar.name, calendarQuery.isSuccess);
+  useSetLoadingSpinner(calendarQuery);
 
   return (
     <YStack flex={1}>
@@ -202,7 +201,7 @@ const RadarrCalendar: React.FC = () => {
         // theme={calendarTheme.current}
       >
         <SectionTitle subtle>{t("radarr:upcomingMovies")}</SectionTitle>
-        <XStack flexGrow={1}>
+        <XStack flexGrow={1} marginBottom="$10">
           <AgendaList
             sections={
               calendarQuery.data

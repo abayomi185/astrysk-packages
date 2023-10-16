@@ -48,7 +48,7 @@ export const JellyfinSearchResultItem: React.FC<{
 
   return (
     <YStack
-      height="$18"
+      height="auto"
       width="$11"
       padding="$2"
       pressStyle={{ scale: 0.97 }}
@@ -192,13 +192,7 @@ const JellyfinSearchResults: React.FC<{
   return (
     <>
       <Suspense>
-        <YStack
-          flex={1}
-          height="100%"
-          width="100%"
-          // paddingHorizontal="$2"
-          paddingTop="$2"
-        >
+        <YStack flex={1} height="100%" width="100%" paddingTop="$2">
           <FlashList
             contentContainerStyle={{
               paddingHorizontal: "7",

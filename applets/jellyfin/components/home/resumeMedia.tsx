@@ -8,13 +8,9 @@ import { Image } from "expo-image";
 
 import { BaseItemDto, BaseItemKind, useGetResumeItems } from "../../api";
 
-import {
-  isTestflightBuild,
-  setLoadingSpinner,
-  useLoadingSpinner,
-} from "@astrysk/utils";
+import { isTestflightBuild, useSetLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
-import { Actions, Screens } from "@astrysk/constants";
+import { Screens } from "@astrysk/constants";
 import { onItemLayout } from "@astrysk/utils";
 import {
   JellyfinDetailScreenContext,
@@ -183,13 +179,6 @@ const JellyfinResumeMedia: React.FC = () => {
               },
             },
           }));
-          setLoadingSpinner(JellyfinResumeMedia.name, Actions.DONE);
-        },
-        onError: () => {
-          // WARN: If it errors, handle it and direct user to re-authenticate
-          // console.log("Error querying resumeItems");
-          setLoadingSpinner(JellyfinResumeMedia.name, Actions.DONE);
-          // WARN: Use Error Toast. Put toast in Tab Navigator component; think of something
         },
       },
     }
@@ -204,7 +193,7 @@ const JellyfinResumeMedia: React.FC = () => {
     }, [])
   );
 
-  useLoadingSpinner(JellyfinResumeMedia.name);
+  useSetLoadingSpinner(resumeItems);
 
   return (
     <YStack minHeight="$14.5" marginTop="$3">

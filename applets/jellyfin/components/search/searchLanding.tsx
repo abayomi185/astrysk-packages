@@ -120,7 +120,7 @@ const JellyfinSearchLanding = () => {
         height="100%"
         alignItems="center"
         justifyContent="center"
-        paddingTop="$2"
+        marginTop="$2"
       >
         <Suspense>
           <FlashList

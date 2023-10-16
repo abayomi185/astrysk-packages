@@ -23,9 +23,7 @@ import {
 } from "../../utils";
 import {
   getFlashListColumnsFromViewType,
-  setLoadingSpinner,
   useGetListColumnNumber,
-  useLoadingSpinner,
   useRefreshHandler,
   useSetLoadingSpinner,
 } from "@astrysk/utils";
@@ -239,7 +237,6 @@ const RadarrSearchLanding: React.FC<{
               }, {}),
             },
           }));
-          setLoadingSpinner(RadarrSearchLanding.name, Actions.DONE);
         },
       },
     }
@@ -337,8 +334,7 @@ const RadarrSearchLanding: React.FC<{
     }, [])
   );
 
-  useLoadingSpinner(RadarrSearchLanding.name);
-  useSetLoadingSpinner(RadarrSearchLanding.name, movieData.isSuccess);
+  useSetLoadingSpinner(movieData);
 
   return (
     <Suspense>

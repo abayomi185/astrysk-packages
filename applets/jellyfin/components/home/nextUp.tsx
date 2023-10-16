@@ -1,16 +1,16 @@
 import React, { Suspense } from "react";
 import { useRouter, useFocusEffect } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
-import { Text, YStack, XStack, H6, H3 } from "tamagui";
+import { Text, YStack, XStack, H6 } from "tamagui";
 import * as Crypto from "expo-crypto";
 
 import { BaseItemDto, ImageType, useGetNextUp } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import { useSetLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
-import { Actions, Screens } from "@astrysk/constants";
+import { Screens } from "@astrysk/constants";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
@@ -43,8 +43,6 @@ const JellyfinNextUpItem: React.FC<{
     });
   };
 
-  useLoadingSpinner(JellyfinNextUpItem.name);
-
   return (
     <YStack
       width="$9"
@@ -67,9 +65,6 @@ const JellyfinNextUpItem: React.FC<{
           placeholder={
             nextUpItem.ImageBlurHashes?.Primary?.[primaryBlurHash] as string
           }
-          onLoadEnd={() => {
-            setLoadingSpinner(JellyfinNextUpItem.name, Actions.DONE);
-          }}
           recyclingKey={seriesId}
           placeholderContentFit="cover"
         />
@@ -113,13 +108,12 @@ const JellyfinNextUp: React.FC = () => {
               },
             },
           }));
-          setLoadingSpinner(JellyfinNextUp.name, Actions.DONE);
         },
-        onError: () => {
-          // Call common function to alert or have indicator to show when there's an error.
-          // Perhaps replace applet icon
-          setLoadingSpinner(JellyfinNextUp.name, Actions.DONE);
-        },
+        // onError: () => {
+        //   // Call common function to alert or have indicator to show when there's an error.
+        //   // Perhaps replace applet icon
+        //   setLoadingSpinner(JellyfinNextUp.name, Actions.DONE);
+        // },
       },
     }
   );
@@ -133,7 +127,7 @@ const JellyfinNextUp: React.FC = () => {
     }, [])
   );
 
-  useLoadingSpinner(JellyfinNextUp.name);
+  useSetLoadingSpinner(nextUpMedia);
 
   if (nextUpMedia.data?.Items?.length == 0) {
     return null;

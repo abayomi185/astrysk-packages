@@ -6,9 +6,9 @@ import { BaseItemDto, ImageType, useGetLatestMedia } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { setLoadingSpinner, useLoadingSpinner } from "@astrysk/utils";
+import { useSetLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
-import { Actions, Screens } from "@astrysk/constants";
+import { Screens } from "@astrysk/constants";
 import {
   JellyfinDetailScreenContext,
   JellyfinDetailScreenProps,
@@ -41,8 +41,6 @@ const JellyfinRecentlyAddedItem: React.FC<{
     });
   };
 
-  useLoadingSpinner(JellyfinRecentlyAddedItem.name);
-
   return (
     <>
       <YStack
@@ -68,9 +66,6 @@ const JellyfinRecentlyAddedItem: React.FC<{
                 primaryBlurHash
               ] as string
             }
-            onLoadEnd={() => {
-              setLoadingSpinner(JellyfinRecentlyAddedItem.name, Actions.DONE);
-            }}
             recyclingKey={recentlyAddedItemId}
             placeholderContentFit="cover"
           />
@@ -116,12 +111,6 @@ const JellyfinRecentlyAdded: React.FC = () => {
               },
             },
           }));
-          setLoadingSpinner(JellyfinRecentlyAdded.name, Actions.DONE);
-        },
-        onError: () => {
-          // Call common function to alert or have indicator to show when there's an error.
-          // Perhaps replace applet icon
-          setLoadingSpinner(JellyfinRecentlyAdded.name, Actions.DONE);
         },
       },
     }
@@ -136,7 +125,7 @@ const JellyfinRecentlyAdded: React.FC = () => {
     }, [])
   );
 
-  useLoadingSpinner(JellyfinRecentlyAdded.name);
+  useSetLoadingSpinner(latestMedia);
 
   return (
     <>
