@@ -11,6 +11,7 @@ import { ProxmoxDetailScreenContext } from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
 import { FlashList } from "@shopify/flash-list";
+import { useGetClusterResources } from "../../api";
 
 const ProxmoxSummary: React.FC = () => {
   const { t } = useTranslation();
@@ -18,6 +19,13 @@ const ProxmoxSummary: React.FC = () => {
 
   const baseURL = useProxmoxStore.getState().baseURL as string;
   const token = useProxmoxStore.getState().token as string;
+
+  const clusterResources = useGetClusterResources({
+    query: {
+      onSuccess: (data) => {},
+      onError: (error) => {},
+    },
+  });
 
   useLoadingSpinner(ProxmoxSummary.name);
 

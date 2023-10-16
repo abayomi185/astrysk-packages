@@ -5,11 +5,14 @@ import { XStack, Spinner, ColorTokens } from "tamagui";
 import { sonarrColors } from "@astrysk/applets/sonarr/colors";
 import { jellyfinColors } from "@astrysk/applets/jellyfin/colors";
 import { radarrColors } from "@astrysk/applets/radarr/colors";
+import { proxmoxColors } from "@astrysk/applets/proxmox/colors";
 
+// NEW_APPLET
 const spinnerColorMapping: { [applet: string]: ColorTokens | string } = {
   [Applets.JELLYFIN]: jellyfinColors.accentColor,
   [Applets.SONARR]: sonarrColors.accentColor,
   [Applets.RADARR]: radarrColors.accentColor,
+  [Applets.PROXMOX]: proxmoxColors.accentColor,
 };
 
 export const registerLoadingComponent = (componentId: string) => {

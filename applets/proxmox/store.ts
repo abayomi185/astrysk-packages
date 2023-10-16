@@ -37,10 +37,7 @@ interface ProxmoxState extends StateTypes.AppletState {
   userRealm?: string;
   tokenId?: string;
   // Main cache
-  // proxmoxSeriesCache?: ProxmoxSeriesCache;
-  // proxmoxEpisodeCache?: ProxmoxEpisodeCache;
-  // proxmoxEpisodeFileCache?: ProxmoxEpisodeFileCache;
-  // proxmoxRootFolderCache?: string[];
+  // proxmoxCache?: ProxmoxCache;
   // Other
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;

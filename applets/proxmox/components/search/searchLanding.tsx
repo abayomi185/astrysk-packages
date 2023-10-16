@@ -29,7 +29,7 @@ import { Bookmark, CheckCircle2 } from "@tamagui/lucide-icons";
 const ProxmoxSearchResultGridItem: React.FC<{
   searchContext: ProxmoxSearchFilterContext;
   index?: number;
-  data: SeriesResource;
+  data: any;
   isSearching: boolean;
 }> = ({ searchContext, data, isSearching }) => {
   const router = useRouter();
@@ -44,24 +44,13 @@ const ProxmoxSearchResultGridItem: React.FC<{
       pressStyle={{ scale: 0.97 }}
       animation="delay"
       onPress={() => {
-        if (new Date(data.added as string).getTime() > 0) {
-          goToProxmoxDetailScreen({
-            router,
-            searchItemId: data.id as number,
-            tabContext: TabContext.Search,
-            screenContext: ProxmoxDetailScreenContext.SearchItem,
-            searchContext,
-          });
-        } else {
-          // TODO: Go to modal screen to add series
-          goToProxmoxModalScreen({
-            router,
-            searchItemId: data.id as number,
-            screenContext: ProxmoxDetailScreenContext.AddSeries,
-            searchContext,
-            tvdbId: data.tvdbId as number,
-          });
-        }
+        goToProxmoxDetailScreen({
+          router,
+          searchItemId: data.id as number,
+          tabContext: TabContext.Search,
+          screenContext: ProxmoxDetailScreenContext.SearchItem,
+          searchContext,
+        });
       }}
     >
       <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
@@ -106,7 +95,7 @@ const ProxmoxSearchResultGridItem: React.FC<{
 const ProxmoxSearchResultListItem: React.FC<{
   searchContext: ProxmoxSearchFilterContext;
   index?: number;
-  data: SeriesResource;
+  data: any;
   isSearching: boolean;
 }> = ({ searchContext, data, isSearching }) => {
   const router = useRouter();
@@ -124,24 +113,13 @@ const ProxmoxSearchResultListItem: React.FC<{
       borderRadius="$6"
       backgroundColor="$gray1"
       onPress={() => {
-        if (new Date(data.added as string).getTime() > 0) {
-          goToProxmoxDetailScreen({
-            router,
-            searchItemId: data.id as number,
-            tabContext: TabContext.Search,
-            screenContext: ProxmoxDetailScreenContext.SearchItem,
-            searchContext,
-          });
-        } else {
-          // TODO: Go to modal screen to add series
-          goToProxmoxModalScreen({
-            router,
-            searchItemId: data.id as number,
-            screenContext: ProxmoxDetailScreenContext.AddSeries,
-            searchContext,
-            tvdbId: data.tvdbId as number,
-          });
-        }
+        goToProxmoxDetailScreen({
+          router,
+          searchItemId: data.id as number,
+          tabContext: TabContext.Search,
+          screenContext: ProxmoxDetailScreenContext.SearchItem,
+          searchContext,
+        });
       }}
     >
       <XStack>
@@ -202,92 +180,55 @@ const ProxmoxSearchLanding: React.FC<{
 
   const searchFilters = useProxmoxStore((state) => state.searchFilters);
 
-  const seriesData = useGetApiV3Series(
-    {},
-    {
-      query: {
-        onSuccess: (data) => {
-          useProxmoxStore.setState((state) => ({
-            sonarrSeriesCache: {
-              ...state.sonarrSeriesCache,
-              ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
-                if (item.id) acc[item.id as number] = item;
-                return acc;
-              }, {}),
-            },
-          }));
-          setLoadingSpinner(ProxmoxSearchLanding.name, Actions.DONE);
-        },
-      },
-    }
-  );
+  // const seriesData = useGetApiV3Series(
+  //   {},
+  //   {
+  //     query: {
+  //       onSuccess: (data) => {
+  //         useProxmoxStore.setState((state) => ({
+  //           sonarrSeriesCache: {
+  //             ...state.sonarrSeriesCache,
+  //             ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
+  //               if (item.id) acc[item.id as number] = item;
+  //               return acc;
+  //             }, {}),
+  //           },
+  //         }));
+  //         setLoadingSpinner(ProxmoxSearchLanding.name, Actions.DONE);
+  //       },
+  //     },
+  //   }
+  // );
 
-  const searchResults = useGetApiV3SeriesLookup(
-    {
-      term: searchTerm,
-    },
-    {
-      query: {
-        select: (data: unknown) => data as SeriesResource[],
-        enabled: !!searchTerm,
-      },
-    }
-  );
+  // const searchResults = useGetApiV3SeriesLookup(
+  //   {
+  //     term: searchTerm,
+  //   },
+  //   {
+  //     query: {
+  //       select: (data: unknown) => data as SeriesResource[],
+  //       enabled: !!searchTerm,
+  //     },
+  //   }
+  // );
+  //
+  // const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
 
-  const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
+  // const [searchAll, setSearchAll] = React.useState(false);
+  //
+  // React.useEffect(() => {
+  //   if (searchTerm === "" || searchTerm === undefined) {
+  //     setSearchAll(false);
+  //   }
+  // }, [searchTerm]);
 
-  const [searchAll, setSearchAll] = React.useState(false);
-
-  React.useEffect(() => {
-    if (searchTerm === "" || searchTerm === undefined) {
-      setSearchAll(false);
-    }
-  }, [searchTerm]);
-
-  const getSeries = React.useCallback(() => {
-    const initialSeriesData = [
-      ...((seriesData.data as SeriesResource[]) ?? []),
-    ];
-    let seriesDataToReturn = initialSeriesData;
-
-    if (searchTerm && initialSeriesData.length > 0) {
-      const filteredSeries = initialSeriesData.filter((data) =>
-        data.title?.includes(searchTerm)
-      );
-      if (filteredSeries.length > 0 && !searchAll) {
-        seriesDataToReturn = filteredSeries;
-      } else {
-        seriesDataToReturn = (searchResults.data ?? []).sort((a, b) => {
-          // Check if 'a' should be prioritized
-          if (new Date(a.added as string).getTime() > 0) return -1;
-          // Check if 'b' should be prioritized
-          if (new Date(b.added as string).getTime() > 0) return 1;
-          // If neither 'a' nor 'b' should be prioritized, don't change order
-          return 0;
-        });
-      }
-    }
-    seriesDataToReturn = filterProxmoxSearchData<SeriesResource>(
-      seriesDataToReturn,
-      searchFilters?.[ProxmoxSearchFilterContext.Search]
-    );
-
-    return seriesDataToReturn;
-  }, [
-    seriesData.data,
-    searchResults.data,
-    searchTerm,
-    searchFilters,
-    searchAll,
-  ]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      seriesData.refetch();
-      searchTerm && searchResults.refetch();
-      return () => {};
-    }, [])
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     seriesData.refetch();
+  //     searchTerm && searchResults.refetch();
+  //     return () => {};
+  //   }, [])
+  // );
 
   useLoadingSpinner(ProxmoxSearchLanding.name);
 
@@ -303,83 +244,72 @@ const ProxmoxSearchLanding: React.FC<{
             viewType,
             flashListColumns
           )}
-          data={getSeries()}
+          data={[]}
           renderItem={({ item, index }) => {
-            if (viewType === ViewType.Grid) {
-              return (
-                <ProxmoxSearchResultGridItem
-                  searchContext={ProxmoxSearchFilterContext.Search}
-                  index={index}
-                  data={item}
-                  isSearching={!!searchTerm}
-                />
-              );
-            } else {
-              return (
-                <ProxmoxSearchResultListItem
-                  searchContext={ProxmoxSearchFilterContext.Search}
-                  index={index}
-                  data={item}
-                  isSearching={!!searchTerm}
-                />
-              );
-            }
+            return (
+              <ProxmoxSearchResultListItem
+                searchContext={ProxmoxSearchFilterContext.Search}
+                index={index}
+                data={item}
+                isSearching={!!searchTerm}
+              />
+            );
           }}
           estimatedItemSize={208}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefetching}
-              onRefresh={refetch}
-              tintColor={proxmoxColors.primary}
-            />
-          }
-          ListEmptyComponent={() => (
-            <EmptyList
-              queryStatus={
-                seriesData.status === "loading" ||
-                searchResults.status === "loading"
-                  ? "loading"
-                  : "success" // Success does not do anything in EmptyList
-              }
-              text={t("proxmox:noDataFound")}
-              accentColor={proxmoxColors.accentColor}
-            />
-          )}
-          ListFooterComponent={
-            <>
-              {!searchAll && searchTerm && (
-                <YStack
-                  height="$18"
-                  width="$11"
-                  padding="$2"
-                  pressStyle={{ scale: 0.97 }}
-                  animation="delay"
-                  onPress={() => {
-                    setSearchAll(true);
-                  }}
-                >
-                  <YStack
-                    height="$13"
-                    borderRadius="$6"
-                    backgroundColor="$gray6"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Search size={32} color={proxmoxColors.accentColor} />
-                  </YStack>
-                  <YStack
-                    paddingHorizontal="$1"
-                    paddingTop="$1"
-                    alignItems="center"
-                  >
-                    <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-                      {t("proxmox:searchAll")}
-                    </H6>
-                  </YStack>
-                </YStack>
-              )}
-            </>
-          }
+          // refreshControl={
+          //   <RefreshControl
+          //     refreshing={isRefetching}
+          //     onRefresh={refetch}
+          //     tintColor={proxmoxColors.primary}
+          //   />
+          // }
+          // ListEmptyComponent={() => (
+          // <EmptyList
+          //   queryStatus={
+          //     seriesData.status === "loading" ||
+          //     searchResults.status === "loading"
+          //       ? "loading"
+          //       : "success" // Success does not do anything in EmptyList
+          //   }
+          //   text={t("proxmox:noDataFound")}
+          //   accentColor={proxmoxColors.accentColor}
+          // />
+          // )}
+          // ListFooterComponent={
+          //   <>
+          //     {!searchAll && searchTerm && (
+          //       <YStack
+          //         height="$18"
+          //         width="$11"
+          //         padding="$2"
+          //         pressStyle={{ scale: 0.97 }}
+          //         animation="delay"
+          //         onPress={() => {
+          //           setSearchAll(true);
+          //         }}
+          //       >
+          //         <YStack
+          //           height="$13"
+          //           borderRadius="$6"
+          //           backgroundColor="$gray6"
+          //           justifyContent="center"
+          //           alignItems="center"
+          //         >
+          //           <Search size={32} color={proxmoxColors.accentColor} />
+          //         </YStack>
+          //         <YStack
+          //           paddingHorizontal="$1"
+          //           paddingTop="$1"
+          //           alignItems="center"
+          //         >
+          //           <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
+          //             {t("proxmox:searchAll")}
+          //           </H6>
+          //         </YStack>
+          //       </YStack>
+          //     )}
+          //   </>
+          // }
         />
       </YStack>
     </Suspense>
