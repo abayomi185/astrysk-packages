@@ -6,7 +6,7 @@ import { BaseItemDto, ImageType, useGetUserViews } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { useSetLoadingSpinner } from "@astrysk/utils";
+import { useQueryLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import {
@@ -112,7 +112,7 @@ const JellyfinViews: React.FC = () => {
     }, [])
   );
 
-  useSetLoadingSpinner(views);
+  useQueryLoadingSpinner(views);
 
   return (
     <>

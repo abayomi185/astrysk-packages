@@ -15,7 +15,7 @@ export { filterPersistState } from "./utils/store";
 export {
   setLoadingSpinner,
   useLoadingSpinner,
-  useSetLoadingSpinner,
+  useQueryLoadingSpinner,
 } from "./utils/loading";
 
 export { isEmpty } from "./utils/object";

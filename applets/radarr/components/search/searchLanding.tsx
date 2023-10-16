@@ -25,9 +25,8 @@ import {
   getFlashListColumnsFromViewType,
   useGetListColumnNumber,
   useRefreshHandler,
-  useSetLoadingSpinner,
+  useQueryLoadingSpinner,
 } from "@astrysk/utils";
-import { Actions } from "@astrysk/constants";
 import { radarrColors } from "../../colors";
 import { TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
@@ -334,7 +333,7 @@ const RadarrSearchLanding: React.FC<{
     }, [])
   );
 
-  useSetLoadingSpinner(movieData);
+  useQueryLoadingSpinner(movieData);
 
   return (
     <Suspense>

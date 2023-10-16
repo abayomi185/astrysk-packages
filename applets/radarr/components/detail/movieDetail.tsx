@@ -12,7 +12,7 @@ import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import RadarrMovieDetailHeader from "./movieDetailHeader";
 import { radarrColors } from "../../colors";
-import { useSetLoadingSpinner } from "@astrysk/utils";
+import { useQueryLoadingSpinner } from "@astrysk/utils";
 
 const getRadarrSeriesDetailOptions = (
   t: TFunction,
@@ -131,7 +131,7 @@ export const RadarrMovieDetail: React.FC<{
 
   useRadarrDetailHeader(navigation, forwardedData.title as string);
 
-  useSetLoadingSpinner(movieData);
+  useQueryLoadingSpinner(movieData);
 
   return (
     <YStack flex={1}>

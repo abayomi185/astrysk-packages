@@ -8,7 +8,7 @@ import { Image } from "expo-image";
 
 import { BaseItemDto, BaseItemKind, useGetResumeItems } from "../../api";
 
-import { isTestflightBuild, useSetLoadingSpinner } from "@astrysk/utils";
+import { isTestflightBuild, useQueryLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import { onItemLayout } from "@astrysk/utils";
@@ -193,7 +193,7 @@ const JellyfinResumeMedia: React.FC = () => {
     }, [])
   );
 
-  useSetLoadingSpinner(resumeItems);
+  useQueryLoadingSpinner(resumeItems);
 
   return (
     <YStack minHeight="$14.5" marginTop="$3">

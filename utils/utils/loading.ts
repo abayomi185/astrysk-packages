@@ -23,17 +23,14 @@ export const useLoadingSpinner = (functionName: string) =>
     setLoadingSpinner(functionName, Actions.LOADING);
   }, []);
 
-export const useSetLoadingSpinner = (
+export const useQueryLoadingSpinner = (
   query: UseQueryResult<any, any> & {
     queryKey: QueryKey;
   }
 ) => {
   const queryKeyString = `${query.queryKey[0]}`;
   React.useEffect(() => {
-    if (query.isFetching) {
-      setLoadingSpinner(queryKeyString, Actions.LOADING);
-    } else {
-      setLoadingSpinner(queryKeyString, Actions.DONE);
-    }
-  }, [query.isFetching]);
+    const action = query.isFetching ? Actions.LOADING : Actions.DONE;
+    setLoadingSpinner(queryKeyString, action);
+  }, [query.isFetching, queryKeyString]);
 };

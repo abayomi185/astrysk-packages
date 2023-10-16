@@ -19,7 +19,7 @@ import {
   getStartAndEndOfWeek,
   setLoadingSpinner,
   useColorScheme,
-  useLoadingSpinner,
+  useQueryLoadingSpinner,
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,6 @@ import {
 } from "../../types";
 import { Actions } from "@astrysk/constants";
 import { TabContext } from "@astrysk/types";
-import { useSetLoadingSpinner } from "@astrysk/utils";
 
 const getExpandableCalendarTheme = (darkMode: boolean): Theme => ({
   arrowColor: radarrColors.accentColor,
@@ -192,7 +191,7 @@ const RadarrCalendar: React.FC = () => {
     );
   };
 
-  useSetLoadingSpinner(calendarQuery);
+  useQueryLoadingSpinner(calendarQuery);
 
   return (
     <YStack flex={1}>
