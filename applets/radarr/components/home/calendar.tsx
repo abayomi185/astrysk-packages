@@ -163,7 +163,6 @@ const RadarrCalendar: React.FC = () => {
   });
 
   const refetchCalendar = () => {
-    setLoadingSpinner(RadarrCalendar.name, Actions.LOADING);
     calendarQuery.refetch();
   };
 
