@@ -25,6 +25,9 @@
   "selectDefault": "Select default",
   "lastActiveApplet": "Last active applet",
 
+  "size": "Size",
+  "alphabetical": "Alphabetical",
+
   "disconnectServer": "Disconnect Server",
   "clearFilter": "Clear Filter",
 
