@@ -1,9 +1,7 @@
 import React, { Suspense } from "react";
-import { RefreshControl } from "react-native";
 import { useRouter, useFocusEffect } from "expo-router";
 import { H6, YStack, Text, XStack, Button } from "tamagui";
 import { Image, ImageSource } from "expo-image";
-import { FlashList } from "@shopify/flash-list";
 import {
   ProxmoxDetailScreenContext,
   ProxmoxSearchFilterContext,
@@ -12,162 +10,21 @@ import { useProxmoxStore } from "../../store";
 import { filterProxmoxSearchData, goToProxmoxDetailScreen } from "../../utils";
 import {
   getFlashListColumnsFromViewType,
-  setLoadingSpinner,
   useGetListColumnNumber,
-  useLoadingSpinner,
+  useQueryLoadingSpinner,
   useRefreshHandler,
 } from "@astrysk/utils";
-import { Actions } from "@astrysk/constants";
 import { proxmoxColors } from "../../colors";
 import { TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
 import { customTokens } from "@astrysk/styles";
-import { Bookmark, CheckCircle2 } from "@tamagui/lucide-icons";
-
-const ProxmoxSearchResultGridItem: React.FC<{
-  searchContext: ProxmoxSearchFilterContext;
-  index?: number;
-  data: any;
-  isSearching: boolean;
-}> = ({ searchContext, data, isSearching }) => {
-  const router = useRouter();
-  const token = useProxmoxStore.getState().token;
-  const baseURL = useProxmoxStore.getState().baseURL;
-
-  return (
-    <YStack
-      height="auto"
-      width="$11"
-      padding="$2"
-      pressStyle={{ scale: 0.97 }}
-      animation="delay"
-      onPress={() => {
-        goToProxmoxDetailScreen({
-          router,
-          searchItemId: data.id as number,
-          tabContext: TabContext.Search,
-          screenContext: ProxmoxDetailScreenContext.SearchItem,
-          searchContext,
-        });
-      }}
-    >
-      <YStack height="$13" borderRadius="$6" backgroundColor="$gray6">
-        <Image
-          style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
-          source={
-            {
-              uri: data.id
-                ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
-                : data.remotePoster,
-            } as ImageSource
-          }
-          transition={200}
-          recyclingKey={`${data.id}`}
-        />
-      </YStack>
-      <YStack paddingHorizontal="$1" paddingTop="$1">
-        <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-          {data.title}
-        </H6>
-        <XStack alignItems="center">
-          <Text color="$color" opacity={0.6} numberOfLines={1}>
-            {data.year}
-          </Text>
-          {new Date(data.added as string).getTime() > 0 && isSearching && (
-            <Text
-              color="$green9"
-              fontSize={22}
-              lineHeight={22}
-              marginLeft="$1"
-              opacity={0.9}
-            >
-              {"•"}
-            </Text>
-          )}
-        </XStack>
-      </YStack>
-    </YStack>
-  );
-};
-
-const ProxmoxSearchResultListItem: React.FC<{
-  searchContext: ProxmoxSearchFilterContext;
-  index?: number;
-  data: any;
-  isSearching: boolean;
-}> = ({ searchContext, data, isSearching }) => {
-  const router = useRouter();
-  const { t } = useTranslation();
-  const token = useProxmoxStore.getState().token;
-  const baseURL = useProxmoxStore.getState().baseURL;
-
-  return (
-    <Button
-      flex={1}
-      height="auto"
-      padding="$2"
-      animation="delay"
-      marginBottom="$2"
-      borderRadius="$6"
-      backgroundColor="$gray1"
-      onPress={() => {
-        goToProxmoxDetailScreen({
-          router,
-          searchItemId: data.id as number,
-          tabContext: TabContext.Search,
-          screenContext: ProxmoxDetailScreenContext.SearchItem,
-          searchContext,
-        });
-      }}
-    >
-      <XStack>
-        <YStack
-          height="$11"
-          width="$8"
-          borderRadius="$5"
-          backgroundColor="$gray6"
-        >
-          <Image
-            style={{ flex: 1, overflow: "hidden", borderRadius: 10 }}
-            source={
-              {
-                uri: data.id
-                  ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
-                  : data.remotePoster,
-              } as ImageSource
-            }
-            transition={200}
-            recyclingKey={`${data.id}`}
-          />
-        </YStack>
-        <YStack flex={1} marginLeft="$2.5" paddingHorizontal="$1">
-          <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-            {data.title}
-          </H6>
-          <Text color="$color" opacity={0.6} numberOfLines={1}>
-            {data.year}
-          </Text>
-          <Text color="$color" marginTop="$1.5" opacity={0.6} numberOfLines={1}>
-            {t(`sonarr:${data?.seriesType}`) + " • " + data.network}
-          </Text>
-          <XStack marginTop="$1.5" marginLeft="$-0.75" alignItems="center">
-            <Bookmark
-              size={16}
-              color={data.monitored ? "$red8" : "$gray9"}
-              fill={
-                data.monitored
-                  ? proxmoxColors.activeBookmarkFillColor
-                  : "transparent"
-              }
-            />
-          </XStack>
-        </YStack>
-      </XStack>
-    </Button>
-  );
-};
+import ClusterResources from "../detail/clusterResources";
+import {
+  GetClusterResourcesResponseResponseDataItem,
+  useGetClusterResources,
+} from "../../api";
 
 const ProxmoxSearchLanding: React.FC<{
   searchTerm: string;
@@ -180,136 +37,83 @@ const ProxmoxSearchLanding: React.FC<{
 
   const searchFilters = useProxmoxStore((state) => state.searchFilters);
 
-  // const seriesData = useGetApiV3Series(
-  //   {},
-  //   {
-  //     query: {
-  //       onSuccess: (data) => {
-  //         useProxmoxStore.setState((state) => ({
-  //           sonarrSeriesCache: {
-  //             ...state.sonarrSeriesCache,
-  //             ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
-  //               if (item.id) acc[item.id as number] = item;
-  //               return acc;
-  //             }, {}),
-  //           },
-  //         }));
-  //         setLoadingSpinner(ProxmoxSearchLanding.name, Actions.DONE);
-  //       },
-  //     },
-  //   }
-  // );
+  const clusterResources = useGetClusterResources({
+    query: {
+      select: (response) => {
+        // Storage data order is not consistent from API
+        // Sorting it here before use
+        const data = response.data?.sort((a, b) => {
+          if (a.type !== "storage" || b.type !== "storage") return 0;
+          return (a.storage as string)?.localeCompare(b.storage as string) || 0;
+        });
+        return data;
+      },
+      onSuccess: (data) => {
+        // console.log(JSON.stringify(data, null, 2));
+        useProxmoxStore.setState((state) => ({
+          proxmoxCache: {
+            ...state.proxmoxCache,
+            clusterResources: {
+              ...state.proxmoxCache?.clusterResources,
+              ...data?.reduce(
+                (
+                  acc: {
+                    [key: string]: GetClusterResourcesResponseResponseDataItem;
+                  },
+                  item
+                ) => {
+                  if (item.id) acc[item.id] = item;
+                  return acc;
+                },
+                {}
+              ),
+            },
+          },
+        }));
+      },
+    },
+  });
 
-  // const searchResults = useGetApiV3SeriesLookup(
-  //   {
-  //     term: searchTerm,
-  //   },
-  //   {
-  //     query: {
-  //       select: (data: unknown) => data as SeriesResource[],
-  //       enabled: !!searchTerm,
-  //     },
-  //   }
-  // );
-  //
-  // const { isRefetching, refetch } = useRefreshHandler(seriesData.refetch);
+  const getClusterResources = React.useCallback(() => {
+    const initialResourcesData = [...(clusterResources.data ?? [])];
+    let resourcesDataToReturn = initialResourcesData;
 
-  // const [searchAll, setSearchAll] = React.useState(false);
-  //
-  // React.useEffect(() => {
-  //   if (searchTerm === "" || searchTerm === undefined) {
-  //     setSearchAll(false);
-  //   }
-  // }, [searchTerm]);
+    if (searchTerm && initialResourcesData.length > 0) {
+      const filteredResources = initialResourcesData.filter((data) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        return (
+          data.name?.toLowerCase().includes(lowerCaseSearchTerm) ||
+          data.id?.toLowerCase().includes(lowerCaseSearchTerm)
+        );
+      });
+      resourcesDataToReturn = filteredResources;
+    }
+    resourcesDataToReturn =
+      filterProxmoxSearchData<GetClusterResourcesResponseResponseDataItem>(
+        resourcesDataToReturn,
+        searchFilters?.[ProxmoxSearchFilterContext.Search]
+      );
 
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     seriesData.refetch();
-  //     searchTerm && searchResults.refetch();
-  //     return () => {};
-  //   }, [])
-  // );
+    return resourcesDataToReturn;
+  }, [clusterResources.data, searchTerm, searchFilters]);
 
-  useLoadingSpinner(ProxmoxSearchLanding.name);
+  useFocusEffect(
+    React.useCallback(() => {
+      clusterResources.refetch();
+      searchTerm && clusterResources.refetch();
+      return () => {};
+    }, [])
+  );
+
+  useQueryLoadingSpinner(clusterResources);
 
   return (
     <Suspense>
       <YStack flex={1} height="100%" width="100%" paddingTop="$2">
-        <FlashList
-          contentContainerStyle={{
-            paddingHorizontal: "7",
-          }}
-          horizontal={false}
-          numColumns={getFlashListColumnsFromViewType(
-            viewType,
-            flashListColumns
-          )}
-          data={[]}
-          renderItem={({ item, index }) => {
-            return (
-              <ProxmoxSearchResultListItem
-                searchContext={ProxmoxSearchFilterContext.Search}
-                index={index}
-                data={item}
-                isSearching={!!searchTerm}
-              />
-            );
-          }}
-          estimatedItemSize={208}
-          // refreshControl={
-          //   <RefreshControl
-          //     refreshing={isRefetching}
-          //     onRefresh={refetch}
-          //     tintColor={proxmoxColors.primary}
-          //   />
-          // }
-          // ListEmptyComponent={() => (
-          // <EmptyList
-          //   queryStatus={
-          //     seriesData.status === "loading" ||
-          //     searchResults.status === "loading"
-          //       ? "loading"
-          //       : "success" // Success does not do anything in EmptyList
-          //   }
-          //   text={t("proxmox:noDataFound")}
-          //   accentColor={proxmoxColors.accentColor}
-          // />
-          // )}
-          // ListFooterComponent={
-          //   <>
-          //     {!searchAll && searchTerm && (
-          //       <YStack
-          //         height="$18"
-          //         width="$11"
-          //         padding="$2"
-          //         pressStyle={{ scale: 0.97 }}
-          //         animation="delay"
-          //         onPress={() => {
-          //           setSearchAll(true);
-          //         }}
-          //       >
-          //         <YStack
-          //           height="$13"
-          //           borderRadius="$6"
-          //           backgroundColor="$gray6"
-          //           justifyContent="center"
-          //           alignItems="center"
-          //         >
-          //           <Search size={32} color={proxmoxColors.accentColor} />
-          //         </YStack>
-          //         <YStack
-          //           paddingHorizontal="$1"
-          //           paddingTop="$1"
-          //           alignItems="center"
-          //         >
-          //           <H6 color="$color" ellipsizeMode="tail" numberOfLines={2}>
-          //             {t("proxmox:searchAll")}
-          //           </H6>
-          //         </YStack>
-          //       </YStack>
-          //     )}
-          //   </>
-          // }
+        <ClusterResources
+          data={getClusterResources()}
+          queryStatus={clusterResources.status}
+          refetch={clusterResources.refetch}
         />
       </YStack>
     </Suspense>

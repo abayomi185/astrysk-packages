@@ -26,17 +26,20 @@ const getProxmoxFilterBarOptions = (
 ): ProxmoxFilter[] => {
   return [
     {
-      id: "proxmox:status",
+      id: "proxmox:type",
       options: [
-        { value: "proxmox:monitored" },
-        { value: "proxmox:unmonitored" },
+        { value: "proxmox:qemu" },
+        { value: "proxmox:lxc" },
+        { value: "proxmox:node" },
+        { value: "proxmox:storage" },
+        { value: "proxmox:sdn" },
       ],
     },
     {
       id: "proxmox:order",
       options: [
+        { value: "proxmox:id", supportsOrderBy: true },
         { value: "proxmox:alphabetical", supportsOrderBy: true },
-        { value: "proxmox:dateAdded", supportsOrderBy: true },
       ],
     },
   ];
@@ -49,19 +52,23 @@ const ProxmoxSearchFilterBar: React.FC<{
 }> = ({ context, handleClearAllFilters, style }) => {
   const router = useRouter();
 
-  const viewType = useProxmoxStore((state) => state.viewType) ?? ViewType.Grid;
+  const viewType = useProxmoxStore((state) => state.viewType) ?? ViewType.List;
 
   const searchFilters = useProxmoxStore((state) => state.searchFilters);
 
-  const handleFilterPress = (id: string) => {
-    router.push({
-      pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
-      params: {
-        context: ProxmoxDetailScreenContext.SearchFilter,
-        searchContext: context,
-        itemId: id,
-      } as ProxmoxDetailScreenProps,
-    });
+  const handleFilterPress = (id: string, isToggle?: boolean) => {
+    if (isToggle) {
+      // WARN: Put toggle logic here
+    } else {
+      router.push({
+        pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
+        params: {
+          context: ProxmoxDetailScreenContext.SearchFilter,
+          searchContext: context,
+          itemId: id,
+        } as ProxmoxDetailScreenProps,
+      });
+    }
   };
 
   const clearFiltersForContext = () => {
@@ -133,18 +140,18 @@ const ProxmoxSearchFilterBar: React.FC<{
           estimatedItemSize={69}
         />
       </XStack>
-      <XStack width="$3" marginLeft="$2.5" marginRight="$3" alignItems="center">
-        <ViewTypeButton
-          viewType={viewType}
-          onPressHandler={() => {
-            changeViewType(
-              viewType,
-              PROXMOX_SUPPORTED_VIEW_TYPES,
-              useProxmoxStore
-            );
-          }}
-        />
-      </XStack>
+      {/* <XStack width="$3" marginLeft="$2.5" marginRight="$3" alignItems="center"> */}
+      {/*   <ViewTypeButton */}
+      {/*     viewType={viewType} */}
+      {/*     onPressHandler={() => { */}
+      {/*       changeViewType( */}
+      {/*         viewType, */}
+      {/*         PROXMOX_SUPPORTED_VIEW_TYPES, */}
+      {/*         useProxmoxStore */}
+      {/*       ); */}
+      {/*     }} */}
+      {/*   /> */}
+      {/* </XStack> */}
     </XStack>
   );
 };
