@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import {
+  ProxmoxCache,
   ProxmoxFilter,
   ProxmoxFilterKind,
   ProxmoxFilterKindValue,
@@ -37,7 +38,7 @@ interface ProxmoxState extends StateTypes.AppletState {
   userRealm?: string;
   tokenId?: string;
   // Main cache
-  // proxmoxCache?: ProxmoxCache;
+  proxmoxCache?: ProxmoxCache;
   // Other
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;

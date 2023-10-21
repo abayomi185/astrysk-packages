@@ -1,5 +1,18 @@
 import { TabContext } from "@astrysk/types";
 import { FilterOrder } from "@astrysk/types";
+import { GetClusterResourcesResponseResponseDataItem } from "./api";
+
+export interface ProxmoxCache {
+  clusterResources?: {
+    [id: string]: GetClusterResourcesResponseResponseDataItem;
+  };
+}
+
+export interface ExtendedGetClusterResourcesResponseResponseDataItem
+  extends GetClusterResourcesResponseResponseDataItem {
+  proxmoxContext?: ProxmoxDetailScreenContext;
+  proxmoxTabContext?: TabContext;
+}
 
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
