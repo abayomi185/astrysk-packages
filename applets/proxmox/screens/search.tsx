@@ -9,7 +9,7 @@ import { ProxmoxSearchFilterContext } from "../types";
 import { YStack } from "tamagui";
 import { debouncedSetter } from "@astrysk/components";
 
-const SonarrSearch: React.FC = () => {
+const ProxmoxSearch: React.FC = () => {
   useProxmoxConfigurator();
 
   const navigation = useNavigation();
@@ -38,4 +38,4 @@ const SonarrSearch: React.FC = () => {
   );
 };
 
-export default SonarrSearch;
+export default ProxmoxSearch;
