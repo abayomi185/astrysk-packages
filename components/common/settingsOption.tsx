@@ -8,6 +8,7 @@ import {
   SizeTokens,
   GetProps,
   Switch,
+  FontSizeTokens,
 } from "tamagui";
 import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
 import {
@@ -25,7 +26,7 @@ export const SettingsOptionHeader: React.FC<{
   t: TFunction;
   headerTitle: string;
   style?: GetProps<typeof XStack>;
-  size?: SizeTokens;
+  size?: FontSizeTokens;
 }> = ({ t, headerTitle, style, size }) => {
   return (
     <XStack
