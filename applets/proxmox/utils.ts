@@ -11,6 +11,7 @@ import {
   ProxmoxDetailScreenProps,
   ProxmoxSearchFilterContext,
 } from "./types";
+import { GetClusterResourcesResponseResponseDataItem } from "./api";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const API2_JSON_PATH = "/api2/json";
@@ -83,7 +84,7 @@ export const goToProxmoxDetailScreen = ({
   searchContext,
 }: {
   router: Router;
-  searchItemId: number;
+  searchItemId: string;
   tabContext: TabContext;
   seasonNumber?: number;
   screenContext?: ProxmoxDetailScreenContext;
@@ -104,137 +105,76 @@ export const goToProxmoxDetailScreen = ({
   });
 };
 
-export const filterProxmoxSearchData = <T extends any>(
+export const filterProxmoxSearchData = <
+  T extends GetClusterResourcesResponseResponseDataItem
+>(
   data: T[],
   searchFilters: Record<string, any> | undefined
 ) => {
   let filteredData = data;
 
-  // if (searchFilters?.["sonarr:status"]) {
-  //   const searchFilter = searchFilters?.["sonarr:status"];
-  //   if (searchFilter.value === "sonarr:monitored") {
-  //     filteredData = filteredData.filter((data) => data.monitored === true);
-  //   } else if (searchFilter.value === "sonarr:unmonitored") {
-  //     filteredData = filteredData.filter((data) => data.monitored === false);
-  //   } else if (searchFilter.value === "sonarr:continuing") {
-  //     filteredData = filteredData.filter(
-  //       (data) => data.status === SeriesStatusType.continuing
-  //     );
-  //   } else if (searchFilter.value === "sonarr:ended") {
-  //     filteredData = filteredData.filter((data) => {
-  //       return data.status === SeriesStatusType.ended;
-  //     });
-  //   } else if (searchFilter.value === "sonarr:missing") {
-  //     filteredData = filteredData.filter(
-  //       (data) => data.statistics?.percentOfEpisodes !== 100
-  //     );
-  //   }
-  // }
+  if (searchFilters?.["proxmox:type"]) {
+    const searchFilter = searchFilters?.["proxmox:type"];
+    if (searchFilter.value === "proxmox:qemu") {
+      filteredData = filteredData.filter((data) => data.type === "qemu");
+    } else if (searchFilter.value === "proxmox:lxc") {
+      filteredData = filteredData.filter((data) => data.type === "lxc");
+    } else if (searchFilter.value === "proxmox:storage") {
+      filteredData = filteredData.filter((data) => data.type === "storage");
+    } else if (searchFilter.value === "proxmox:node") {
+      filteredData = filteredData.filter((data) => data.type === "node");
+    } else if (searchFilter.value === "proxmox:sdn") {
+      filteredData = filteredData.filter((data) => data.type === "sdn");
+    }
+  }
 
-  // if (searchFilters?.["sonarr:order"]) {
-  //   const searchFilter = searchFilters?.["sonarr:order"];
-  //   if (searchFilter.value === "sonarr:alphabetical") {
-  //     if (searchFilter.order === FilterOrder.ASCENDING) {
-  //       filteredData = filteredData.sort((a, b) =>
-  //         (a.title as string).localeCompare(b.title as string)
-  //       );
-  //     } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //       filteredData = filteredData.sort((a, b) =>
-  //         (b.title as string).localeCompare(a.title as string)
-  //       );
-  //     }
-  //   } else if (searchFilter.value === "sonarr:dateAdded") {
-  //     if (searchFilter.order === FilterOrder.ASCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           new Date(a.added as string).getTime() -
-  //           new Date(b.added as string).getTime()
-  //       );
-  //     } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           new Date(b.added as string).getTime() -
-  //           new Date(a.added as string).getTime()
-  //       );
-  //     }
-  //   } else if (searchFilter.value === "sonarr:size") {
-  //     if (searchFilter.order === FilterOrder.ASCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           (a.statistics?.sizeOnDisk as number) -
-  //           (b.statistics?.sizeOnDisk as number)
-  //       );
-  //     } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           (b.statistics?.sizeOnDisk as number) -
-  //           (a.statistics?.sizeOnDisk as number)
-  //       );
-  //     }
-  //   } else if (searchFilter.value === "sonarr:nextAiring") {
-  //     if (searchFilter.order === FilterOrder.ASCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           new Date(a.nextAiring as string).getTime() -
-  //           new Date(b.nextAiring as string).getTime()
-  //       );
-  //     } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           new Date(b.nextAiring as string).getTime() -
-  //           new Date(a.nextAiring as string).getTime()
-  //       );
-  //     }
-  //   } else if (searchFilter.value === "sonarr:episodes") {
-  //     if (searchFilter.order === FilterOrder.ASCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           (a.statistics?.episodeFileCount as number) -
-  //           (b.statistics?.episodeFileCount as number)
-  //       );
-  //     } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //       filteredData = filteredData.sort(
-  //         (a, b) =>
-  //           (b.statistics?.episodeFileCount as number) -
-  //           (a.statistics?.episodeFileCount as number)
-  //       );
-  //     } else if (searchFilter.value === "sonarr:network") {
-  //       if (searchFilter.order === FilterOrder.ASCENDING) {
-  //         filteredData = filteredData.sort((a, b) =>
-  //           (a.network as string).localeCompare(b.network as string)
-  //         );
-  //       } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //         filteredData = filteredData.sort((a, b) =>
-  //           (b.network as string).localeCompare(a.network as string)
-  //         );
-  //       }
-  //     } else if (searchFilter.value === "sonarr:qualityProfile") {
-  //       if (searchFilter.order === FilterOrder.ASCENDING) {
-  //         filteredData = filteredData.sort(
-  //           (a, b) =>
-  //             (a.qualityProfileId as number) - (b.qualityProfileId as number)
-  //         );
-  //       } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //         filteredData = filteredData.sort(
-  //           (a, b) =>
-  //             (b.qualityProfileId as number) - (a.qualityProfileId as number)
-  //         );
-  //       }
-  //     } else if (searchFilter.value === "sonarr:type") {
-  //       if (searchFilter.order === FilterOrder.ASCENDING) {
-  //         filteredData = filteredData.sort((a, b) =>
-  //           (a.seriesType as string).localeCompare(b.seriesType as string)
-  //         );
-  //       } else if (searchFilter.order === FilterOrder.DESCENDING) {
-  //         filteredData = filteredData.sort((a, b) =>
-  //           (a.seriesType as string).localeCompare(b.seriesType as string)
-  //         );
-  //       }
-  //     }
-  //   }
-  // }
+  if (searchFilters?.["proxmox:order"]) {
+    const searchFilter = searchFilters?.["proxmox:order"];
+    if (searchFilter.value === "proxmox:id") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData.sort(
+          (a, b) => (a.vmid ?? Infinity) - (b.vmid ?? Infinity)
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData = filteredData.sort(
+          (a, b) => (b.vmid || 0) - (a.vmid || 0)
+        );
+      }
+    } else if (searchFilter.value === "proxmox:alphabetical") {
+      if (searchFilter.order === FilterOrder.ASCENDING) {
+        filteredData.sort((a, b) =>
+          (
+            (a.name || a.storage || a.node || a.sdn || a.id) as string
+          ).localeCompare(
+            (b.name || b.storage || b.node || a.sdn || b.id) as string
+          )
+        );
+      } else if (searchFilter.order === FilterOrder.DESCENDING) {
+        filteredData.sort((a, b) =>
+          (
+            (b.name || b.storage || b.node || a.sdn || b.id) as string
+          ).localeCompare(
+            (a.name || a.storage || a.node || a.sdn || a.id) as string
+          )
+        );
+      }
+    }
+  }
 
   return filteredData;
+};
+
+// NOTE: TIME UTILS
+export const convertSecondsToReadable = (seconds: number): string => {
+  let date = new Date(0);
+  date.setSeconds(seconds);
+  return date.toISOString().substr(11, 8);
+};
+
+// NOTE: STORAGE UTILS
+export const convertBytesToGB = (bytes: number): number => {
+  const gb = bytes / Math.pow(1024, 3);
+  return Math.round(gb * 100) / 100;
 };
 
 // NOTE: VIEW TYPE
