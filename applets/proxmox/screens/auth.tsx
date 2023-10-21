@@ -103,7 +103,11 @@ const ProxmoxAuth = () => {
 
     const serverURL = partialServerURL + API2_JSON_PATH;
 
-    useProxmoxStore.setState({ baseURL: serverURL });
+    useProxmoxStore.setState({
+      baseURL: serverURL,
+      tokenId: data.tokenId,
+      userRealm: data.userRealm,
+    });
     configureAxiosForProxmox(
       serverURL,
       data.userRealm,
