@@ -2,15 +2,16 @@ import React from "react";
 import { PixelRatio } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Button, XStack, Text, ColorTokens } from "tamagui";
-import { X, ChevronDown } from "@tamagui/lucide-icons";
+import { X, ChevronDown, Dot } from "@tamagui/lucide-icons";
 import { TFunction } from "i18next";
 
 export const FilterButton: React.FC<{
   id: string;
-  handlePress: (id: string) => void;
+  handlePress: (id: string, isToggle?: boolean) => void;
   active: boolean;
   activeBackgroundColor: ColorTokens | string;
-}> = ({ id, handlePress, active, activeBackgroundColor }) => {
+  isToggle?: boolean; // Dropdown or toggle button
+}> = ({ id, handlePress, active, activeBackgroundColor, isToggle }) => {
   const { t } = useTranslation();
   return (
     <XStack flex={1} width="auto" marginLeft="$2" alignItems="center">
@@ -18,14 +19,30 @@ export const FilterButton: React.FC<{
         height="$2.5"
         borderRadius="$8"
         paddingHorizontal="$3"
-        onPress={() => handlePress(id)}
+        onPress={() => handlePress(id, isToggle)}
         backgroundColor={active ? activeBackgroundColor : "$gray5"}
       >
         <XStack alignItems="center" justifyContent="space-between">
           <Text numberOfLines={1} opacity={0.8}>
             {t(id)}
           </Text>
-          <ChevronDown size={18} opacity={0.8} />
+          {isToggle ? (
+            <Dot
+              opacity={0.8}
+              style={{
+                marginRight: -5,
+              }}
+            />
+          ) : (
+            <ChevronDown
+              size={18}
+              opacity={0.8}
+              style={{
+                marginLeft: 3,
+                marginRight: -2,
+              }}
+            />
+          )}
         </XStack>
       </Button>
     </XStack>
