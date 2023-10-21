@@ -38,4 +38,9 @@ export type GetClusterResourcesResponseResponseDataItem = {
   type?: string;
   /** Node uptime in seconds (when type in node,qemu,lxc). */
   uptime?: number;
+  /** Other keys **/
+  sdn?: string;
+  vmid?: number;
+  name?: string;
+  template?: number;
 };
