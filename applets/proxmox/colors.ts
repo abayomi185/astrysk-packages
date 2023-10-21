@@ -2,7 +2,7 @@ import { AppletColors } from "@astrysk/types";
 
 // Proxmox colors
 export const proxmoxColors: AppletColors = {
-  primary: "#4599bf",
+  primary: "$orange8",
   secondary: "$blue5",
   accentColor: "#E57000",
   activeCheckFillColor: "#9fdfc3",
