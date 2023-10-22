@@ -109,6 +109,9 @@ export const ProxmoxSummaryChart: React.FC<{
   nodeData: GetNodesSingleStatusResponseResponseData;
   rrdData: GetNodeRRDDataResponseResponseDataItem[];
 }> = ({ props, nodeData, rrdData }) => {
+  // Use datakey to get the data from the nodeData object
+  // const data = nodeData[props.dataKey];
+
   return (
     <YStack
       flex={1}

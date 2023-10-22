@@ -19,7 +19,7 @@ export interface SummaryChartProps {
   type: "progress" | "line" | "line_area";
   legend: string;
   // For determining which data to use
-  dataKey?: string;
+  dataKey: string | string[];
   dataMaxKey?: string;
 }
 

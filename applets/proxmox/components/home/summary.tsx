@@ -32,9 +32,9 @@ const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
     // CPU current
     {
       id: "cpu_current",
-      dataKey: "cpu",
       type: "progress",
       legend: t("proxmox:cpu") as string,
+      dataKey: "cpu",
     },
     // Load average current
     // WARN: Put in settingsoption instead
@@ -48,24 +48,28 @@ const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
       id: "ioDelay_current",
       type: "progress",
       legend: t("proxmox:ioDelay") as string,
+      dataKey: "wait",
     },
     // Memory usage current
     {
       id: "memory",
       type: "progress",
       legend: t("proxmox:memory") as string,
+      dataKey: "memory.used",
     },
     // Disk space current
     {
       id: "diskSpace_current",
       type: "progress",
       legend: t("proxmox:diskSpace") as string,
+      dataKey: "rootfs.used",
     },
     // Swap usage current
     {
       id: "swap_current",
       type: "progress",
       legend: t("proxmox:swap") as string,
+      dataKey: "swap.used",
     },
     // NOTE: The following are historical data
     // CPU
@@ -73,24 +77,28 @@ const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
       id: "cpuUsage",
       type: "line",
       legend: t("proxmox:cpuUsage") as string,
+      dataKey: "cpu",
     },
     // Server Load
     {
       id: "serverLoad",
       type: "line",
       legend: t("proxmox:serverLoad") as string,
+      dataKey: "loadavg",
     },
     // Memory usage
     {
       id: "memoryUsage",
       type: "line",
       legend: t("proxmox:memoryUsage") as string,
+      dataKey: ["memused", "memtotal"]
     },
     // Network traffic
     {
       id: "networkTraffic",
       type: "line",
       legend: t("proxmox:networkTraffic") as string,
+      dataKey: ["netin", "netout"],
     },
   ];
 };
