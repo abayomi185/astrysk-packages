@@ -12,6 +12,7 @@ import {
   ProxmoxSearchFilterContext,
 } from "./types";
 import { GetClusterResourcesResponseResponseDataItem } from "./api";
+import { TFunction } from "i18next";
 
 // NOTE: LOGIN / AUTHENTICATION / CONFIGURE
 export const API2_JSON_PATH = "/api2/json";
@@ -169,6 +170,21 @@ export const convertSecondsToReadable = (seconds: number): string => {
   let date = new Date(0);
   date.setSeconds(seconds);
   return date.toISOString().substr(11, 8);
+};
+
+export const convertSecondsToDays = (seconds: number): number =>
+  Math.floor(seconds / 86400);
+
+export const convertSecondsToHHMMSS = (t: TFunction, seconds: number) => {
+  let hrs = Math.floor(seconds / 3600);
+  let mins = Math.floor((seconds % 3600) / 60);
+  let secs = seconds % 60;
+
+  let timeString = `${hrs} ${t("proxmox:hour(s)")} ${mins} ${t(
+    "proxmox:minute(s)"
+  )} ${secs} ${t("proxmox:second(s)")}`;
+
+  return timeString;
 };
 
 // NOTE: STORAGE UTILS
