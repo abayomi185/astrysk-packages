@@ -18,7 +18,7 @@ export {
   useQueryLoadingSpinner,
 } from "./utils/loading";
 
-export { isEmpty } from "./utils/object";
+export { isEmpty, getStringValue, getNumberValue } from "./utils/object";
 
 export { useGetListColumnNumber } from "./utils/list";
 
