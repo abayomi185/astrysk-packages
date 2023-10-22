@@ -210,7 +210,7 @@ const SonarrCalendar: React.FC = () => {
         {/*   hideKnob */}
         {/*   // onVisibleMonthsChange={onVisibleMonthsChange} */}
         {/* /> */}
-        <XStack flexGrow={1} marginBottom="$10">
+        <XStack flexGrow={1}>
           <AgendaList
             sections={
               calendarQuery.data
@@ -348,6 +348,7 @@ const SonarrCalendar: React.FC = () => {
                 accentColor={sonarrColors.accentColor}
               />
             }
+            ListFooterComponent={<XStack height="$8" />}
             // For manual section header rendering
             // renderSectionHeader={(info) => {
             //   console.log(info);
