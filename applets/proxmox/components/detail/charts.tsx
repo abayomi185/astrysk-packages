@@ -1,7 +1,12 @@
 import React from "react";
 import { Dimensions } from "react-native";
-import { GetClusterResourcesResponseResponseDataItem } from "../../api";
-import { YStack } from "tamagui";
+import {
+  GetClusterResourcesResponseResponseDataItem,
+  GetNodeRRDDataResponseResponse,
+  GetNodeRRDDataResponseResponseDataItem,
+  GetNodesSingleStatusResponseResponseData,
+} from "../../api";
+import { H3, H4, Progress, XStack, YStack } from "tamagui";
 
 import { SkiaChart, SVGRenderer } from "@wuba/react-native-echarts";
 import * as echartsCore from "echarts/core";
@@ -12,6 +17,7 @@ import {
   GridComponent,
 } from "echarts/components";
 import { LineChart } from "echarts/charts";
+import { SummaryChartProps } from "../../types";
 
 // Register extensions
 echartsCore.use([
@@ -98,18 +104,34 @@ export const ProxmoxDetailCharts: React.FC<{
   );
 };
 
-export const ProxmoxSummaryCharts: React.FC<{
-  data: GetClusterResourcesResponseResponseDataItem;
-}> = ({ data }) => {
+export const ProxmoxSummaryChart: React.FC<{
+  props: SummaryChartProps;
+  nodeData: GetNodesSingleStatusResponseResponseData;
+  rrdData: GetNodeRRDDataResponseResponseDataItem[];
+}> = ({ props, nodeData, rrdData }) => {
   return (
     <YStack
       flex={1}
-      // height="100%"
-      backgroundColor="blue"
-      alignItems="center"
+      height="auto"
+      // backgroundColor="blue"
+      paddingHorizontal="$3.5"
+      paddingVertical="$3"
       justifyContent="center"
     >
-      <ProxmoxLineChartPanel data={data} />
+      {props.type === "progress" && (
+        <>
+          <XStack justifyContent="space-between">
+            <H4>{props.legend}</H4>
+          </XStack>
+          {/* <ProxmoxLineChartPanel data={data} /> */}
+          <Progress value={60}>
+            <Progress.Indicator animation="delay" />
+          </Progress>
+        </>
+      )}
+      {props.type === "line_area" && (
+        <>{/* <ProxmoxLineChartPanel data={data} /> */}</>
+      )}
     </YStack>
   );
 };

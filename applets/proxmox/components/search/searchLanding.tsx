@@ -99,7 +99,7 @@ const ProxmoxSearchLanding: React.FC<{
 
   useFocusEffect(
     React.useCallback(() => {
-      clusterResources.refetch();
+      // clusterResources.refetch();
       searchTerm && clusterResources.refetch();
       return () => {};
     }, [])

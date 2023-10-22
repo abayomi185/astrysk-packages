@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
-import { YStack, Text, useTheme, XStack, H5, Button, H3, H4 } from "tamagui";
+import { YStack, XStack, Button, H4 } from "tamagui";
 import {
   getNumberValue,
   getStringValue,
@@ -11,43 +11,38 @@ import {
 import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import { useProxmoxStore } from "../../store";
-import { ProxmoxDetailScreenContext, SummaryChartOption } from "../../types";
-import { Actions } from "@astrysk/constants";
-import { SettingsOptionProps, TabContext } from "@astrysk/types";
+import { ProxmoxDetailScreenContext, SummaryChartProps } from "../../types";
+import { SettingsOptionProps } from "@astrysk/types";
 import { FlashList } from "@shopify/flash-list";
 import {
   GetClusterResourcesResponseResponseDataItem,
-  GetNodeRRDDataResponseResponseDataItem,
   GetNodesSingleStatusResponseResponseData,
   useGetClusterResources,
-  useGetClusterStatus,
   useGetNodeRRDData,
   useGetNodesSingleStatus,
 } from "../../api";
-import { proxmoxColors } from "../../colors";
 import { ClusterResourceTypeIcon } from "../detail/clusterResource";
 import { TFunction } from "i18next";
-import {
-  convertSecondsToDays,
-  convertSecondsToHHMMSS,
-  convertSecondsToReadable,
-} from "../../utils";
+import { convertSecondsToDays, convertSecondsToReadable } from "../../utils";
+import { ProxmoxSummaryChart } from "../detail/charts";
 
-const getSummaryChartOptions = (t: TFunction): SummaryChartOption[] => {
+const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
   return [
     // NOTE: The following are current data
     // CPU current
     {
       id: "cpu_current",
+      dataKey: "cpu",
       type: "progress",
       legend: t("proxmox:cpu") as string,
     },
     // Load average current
-    {
-      id: "load_current",
-      type: "progress",
-      legend: t("proxmox:loadAverage") as string,
-    },
+    // WARN: Put in settingsoption instead
+    // {
+    //   id: "load_current",
+    //   type: "progress",
+    //   legend: t("proxmox:loadAverage") as string,
+    // },
     // IO delay current
     {
       id: "ioDelay_current",
@@ -143,23 +138,6 @@ const getProxmoxSummaryDetailOptions = (
   ];
 };
 
-export const ProxmoxSummaryChart: React.FC<{
-  summaryChartOption: SummaryChartOption;
-  rrddata: GetNodeRRDDataResponseResponseDataItem[];
-}> = ({ rrddata }) => {
-  return (
-    <YStack
-      flex={1}
-      // height="100%"
-      backgroundColor="blue"
-      alignItems="center"
-      justifyContent="center"
-    >
-      {/* <ProxmoxLineChartPanel data={data} /> */}
-    </YStack>
-  );
-};
-
 const ProxmoxSummary: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -198,7 +176,7 @@ const ProxmoxSummary: React.FC = () => {
     )[0] as GetClusterResourcesResponseResponseDataItem;
   };
 
-  const nodeData = useGetNodeRRDData(
+  const nodeHistoricData = useGetNodeRRDData(
     `${selectedNode}`,
     {
       // Needed to add this query param manually to the generated api functions/models
@@ -221,7 +199,11 @@ const ProxmoxSummary: React.FC = () => {
         data={getSummaryChartOptions(t)}
         extraData={selectedNode}
         renderItem={({ item }) => (
-          <ProxmoxSummaryChart chartOption={item} rrddata={nodeData.data!} />
+          <ProxmoxSummaryChart
+            props={item}
+            nodeData={nodeStatus.data!}
+            rrdData={nodeHistoricData.data!}
+          />
         )}
         estimatedItemSize={100}
         ListHeaderComponent={
@@ -262,7 +244,7 @@ const ProxmoxSummary: React.FC = () => {
                   </Button>
                 )}
                 estimatedItemSize={100}
-                ListHeaderComponent={<XStack width="$0.75" />}
+                ListHeaderComponent={<XStack width="$0.75" marginLeft="$1.5" />}
                 // Footer component is the same width as a single item in the list
                 ListFooterComponent={<XStack width="$13" />}
                 showsHorizontalScrollIndicator={false}
@@ -293,7 +275,7 @@ const ProxmoxSummary: React.FC = () => {
                 }
               />
             </XStack>
-            <XStack height="auto" marginTop="$2">
+            <XStack height="auto" marginTop="$2" marginBottom="$4">
               <FlashList
                 data={getProxmoxSummaryDetailOptions(
                   t,
