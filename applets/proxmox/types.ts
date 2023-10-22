@@ -14,6 +14,12 @@ export interface ExtendedGetClusterResourcesResponseResponseDataItem
   proxmoxTabContext?: TabContext;
 }
 
+export interface SummaryChartOption {
+  id: string;
+  type: "progress" | "line" | "line_area";
+  legend: string;
+}
+
 // Context may sometimes mean where the route was pushed from,
 // otherwise it describes what the pushed route should do.
 export enum ProxmoxDetailScreenContext {
