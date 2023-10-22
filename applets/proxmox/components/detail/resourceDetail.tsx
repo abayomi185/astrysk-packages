@@ -14,7 +14,12 @@ import { ClusterResourceTypeIcon } from "./clusterResource";
 import { TFunction } from "i18next";
 import { SettingsOption } from "@astrysk/components";
 import { ProxmoxDetailCharts } from "./charts";
-import { convertBytesToGB, convertSecondsToReadable } from "../../utils";
+import {
+  convertBytesToGB,
+  convertSecondsToDays,
+  convertSecondsToReadable,
+} from "../../utils";
+import { getNumberValue } from "@astrysk/utils";
 
 const getProxmoxResourceDetailOptions = (
   t: TFunction,
@@ -32,8 +37,10 @@ const getProxmoxResourceDetailOptions = (
           {
             key: "proxmox:uptime",
             type: "label",
-            value: `${convertSecondsToReadable(
-              resourceData?.uptime as number
+            value: `${convertSecondsToDays(
+              getNumberValue(resourceData?.uptime)
+            )} ${t("proxmox:days")} ${convertSecondsToReadable(
+              getNumberValue(resourceData?.uptime)
             )}`,
           },
           {
