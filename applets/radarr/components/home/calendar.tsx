@@ -199,7 +199,7 @@ const RadarrCalendar: React.FC = () => {
         // theme={calendarTheme.current}
       >
         <SectionTitle subtle>{t("radarr:upcomingMovies")}</SectionTitle>
-        <XStack flexGrow={1} marginBottom="$10">
+        <XStack flexGrow={1}>
           <AgendaList
             sections={
               calendarQuery.data
@@ -335,6 +335,7 @@ const RadarrCalendar: React.FC = () => {
                 accentColor={radarrColors.accentColor}
               />
             }
+            ListFooterComponent={<XStack height="$8" />}
             // For manual section header rendering
             // renderSectionHeader={(info) => {
             //   console.log(info);
