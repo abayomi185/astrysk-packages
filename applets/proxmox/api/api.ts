@@ -686,6 +686,7 @@ import type {
 } from "./model";
 import { apiInstance } from "../../../api/apiInstance";
 import type { ErrorType } from "../../../api/apiInstance";
+import { GetNodeRRDDataRequestParams } from "./model/getRequestParams";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
@@ -33674,22 +33675,24 @@ export const useGetNodeRRD = <
  * Read node RRD statistics
  * @summary getNodeRRDData
  */
-export const getNodeRRDData = (node: string, signal?: AbortSignal) => {
+export const getNodeRRDData = (node: string, params: GetNodeRRDDataRequestParams, signal?: AbortSignal) => {
   return apiInstance<GetNodeRRDDataResponseResponse>({
     url: `/nodes/${node}/rrddata`,
     method: "get",
+    params,
     signal,
   });
 };
 
-export const getGetNodeRRDDataQueryKey = (node: string) =>
-  [`/nodes/${node}/rrddata`] as const;
+export const getGetNodeRRDDataQueryKey = (node: string, params?: GetNodeRRDDataRequestParams) =>
+  [`/nodes/${node}/rrddata`, ...(params ? [params] : [])] as const;
 
 export const getGetNodeRRDDataQueryOptions = <
   TData = Awaited<ReturnType<typeof getNodeRRDData>>,
   TError = ErrorType<unknown>,
 >(
   node: string,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodeRRDData>>,
@@ -33708,7 +33711,7 @@ export const getGetNodeRRDDataQueryOptions = <
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getNodeRRDData>>> = ({
     signal,
-  }) => getNodeRRDData(node, signal);
+  }) => getNodeRRDData(node, params, signal);
 
   return { queryKey, queryFn, enabled: !!node, ...queryOptions };
 };
@@ -33726,6 +33729,7 @@ export const useGetNodeRRDData = <
   TError = ErrorType<unknown>,
 >(
   node: string,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodeRRDData>>,
@@ -33734,7 +33738,7 @@ export const useGetNodeRRDData = <
     >;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getGetNodeRRDDataQueryOptions(node, options);
+  const queryOptions = getGetNodeRRDDataQueryOptions(node, params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
