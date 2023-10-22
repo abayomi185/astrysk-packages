@@ -8,6 +8,11 @@ const proxmoxLocales = {
   maxcpu: "Max CPU",
   maxmemory: "Max Memory",
 
+  cpu: "CPU",
+  "cpu(s)": "CPU(s)",
+  cpuinfo: "CPU Info",
+  kveversion: "KVE Version",
+  pveversion: "PVE Version",
   gb: "GB",
 
   status: "Status",
@@ -16,6 +21,8 @@ const proxmoxLocales = {
   online: "Online",
   uptime: "Uptime",
   template: "Template",
+
+  days: "Days",
 
   type: "Type",
   order: "Order",
