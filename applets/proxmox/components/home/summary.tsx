@@ -92,7 +92,7 @@ const getProxmoxProgressBarOptions = (t: TFunction): ProxmoxChartProps[] => {
   ];
 };
 
-const getProxmoxChartOptions = (t: TFunction) => {
+const getProxmoxChartOptions = (t: TFunction): ProxmoxChartProps[] => {
   return [
     // NOTE: The following are historical data
     // CPU
@@ -230,7 +230,10 @@ const ProxmoxSummary: React.FC = () => {
   return (
     <YStack flex={1}>
       <FlashList
-        data={[...getProxmoxProgressBarOptions(t)]}
+        data={[
+          ...getProxmoxProgressBarOptions(t),
+          ...getProxmoxChartOptions(t),
+        ]}
         extraData={[selectedNode]}
         renderItem={({ item }) => (
           <ProxmoxSummaryChart
@@ -309,12 +312,7 @@ const ProxmoxSummary: React.FC = () => {
                 }
               />
             </XStack>
-            <XStack
-              minHeight="$10"
-              height="auto"
-              marginTop="$2"
-              marginBottom="$3"
-            >
+            <XStack minHeight="$10" height="auto" marginTop="$2">
               <FlashList
                 data={getProxmoxSummaryDetailOptions(
                   t,

@@ -21,7 +21,6 @@ import { ProxmoxChartProps } from "../../types";
 import { proxmoxColors } from "../../colors";
 import { useProxmoxStore } from "../../store";
 import { useTranslation } from "react-i18next";
-import { getStringValue } from "@astrysk/utils";
 
 // Register extensions
 echartsCore.use([
@@ -38,8 +37,9 @@ const CHART_WIDTH = Dimensions.get("screen").width - 40;
 const CHART_HEIGHT = 250;
 
 const ProxmoxLineChartPanel: React.FC<{
-  data: GetClusterResourcesResponseResponseDataItem;
-}> = ({ data }) => {
+  chartOption: Partial<echarts.EChartsOption>;
+  chartSize?: { width: number; height: number };
+}> = ({ chartOption, chartSize }) => {
   const chartRef = React.useRef<any>(null);
 
   const option: echarts.EChartsOption = {
@@ -48,9 +48,9 @@ const ProxmoxLineChartPanel: React.FC<{
       trigger: "axis",
     },
     xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      type: "value",
+      // boundaryGap: false,
+      // data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     },
     yAxis: {
       type: "value",
@@ -63,6 +63,8 @@ const ProxmoxLineChartPanel: React.FC<{
         smooth: true,
       },
     ],
+    // Spread chartOption to override data
+    ...chartOption,
   };
 
   React.useEffect(() => {
@@ -70,8 +72,8 @@ const ProxmoxLineChartPanel: React.FC<{
     if (chartRef.current) {
       chart = echartsCore.init(chartRef.current, "light", {
         renderer: "svg",
-        width: CHART_WIDTH,
-        height: CHART_HEIGHT,
+        width: chartSize?.width ?? CHART_WIDTH,
+        height: chartSize?.height ?? CHART_HEIGHT,
       });
 
       chart.setOption(option);
@@ -89,13 +91,13 @@ export const ProxmoxDetailCharts: React.FC<{
     if (data.type === "qemu") {
       return (
         <>
-          <ProxmoxLineChartPanel data={data} />
+          <ProxmoxLineChartPanel chartOption={data} />
         </>
       );
     } else if (data.type === "lxc") {
       return (
         <>
-          <ProxmoxLineChartPanel data={data} />
+          <ProxmoxLineChartPanel chartOption={data} />
         </>
       );
     }
@@ -181,6 +183,7 @@ export const ProxmoxSummaryChart: React.FC<{
       borderTopRightRadius={props.firstItem ? "$5" : "$0"}
       borderBottomLeftRadius={props.lastItem ? "$5" : "$0"}
       borderBottomRightRadius={props.lastItem ? "$5" : "$0"}
+      marginTop={props.firstItem ? "$3" : "$0"}
       pressStyle={{}}
     >
       {props.type === "progress" && (
@@ -192,7 +195,6 @@ export const ProxmoxSummaryChart: React.FC<{
                 getDataValueCompareString(rawData?.[0], dataMax)}
             </H6>
           </XStack>
-          {/* <ProxmoxLineChartPanel data={data} /> */}
           <Progress
             value={data?.[0] < 10 ? 2 : data?.[0]}
             backgroundColor="$gray5"
@@ -205,7 +207,9 @@ export const ProxmoxSummaryChart: React.FC<{
         </YStack>
       )}
       {props.type === "line_area" && (
-        <>{/* <ProxmoxLineChartPanel data={data} /> */}</>
+        <YStack flex={1}>
+          <ProxmoxLineChartPanel chartOption={{}} />
+        </YStack>
       )}
     </Button>
   );
