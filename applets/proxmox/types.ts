@@ -14,13 +14,18 @@ export interface ExtendedGetClusterResourcesResponseResponseDataItem
   proxmoxTabContext?: TabContext;
 }
 
-export interface SummaryChartProps {
+export interface ProxmoxChartProps {
   id: string;
   type: "progress" | "line" | "line_area";
   legend: string;
   // For determining which data to use
-  dataKey: string | string[];
-  dataMaxKey?: string;
+  dataKeys: string[];
+  dataValueMultiplier?: number;
+  dataValueUnit?: string;
+  // Data max
+  dataMaxValueKey?: string | number; // Max value key or max value
+  firstItem?: boolean;
+  lastItem?: boolean;
 }
 
 // Context may sometimes mean where the route was pushed from,

@@ -23,3 +23,7 @@ export const DETAIL_ROUTE = "detail";
 export const HOME_SCREEN_DETAIL_ROUTE = "(tabs)/home/detail";
 export const SEARCH_SCREEN_DETAIL_ROUTE = "(tabs)/search/detail";
 export const SETTINGS_SCREEN_DETAIL_ROUTE = "(tabs)/settings/detail";
+
+export const HOME = "home";
+export const SEARCH = "search";
+export const SETTINGS = "settings";

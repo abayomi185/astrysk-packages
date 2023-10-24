@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter } from "expo-router";
+import { useRouter, useGlobalSearchParams } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
 import { YStack, XStack, Button, H4 } from "tamagui";
@@ -11,7 +11,7 @@ import {
 import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
 import { useProxmoxStore } from "../../store";
-import { ProxmoxDetailScreenContext, SummaryChartProps } from "../../types";
+import { ProxmoxDetailScreenContext, ProxmoxChartProps } from "../../types";
 import { SettingsOptionProps } from "@astrysk/types";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -23,10 +23,15 @@ import {
 } from "../../api";
 import { ClusterResourceTypeIcon } from "../detail/clusterResource";
 import { TFunction } from "i18next";
-import { convertSecondsToDays, convertSecondsToReadable } from "../../utils";
+import {
+  convertSecondsToDays,
+  convertSecondsToReadable,
+  getBytesToGBMultiplier,
+} from "../../utils";
 import { ProxmoxSummaryChart } from "../detail/charts";
+import { HOME } from "@astrysk/constants/screens";
 
-const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
+const getProxmoxProgressBarOptions = (t: TFunction): ProxmoxChartProps[] => {
   return [
     // NOTE: The following are current data
     // CPU current
@@ -34,7 +39,9 @@ const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
       id: "cpu_current",
       type: "progress",
       legend: t("proxmox:cpu") as string,
-      dataKey: "cpu",
+      dataKeys: ["cpu"],
+      dataMaxValueKey: 1,
+      firstItem: true,
     },
     // Load average current
     // WARN: Put in settingsoption instead
@@ -48,57 +55,75 @@ const getSummaryChartOptions = (t: TFunction): SummaryChartProps[] => {
       id: "ioDelay_current",
       type: "progress",
       legend: t("proxmox:ioDelay") as string,
-      dataKey: "wait",
+      dataKeys: ["wait"],
+      dataMaxValueKey: 1,
     },
     // Memory usage current
     {
       id: "memory",
       type: "progress",
       legend: t("proxmox:memory") as string,
-      dataKey: "memory.used",
+      dataKeys: ["memory.used"],
+      dataMaxValueKey: "memory.total",
+      dataValueMultiplier: getBytesToGBMultiplier(),
+      dataValueUnit: "GB",
     },
     // Disk space current
     {
       id: "diskSpace_current",
       type: "progress",
-      legend: t("proxmox:diskSpace") as string,
-      dataKey: "rootfs.used",
+      legend: t("proxmox:rootFs") as string,
+      dataKeys: ["rootfs.used"],
+      dataMaxValueKey: "rootfs.total",
+      dataValueMultiplier: getBytesToGBMultiplier(),
+      dataValueUnit: "GB",
     },
     // Swap usage current
     {
       id: "swap_current",
       type: "progress",
       legend: t("proxmox:swap") as string,
-      dataKey: "swap.used",
+      dataKeys: ["swap.used"],
+      dataMaxValueKey: "swap.total",
+      lastItem: true,
+      dataValueMultiplier: getBytesToGBMultiplier(),
+      dataValueUnit: "GB",
     },
+  ];
+};
+
+const getProxmoxChartOptions = (t: TFunction) => {
+  return [
     // NOTE: The following are historical data
     // CPU
     {
       id: "cpuUsage",
       type: "line",
       legend: t("proxmox:cpuUsage") as string,
-      dataKey: "cpu",
+      dataKeys: ["cpu"],
+      firstItem: true,
     },
     // Server Load
     {
       id: "serverLoad",
       type: "line",
       legend: t("proxmox:serverLoad") as string,
-      dataKey: "loadavg",
+      dataKeys: ["loadavg"],
     },
     // Memory usage
     {
       id: "memoryUsage",
       type: "line",
       legend: t("proxmox:memoryUsage") as string,
-      dataKey: ["memused", "memtotal"]
+      dataKeys: ["memused", "memtotal"],
     },
     // Network traffic
     {
       id: "networkTraffic",
       type: "line",
       legend: t("proxmox:networkTraffic") as string,
-      dataKey: ["netin", "netout"],
+      dataKeys: ["netin", "netout"],
+      lastItem: true,
     },
   ];
 };
@@ -150,12 +175,11 @@ const ProxmoxSummary: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const baseURL = useProxmoxStore.getState().baseURL as string;
-  const token = useProxmoxStore.getState().token as string;
-
   const [selectedNode, setSelectedNode] = React.useState<string | undefined>(
     undefined
   );
+
+  const params = useGlobalSearchParams();
 
   const clusterStatus = useGetClusterResources({
     query: {
@@ -167,7 +191,8 @@ const ProxmoxSummary: React.FC = () => {
         // Set the first node as the selected node
         setSelectedNode(data?.[0].node);
       },
-      refetchInterval: 10000,
+      refetchInterval: 5000,
+      enabled: params.path === HOME,
     },
   });
 
@@ -175,6 +200,7 @@ const ProxmoxSummary: React.FC = () => {
     query: {
       select: (response) => response.data,
       enabled: selectedNode !== undefined,
+      refetchInterval: 5000,
     },
   });
 
@@ -204,8 +230,8 @@ const ProxmoxSummary: React.FC = () => {
   return (
     <YStack flex={1}>
       <FlashList
-        data={getSummaryChartOptions(t)}
-        extraData={selectedNode}
+        data={[...getProxmoxProgressBarOptions(t)]}
+        extraData={[selectedNode]}
         renderItem={({ item }) => (
           <ProxmoxSummaryChart
             props={item}
@@ -214,13 +240,13 @@ const ProxmoxSummary: React.FC = () => {
           />
         )}
         estimatedItemSize={100}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
             <XStack flex={1} height="$8">
               <FlashList
                 horizontal={true}
                 data={clusterStatus.data}
-                extraData={new Date()}
                 renderItem={({ item }) => (
                   <Button
                     flex={1}
@@ -283,7 +309,12 @@ const ProxmoxSummary: React.FC = () => {
                 }
               />
             </XStack>
-            <XStack height="auto" marginTop="$2" marginBottom="$4">
+            <XStack
+              minHeight="$10"
+              height="auto"
+              marginTop="$2"
+              marginBottom="$3"
+            >
               <FlashList
                 data={getProxmoxSummaryDetailOptions(
                   t,
@@ -308,6 +339,7 @@ const ProxmoxSummary: React.FC = () => {
             </XStack>
           </>
         }
+        ListFooterComponent={<XStack height="$5" />}
       />
     </YStack>
   );

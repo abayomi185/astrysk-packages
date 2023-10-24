@@ -6,7 +6,7 @@ import {
   GetNodeRRDDataResponseResponseDataItem,
   GetNodesSingleStatusResponseResponseData,
 } from "../../api";
-import { H3, H4, Progress, XStack, YStack } from "tamagui";
+import { Button, H6, Progress, XStack, YStack } from "tamagui";
 
 import { SkiaChart, SVGRenderer } from "@wuba/react-native-echarts";
 import * as echartsCore from "echarts/core";
@@ -17,7 +17,11 @@ import {
   GridComponent,
 } from "echarts/components";
 import { LineChart } from "echarts/charts";
-import { SummaryChartProps } from "../../types";
+import { ProxmoxChartProps } from "../../types";
+import { proxmoxColors } from "../../colors";
+import { useProxmoxStore } from "../../store";
+import { useTranslation } from "react-i18next";
+import { getStringValue } from "@astrysk/utils";
 
 // Register extensions
 echartsCore.use([
@@ -105,36 +109,104 @@ export const ProxmoxDetailCharts: React.FC<{
 };
 
 export const ProxmoxSummaryChart: React.FC<{
-  props: SummaryChartProps;
+  props: ProxmoxChartProps;
   nodeData: GetNodesSingleStatusResponseResponseData;
   rrdData: GetNodeRRDDataResponseResponseDataItem[];
+  first?: boolean;
 }> = ({ props, nodeData, rrdData }) => {
-  // Use datakey to get the data from the nodeData object
-  // const data = nodeData[props.dataKey];
+  const { t } = useTranslation();
+  const [data, setData] = React.useState<any[]>([]);
+  const [rawData, setRawData] = React.useState<any[]>([]);
+  const [dataMax, setDataMax] = React.useState<number>(0);
+
+  const getDataValueCompareString = (
+    dataValue: number,
+    dataMaxValue: number
+  ) => {
+    if (props.dataValueMultiplier && props.dataValueUnit) {
+      return (
+        " " +
+        `(${(dataValue * props.dataValueMultiplier).toFixed(1)}${
+          props.dataValueUnit
+        } ${t("common:of")} ${(
+          dataMaxValue * props.dataValueMultiplier
+        ).toFixed(1)}${props.dataValueUnit})`
+      );
+    }
+    return "";
+  };
+
+  React.useEffect(() => {
+    let data: any[] = [];
+    let dataMax: any;
+
+    props.dataKeys.forEach((str) => {
+      let keys = str.split(".");
+      data.push(keys.reduce((obj, key) => obj?.[key], nodeData));
+    });
+
+    dataMax =
+      typeof props.dataMaxValueKey === "number"
+        ? props.dataMaxValueKey
+        : props.dataMaxValueKey
+            ?.split(".")
+            .reduce((obj, key) => obj?.[key], nodeData);
+
+    setRawData(data);
+
+    if (props.dataMaxValueKey) {
+      data = data.map((data) => (data / dataMax) * 100);
+    }
+
+    // console.log("data[0]", props.id, data[0], dataMax);
+    setData(data);
+    setDataMax(dataMax);
+  }, [nodeData]);
 
   return (
-    <YStack
+    <Button
       flex={1}
       height="auto"
-      // backgroundColor="blue"
-      paddingHorizontal="$3.5"
+      backgroundColor="$gray1"
+      marginHorizontal="$3"
+      paddingHorizontal="$0"
       paddingVertical="$3"
       justifyContent="center"
+      borderWidth="$0"
+      borderTopWidth="$0"
+      borderRadius="$0"
+      borderBottomWidth={props.lastItem ? "$0" : "$0.25"}
+      borderBottomColor="$gray6"
+      borderTopLeftRadius={props.firstItem ? "$5" : "$0"}
+      borderTopRightRadius={props.firstItem ? "$5" : "$0"}
+      borderBottomLeftRadius={props.lastItem ? "$5" : "$0"}
+      borderBottomRightRadius={props.lastItem ? "$5" : "$0"}
+      pressStyle={{}}
     >
       {props.type === "progress" && (
-        <>
+        <YStack flex={1} paddingHorizontal="$5" paddingBottom="$1.5">
           <XStack justifyContent="space-between">
-            <H4>{props.legend}</H4>
+            <H6 marginBottom="$1.5">{props.legend}</H6>
+            <H6 color="$gray11">
+              {`${data?.[0]?.toFixed(0)}%` +
+                getDataValueCompareString(rawData?.[0], dataMax)}
+            </H6>
           </XStack>
           {/* <ProxmoxLineChartPanel data={data} /> */}
-          <Progress value={60}>
-            <Progress.Indicator animation="delay" />
+          <Progress
+            value={data?.[0] < 10 ? 2 : data?.[0]}
+            backgroundColor="$gray5"
+          >
+            <Progress.Indicator
+              animation="delay"
+              backgroundColor={proxmoxColors.accentColor}
+            />
           </Progress>
-        </>
+        </YStack>
       )}
       {props.type === "line_area" && (
         <>{/* <ProxmoxLineChartPanel data={data} /> */}</>
       )}
-    </YStack>
+    </Button>
   );
 };
