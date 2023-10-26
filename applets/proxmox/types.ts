@@ -14,6 +14,10 @@ export interface ExtendedGetClusterResourcesResponseResponseDataItem
   proxmoxTabContext?: TabContext;
 }
 
+export interface ProxmoxChartData {
+  [key: string]: number[];
+}
+
 export interface ProxmoxChartProps {
   id: string;
   type: "progress" | "line" | "line_area";

@@ -17,7 +17,7 @@ import {
   GridComponent,
 } from "echarts/components";
 import { LineChart } from "echarts/charts";
-import { ProxmoxChartProps } from "../../types";
+import { ProxmoxChartData, ProxmoxChartProps } from "../../types";
 import { proxmoxColors } from "../../colors";
 import { useProxmoxStore } from "../../store";
 import { useTranslation } from "react-i18next";
@@ -37,9 +37,9 @@ const CHART_WIDTH = Dimensions.get("screen").width - 40;
 const CHART_HEIGHT = 250;
 
 const ProxmoxLineChartPanel: React.FC<{
-  chartOption: Partial<echarts.EChartsOption>;
+  chartData: ProxmoxChartData;
   chartSize?: { width: number; height: number };
-}> = ({ chartOption, chartSize }) => {
+}> = ({ chartData, chartSize }) => {
   const chartRef = React.useRef<any>(null);
 
   const option: echarts.EChartsOption = {
@@ -56,16 +56,18 @@ const ProxmoxLineChartPanel: React.FC<{
       type: "value",
     },
     series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
+      ...(Object.keys(chartData).map((key) => ({
+        data: chartData[key],
         type: "line",
-        areaStyle: {},
         smooth: true,
-      },
+        areaStyle: {},
+      })) as echarts.SeriesOption[]),
     ],
-    // Spread chartOption to override data
-    ...chartOption,
   };
+
+  //   Object.entries(myObject).forEach(([key, value]) => {
+  //   // Your functional code here, using key and value
+  // });
 
   React.useEffect(() => {
     let chart: echartsCore.ECharts;
@@ -118,6 +120,9 @@ export const ProxmoxSummaryChart: React.FC<{
 }> = ({ props, nodeData, rrdData }) => {
   const { t } = useTranslation();
   const [data, setData] = React.useState<any[]>([]);
+  const [historicData, setHistoricData] = React.useState<
+    Record<string, number[]>
+  >({});
   const [rawData, setRawData] = React.useState<any[]>([]);
   const [dataMax, setDataMax] = React.useState<number>(0);
 
@@ -139,12 +144,12 @@ export const ProxmoxSummaryChart: React.FC<{
   };
 
   React.useEffect(() => {
-    let data: any[] = [];
+    let tempData: any[] = [];
     let dataMax: any;
 
     props.dataKeys.forEach((str) => {
       let keys = str.split(".");
-      data.push(keys.reduce((obj, key) => obj?.[key], nodeData));
+      tempData.push(keys.reduce((obj, key) => obj?.[key], nodeData));
     });
 
     dataMax =
@@ -154,16 +159,31 @@ export const ProxmoxSummaryChart: React.FC<{
             ?.split(".")
             .reduce((obj, key) => obj?.[key], nodeData);
 
-    setRawData(data);
+    setRawData(tempData);
 
     if (props.dataMaxValueKey) {
-      data = data.map((data) => (data / dataMax) * 100);
+      tempData = tempData.map((tempDatum) => (tempDatum / dataMax) * 100);
     }
 
-    // console.log("data[0]", props.id, data[0], dataMax);
-    setData(data);
+    setData(tempData);
     setDataMax(dataMax);
   }, [nodeData]);
+
+  React.useEffect(() => {
+    let tempData: Record<string, number[]> = {};
+
+    props.dataKeys.forEach((key) => {
+      let dataSeries: number[] = [];
+
+      rrdData?.map((rrdDataItem) => {
+        dataSeries.push(rrdDataItem?.[key]);
+      });
+
+      tempData[key] = dataSeries;
+    });
+
+    setHistoricData(tempData);
+  }, [rrdData]);
 
   return (
     <Button
@@ -208,7 +228,7 @@ export const ProxmoxSummaryChart: React.FC<{
       )}
       {props.type === "line_area" && (
         <YStack flex={1}>
-          <ProxmoxLineChartPanel chartOption={{}} />
+          <ProxmoxLineChartPanel chartData={historicData} />
         </YStack>
       )}
     </Button>

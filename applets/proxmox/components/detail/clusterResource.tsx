@@ -5,6 +5,31 @@ import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getIconColor } from "@astrysk/utils";
+import { ProxmoxChartProps } from "../../types";
+import { TFunction } from "i18next";
+
+export const getProxmoxSummaryClusterResourceChartOptions = (
+  t: TFunction,
+  type: string
+): ProxmoxChartProps[] => {
+  return [
+    ...(type === "qemu"
+      ? [
+          {
+            id: "cpu_current",
+            type: "progress",
+            legend: t("proxmox:cpu") as string,
+            dataKeys: ["cpu"],
+            dataMaxValueKey: 1,
+            firstItem: true,
+          },
+        ]
+      : []),
+    ...(type === "lxc" ? [{}] : []),
+    ...(type === "storage" ? [{}] : []),
+    ...(type === "sdn" ? [{}] : []),
+  ] as ProxmoxChartProps[];
+};
 
 export const ClusterResourceStatusIcon: React.FC<{
   status?: string;

@@ -195,5 +195,7 @@ export const convertBytesToGB = (bytes: number): number => {
 
 export const getBytesToGBMultiplier = (): number => 1 / 1024 ** 3;
 
+export const getBytesToMegabitsMultiplier = () => 8 / 1024 / 1024;
+
 // NOTE: VIEW TYPE
 export const PROXMOX_SUPPORTED_VIEW_TYPES = [ViewType.Grid, ViewType.List];

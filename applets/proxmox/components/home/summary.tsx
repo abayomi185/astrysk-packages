@@ -27,11 +27,14 @@ import {
   convertSecondsToDays,
   convertSecondsToReadable,
   getBytesToGBMultiplier,
+  getBytesToMegabitsMultiplier,
 } from "../../utils";
 import { ProxmoxSummaryChart } from "../detail/charts";
 import { HOME } from "@astrysk/constants/screens";
 
-const getProxmoxProgressBarOptions = (t: TFunction): ProxmoxChartProps[] => {
+const getProxmoxSummaryProgressBarOptions = (
+  t: TFunction
+): ProxmoxChartProps[] => {
   return [
     // NOTE: The following are current data
     // CPU current
@@ -92,38 +95,52 @@ const getProxmoxProgressBarOptions = (t: TFunction): ProxmoxChartProps[] => {
   ];
 };
 
-const getProxmoxChartOptions = (t: TFunction): ProxmoxChartProps[] => {
+const getProxmoxSummaryChartOptions = (t: TFunction): ProxmoxChartProps[] => {
   return [
     // NOTE: The following are historical data
     // CPU
     {
       id: "cpuUsage",
-      type: "line",
+      type: "line_area",
       legend: t("proxmox:cpuUsage") as string,
       dataKeys: ["cpu"],
+      dataMaxValueKey: 1,
       firstItem: true,
     },
     // Server Load
     {
       id: "serverLoad",
-      type: "line",
+      type: "line_area",
       legend: t("proxmox:serverLoad") as string,
       dataKeys: ["loadavg"],
     },
     // Memory usage
     {
       id: "memoryUsage",
-      type: "line",
+      type: "line_area",
       legend: t("proxmox:memoryUsage") as string,
       dataKeys: ["memused", "memtotal"],
+      dataValueMultiplier: getBytesToGBMultiplier(),
+      dataValueUnit: "GB",
+    },
+    // Swap usage
+    {
+      id: "swapUsage",
+      type: "line_area",
+      legend: t("proxmox:swapUsage") as string,
+      dataKeys: ["swapused", "swaptotal"],
+      dataValueMultiplier: getBytesToGBMultiplier(),
+      dataValueUnit: "GB",
     },
     // Network traffic
     {
       id: "networkTraffic",
-      type: "line",
+      type: "line_area",
       legend: t("proxmox:networkTraffic") as string,
       dataKeys: ["netin", "netout"],
       lastItem: true,
+      dataValueMultiplier: getBytesToMegabitsMultiplier(),
+      dataValueUnit: "Mbps",
     },
   ];
 };
@@ -181,8 +198,12 @@ const ProxmoxSummary: React.FC = () => {
 
   const params = useGlobalSearchParams();
 
+  // const clusterStatusCache =
+  //   useProxmoxStore.getState().proxmoxCache?.clusterResources ?? {};
+
   const clusterStatus = useGetClusterResources({
     query: {
+      // initialData: ,
       select: (response) => {
         // Filter data - Only node data is needed
         return response.data?.filter((data) => data.type === "node");
@@ -225,14 +246,21 @@ const ProxmoxSummary: React.FC = () => {
     }
   );
 
+  React.useEffect(() => {
+    // WARN: Save Cluster Resources to cache on first successful fetch
+    // Use as initial data for useQuery
+    //
+    // WARN: Just make a new space in the store to save the specific data I want to save
+  }, []);
+
   useQueryLoadingSpinner(clusterStatus);
 
   return (
     <YStack flex={1}>
       <FlashList
         data={[
-          ...getProxmoxProgressBarOptions(t),
-          ...getProxmoxChartOptions(t),
+          ...getProxmoxSummaryProgressBarOptions(t),
+          ...getProxmoxSummaryChartOptions(t),
         ]}
         extraData={[selectedNode]}
         renderItem={({ item }) => (
