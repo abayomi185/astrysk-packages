@@ -42,11 +42,14 @@ const ProxmoxSearchLanding: React.FC<{
       select: (response) => {
         // Storage data order is not consistent from API
         // Sorting it here before use
-        const data = response.data?.sort((a, b) => {
-          if (a.type !== "storage" || b.type !== "storage") return 0;
-          return (a.storage as string)?.localeCompare(b.storage as string) || 0;
-        });
-        return data;
+        return response.data
+          ?.sort((a, b) => {
+            if (a.type !== "storage" || b.type !== "storage") return 0;
+            return (
+              (a.storage as string)?.localeCompare(b.storage as string) || 0
+            );
+          })
+          .filter((data) => data.type !== "node");
       },
       onSuccess: (data) => {
         // console.log(JSON.stringify(data, null, 2));
