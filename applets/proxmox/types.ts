@@ -15,7 +15,12 @@ export interface ExtendedGetClusterResourcesResponseResponseDataItem
 }
 
 export interface ProxmoxChartData {
-  [key: string]: number[];
+  [key: string]: {
+    data: number[];
+    timestamps?: number[];
+    unit?: string;
+    precision?: number;
+  };
 }
 
 export interface ProxmoxChartProps {
@@ -26,10 +31,12 @@ export interface ProxmoxChartProps {
   dataKeys: string[];
   dataValueMultiplier?: number;
   dataValueUnit?: string;
+  decimalPrecision?: number;
   // Data max
   dataMaxValueKey?: string | number; // Max value key or max value
   firstItem?: boolean;
   lastItem?: boolean;
+  context?: string; // For conditional rendering
 }
 
 // Context may sometimes mean where the route was pushed from,
@@ -76,4 +83,9 @@ export type ProxmoxFilterKind = string;
 export interface ProxmoxFilterKindValue {
   value?: string;
   order?: FilterOrder;
+}
+
+export enum ProxmoxListContext {
+  Options = "Options",
+  Metrics = "Metrics",
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Dimensions } from "react-native";
 
 import { create_axios_instance } from "@astrysk/api";
 import * as Crypto from "expo-crypto";
@@ -187,6 +188,18 @@ export const convertSecondsToHHMMSS = (t: TFunction, seconds: number) => {
   return timeString;
 };
 
+export const generateChartTimestamps = (epochList: number[]) => {
+  let timestamps = [];
+  for (let i = 0; i < epochList.length; i++) {
+    let time = new Date(epochList[i] * 1000); // Convert to milliseconds
+    let localTime = new Date(time.getTime() - time.getTimezoneOffset() * 60000);
+    timestamps.push(localTime.toISOString().substring(11, 16));
+  }
+  return timestamps;
+};
+
+// Usage in your chart options remains the same.
+
 // NOTE: STORAGE UTILS
 export const convertBytesToGB = (bytes: number): number => {
   const gb = bytes / Math.pow(1024, 3);
@@ -195,7 +208,12 @@ export const convertBytesToGB = (bytes: number): number => {
 
 export const getBytesToGBMultiplier = (): number => 1 / 1024 ** 3;
 
+export const getBytesToTBMultiplier = (): number => 1 / 1024 ** 4;
+
 export const getBytesToMegabitsMultiplier = () => 8 / 1024 / 1024;
 
 // NOTE: VIEW TYPE
 export const PROXMOX_SUPPORTED_VIEW_TYPES = [ViewType.Grid, ViewType.List];
+
+// NOTE: SCREEN UTILS
+export const SCREEN_HEIGHT = Dimensions.get("screen").height;

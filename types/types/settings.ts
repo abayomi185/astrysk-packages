@@ -22,6 +22,7 @@ export interface SettingsOptionProps {
   setState?: (value: { [key: string]: boolean }) => void;
   firstItem?: boolean;
   lastItem?: boolean;
+  context?: string; // For conditional rendering
 }
 
 export interface SettingsSection {
