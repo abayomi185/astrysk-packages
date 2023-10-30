@@ -43,4 +43,5 @@ export type GetClusterResourcesResponseResponseDataItem = {
   vmid?: number;
   name?: string;
   template?: number;
+  plugintype?: string;
 };

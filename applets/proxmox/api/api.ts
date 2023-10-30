@@ -14365,11 +14365,13 @@ export const useGetVMRRD = <
 export const getVMRRDData = (
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   signal?: AbortSignal,
 ) => {
   return apiInstance<GetVMRRDDataResponseResponse>({
     url: `/nodes/${node}/qemu/${vmid}/rrddata`,
     method: "get",
+    params,
     signal,
   });
 };
@@ -14383,6 +14385,7 @@ export const getGetVMRRDDataQueryOptions = <
 >(
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getVMRRDData>>,
@@ -14400,7 +14403,7 @@ export const getGetVMRRDDataQueryOptions = <
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getVMRRDData>>> = ({
     signal,
-  }) => getVMRRDData(node, vmid, signal);
+  }) => getVMRRDData(node, vmid, params, signal);
 
   return { queryKey, queryFn, enabled: !!(node && vmid), ...queryOptions };
 };
@@ -14419,6 +14422,7 @@ export const useGetVMRRDData = <
 >(
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getVMRRDData>>,
@@ -14427,7 +14431,7 @@ export const useGetVMRRDData = <
     >;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getGetVMRRDDataQueryOptions(node, vmid, options);
+  const queryOptions = getGetVMRRDDataQueryOptions(node, vmid, params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -21551,11 +21555,13 @@ export const useGetNodesSingleLxcSingleRrd = <
 export const getNodesSingleLxcSingleRrddata = (
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   signal?: AbortSignal,
 ) => {
   return apiInstance<GetNodesSingleLxcSingleRrddataResponseResponse>({
     url: `/nodes/${node}/lxc/${vmid}/rrddata`,
     method: "get",
+    params,
     signal,
   });
 };
@@ -21571,6 +21577,7 @@ export const getGetNodesSingleLxcSingleRrddataQueryOptions = <
 >(
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodesSingleLxcSingleRrddata>>,
@@ -21591,7 +21598,7 @@ export const getGetNodesSingleLxcSingleRrddataQueryOptions = <
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getNodesSingleLxcSingleRrddata>>
-  > = ({ signal }) => getNodesSingleLxcSingleRrddata(node, vmid, signal);
+  > = ({ signal }) => getNodesSingleLxcSingleRrddata(node, vmid, params, signal);
 
   return { queryKey, queryFn, enabled: !!(node && vmid), ...queryOptions };
 };
@@ -21610,6 +21617,7 @@ export const useGetNodesSingleLxcSingleRrddata = <
 >(
   node: string,
   vmid: number,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodesSingleLxcSingleRrddata>>,
@@ -21621,6 +21629,7 @@ export const useGetNodesSingleLxcSingleRrddata = <
   const queryOptions = getGetNodesSingleLxcSingleRrddataQueryOptions(
     node,
     vmid,
+    params,
     options,
   );
 
@@ -29423,11 +29432,13 @@ export const useGetNodesSingleStorageSingleRrd = <
 export const getNodesSingleStorageSingleRrddata = (
   node: string,
   storage: string,
+  params: GetNodeRRDDataRequestParams,
   signal?: AbortSignal,
 ) => {
   return apiInstance<GetNodesSingleStorageSingleRrddataResponseResponse>({
     url: `/nodes/${node}/storage/${storage}/rrddata`,
     method: "get",
+    params,
     signal,
   });
 };
@@ -29443,6 +29454,7 @@ export const getGetNodesSingleStorageSingleRrddataQueryOptions = <
 >(
   node: string,
   storage: string,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodesSingleStorageSingleRrddata>>,
@@ -29463,7 +29475,7 @@ export const getGetNodesSingleStorageSingleRrddataQueryOptions = <
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof getNodesSingleStorageSingleRrddata>>
-  > = ({ signal }) => getNodesSingleStorageSingleRrddata(node, storage, signal);
+  > = ({ signal }) => getNodesSingleStorageSingleRrddata(node, storage, params, signal);
 
   return { queryKey, queryFn, enabled: !!(node && storage), ...queryOptions };
 };
@@ -29482,6 +29494,7 @@ export const useGetNodesSingleStorageSingleRrddata = <
 >(
   node: string,
   storage: string,
+  params: GetNodeRRDDataRequestParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getNodesSingleStorageSingleRrddata>>,
@@ -29493,6 +29506,7 @@ export const useGetNodesSingleStorageSingleRrddata = <
   const queryOptions = getGetNodesSingleStorageSingleRrddataQueryOptions(
     node,
     storage,
+    params,
     options,
   );
 
