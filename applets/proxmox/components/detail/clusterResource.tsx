@@ -1,5 +1,5 @@
 import React from "react";
-import { XStack, useTheme } from "tamagui";
+import { StackProps, XStack, useTheme } from "tamagui";
 import { Octicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -33,20 +33,22 @@ export const getProxmoxSummaryClusterResourceChartOptions = (
 
 export const ClusterResourceStatusIcon: React.FC<{
   status?: string;
-}> = ({ status }) => {
+  size?: number;
+  style?: StackProps;
+}> = ({ status, size, style }) => {
   const greenIconColor = useTheme().green9.get();
   const redIconColor = useTheme().red9.get();
   const yellowIconColor = useTheme().yellow9.get();
   return (
-    <XStack alignSelf="center" marginTop="$2.5">
+    <XStack alignItems="center" alignSelf="center" {...style}>
       {status === "running" && (
-        <Octicons name="dot-fill" size={16} color={greenIconColor} />
+        <Octicons name="dot-fill" size={size ?? 16} color={greenIconColor} />
       )}
       {status === "stopped" && (
-        <Octicons name="dot-fill" size={16} color={redIconColor} />
+        <Octicons name="dot-fill" size={size ?? 16} color={redIconColor} />
       )}
-      {status === "paused" && (
-        <Octicons name="dot-fill" size={16} color={yellowIconColor} />
+      {status === "suspended" && (
+        <Octicons name="dot-fill" size={size ?? 16} color={yellowIconColor} />
       )}
     </XStack>
   );

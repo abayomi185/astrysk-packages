@@ -29,7 +29,10 @@ const ClusterResourcesListItem: React.FC<{
         <>
           <YStack width="$1.5" alignSelf="flex-start" paddingTop="$1.5">
             <ClusterResourceTypeIcon type={data.type} />
-            <ClusterResourceStatusIcon status={data.status} />
+            <ClusterResourceStatusIcon
+              status={data.status}
+              style={{ marginTop: "$2.5" }}
+            />
           </YStack>
           <YStack flex={1} marginLeft="$3">
             <H3>{data.vmid}</H3>
@@ -45,7 +48,10 @@ const ClusterResourcesListItem: React.FC<{
         <>
           <YStack width="$1.5" alignSelf="flex-start" paddingTop="$1.5">
             <ClusterResourceTypeIcon type={data.type} />
-            <ClusterResourceStatusIcon status={data.status} />
+            <ClusterResourceStatusIcon
+              status={data.status}
+              style={{ marginTop: "$2.5" }}
+            />
           </YStack>
           <YStack flex={1} marginLeft="$3">
             <H3>{data.vmid}</H3>
