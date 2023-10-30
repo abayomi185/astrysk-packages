@@ -4,4 +4,4 @@ export const isEmpty = (obj: object | undefined) =>
 // Get the string value of a value, or empty string if undefined
 export const getStringValue = (val: string | undefined) => (val ? val : "");
 
-export const getNumberValue = (val: number | undefined) => (val ? val : 0);
+export const getNumberValue = (val: number | undefined) => Number(val || 0);
