@@ -8,4 +8,13 @@
 
 export type GetClusterTasksResponseResponseDataItem = {
   upid?: string;
+  node?: string;
+  id?: string;
+  user?: string;
+  type?: string;
+  starttime?: number;
+  endtime?: number;
+  status?: string;
+  tokenid?: string;
+  saved?: string;
 };

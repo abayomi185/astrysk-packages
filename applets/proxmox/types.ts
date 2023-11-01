@@ -45,6 +45,7 @@ export enum ProxmoxDetailScreenContext {
   SeriesDescription = "SeriesDescription",
   SearchItem = "SearchItem",
   SearchFilter = "SearchFilter",
+  History = "History",
 }
 
 export interface ProxmoxDetailScreenProps extends Record<string, string> {
