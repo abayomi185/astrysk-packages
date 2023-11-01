@@ -66,6 +66,62 @@ const proxmoxLocales = {
   available: "Available",
 
   noResourcesFound: "No Resources Found",
+  noRecentTaskHistoryFound: "No Recent Task History Found",
+
+  deleteCacheMessage: "Are you sure you want to delete the Proxmox cache?",
+
+  taskHistory: "Task History",
+  startTime: "Start Time",
+  endTime: "End Time",
+  duration: "Duration",
+
+  alert: {
+    shutdown: "Are you sure you want to shutdown?",
+    reboot: "Are you sure you want to reboot?",
+    reset: "Are you sure you want to reset?",
+    stop: "Are you sure you want to stop?",
+    suspend: "Are you sure you want to suspend?",
+  },
+
+  success: {
+    actionComplete: "Action Complete",
+
+    vmStarted: "VM Start Request Successful",
+    vmSuspended: "VM Suspend Request Successful",
+    vmResumed: "VM Resume Request Successful",
+    vmShutdown: "VM Shutdown Request Successful",
+    vmRebooted: "VM Reboot Request Successful",
+    vmReset: "VM Reset Request Successful",
+    vmStopped: "VM Stop Request Successful",
+
+    lxcStarted: "LXC Start Request Successful",
+    lxcSuspended: "LXC Suspend Request Successful",
+    lxcResumed: "LXC Resume Request Successful",
+    lxcShutdown: "LXC Shutdown Request Successful",
+    lxcRebooted: "LXC Reboot Request Successful",
+    lxcStopped: "LXC Stop Request Successful",
+  },
+
+  error: {
+    actionFailed: "Action Failed",
+  },
+
+  qmstart: "Start",
+  qmstop: "Stop",
+  qmsuspend: "Suspend",
+  qmresume: "Resume",
+  qmshutdown: "Shutdown",
+  qmreboot: "Reboot",
+  qmreset: "Reset",
+
+  lxcstart: "Start",
+  lxcstop: "Stop",
+  lxcsuspend: "Suspend",
+  lxcresume: "Resume",
+  lxcshutdown: "Shutdown",
+  lxcreboot: "Reboot",
+
+  vncproxy: "VNC Proxy",
 };
 
 export default proxmoxLocales;
