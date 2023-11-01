@@ -43,13 +43,8 @@ export const ProxmoxSettingsOptions = (
         {
           text: alertOkText,
           onPress: () => {
-            Image.clearDiskCache();
             useProxmoxStore.setState({
-              // proxmoxSeriesCache: {},
-              // proxmoxEpisodeCache: {},
-              // proxmoxEpisodeFileCache: {},
-              // proxmoxQualityProfiles: [],
-              // proxmoxLanguageProfiles: [],
+              proxmoxCache: {},
             });
           },
           style: "destructive",
