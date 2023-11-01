@@ -1,6 +1,6 @@
 import React from "react";
 import { RefreshControl } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { Button, H3, XStack, YStack, Text } from "tamagui";
 import { GetClusterResourcesResponseResponseDataItem } from "../../api";
 import { FlashList } from "@shopify/flash-list";
@@ -151,6 +151,13 @@ const ClusterResources: React.FC<{
   const refetchClusterResources = () => {
     refetch();
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetchClusterResources();
+      return () => {};
+    }, [])
+  );
 
   return (
     <YStack flex={1}>
