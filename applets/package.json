@@ -28,7 +28,7 @@
     "@babel/core": "^7.21.4",
     "@types/lodash.debounce": "^4.0.7",
     "@types/react": "~18.2.14",
-    "burnt": "^0.11.7",
+    "burnt": "^0.12.1",
     "tsup": "^6.7.0",
     "typescript": "^5.1.3"
   }
