@@ -11,6 +11,7 @@ import {
 } from "../types";
 import ProxmoxSearchFilterOptions from "../components/search/searchFilterOptions";
 import { useProxmoxModalHeader } from "../components/useHeader";
+import ProxmoxTaskHistory from "../components/modal/taskHistory";
 
 const ProxmoxModal = () => {
   const { t } = useTranslation();
@@ -33,6 +34,18 @@ const ProxmoxModal = () => {
         filterType={filterType}
       />
     );
+  }
+
+  if (params.context === ProxmoxDetailScreenContext.History) {
+    const node = params?.node as string;
+    const resource = params?.itemId as string;
+
+    useProxmoxModalHeader(
+      navigation,
+      `${t("proxmox:taskHistory")} • ${resource}`
+    );
+
+    return <ProxmoxTaskHistory node={node} resource={resource} />;
   }
 
   return null;
