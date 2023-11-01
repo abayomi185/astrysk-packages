@@ -107,6 +107,29 @@ export const goToProxmoxDetailScreen = ({
   });
 };
 
+export const goToProxmoxModalScreen = ({
+  router,
+  node,
+  resource,
+  screenContext,
+  searchContext,
+}: {
+  router: Router;
+  node: string;
+  resource: number | string;
+  screenContext?: ProxmoxDetailScreenContext;
+  searchContext?: ProxmoxSearchFilterContext;
+}) => {
+  router.push({
+    pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
+    params: {
+      context: screenContext,
+      node: node,
+      itemId: resource,
+    } as ProxmoxDetailScreenProps,
+  });
+};
+
 export const filterProxmoxSearchData = <
   T extends GetClusterResourcesResponseResponseDataItem
 >(
