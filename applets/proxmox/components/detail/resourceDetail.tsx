@@ -26,6 +26,7 @@ import {
   convertSecondsToReadable,
   getBytesToGBMultiplier,
   getBytesToMegabitsMultiplier,
+  getBytesToTBMultiplier,
 } from "../../utils";
 import { getNumberValue } from "@astrysk/utils";
 import { ProxmoxChartWrapper, ProxmoxHistoricChartWrapper } from "./charts";
@@ -152,6 +153,7 @@ const getProxmoxResourceDetailProgressBarOptions = (
             dataMaxValueKey: "maxdisk",
             dataValueMultiplier: getBytesToGBMultiplier(),
             dataValueUnit: "GB",
+            decimalPrecision: 1,
             context: ProxmoxListContext.Metrics,
             firstItem: true,
             lastItem: true,
@@ -226,9 +228,9 @@ const getProxmoxResourceDetailHistoricChartOptions = (
             type: "line_area",
             legend: t("proxmox:storageUsage") as string,
             dataKeys: ["used", "total"],
-            dataValueMultiplier: getBytesToGBMultiplier(),
-            dataValueUnit: "GB",
-            decimalPrecision: 0,
+            dataValueMultiplier: getBytesToTBMultiplier(),
+            dataValueUnit: "TB",
+            decimalPrecision: 2,
             context: ProxmoxListContext.Metrics,
             firstItem: true,
             lastItem: true,
@@ -241,7 +243,8 @@ const getProxmoxResourceDetailHistoricChartOptions = (
 const ProxmoxResourceDetailHeader: React.FC<{
   t: TFunction;
   data: GetClusterResourcesResponseResponseDataItem;
-}> = ({ t, data }) => {
+  callback: (action?: string) => void;
+}> = ({ t, data, callback }) => {
   return (
     <YStack paddingHorizontal="$2.5" paddingTop="$3">
       <XStack width="100%">
@@ -273,7 +276,7 @@ const ProxmoxResourceDetailHeader: React.FC<{
       <XStack marginVertical="$2" justifyContent="center">
         {(data?.type === "qemu" || data?.type === "lxc") &&
         data?.template !== 1 ? (
-          <ProxmoxActionPanel data={data} />
+          <ProxmoxActionPanel data={data} callback={callback} />
         ) : null}
       </XStack>
     </YStack>
@@ -287,6 +290,10 @@ const ProxmoxResourceDetail: React.FC<{
   const { t } = useTranslation();
   const navigation = useNavigation();
 
+  // const [resourceStatus, setResourceStatus] = React.useState<boolean>(
+  //   forwardedData.status === "running" || forwardedData.status === "available"
+  // );
+
   // Fetch data for the specific resource
   const resource = useGetClusterResources({
     query: {
@@ -296,9 +303,7 @@ const ProxmoxResourceDetail: React.FC<{
         return response.data?.filter((data) => data.id === forwardedData.id)[0];
       },
       refetchInterval: 5000,
-      enabled:
-        forwardedData.status === "running" ||
-        forwardedData.status === "available",
+      // enabled: resourceStatus,
     },
   });
 
@@ -351,6 +356,10 @@ const ProxmoxResourceDetail: React.FC<{
     }
   }, [vmHistoricData.data, lxcHistoricData.data, storageHistoricData.data]);
 
+  const actionPanelCallback = (action?: string) => {
+    resource.refetch();
+  };
+
   useProxmoxDetailHeader(
     navigation,
     (forwardedData.storage || forwardedData.id) as string
@@ -402,6 +411,7 @@ const ProxmoxResourceDetail: React.FC<{
           <ProxmoxResourceDetailHeader
             t={t}
             data={resource.data as GetClusterResourcesResponseResponseDataItem}
+            callback={actionPanelCallback}
           />
         }
         ListFooterComponent={<XStack height="$5" />}
