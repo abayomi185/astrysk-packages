@@ -324,7 +324,6 @@ const ProxmoxSummary: React.FC = () => {
           );
         }}
         estimatedItemSize={100}
-        drawDistance={SCREEN_HEIGHT}
         ListHeaderComponent={
           <XStack flex={1} height="$8" marginBottom="$2">
             <FlashList
@@ -390,76 +389,3 @@ const ProxmoxSummary: React.FC = () => {
 };
 
 export default ProxmoxSummary;
-
-{
-  /* <XStack minHeight="$20" height="auto" marginTop="$2"> */
-}
-{
-  /*   <FlashList */
-}
-{
-  /*     data={getProxmoxSummaryDetailOptions( */
-}
-{
-  /*       t, */
-}
-{
-  /*       getClusterStatusForNode(`${selectedNode}`), */
-}
-{
-  /*       nodeStatus.data! */
-}
-{
-  /*     )} */
-}
-{
-  /*     renderItem={({ item }) => { */
-}
-{
-  /*       return ( */
-}
-{
-  /*         <SettingsOption */
-}
-{
-  /*           t={t} */
-}
-{
-  /*           item={item} */
-}
-{
-  /*           alignCenter */
-}
-{
-  /*           style={{ */
-}
-{
-  /*             marginHorizontal: "$3", */
-}
-{
-  /*             overflow: "hidden", */
-}
-{
-  /*           }} */
-}
-{
-  /*         /> */
-}
-{
-  /*       ); */
-}
-{
-  /*     }} */
-}
-{
-  /*     estimatedItemSize={76} */
-}
-{
-  /*     drawDistance={SCREEN_HEIGHT / 2} */
-}
-{
-  /*   /> */
-}
-{
-  /* </XStack> */
-}

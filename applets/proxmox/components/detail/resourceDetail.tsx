@@ -405,8 +405,7 @@ const ProxmoxResourceDetail: React.FC<{
             />
           );
         }}
-        estimatedItemSize={76}
-        drawDistance={SCREEN_HEIGHT}
+        estimatedItemSize={185}
         ListHeaderComponent={
           <ProxmoxResourceDetailHeader
             t={t}
