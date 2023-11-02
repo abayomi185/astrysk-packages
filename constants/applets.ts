@@ -10,3 +10,4 @@ export const DOCKER = "Docker";
 export const PHOTOPRISM = "Photoprism";
 export const ADGUARD_HOME = "Adguard Home";
 export const FIREFLY_III = "Firefly III";
+export const OLLAMA = "Ollama";

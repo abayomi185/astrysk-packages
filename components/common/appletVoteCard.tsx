@@ -2,14 +2,12 @@ import React from "react";
 import { Alert } from "react-native";
 import {
   styled,
-  Card,
   Button,
   H2,
   Paragraph,
   Text,
   YStack,
   XStack,
-  YStackProps,
   XStackProps,
 } from "tamagui";
 import * as Haptics from "expo-haptics";
@@ -48,6 +46,8 @@ const getAppletLogo = (applet: string) => {
       return Assets.AdguardHomeAssets.Logo;
     case Applets.FIREFLY_III:
       return Assets.FireflyIIIAssets.Logo;
+    case Applets.OLLAMA:
+      return Assets.OllamaAssets.Logo;
     default:
       return Assets.RadarrAssets.LogoDark;
   }
