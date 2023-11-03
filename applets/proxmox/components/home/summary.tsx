@@ -1,26 +1,19 @@
 import React from "react";
-import { useRouter, useGlobalSearchParams, useFocusEffect } from "expo-router";
+import { useRouter, usePathname } from "expo-router";
 import { RefreshControl } from "react-native";
-import { Image, ImageSource } from "expo-image";
 import { YStack, XStack, Button, H4 } from "tamagui";
 import {
   getNumberValue,
   getStringValue,
   useQueryLoadingSpinner,
 } from "@astrysk/utils";
-import { EmptyList, SectionTitle, SettingsOption } from "@astrysk/components";
+import { SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import { useProxmoxStore } from "../../store";
-import {
-  ProxmoxDetailScreenContext,
-  ProxmoxChartProps,
-  ProxmoxListContext,
-} from "../../types";
+import { ProxmoxChartProps, ProxmoxListContext } from "../../types";
 import { SettingsOptionProps } from "@astrysk/types";
 import { FlashList } from "@shopify/flash-list";
 import {
   GetClusterResourcesResponseResponseDataItem,
-  GetNodeRRDDataResponseResponseDataItem,
   GetNodesSingleStatusResponseResponseData,
   useGetClusterResources,
   useGetNodeRRDData,
@@ -29,7 +22,6 @@ import {
 import { ClusterResourceTypeIcon } from "../detail/clusterResource";
 import { TFunction } from "i18next";
 import {
-  SCREEN_HEIGHT,
   convertSecondsToDays,
   convertSecondsToReadable,
   getBytesToGBMultiplier,
@@ -40,7 +32,6 @@ import {
   ProxmoxHistoricChartWrapper,
 } from "../detail/charts";
 import { HOME } from "@astrysk/constants/screens";
-import { Dimensions } from "react-native";
 
 const getProxmoxSummaryDetailOptions = (
   t: TFunction,
@@ -223,10 +214,8 @@ const ProxmoxSummary: React.FC = () => {
     undefined
   );
 
-  const params = useGlobalSearchParams();
-
-  // const clusterStatusCache =
-  //   useProxmoxStore.getState().proxmoxCache?.clusterResources ?? {};
+  const routePathname = usePathname();
+  const HOME_PATH = `/${HOME}`;
 
   const clusterStatus = useGetClusterResources({
     query: {
@@ -242,7 +231,7 @@ const ProxmoxSummary: React.FC = () => {
         }
       },
       refetchInterval: 5000,
-      enabled: params.path === HOME,
+      enabled: routePathname === HOME_PATH,
     },
   });
 
@@ -250,7 +239,7 @@ const ProxmoxSummary: React.FC = () => {
     query: {
       select: (response) => response.data,
       refetchInterval: 5000,
-      enabled: selectedNode !== undefined && params.path === HOME,
+      enabled: selectedNode !== undefined && routePathname === HOME_PATH,
     },
   });
 
@@ -271,16 +260,9 @@ const ProxmoxSummary: React.FC = () => {
       query: {
         select: (response) => response.data,
         refetchInterval: 0.9e6,
-        enabled: selectedNode !== undefined && params.path === HOME,
+        enabled: selectedNode !== undefined && routePathname === HOME_PATH,
       },
     }
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      clusterStatus.refetch();
-      return () => {};
-    }, [])
   );
 
   useQueryLoadingSpinner(clusterStatus);
