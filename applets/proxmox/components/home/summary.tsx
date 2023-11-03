@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouter, useGlobalSearchParams } from "expo-router";
+import { useRouter, useGlobalSearchParams, useFocusEffect } from "expo-router";
 import { RefreshControl } from "react-native";
 import { Image, ImageSource } from "expo-image";
 import { YStack, XStack, Button, H4 } from "tamagui";
@@ -236,8 +236,10 @@ const ProxmoxSummary: React.FC = () => {
         return response.data?.filter((data) => data.type === "node");
       },
       onSuccess: (data) => {
-        // Set the first node as the selected node
-        setSelectedNode(data?.[0].node);
+        if (selectedNode === undefined) {
+          // Set the first node as the selected node
+          setSelectedNode(data?.[0].node);
+        }
       },
       refetchInterval: 5000,
       enabled: params.path === HOME,
@@ -274,12 +276,12 @@ const ProxmoxSummary: React.FC = () => {
     }
   );
 
-  React.useEffect(() => {
-    // WARN: Save Cluster Resources to cache on first successful fetch
-    // Use as initial data for useQuery
-    //
-    // WARN: Just make a new space in the store to save the specific data I want to save
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      clusterStatus.refetch();
+      return () => {};
+    }, [])
+  );
 
   useQueryLoadingSpinner(clusterStatus);
 
