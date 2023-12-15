@@ -69,11 +69,12 @@ const SCAppletButton = styled(XStack, {
   variants: {
     isBanner: {
       true: {
+        width: "100%",
         height: "$11",
         padding: "$0",
         margin: "$0",
         borderRadius: "$0",
-        pressStyle: undefined,
+        pressStyle: { scale: 1 },
       },
     },
   } as const,
