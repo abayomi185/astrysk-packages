@@ -53,7 +53,6 @@ const ProxmoxAuth = () => {
     query: {
       enabled: !!apikey,
       onSuccess: (_data) => {
-        console.log(_data);
         useProxmoxStore.setState({
           authenticated: true,
           token: apikey,
@@ -64,7 +63,6 @@ const ProxmoxAuth = () => {
         navigation.goBack();
       },
       onError: (error) => {
-        console.log(error);
         useAppStateStore.setState({ activeApplet: undefined });
         // WARN: Show error message or prompt
         if (error.response?.status) {

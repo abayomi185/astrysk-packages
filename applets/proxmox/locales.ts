@@ -45,7 +45,6 @@ const proxmoxLocales = {
   usage: "Usage",
   status: "Status",
   content: "Content",
-  deleteCache: "Delete Cache",
 
   online: "Online",
   uptime: "Uptime",
@@ -68,6 +67,7 @@ const proxmoxLocales = {
   noResourcesFound: "No Resources Found",
   noRecentTaskHistoryFound: "No Recent Task History Found",
 
+  deleteCache: "Delete Cache",
   deleteCacheMessage: "Are you sure you want to delete the Proxmox cache?",
 
   taskHistory: "Task History",

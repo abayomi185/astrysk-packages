@@ -19,7 +19,7 @@ import {
   useGetNodeRRDData,
   useGetNodesSingleStatus,
 } from "../../api";
-import { ClusterResourceTypeIcon } from "../detail/clusterResource";
+import { ClusterResourceTypeIcon } from "../search/clusterResource";
 import { TFunction } from "i18next";
 import {
   convertSecondsToDays,

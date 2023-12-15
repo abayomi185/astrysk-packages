@@ -16,7 +16,7 @@ import ProxmoxActionPanel from "./actionPanel";
 import {
   ClusterResourceStatusIcon,
   ClusterResourceTypeIcon,
-} from "./clusterResource";
+} from "../search/clusterResource";
 import { TFunction } from "i18next";
 import { SettingsOption } from "@astrysk/components";
 import {

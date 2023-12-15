@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
 import { customTokens } from "@astrysk/styles";
-import ClusterResources from "../detail/clusterResources";
+import ClusterResources from "../search/clusterResources";
 import {
   GetClusterResourcesResponseResponseDataItem,
   useGetClusterResources,

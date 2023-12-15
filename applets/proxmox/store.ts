@@ -72,7 +72,5 @@ export const proxmoxPersistStateKeys = Array.from(
 );
 
 const initialAppState: ProxmoxState = {
-  authenticated: false, // Not sure this is needed anymore
-  isConfigured: false, // Use this state to configure if not configured
   viewType: ViewType.Grid,
 };

@@ -81,14 +81,12 @@ export const goToProxmoxDetailScreen = ({
   router,
   searchItemId,
   tabContext,
-  seasonNumber,
   screenContext,
   searchContext,
 }: {
   router: Router;
   searchItemId: string;
   tabContext: TabContext;
-  seasonNumber?: number;
   screenContext?: ProxmoxDetailScreenContext;
   searchContext?: ProxmoxSearchFilterContext;
 }) => {
@@ -102,7 +100,6 @@ export const goToProxmoxDetailScreen = ({
       context: screenContext,
       itemId: searchItemId, // Use id to check cache for data
       tabContext: tabContext,
-      seasonNumber: seasonNumber,
     } as ProxmoxDetailScreenProps,
   });
 };
