@@ -31,8 +31,6 @@ export const configureAxiosForSonarr = (
   callback && callback();
 };
 
-// Jellyfin configure function that all screens can run
-// to authenticate and set up the applet appropriately
 export const configureSonarr = () => {
   const isConfigured = useSonarrStore.getState().isConfigured;
 
@@ -115,7 +113,7 @@ export const goToSonarrModalScreen = ({
   tvdbId?: number;
 }) => {
   router.push({
-    pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
+    pathname: `/${Screens.ROOT_MODAL_ROUTE}+${Crypto.randomUUID()}`,
     params: {
       context: screenContext,
       itemId: searchItemId,
