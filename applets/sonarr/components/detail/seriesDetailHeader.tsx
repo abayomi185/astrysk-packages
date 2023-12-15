@@ -71,9 +71,7 @@ const SonarrSeriesDetailHeader: React.FC<{
             <Text
               display={"flex"}
               color="$blue10Dark"
-              onPress={() => {
-                goToDescriptionScreen(forwardedData.id as number);
-              }}
+              onPress={() => goToDescriptionScreen(forwardedData.id as number)}
             >
               {t("common:readMore")}
             </Text>
