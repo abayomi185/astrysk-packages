@@ -8,9 +8,16 @@ export const SETTINGS_SCREEN = "Settings";
 // ROOT STACK
 export const INDEX_ROUTE = "index";
 export const AUTH_MODAL_ROUTE = "authModal";
-export const ROOT_MODAL_ROUTE = "rootModal";
-export const ROOT_FS_MODAL_ROUTE = "rootFsModal";
-export const ROOT_DETAIL_ROUTE = "rootDetail";
+
+export const ROOT_MODAL = "(rootModal)";
+export const ROOT_FS_MODAL = "(rootFsModal)";
+export const ROOT_DETAIL = "(rootDetail)";
+
+// These are dynamic routes
+export const ROOT_MODAL_ROUTE = "(rootModal)/rootModal";
+export const ROOT_FS_MODAL_ROUTE = "(rootFsModal)/rootFsModal";
+export const ROOT_DETAIL_ROUTE = "(rootDetail)/rootDetail";
+
 export const ONBOARDING_ROUTE = "onboarding";
 
 // TABS
