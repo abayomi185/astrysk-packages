@@ -11,7 +11,9 @@ See the astrysk docs for more info - [astrysk-docs.vercel.app](https://astrysk-d
 
 ## Applets:
 
-- [x] Jellyfin
+- [x] Proxmox
+- [x] Jellyfin [TestFlight]
 - [x] Sonarr [TestFlight]
 - [x] Radarr [TestFlight]
+- [ ] Ollama 
 - [ ] \[Your suggested applet?\]
