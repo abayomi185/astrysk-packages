@@ -14,43 +14,14 @@ import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 
-import * as Assets from "@astrysk/assets";
 import { Applets } from "@astrysk/constants";
 import { useAppStateStore } from "@astrysk/stores";
+import { appletUtils } from "@astrysk/utils";
 
 const appletMessage: { [applet: string]: string } = {
   [Applets.SONARR]: "TV collection manager",
   [Applets.RADARR]: "Movie collection manager",
   [Applets.PLEX]: "Stream Movies and Shows",
-};
-
-const getAppletLogo = (applet: string) => {
-  switch (applet) {
-    case Applets.JELLYFIN:
-      return Assets.JellyfinAssets.Logo;
-    case Applets.SONARR:
-      return Assets.SonarrAssets.Logo;
-    case Applets.RADARR:
-      return Assets.RadarrAssets.LogoDark;
-    case Applets.LIDARR:
-      return Assets.LidarrAssets.Logo;
-    case Applets.PLEX:
-      return Assets.PlexAssets.Logo;
-    case Applets.PROXMOX:
-      return Assets.ProxmoxAssets.Logo;
-    case Applets.DOCKER:
-      return Assets.DockerAssets.Logo;
-    case Applets.PHOTOPRISM:
-      return Assets.PhotoprismAssets.Logo;
-    case Applets.ADGUARD_HOME:
-      return Assets.AdguardHomeAssets.Logo;
-    case Applets.FIREFLY_III:
-      return Assets.FireflyIIIAssets.Logo;
-    case Applets.OLLAMA:
-      return Assets.OllamaAssets.Logo;
-    default:
-      return Assets.RadarrAssets.LogoDark;
-  }
 };
 
 interface AppletVoteCardItemProps extends XStackProps {
@@ -59,7 +30,7 @@ interface AppletVoteCardItemProps extends XStackProps {
 const AppletVoteCardItem = ({ applet }: AppletVoteCardItemProps) => {
   const { t } = useTranslation();
 
-  const AppletButtonLogo = getAppletLogo(applet as string);
+  const AppletButtonLogo = appletUtils.getAppletLogo(applet as string);
 
   const voteStatus = useAppStateStore((state) => state.votedApplets);
 
