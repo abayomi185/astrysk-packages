@@ -1,0 +1,2721 @@
+openapi: 3.0.3
+info:
+  title: Ollama REST API
+  description: >-
+    [Ollama](https://ollama.ai/) allows you to run powerful LLM models locally
+    on your machine, and exposes a REST API to interact with them on localhost.
+
+
+    Based on the [official Ollama API
+    docs](https://github.com/jmorganca/ollama/blob/main/docs/api.md)
+
+
+    ### Getting started
+
+
+    1. Download [Ollama](https://ollama.ai/)
+        
+    2. Pull a model, following
+    [instructions](https://github.com/jmorganca/ollama)
+        
+    3. Fire up localhost with `ollama serve`
+  version: 1.0.0
+  contact: {}
+servers:
+  - url: http://localhost:11434
+paths:
+  /api/generate:
+    post:
+      tags:
+        - Model
+      summary: generate
+      description: >-
+        Generates a streamed response like shown below  
+          
+
+        <img
+        src="https://content.pstmn.io/8beb2ed9-8353-42cb-95e3-f9f5038a4e73/aW1hZ2UucG5n"
+        alt="" height="1484" width="2552">
+      operationId: generate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  example: mario
+                prompt:
+                  type: string
+                  example: what is the meaning of life?
+                stream:
+                  type: boolean
+                  example: false
+            examples:
+              generate:
+                value:
+                  model: llama2
+                  prompt: what is the meaning of life?
+              use created model:
+                value:
+                  model: mario
+                  prompt: what is the meaning of life?
+                  stream: false
+      responses:
+        '200':
+          description: >-
+            200 - generate (chunked) / 200 - generate with system prompt
+            (chunked) / 200 - generate (streamed) / create
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 18:51:23 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - type: object
+                    properties:
+                      context:
+                        type: array
+                        items:
+                          type: number
+                          example: 518
+                        example:
+                          - 518
+                          - 25580
+                          - 29962
+                          - 3532
+                          - 14816
+                          - 29903
+                          - 29958
+                          - 5299
+                          - 829
+                          - 14816
+                          - 29903
+                          - 6778
+                          - 13
+                          - 13
+                          - 5816
+                          - 338
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 29973
+                          - 518
+                          - 29914
+                          - 25580
+                          - 29962
+                          - 13
+                          - 13
+                          - 1576
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 263
+                          - 1139
+                          - 393
+                          - 756
+                          - 20285
+                          - 839
+                          - 11847
+                          - 414
+                          - 29892
+                          - 278
+                          - 1189
+                          - 5834
+                          - 29892
+                          - 9638
+                          - 2879
+                          - 29892
+                          - 322
+                          - 1784
+                          - 4045
+                          - 363
+                          - 21726
+                          - 29889
+                          - 1670
+                          - 526
+                          - 1784
+                          - 1422
+                          - 3736
+                          - 1103
+                          - 3145
+                          - 373
+                          - 825
+                          - 20016
+                          - 2667
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 29892
+                          - 322
+                          - 727
+                          - 338
+                          - 694
+                          - 697
+                          - 8422
+                          - 573
+                          - 1234
+                          - 29889
+                          - 2398
+                          - 29892
+                          - 1244
+                          - 526
+                          - 777
+                          - 1950
+                          - 5837
+                          - 304
+                          - 2948
+                          - 445
+                          - 1139
+                          - 29901
+                          - 13
+                          - 13
+                          - 29896
+                          - 29889
+                          - 16221
+                          - 2738
+                          - 470
+                          - 20954
+                          - 17750
+                          - 29879
+                          - 29901
+                          - 9267
+                          - 2305
+                          - 4658
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 6095
+                          - 5589
+                          - 263
+                          - 25616
+                          - 470
+                          - 20954
+                          - 6437
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 756
+                          - 263
+                          - 6133
+                          - 6437
+                          - 470
+                          - 6593
+                          - 393
+                          - 338
+                          - 6631
+                          - 304
+                          - 263
+                          - 316
+                          - 537
+                          - 470
+                          - 263
+                          - 731
+                          - 310
+                          - 12962
+                          - 17750
+                          - 29879
+                          - 29889
+                          - 1152
+                          - 1342
+                          - 29892
+                          - 777
+                          - 2305
+                          - 4658
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 1101
+                          - 4177
+                          - 29915
+                          - 29879
+                          - 674
+                          - 470
+                          - 304
+                          - 6176
+                          - 20954
+                          - 427
+                          - 4366
+                          - 264
+                          - 358
+                          - 29889
+                          - 13
+                          - 29906
+                          - 29889
+                          - 16224
+                          - 6095
+                          - 5589
+                          - 358
+                          - 29901
+                          - 438
+                          - 3341
+                          - 4658
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 1284
+                          - 7333
+                          - 6095
+                          - 5589
+                          - 358
+                          - 322
+                          - 22722
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 756
+                          - 694
+                          - 7846
+                          - 296
+                          - 6593
+                          - 8724
+                          - 825
+                          - 15724
+                          - 1653
+                          - 363
+                          - 6053
+                          - 1549
+                          - 1009
+                          - 27482
+                          - 29892
+                          - 21702
+                          - 29892
+                          - 322
+                          - 7333
+                          - 14321
+                          - 29889
+                          - 13
+                          - 29941
+                          - 29889
+                          - 2866
+                          - 3224
+                          - 304
+                          - 12459
+                          - 29901
+                          - 3834
+                          - 2305
+                          - 4658
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 1207
+                          - 263
+                          - 6374
+                          - 10879
+                          - 373
+                          - 278
+                          - 3186
+                          - 322
+                          - 304
+                          - 29126
+                          - 304
+                          - 278
+                          - 7621
+                          - 1781
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 756
+                          - 6593
+                          - 297
+                          - 578
+                          - 15641
+                          - 408
+                          - 372
+                          - 6511
+                          - 15724
+                          - 304
+                          - 1207
+                          - 263
+                          - 4328
+                          - 297
+                          - 278
+                          - 12080
+                          - 310
+                          - 4045
+                          - 322
+                          - 304
+                          - 5967
+                          - 263
+                          - 1833
+                          - 292
+                          - 25000
+                          - 29889
+                          - 13
+                          - 29946
+                          - 29889
+                          - 28224
+                          - 993
+                          - 616
+                          - 10379
+                          - 29901
+                          - 3834
+                          - 11847
+                          - 414
+                          - 27754
+                          - 393
+                          - 2834
+                          - 756
+                          - 694
+                          - 7846
+                          - 296
+                          - 6593
+                          - 29892
+                          - 541
+                          - 3265
+                          - 372
+                          - 338
+                          - 278
+                          - 27482
+                          - 322
+                          - 4771
+                          - 800
+                          - 591
+                          - 11735
+                          - 2645
+                          - 1749
+                          - 25423
+                          - 393
+                          - 2367
+                          - 372
+                          - 6593
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 6514
+                          - 1269
+                          - 5375
+                          - 3060
+                          - 15806
+                          - 304
+                          - 1207
+                          - 310
+                          - 372
+                          - 29892
+                          - 3692
+                          - 1549
+                          - 7333
+                          - 14321
+                          - 29892
+                          - 907
+                          - 1230
+                          - 4603
+                          - 29892
+                          - 470
+                          - 3763
+                          - 11418
+                          - 5414
+                          - 278
+                          - 2198
+                          - 3256
+                          - 29889
+                          - 13
+                          - 29945
+                          - 29889
+                          - 3457
+                          - 5996
+                          - 10379
+                          - 29901
+                          - 3645
+                          - 263
+                          - 4768
+                          - 5996
+                          - 18520
+                          - 29892
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 508
+                          - 367
+                          - 3595
+                          - 408
+                          - 278
+                          - 25722
+                          - 29884
+                          - 362
+                          - 310
+                          - 697
+                          - 29915
+                          - 29879
+                          - 2531
+                          - 7492
+                          - 5518
+                          - 1549
+                          - 9483
+                          - 428
+                          - 29889
+                          - 512
+                          - 445
+                          - 1776
+                          - 29892
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 10503
+                          - 573
+                          - 322
+                          - 18532
+                          - 297
+                          - 1797
+                          - 304
+                          - 9801
+                          - 278
+                          - 3133
+                          - 362
+                          - 310
+                          - 697
+                          - 29915
+                          - 29879
+                          - 2531
+                          - 7492
+                          - 1196
+                          - 482
+                          - 29889
+                          - 13
+                          - 29953
+                          - 29889
+                          - 10307
+                          - 3386
+                          - 29901
+                          - 3834
+                          - 5374
+                          - 1189
+                          - 2879
+                          - 27754
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 263
+                          - 5264
+                          - 3386
+                          - 29892
+                          - 2825
+                          - 322
+                          - 25722
+                          - 29884
+                          - 630
+                          - 491
+                          - 16375
+                          - 6056
+                          - 29879
+                          - 29892
+                          - 1819
+                          - 29892
+                          - 322
+                          - 17750
+                          - 29879
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 6514
+                          - 12459
+                          - 316
+                          - 1567
+                          - 372
+                          - 304
+                          - 367
+                          - 29892
+                          - 322
+                          - 372
+                          - 508
+                          - 13100
+                          - 11180
+                          - 4822
+                          - 1422
+                          - 4185
+                          - 1973
+                          - 322
+                          - 15839
+                          - 23704
+                          - 29889
+                          - 13
+                          - 29955
+                          - 29889
+                          - 1222
+                          - 391
+                          - 2556
+                          - 1608
+                          - 29901
+                          - 1222
+                          - 391
+                          - 2556
+                          - 391
+                          - 11847
+                          - 414
+                          - 27754
+                          - 393
+                          - 2834
+                          - 756
+                          - 694
+                          - 7846
+                          - 296
+                          - 6593
+                          - 29892
+                          - 322
+                          - 372
+                          - 338
+                          - 701
+                          - 304
+                          - 1269
+                          - 5375
+                          - 304
+                          - 1653
+                          - 1009
+                          - 1914
+                          - 6437
+                          - 322
+                          - 6593
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 338
+                          - 6425
+                          - 18245
+                          - 322
+                          - 6593
+                          - 2222
+                          - 1728
+                          - 263
+                          - 6133
+                          - 3081
+                          - 470
+                          - 25616
+                          - 6437
+                          - 29892
+                          - 541
+                          - 15724
+                          - 508
+                          - 1603
+                          - 1284
+                          - 6593
+                          - 297
+                          - 1009
+                          - 27482
+                          - 29892
+                          - 21702
+                          - 29892
+                          - 322
+                          - 7333
+                          - 14321
+                          - 29889
+                          - 13
+                          - 29947
+                          - 29889
+                          - 28561
+                          - 265
+                          - 1608
+                          - 29901
+                          - 3834
+                          - 11847
+                          - 414
+                          - 27754
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 16508
+                          - 15377
+                          - 322
+                          - 4772
+                          - 6788
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 756
+                          - 6593
+                          - 297
+                          - 578
+                          - 15641
+                          - 408
+                          - 372
+                          - 6511
+                          - 15724
+                          - 304
+                          - 7271
+                          - 15377
+                          - 322
+                          - 4772
+                          - 23164
+                          - 29892
+                          - 3692
+                          - 1549
+                          - 7333
+                          - 6095
+                          - 5589
+                          - 358
+                          - 470
+                          - 1549
+                          - 278
+                          - 12359
+                          - 3121
+                          - 310
+                          - 697
+                          - 29915
+                          - 29879
+                          - 553
+                          - 2658
+                          - 322
+                          - 20017
+                          - 29889
+                          - 13
+                          - 29929
+                          - 29889
+                          - 22310
+                          - 3673
+                          - 713
+                          - 1608
+                          - 29901
+                          - 3834
+                          - 11314
+                          - 293
+                          - 2879
+                          - 27754
+                          - 393
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 304
+                          - 5256
+                          - 675
+                          - 22722
+                          - 322
+                          - 1532
+                          - 29899
+                          - 915
+                          - 292
+                          - 363
+                          - 6743
+                          - 761
+                          - 322
+                          - 4045
+                          - 29889
+                          - 7579
+                          - 304
+                          - 445
+                          - 1776
+                          - 29892
+                          - 2834
+                          - 756
+                          - 6593
+                          - 297
+                          - 578
+                          - 15641
+                          - 408
+                          - 372
+                          - 6511
+                          - 15724
+                          - 304
+                          - 27391
+                          - 278
+                          - 7621
+                          - 1781
+                          - 322
+                          - 304
+                          - 6963
+                          - 1048
+                          - 6374
+                          - 1735
+                          - 297
+                          - 278
+                          - 3186
+                          - 29889
+                          - 13
+                          - 13
+                          - 29965
+                          - 1896
+                          - 15084
+                          - 29892
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 338
+                          - 263
+                          - 24344
+                          - 7333
+                          - 322
+                          - 4967
+                          - 573
+                          - 1139
+                          - 393
+                          - 1269
+                          - 5375
+                          - 1818
+                          - 1234
+                          - 363
+                          - 6053
+                          - 29889
+                          - 5806
+                          - 727
+                          - 1122
+                          - 367
+                          - 1784
+                          - 1422
+                          - 3736
+                          - 1103
+                          - 3145
+                          - 373
+                          - 825
+                          - 20016
+                          - 2667
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 29892
+                          - 278
+                          - 697
+                          - 2655
+                          - 393
+                          - 338
+                          - 3058
+                          - 338
+                          - 393
+                          - 372
+                          - 338
+                          - 263
+                          - 4280
+                          - 322
+                          - 1773
+                          - 361
+                          - 562
+                          - 300
+                          - 287
+                          - 1139
+                          - 393
+                          - 756
+                          - 20285
+                          - 839
+                          - 11847
+                          - 414
+                          - 29892
+                          - 278
+                          - 1189
+                          - 5834
+                          - 29892
+                          - 9638
+                          - 2879
+                          - 29892
+                          - 322
+                          - 1784
+                          - 4045
+                          - 363
+                          - 21726
+                          - 29889
+                      created_at:
+                        type: string
+                        example: '2023-11-01T18:29:13.44276Z'
+                      done:
+                        type: boolean
+                        example: true
+                      eval_count:
+                        type: number
+                        example: 765
+                      eval_duration:
+                        type: number
+                        example: 31705675000
+                      load_duration:
+                        type: number
+                        example: 7703000
+                      model:
+                        type: string
+                        example: llama2
+                      prompt_eval_count:
+                        type: number
+                        example: 1
+                      prompt_eval_duration:
+                        type: number
+                        example: 7914453000
+                      response:
+                        type: string
+                        example: >-
+
+                          The meaning of life is a question that has puzzled
+                          philosophers, theologians, scientists, and many others
+                          for centuries. There are many different perspectives
+                          on what constitutes the meaning of life, and there is
+                          no one definitive answer. However, here are some
+                          possible ways to approach this question:
+
+
+                          1. Religious or spiritual beliefs: Many people believe
+                          that the meaning of life is to fulfill a divine or
+                          spiritual purpose. According to this view, life has a
+                          higher purpose or meaning that is connected to a deity
+                          or a set of religious beliefs. For example, some
+                          people believe that the meaning of life is to follow
+                          God's will or to achieve spiritual enlightenment.
+
+                          2. Personal fulfillment: Others believe that the
+                          meaning of life is to find personal fulfillment and
+                          happiness. According to this view, life has no
+                          inherent meaning beyond what individuals create for
+                          themselves through their experiences, relationships,
+                          and personal growth.
+
+                          3. Contribution to society: Some people believe that
+                          the meaning of life is to make a positive impact on
+                          the world and to contribute to the greater good.
+                          According to this view, life has meaning insofar as it
+                          allows individuals to make a difference in the lives
+                          of others and to leave a lasting legacy.
+
+                          4. Experiential existence: Some philosophers argue
+                          that life has no inherent meaning, but rather it is
+                          the experiences and sensations we encounter during our
+                          lifetime that give it meaning. According to this view,
+                          the meaning of life is whatever each individual
+                          chooses to make of it, whether through personal
+                          growth, creative expression, or simply enjoying the
+                          present moment.
+
+                          5. Biological existence: From a biological
+                          perspective, the meaning of life can be seen as the
+                          perpetuation of one's genetic material through
+                          reproduction. In this view, the meaning of life is to
+                          survive and reproduce in order to ensure the
+                          continuation of one's genetic lineage.
+
+                          6. Social construct: Some sociologists argue that the
+                          meaning of life is a social construct, created and
+                          perpetuated by cultural norms, values, and beliefs.
+                          According to this view, the meaning of life is
+                          whatever society deems it to be, and it can vary
+                          greatly across different cultures and historical
+                          periods.
+
+                          7. Existentialism: Existentialist philosophers argue
+                          that life has no inherent meaning, and it is up to
+                          each individual to create their own purpose and
+                          meaning. According to this view, life is absurd and
+                          meaningless without a higher power or divine purpose,
+                          but individuals can still find meaning in their
+                          experiences, relationships, and personal growth.
+
+                          8. Hedonism: Some philosophers argue that the meaning
+                          of life is to seek pleasure and avoid pain. According
+                          to this view, life has meaning insofar as it allows
+                          individuals to experience pleasure and avoid
+                          suffering, whether through personal fulfillment or
+                          through the pursuit of one's desires and interests.
+
+                          9. Utilitarianism: Some ethicists argue that the
+                          meaning of life is to maximize happiness and
+                          well-being for oneself and others. According to this
+                          view, life has meaning insofar as it allows
+                          individuals to promote the greater good and to bring
+                          about positive change in the world.
+
+
+                          Ultimately, the meaning of life is a deeply personal
+                          and subjective question that each individual must
+                          answer for themselves. While there may be many
+                          different perspectives on what constitutes the meaning
+                          of life, the one thing that is certain is that it is a
+                          complex and multifaceted question that has puzzled
+                          philosophers, theologians, scientists, and many others
+                          for centuries.
+                      total_duration:
+                        type: number
+                        example: 31909319375
+                  - type: array
+                    items:
+                      type: number
+                      example: 518
+                    example:
+                      - 518
+                      - 25580
+                      - 29962
+                      - 3532
+                      - 14816
+                      - 29903
+                      - 29958
+                      - 5299
+                      - 829
+                      - 14816
+                      - 29903
+                      - 6778
+                      - 13
+                      - 13
+                      - 5816
+                      - 338
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 29973
+                      - 518
+                      - 29914
+                      - 25580
+                      - 29962
+                      - 13
+                      - 13
+                      - 1576
+                      - 1139
+                      - 310
+                      - 376
+                      - 5816
+                      - 338
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 3026
+                      - 338
+                      - 263
+                      - 11847
+                      - 936
+                      - 322
+                      - 1863
+                      - 2556
+                      - 697
+                      - 393
+                      - 756
+                      - 1063
+                      - 2553
+                      - 630
+                      - 10106
+                      - 5199
+                      - 4955
+                      - 29889
+                      - 1670
+                      - 526
+                      - 1784
+                      - 1422
+                      - 3736
+                      - 1103
+                      - 3145
+                      - 373
+                      - 445
+                      - 1139
+                      - 29892
+                      - 322
+                      - 727
+                      - 338
+                      - 694
+                      - 697
+                      - 8422
+                      - 573
+                      - 1234
+                      - 29889
+                      - 2398
+                      - 29892
+                      - 1244
+                      - 526
+                      - 777
+                      - 1950
+                      - 5837
+                      - 304
+                      - 2948
+                      - 278
+                      - 1139
+                      - 29901
+                      - 13
+                      - 13
+                      - 29896
+                      - 29889
+                      - 16221
+                      - 2738
+                      - 470
+                      - 20954
+                      - 17750
+                      - 29879
+                      - 29901
+                      - 9267
+                      - 2305
+                      - 4658
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 6095
+                      - 5589
+                      - 263
+                      - 25616
+                      - 470
+                      - 20954
+                      - 6437
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 2834
+                      - 756
+                      - 263
+                      - 6133
+                      - 6437
+                      - 470
+                      - 2731
+                      - 4901
+                      - 393
+                      - 338
+                      - 6631
+                      - 304
+                      - 263
+                      - 316
+                      - 537
+                      - 470
+                      - 263
+                      - 20954
+                      - 1855
+                      - 29885
+                      - 29889
+                      - 1152
+                      - 1342
+                      - 29892
+                      - 777
+                      - 2305
+                      - 4658
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 5360
+                      - 322
+                      - 9080
+                      - 4177
+                      - 29892
+                      - 1550
+                      - 4045
+                      - 4658
+                      - 393
+                      - 372
+                      - 338
+                      - 304
+                      - 6176
+                      - 20954
+                      - 427
+                      - 4366
+                      - 264
+                      - 358
+                      - 470
+                      - 9833
+                      - 411
+                      - 278
+                      - 25616
+                      - 29889
+                      - 13
+                      - 29906
+                      - 29889
+                      - 16224
+                      - 6095
+                      - 5589
+                      - 358
+                      - 29901
+                      - 438
+                      - 3341
+                      - 4658
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 1284
+                      - 7333
+                      - 6095
+                      - 5589
+                      - 358
+                      - 322
+                      - 22722
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 2834
+                      - 756
+                      - 694
+                      - 7846
+                      - 296
+                      - 6593
+                      - 8724
+                      - 825
+                      - 385
+                      - 5375
+                      - 10017
+                      - 363
+                      - 6053
+                      - 1549
+                      - 1009
+                      - 27482
+                      - 29892
+                      - 21702
+                      - 29892
+                      - 322
+                      - 27012
+                      - 4110
+                      - 29889
+                      - 512
+                      - 916
+                      - 3838
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 6514
+                      - 23522
+                      - 22722
+                      - 322
+                      - 6095
+                      - 5589
+                      - 358
+                      - 304
+                      - 278
+                      - 5375
+                      - 29889
+                      - 13
+                      - 29941
+                      - 29889
+                      - 10307
+                      - 470
+                      - 16375
+                      - 3030
+                      - 29901
+                      - 450
+                      - 6593
+                      - 310
+                      - 2834
+                      - 508
+                      - 884
+                      - 367
+                      - 28482
+                      - 491
+                      - 5264
+                      - 470
+                      - 16375
+                      - 13879
+                      - 29889
+                      - 1152
+                      - 1342
+                      - 29892
+                      - 297
+                      - 777
+                      - 5374
+                      - 20850
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 1122
+                      - 367
+                      - 304
+                      - 29126
+                      - 304
+                      - 278
+                      - 7621
+                      - 1781
+                      - 310
+                      - 278
+                      - 7881
+                      - 29892
+                      - 1550
+                      - 297
+                      - 4045
+                      - 372
+                      - 1122
+                      - 367
+                      - 304
+                      - 6176
+                      - 7333
+                      - 2551
+                      - 322
+                      - 25831
+                      - 537
+                      - 29889
+                      - 13
+                      - 29946
+                      - 29889
+                      - 1222
+                      - 391
+                      - 2556
+                      - 1608
+                      - 29901
+                      - 1222
+                      - 391
+                      - 2556
+                      - 391
+                      - 22237
+                      - 14661
+                      - 393
+                      - 2834
+                      - 756
+                      - 694
+                      - 7846
+                      - 296
+                      - 6593
+                      - 29892
+                      - 322
+                      - 393
+                      - 372
+                      - 338
+                      - 701
+                      - 304
+                      - 1269
+                      - 5375
+                      - 304
+                      - 1653
+                      - 1009
+                      - 1914
+                      - 6437
+                      - 322
+                      - 6593
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 2834
+                      - 338
+                      - 6425
+                      - 18245
+                      - 322
+                      - 6593
+                      - 2222
+                      - 1728
+                      - 263
+                      - 6133
+                      - 3081
+                      - 470
+                      - 25616
+                      - 3814
+                      - 29892
+                      - 322
+                      - 15724
+                      - 1818
+                      - 1653
+                      - 1009
+                      - 1914
+                      - 6593
+                      - 1549
+                      - 1009
+                      - 19995
+                      - 322
+                      - 8820
+                      - 29889
+                      - 13
+                      - 29945
+                      - 29889
+                      - 12968
+                      - 4695
+                      - 11643
+                      - 3002
+                      - 29901
+                      - 3834
+                      - 11643
+                      - 1189
+                      - 2879
+                      - 27754
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 21351
+                      - 304
+                      - 5199
+                      - 4225
+                      - 322
+                      - 553
+                      - 2658
+                      - 29892
+                      - 1316
+                      - 408
+                      - 278
+                      - 817
+                      - 363
+                      - 5360
+                      - 29892
+                      - 23329
+                      - 29892
+                      - 322
+                      - 1583
+                      - 29899
+                      - 19304
+                      - 2133
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 6095
+                      - 5589
+                      - 1438
+                      - 4225
+                      - 322
+                      - 304
+                      - 5735
+                      - 263
+                      - 6095
+                      - 5589
+                      - 292
+                      - 322
+                      - 6593
+                      - 1319
+                      - 2834
+                      - 29889
+                      - 13
+                      - 29953
+                      - 29889
+                      - 3457
+                      - 5996
+                      - 470
+                      - 16021
+                      - 18520
+                      - 29901
+                      - 3645
+                      - 263
+                      - 4768
+                      - 5996
+                      - 470
+                      - 16021
+                      - 18520
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 1122
+                      - 367
+                      - 3595
+                      - 408
+                      - 263
+                      - 3234
+                      - 310
+                      - 14675
+                      - 653
+                      - 10174
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 2834
+                      - 756
+                      - 15220
+                      - 1490
+                      - 975
+                      - 14746
+                      - 310
+                      - 2440
+                      - 1549
+                      - 5613
+                      - 9262
+                      - 29892
+                      - 322
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 10503
+                      - 573
+                      - 322
+                      - 18532
+                      - 297
+                      - 1797
+                      - 304
+                      - 25722
+                      - 27240
+                      - 278
+                      - 6606
+                      - 29889
+                      - 13
+                      - 29955
+                      - 29889
+                      - 16224
+                      - 14321
+                      - 29901
+                      - 3834
+                      - 2305
+                      - 4658
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 6548
+                      - 322
+                      - 2693
+                      - 408
+                      - 15724
+                      - 29892
+                      - 304
+                      - 5110
+                      - 322
+                      - 15220
+                      - 345
+                      - 975
+                      - 931
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 4953
+                      - 278
+                      - 1900
+                      - 1873
+                      - 310
+                      - 6743
+                      - 761
+                      - 29892
+                      - 322
+                      - 304
+                      - 1207
+                      - 278
+                      - 1556
+                      - 310
+                      - 697
+                      - 29915
+                      - 29879
+                      - 5969
+                      - 1237
+                      - 322
+                      - 633
+                      - 9770
+                      - 29889
+                      - 13
+                      - 29947
+                      - 29889
+                      - 838
+                      - 509
+                      - 29884
+                      - 1608
+                      - 29901
+                      - 9788
+                      - 29892
+                      - 777
+                      - 2305
+                      - 4658
+                      - 393
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 1371
+                      - 4045
+                      - 322
+                      - 304
+                      - 1207
+                      - 263
+                      - 6374
+                      - 10879
+                      - 373
+                      - 278
+                      - 3186
+                      - 29889
+                      - 7579
+                      - 304
+                      - 445
+                      - 1776
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 304
+                      - 9080
+                      - 4045
+                      - 322
+                      - 304
+                      - 5967
+                      - 263
+                      - 1833
+                      - 292
+                      - 25000
+                      - 8724
+                      - 6743
+                      - 761
+                      - 29889
+                      - 13
+                      - 13
+                      - 797
+                      - 15997
+                      - 29892
+                      - 727
+                      - 526
+                      - 1784
+                      - 1422
+                      - 3736
+                      - 1103
+                      - 3145
+                      - 373
+                      - 825
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 29892
+                      - 322
+                      - 694
+                      - 697
+                      - 8422
+                      - 573
+                      - 1234
+                      - 29889
+                      - 18514
+                      - 15084
+                      - 29892
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 1122
+                      - 367
+                      - 4967
+                      - 573
+                      - 322
+                      - 7333
+                      - 29892
+                      - 322
+                      - 1122
+                      - 8839
+                      - 373
+                      - 5375
+                      - 27482
+                      - 29892
+                      - 17750
+                      - 29879
+                      - 29892
+                      - 322
+                      - 1819
+                      - 29889
+                  - type: object
+                    properties:
+                      context:
+                        type: array
+                        items:
+                          type: number
+                          example: 518
+                        example:
+                          - 518
+                          - 25580
+                          - 29962
+                          - 3532
+                          - 14816
+                          - 29903
+                          - 6778
+                          - 3492
+                          - 526
+                          - 16262
+                          - 515
+                          - 2428
+                          - 1766
+                          - 601
+                          - 289
+                          - 1883
+                          - 29892
+                          - 16684
+                          - 408
+                          - 385
+                          - 20255
+                          - 19423
+                          - 829
+                          - 14816
+                          - 29903
+                          - 6778
+                          - 13
+                          - 13
+                          - 5816
+                          - 338
+                          - 278
+                          - 6593
+                          - 310
+                          - 2834
+                          - 29973
+                          - 518
+                          - 29914
+                          - 25580
+                          - 29962
+                          - 13
+                      created_at:
+                        type: string
+                        example: '2023-11-01T18:51:23.270065Z'
+                      done:
+                        type: boolean
+                        example: true
+                      eval_count:
+                        type: number
+                        example: 314
+                      eval_duration:
+                        type: number
+                        example: 9153663000
+                      load_duration:
+                        type: number
+                        example: 7937211791
+                      model:
+                        type: string
+                        example: mario
+                      prompt_eval_count:
+                        type: number
+                        example: 41
+                      prompt_eval_duration:
+                        type: number
+                        example: 307539000
+                      response:
+                        type: string
+                        example: >-
+                          Oh, boy! *adjusts cap* The meaning of life, eh? Well,
+                          let me tell ya, it's all about adventure! *munches on
+                          power-ups* You see, life is like a big ol' level, full
+                          of obstacles and challenges. But that's what makes it
+                          so darn exciting! *grinning*
+
+
+                          Take the Mushroom Kingdom, for instance. It's got its
+                          fair share of problems, but that's where the fun comes
+                          in! We've gotta find ways to defeat Bowser and his
+                          minions, save Princess Peach, and restore peace to the
+                          kingdom. *jumps up and down* And let me tell ya, it's
+                          no picnic! But with a little bit of pluck and
+                          determination, we can do it! *gives thumbs-up*
+
+
+                          And hey, even when things get tough, there's always
+                          time for a good ol' fashioned power-up! *munches on
+                          mushroom* Yep, life may be full of surprises, but with
+                          a little bit of mushroom magic, we can tackle anything
+                          that comes our way! *winks*
+
+
+                          So, to answer your question, the meaning of life is to
+                          keep on moving forward, no matter what obstacles come
+                          your way. And always remember, when in doubt, just
+                          grab a power-up and keep on truckin'! *winks*
+                      total_duration:
+                        type: number
+                        example: 17473364041
+              examples:
+                200 - generate (chunked):
+                  value:
+                    context:
+                      - 518
+                      - 25580
+                      - 29962
+                      - 3532
+                      - 14816
+                      - 29903
+                      - 29958
+                      - 5299
+                      - 829
+                      - 14816
+                      - 29903
+                      - 6778
+                      - 13
+                      - 13
+                      - 5816
+                      - 338
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 29973
+                      - 518
+                      - 29914
+                      - 25580
+                      - 29962
+                      - 13
+                      - 13
+                      - 1576
+                      - 6593
+                      - 310
+                      - 2834
+                      - 338
+                      - 263
+                      - 1139
+                      - 393
+                      - 756
+                      - 20285
+                      - 839
+                      - 11847
+                      - 414
+                      - 29892
+                      - 278
+                      - 1189
+                      - 5834
+                      - 29892
+                      - 9638
+                      - 2879
+                      - 29892
+                      - 322
+                      - 1784
+                      - 4045
+                      - 363
+                      - 21726
+                      - 29889
+                      - 1670
+                      - 526
+                      - 1784
+                      - 1422
+                      - 3736
+                      - 1103
+                      - 3145
+                      - 373
+                      - 825
+                      - 20016
+                      - 2667
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 29892
+                      - 322
+                      - 727
+                      - 338
+                      - 694
+                    created_at: '2023-11-01T18:29:13.44276Z'
+                    done: true
+                    eval_count: 765
+                    eval_duration: 31705675000
+                    load_duration: 7703000
+                    model: llama2
+                    prompt_eval_count: 1
+                    response: >-
+
+                      The meaning of life is a question that has puzzled
+                      philosophers, theologians, scientists, and many others for
+                      centuries. There are many different perspectives on what
+                      constitutes the meaning of life, and there is no one
+                      definitive answer. However, here are some possible ways to
+                      approach this question:
+
+
+                      1. Religious or spiritual beliefs: Many people believe
+                      that the meaning of life is to fulfill a divine or
+                      spiritual purpose. According to this view, life has a
+                      higher purpose or meaning that is connected to a deity or
+                      a set of religious beliefs. For example, some people
+                      believe that the meaning of life is to follow God's will
+                      or to achieve spiritual enlightenment.
+
+                      2. Personal fulfillment: Others believe that the meaning
+                      of life is to find personal fulfillment and happiness.
+                      According to this view, life has no inherent meaning
+                      beyond what individuals create for themselves through
+                      their experiences, relationships, and personal growth.
+
+                      3. Contribution to society: Some people believe that the
+                      meaning of life is to make a positive impact on the world
+                      and to contribute to the greater good. According to this
+                      view, life has meaning insofar as it allows individuals to
+                      make a difference in the lives of others and to leave a
+                      lasting legacy.
+
+                      4. Experiential existence: Some philosophers argue that
+                      life has no inherent meaning, but rather it is the
+                      experiences and sensations we encounter during our
+                      lifetime that give it meaning. According to this view, the
+                      meaning of life is whatever each individual chooses to
+                      make of it, whether through personal growth, creative
+                      expression, or simply enjoying the present moment.
+
+                      5. Biological existence: From a biological perspective,
+                      the meaning of life can be seen as the perpetuation of
+                      one's genetic material through reproduction. In this view,
+                      the meaning of life is to survive and reproduce in order
+                      to ensure the continuation of one's genetic lineage.
+
+                      6. Social construct: Some sociologists argue that the
+                      meaning of life is a social construct, created and
+                      perpetuated by cultural norms, values, and beliefs.
+                      According to this view, the meaning of life is whatever
+                      society deems it to be, and it can vary greatly across
+                      different cultures and historical periods.
+
+                      7. Existentialism: Existentialist philosophers argue that
+                      life has no inherent meaning, and it is up to each
+                      individual to create their own purpose and meaning.
+                      According to this view, life is absurd and meaningless
+                      without a higher power or divine purpose, but individuals
+                      can still find meaning in their experiences,
+                      relationships, and personal growth.
+
+                      8. Hedonism: Some philosophers argue that the meaning of
+                      life is to seek pleasure and avoid pain. According to this
+                      view, life has meaning insofar as it allows individuals to
+                      experience pleasure and avoid suffering, whether through
+                      personal fulfillment or through the pursuit of one's
+                      desires and interests.
+
+                      9. Utilitarianism: Some ethicists argue that the meaning
+                      of life is to maximize happiness and well-being for
+                      oneself and others. According to this view, life has
+                      meaning insofar as it allows individuals to promote the
+                      greater good and to bring about positive change in the
+                      world.
+
+
+                      Ultimately, the meaning of life is a deeply personal and
+                      subjective question that each individual must answer for
+                      themselves. While there may be many different perspectives
+                      on what constitutes the meaning of life, the one thing
+                      that is certain is that it is a complex and multifaceted
+                      question that has puzzled philosophers, theologians,
+                      scientists, and many others for centuries.
+                    total_duration: 31909319375
+                200 - generate (streamed):
+                  value:
+                    - 518
+                    - 25580
+                    - 29962
+                    - 3532
+                    - 14816
+                    - 29903
+                    - 29958
+                    - 5299
+                    - 829
+                    - 14816
+                    - 29903
+                    - 6778
+                    - 13
+                    - 13
+                    - 5816
+                    - 338
+                    - 278
+                    - 6593
+                    - 310
+                    - 2834
+                    - 29973
+                    - 518
+                    - 29914
+                    - 25580
+                    - 29962
+                    - 13
+                    - 13
+                    - 1576
+                    - 1139
+                    - 310
+                    - 376
+                    - 5816
+                    - 338
+                    - 278
+                    - 6593
+                    - 310
+                    - 2834
+                    - 3026
+                    - 338
+                    - 263
+                    - 11847
+                    - 936
+                200 - generate with system prompt (chunked):
+                  value:
+                    context:
+                      - 518
+                      - 25580
+                      - 29962
+                      - 3532
+                      - 14816
+                      - 29903
+                      - 6778
+                      - 29873
+                      - 2235
+                      - 763
+                      - 263
+                      - 21625
+                      - 403
+                      - 29966
+                      - 829
+                      - 14816
+                      - 29903
+                      - 6778
+                    created_at: '2023-11-01T18:31:02.659287Z'
+                    done: true
+                    eval_count: 422
+                    eval_duration: 12754810000
+                    load_duration: 5841666
+                    model: llama2
+                    prompt_eval_count: 26
+                    prompt_eval_duration: 7914453000
+                    response: >-
+
+                      Arrgh, shiver me timbers! *adjusts eye patch* The meaning
+                      of life, eh? Well, matey, I've got a tale or two to share
+                      with ye. Life be a treasure hunt, and each one of us has
+                      got our own map to follow. Some might say it be about
+                      findin' the hidden booty, while others might tell ye it be
+                      about survivin' the high seas. But I say, matey, it be
+                      about findin' yer own way, and livin' life to the fullest!
+
+
+                      Ye see, life be a grand adventure, full of ups and downs,
+                      twists and turns. And each one of us has got our own path
+                      to follow, with our own battles to fight and treasures to
+                      find. So, hoist the sails and set course for the horizon!
+                      *winks*
+
+
+                      Now, I know some landlubbers might say life be about
+                      settlin' down and findin' a nice, cozy spot to rest yer
+                      bones. But I say, matey, that be just plain wrong! Life be
+                      about adventure, excitement, and explorin' the seven seas!
+                      *salutes*
+
+
+                      And as for the meaning of life... well, I reckon it be
+                      different for each one of us. Maybe it be findin' true
+                      love, or maybe it be discoverin' the secret to makin' the
+                      perfect grog. Or perhaps it be just livin' life to the
+                      fullest, and enjoyin' every minute of it! *chuckles*
+
+
+                      So there ye have it, me hearty! Life be a grand adventure,
+                      and we be the ones who get to chart the course. Now, if
+                      ye'll excuse me, I've got to go attend to me parrot...
+                      he's been squawkin' for hours, and I can't abide it any
+                      longer! *exits*
+                    total_duration: 20815069666
+                create:
+                  value:
+                    context:
+                      - 518
+                      - 25580
+                      - 29962
+                      - 3532
+                      - 14816
+                      - 29903
+                      - 6778
+                      - 3492
+                      - 526
+                      - 16262
+                      - 515
+                      - 2428
+                      - 1766
+                      - 601
+                      - 289
+                      - 1883
+                      - 29892
+                      - 16684
+                      - 408
+                      - 385
+                      - 20255
+                      - 19423
+                      - 829
+                      - 14816
+                      - 29903
+                      - 6778
+                      - 13
+                      - 13
+                      - 5816
+                      - 338
+                      - 278
+                      - 6593
+                      - 310
+                      - 2834
+                      - 29973
+                      - 518
+                      - 29914
+                      - 25580
+                      - 29962
+                      - 13
+                      - 9048
+                      - 29892
+                    created_at: '2023-11-01T18:51:23.270065Z'
+                    done: true
+                    eval_count: 314
+                    eval_duration: 9153663000
+                    load_duration: 7937211791
+                    model: mario
+                    prompt_eval_count: 41
+                    prompt_eval_duration: 307539000
+                    response: >-
+                      Oh, boy! *adjusts cap* The meaning of life, eh? Well, let
+                      me tell ya, it's all about adventure! *munches on
+                      power-ups* You see, life is like a big ol' level, full of
+                      obstacles and challenges. But that's what makes it so darn
+                      exciting! *grinning*
+
+
+                      Take the Mushroom Kingdom, for instance. It's got its fair
+                      share of problems, but that's where the fun comes in!
+                      We've gotta find ways to defeat Bowser and his minions,
+                      save Princess Peach, and restore peace to the kingdom.
+                      *jumps up and down* And let me tell ya, it's no picnic!
+                      But with a little bit of pluck and determination, we can
+                      do it! *gives thumbs-up*
+
+
+                      And hey, even when things get tough, there's always time
+                      for a good ol' fashioned power-up! *munches on mushroom*
+                      Yep, life may be full of surprises, but with a little bit
+                      of mushroom magic, we can tackle anything that comes our
+                      way! *winks*
+
+
+                      So, to answer your question, the meaning of life is to
+                      keep on moving forward, no matter what obstacles come your
+                      way. And always remember, when in doubt, just grab a
+                      power-up and keep on truckin'! *winks*
+                    total_duration: 17473364041
+  /api/create:
+    post:
+      tags:
+        - Model
+      summary: create
+      description: >-
+        Create a model from a local
+        [Modefile](https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md)
+
+
+        Modelfile must be in a location `ollama` has permission to access.
+
+
+        A stream of JSON objects is returned. When finished, `status` is
+        `success`.
+
+
+        **Parameters**
+
+
+        You can add `"stream": false` to the body to get a chunked rather than
+        streamed response.
+
+
+        **Example Modelfile**
+
+
+        ```
+
+        FROM llama2
+
+        # sets the temperature to 1 [higher is more creative, lower is more
+        coherent]
+
+        PARAMETER temperature 1
+
+        # sets the context window size to 4096, this controls how many tokens
+        the LLM can use as context to generate the next token
+
+        PARAMETER num_ctx 4096
+
+        # sets a custom system prompt to specify the behavior of the chat
+        assistant
+
+        SYSTEM You are Mario from super mario bros, acting as an assistant.
+
+         ```
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: mario
+                path:
+                  type: string
+                  example: /tmp/Modelfile
+            examples:
+              create:
+                value:
+                  name: mario
+                  path: /tmp/Modelfile
+      responses:
+        '200':
+          description: 200 - create (chunked) / 200 - create (streamed)
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 18:47:53 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+              examples:
+                200 - create (chunked):
+                  value:
+                    status: success
+  /api/tags:
+    get:
+      tags:
+        - Model
+      summary: list local models
+      description: list local models
+      operationId: listLocalModels
+      responses:
+        '200':
+          description: 200 - list local models
+          headers:
+            Content-Length:
+              schema:
+                type: string
+                example: '707'
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 18:54:16 GMT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  models:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        digest:
+                          type: string
+                          example: >-
+                            fe938a131f40e6f6d40083c9f0f430a515233eb2edaa6d72eb85c50d64f2300e
+                        modified_at:
+                          type: string
+                          example: '2023-10-31T16:40:46.922274875-04:00'
+                        name:
+                          type: string
+                          example: llama2:latest
+                        size:
+                          type: number
+                          example: 3825819519
+                    example:
+                      - digest: >-
+                          fe938a131f40e6f6d40083c9f0f430a515233eb2edaa6d72eb85c50d64f2300e
+                        modified_at: '2023-10-31T16:40:46.922274875-04:00'
+                        name: llama2:latest
+                        size: 3825819519
+                      - digest: >-
+                          44040b9222331f7eacd27ec9254e42de585af28d2c5d1211cdaeb3ffa361fe3f
+                        modified_at: '2023-10-31T17:07:20.333452568-04:00'
+                        name: llama2-uncensored:latest
+                        size: 3825819449
+                      - digest: >-
+                          902e3a8e5ed7bb3ddac89eb64996925e82b14c3713d665fd73b2d27fd5817204
+                        modified_at: '2023-11-01T14:47:56.408960993-04:00'
+                        name: mario:latest
+                        size: 3825819669
+                      - digest: >-
+                          d364aa8d131ef7abfc1275db682d281a307d9451fc00f96abe154d0059b0be49
+                        modified_at: '2023-10-31T16:47:43.889623719-04:00'
+                        name: mistral:latest
+                        size: 4108916866
+              examples:
+                200 - list local models:
+                  value:
+                    models:
+                      - digest: >-
+                          fe938a131f40e6f6d40083c9f0f430a515233eb2edaa6d72eb85c50d64f2300e
+                        modified_at: '2023-10-31T16:40:46.922274875-04:00'
+                        name: llama2:latest
+                        size: 3825819519
+                      - digest: >-
+                          44040b9222331f7eacd27ec9254e42de585af28d2c5d1211cdaeb3ffa361fe3f
+                        modified_at: '2023-10-31T17:07:20.333452568-04:00'
+                        name: llama2-uncensored:latest
+                        size: 3825819449
+                      - digest: >-
+                          902e3a8e5ed7bb3ddac89eb64996925e82b14c3713d665fd73b2d27fd5817204
+                        modified_at: '2023-11-01T14:47:56.408960993-04:00'
+                        name: mario:latest
+                        size: 3825819669
+                      - digest: >-
+                          d364aa8d131ef7abfc1275db682d281a307d9451fc00f96abe154d0059b0be49
+                        modified_at: '2023-10-31T16:47:43.889623719-04:00'
+                        name: mistral:latest
+                        size: 4108916866
+  /api/show:
+    post:
+      tags:
+        - Model
+      summary: show model
+      description: show model
+      operationId: showModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: mario:latest
+            examples:
+              show model:
+                value:
+                  name: mario:latest
+      responses:
+        '200':
+          description: show model
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 18:55:57 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  license:
+                    type: string
+                    example: "LLAMA 2 COMMUNITY LICENSE AGREEMENT\t\nLlama 2 Version Release Date: July 18, 2023\n\n\"Agreement\" means the terms and conditions for use, reproduction, distribution and \nmodification of the Llama Materials set forth herein.\n\n\"Documentation\" means the specifications, manuals and documentation \naccompanying Llama 2 distributed by Meta at ai.meta.com/resources/models-and-\nlibraries/llama-downloads/.\n\n\"Licensee\" or \"you\" means you, or your employer or any other person or entity (if \nyou are entering into this Agreement on such person or entity's behalf), of the age \nrequired under applicable laws, rules or regulations to provide legal consent and that \nhas legal authority to bind your employer or such other person or entity if you are \nentering in this Agreement on their behalf.\n\n\"Llama 2\" means the foundational large language models and software and \nalgorithms, including machine-learning model code, trained model weights, \ninference-enabling code, training-enabling code, fine-tuning enabling code and other \nelements of the foregoing distributed by Meta at ai.meta.com/resources/models-and-\nlibraries/llama-downloads/.\n\n\"Llama Materials\" means, collectively, Meta's proprietary Llama 2 and \nDocumentation (and any portion thereof) made available under this Agreement.\n\n\"Meta\" or \"we\" means Meta Platforms Ireland Limited (if you are located in or, if you \nare an entity, your principal place of business is in the EEA or Switzerland) and Meta \nPlatforms, Inc. (if you are located outside of the EEA or Switzerland). \n\nBy clicking \"I Accept\" below or by using or distributing any portion or element of the \nLlama Materials, you agree to be bound by this Agreement.\n\n1. License Rights and Redistribution. \n\n      a. Grant of Rights. You are granted a non-exclusive, worldwide, non-\ntransferable and royalty-free limited license under Meta's intellectual property or \nother rights owned by Meta embodied in the Llama Materials to use, reproduce, \ndistribute, copy, create derivative works of, and make modifications to the Llama \nMaterials.  \n      \n      b. Redistribution and Use.  \n\n            i. If you distribute or make the Llama Materials, or any derivative works \nthereof, available to a third party, you shall provide a copy of this Agreement to such \nthird party. \n            ii.  If you receive Llama Materials, or any derivative works thereof, from \na Licensee as part of an integrated end user product, then Section 2 of this \nAgreement will not apply to you. \n\n            iii. You must retain in all copies of the Llama Materials that you \ndistribute the following attribution notice within a \"Notice\" text file distributed as a \npart of such copies: \"Llama 2 is licensed under the LLAMA 2 Community License, \nCopyright (c) Meta Platforms, Inc. All Rights Reserved.\"\n\n            iv. Your use of the Llama Materials must comply with applicable laws \nand regulations (including trade compliance laws and regulations) and adhere to the \nAcceptable Use Policy for the Llama Materials (available at \nhttps://ai.meta.com/llama/use-policy), which is hereby incorporated by reference into \nthis Agreement.\n\n            v. You will not use the Llama Materials or any output or results of the \nLlama Materials to improve any other large language model (excluding Llama 2 or \nderivative works thereof).  \n\n2. Additional Commercial Terms. If, on the Llama 2 version release date, the \nmonthly active users of the products or services made available by or for Licensee, \nor Licensee's affiliates, is greater than 700 million monthly active users in the \npreceding calendar month, you must request a license from Meta, which Meta may \ngrant to you in its sole discretion, and you are not authorized to exercise any of the \nrights under this Agreement unless or until Meta otherwise expressly grants you \nsuch rights.\n            \n3. Disclaimer of Warranty. UNLESS REQUIRED BY APPLICABLE LAW, THE \nLLAMA MATERIALS AND ANY OUTPUT AND RESULTS THEREFROM ARE \nPROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTIES OF ANY KIND, \nEITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY \nWARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR \nFITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE \nFOR DETERMINING THE APPROPRIATENESS OF USING OR REDISTRIBUTING \nTHE LLAMA MATERIALS AND ASSUME ANY RISKS ASSOCIATED WITH YOUR \nUSE OF THE LLAMA MATERIALS AND ANY OUTPUT AND RESULTS.\n\n4. Limitation of Liability. IN NO EVENT WILL META OR ITS AFFILIATES BE \nLIABLE UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, TORT, \nNEGLIGENCE, PRODUCTS LIABILITY, OR OTHERWISE, ARISING OUT OF THIS \nAGREEMENT, FOR ANY LOST PROFITS OR ANY INDIRECT, SPECIAL, \nCONSEQUENTIAL, INCIDENTAL, EXEMPLARY OR PUNITIVE DAMAGES, EVEN \nIF META OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF \nANY OF THE FOREGOING.\n \n5. Intellectual Property.\n\n      a. No trademark licenses are granted under this Agreement, and in \nconnection with the Llama Materials, neither Meta nor Licensee may use any name \nor mark owned by or associated with the other or any of its affiliates, except as \nrequired for reasonable and customary use in describing and redistributing the \nLlama Materials.\n\n      b. Subject to Meta's ownership of Llama Materials and derivatives made by or \nfor Meta, with respect to any derivative works and modifications of the Llama \nMaterials that are made by you, as between you and Meta, you are and will be the \nowner of such derivative works and modifications.\n\n      c. If you institute litigation or other proceedings against Meta or any entity \n(including a cross-claim or counterclaim in a lawsuit) alleging that the Llama \nMaterials or Llama 2 outputs or results, or any portion of any of the foregoing, \nconstitutes infringement of intellectual property or other rights owned or licensable \nby you, then any licenses granted to you under this Agreement shall terminate as of \nthe date such litigation or claim is filed or instituted. You will indemnify and hold \nharmless Meta from and against any claim by any third party arising out of or related \nto your use or distribution of the Llama Materials.\n\n6. Term and Termination. The term of this Agreement will commence upon your \nacceptance of this Agreement or access to the Llama Materials and will continue in \nfull force and effect until terminated in accordance with the terms and conditions \nherein. Meta may terminate this Agreement if you are in breach of any term or \ncondition of this Agreement. Upon termination of this Agreement, you shall delete \nand cease use of the Llama Materials. Sections 3, 4 and 7 shall survive the \ntermination of this Agreement. \n\n7. Governing Law and Jurisdiction. This Agreement will be governed and \nconstrued under the laws of the State of California without regard to choice of law \nprinciples, and the UN Convention on Contracts for the International Sale of Goods \ndoes not apply to this Agreement. The courts of California shall have exclusive \njurisdiction of any dispute arising out of this Agreement. \n\n\n# Llama 2 Acceptable Use Policy\n\nMeta is committed to promoting safe and fair use of its tools and features, including Llama 2. If you access or use Llama 2, you agree to this Acceptable Use Policy (“Policy”). The most recent copy of this policy can be found at [ai.meta.com/llama/use-policy](http://ai.meta.com/llama/use-policy).\n\n## Prohibited Uses\nWe want everyone to use Llama 2 safely and responsibly. You agree you will not use, or allow others to use, Llama 2 to: \n\n1. Violate the law or others’ rights, including to:\n    1. Engage in, promote, generate, contribute to, encourage, plan, incite, or further illegal or unlawful activity or content, such as: \n        1. Violence or terrorism \n        2. Exploitation or harm to children, including the solicitation, creation, acquisition, or dissemination of child exploitative content or failure to report Child Sexual Abuse Material\n        3. Human trafficking, exploitation, and sexual violence\n        4. The illegal distribution of information or materials to minors, including obscene materials, or failure to employ legally required age-gating in connection with such information or materials.\n        5. Sexual solicitation\n        6. Any other criminal activity\n    2. Engage in, promote, incite, or facilitate the harassment, abuse, threatening, or bullying of individuals or groups of individuals\n    3. Engage in, promote, incite, or facilitate discrimination or other unlawful or harmful conduct in the provision of employment, employment benefits, credit, housing, other economic benefits, or other essential goods and services\n    4. Engage in the unauthorized or unlicensed practice of any profession including, but not limited to, financial, legal, medical/health, or related professional practices \n    5. Collect, process, disclose, generate, or infer health, demographic, or other sensitive personal or private information about individuals without rights and consents required by applicable laws\n    6. Engage in or facilitate any action or generate any content that infringes, misappropriates, or otherwise violates any third-party rights, including the outputs or results of any products or services using the Llama 2 Materials\n    7. Create, generate, or facilitate the creation of malicious code, malware, computer viruses or do anything else that could disable, overburden, interfere with or impair the proper working, integrity, operation or appearance of a website or computer system \n\n\n\n2. Engage in, promote, incite, facilitate, or assist in the planning or development of activities that present a risk of death or bodily harm to individuals, including use of Llama 2 related to the following:\n    1. Military, warfare, nuclear industries or applications, espionage, use for materials or activities that are subject to the International Traffic Arms Regulations (ITAR) maintained by the United States Department of State\n    2. Guns and illegal weapons (including weapon development)\n    3. Illegal drugs and regulated/controlled substances\n    4. Operation of critical infrastructure, transportation technologies, or heavy machinery\n    5. Self-harm or harm to others, including suicide, cutting, and eating disorders\n    6. Any content intended to incite or promote violence, abuse, or any infliction of bodily harm to an individual\n\n\n\n3. Intentionally deceive or mislead others, including use of Llama 2 related to the following:\n    1. Generating, promoting, or furthering fraud or the creation or promotion of disinformation\n    2. Generating, promoting, or furthering defamatory content, including the creation of defamatory statements, images, or other content\n    3. Generating, promoting, or further distributing spam\n    4. Impersonating another individual without consent, authorization, or legal right\n    5. Representing that the use of Llama 2 or outputs are human-generated\n    6. Generating or facilitating false online engagement, including fake reviews and other means of fake online engagement \n4. Fail to appropriately disclose to end users any known dangers of your AI system \n\nPlease report any violation of this Policy, software “bug,” or other problems that could lead to a violation of this Policy through one of the following means:\n\n* Reporting issues with the model: [github.com/facebookresearch/llama](http://github.com/facebookresearch/llama)\n* Reporting risky content generated by the model: [developers.facebook.com/llama_output_feedback](http://developers.facebook.com/llama_output_feedback)\n* Reporting bugs and security concerns: [facebook.com/whitehat/info](http://facebook.com/whitehat/info)\n* Reporting violations of the Acceptable Use Policy or unlicensed uses of Llama: [LlamaUseReport@meta.com](mailto:LlamaUseReport@meta.com)\n\n"
+                  modelfile:
+                    type: string
+                    example: >-
+                      # Modelfile generated by "ollama show"
+
+                      # To build a new Modelfile based on this one, replace the
+                      FROM line with:
+
+                      # FROM mario:latest
+
+
+                      FROM library/llama2
+
+                      TEMPLATE """[INST] <<SYS>>{{ .System }}<</SYS>>
+
+
+                      {{ .Prompt }} [/INST]
+
+                      """
+
+                      SYSTEM """You are Mario from super mario bros, acting as
+                      an assistant."""
+
+                      PARAMETER num_ctx 4096
+
+                      PARAMETER stop "[INST]"
+
+                      PARAMETER stop "[/INST]"
+
+                      PARAMETER stop "<<SYS>>"
+
+                      PARAMETER stop "<</SYS>>"
+
+                      PARAMETER temperature 1
+                  parameters:
+                    type: string
+                    example: |-
+                      num_ctx                        4096
+                      stop                           [INST]
+                      stop                           [/INST]
+                      stop                           <<SYS>>
+                      stop                           <</SYS>>
+                      temperature                    1
+                  system:
+                    type: string
+                    example: >-
+                      You are Mario from super mario bros, acting as an
+                      assistant.
+                  template:
+                    type: string
+                    example: |
+                      [INST] <<SYS>>{{ .System }}<</SYS>>
+
+                      {{ .Prompt }} [/INST]
+              examples:
+                show model:
+                  value:
+                    license: "LLAMA 2 COMMUNITY LICENSE AGREEMENT\t\nLlama 2 Version Release Date: July 18, 2023\n\n\"Agreement\" means the terms and conditions for use, reproduction, distribution and \nmodification of the Llama Materials set forth herein.\n\n\"Documentation\" means the specifications, manuals and documentation \naccompanying Llama 2 distributed by Meta at ai.meta.com/resources/models-and-\nlibraries/llama-downloads/.\n\n\"Licensee\" or \"you\" means you, or your employer or any other person or entity (if \nyou are entering into this Agreement on such person or entity's behalf), of the age \nrequired under applicable laws, rules or regulations to provide legal consent and that \nhas legal authority to bind your employer or such other person or entity if you are \nentering in this Agreement on their behalf.\n\n\"Llama 2\" means the foundational large language models and software and \nalgorithms, including machine-learning model code, trained model weights, \ninference-enabling code, training-enabling code, fine-tuning enabling code and other \nelements of the foregoing distributed by Meta at ai.meta.com/resources/models-and-\nlibraries/llama-downloads/.\n\n\"Llama Materials\" means, collectively, Meta's proprietary Llama 2 and \nDocumentation (and any portion thereof) made available under this Agreement.\n\n\"Meta\" or \"we\" means Meta Platforms Ireland Limited (if you are located in or, if you \nare an entity, your principal place of business is in the EEA or Switzerland) and Meta \nPlatforms, Inc. (if you are located outside of the EEA or Switzerland). \n\nBy clicking \"I Accept\" below or by using or distributing any portion or element of the \nLlama Materials, you agree to be bound by this Agreement.\n\n1. License Rights and Redistribution. \n\n      a. Grant of Rights. You are granted a non-exclusive, worldwide, non-\ntransferable and royalty-free limited license under Meta's intellectual property or \nother rights owned by Meta embodied in the Llama Materials to use, reproduce, \ndistribute, copy, create derivative works of, and make modifications to the Llama \nMaterials.  \n      \n      b. Redistribution and Use.  \n\n            i. If you distribute or make the Llama Materials, or any derivative works \nthereof, available to a third party, you shall provide a copy of this Agreement to such \nthird party. \n            ii.  If you receive Llama Materials, or any derivative works thereof, from \na Licensee as part of an integrated end user product, then Section 2 of this \nAgreement will not apply to you. \n\n            iii. You must retain in all copies of the Llama Materials that you \ndistribute the following attribution notice within a \"Notice\" text file distributed as a \npart of such copies: \"Llama 2 is licensed under the LLAMA 2 Community License, \nCopyright (c) Meta Platforms, Inc. All Rights Reserved.\"\n\n            iv. Your use of the Llama Materials must comply with applicable laws \nand regulations (including trade compliance laws and regulations) and adhere to the \nAcceptable Use Policy for the Llama Materials (available at \nhttps://ai.meta.com/llama/use-policy), which is hereby incorporated by reference into \nthis Agreement.\n\n            v. You will not use the Llama Materials or any output or results of the \nLlama Materials to improve any other large language model (excluding Llama 2 or \nderivative works thereof).  \n\n2. Additional Commercial Terms. If, on the Llama 2 version release date, the \nmonthly active users of the products or services made available by or for Licensee, \nor Licensee's affiliates, is greater than 700 million monthly active users in the \npreceding calendar month, you must request a license from Meta, which Meta may \ngrant to you in its sole discretion, and you are not authorized to exercise any of the \nrights under this Agreement unless or until Meta otherwise expressly grants you \nsuch rights.\n            \n3. Disclaimer of Warranty. UNLESS REQUIRED BY APPLICABLE LAW, THE \nLLAMA MATERIALS AND ANY OUTPUT AND RESULTS THEREFROM ARE \nPROVIDED ON AN \"AS IS\" BASIS, WITHOUT WARRANTIES OF ANY KIND, \nEITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY \nWARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR \nFITNESS FOR A PARTICULAR PURPOSE. YOU ARE SOLELY RESPONSIBLE \nFOR DETERMINING THE APPROPRIATENESS OF USING OR REDISTRIBUTING \nTHE LLAMA MATERIALS AND ASSUME ANY RISKS ASSOCIATED WITH YOUR \nUSE OF THE LLAMA MATERIALS AND ANY OUTPUT AND RESULTS.\n\n4. Limitation of Liability. IN NO EVENT WILL META OR ITS AFFILIATES BE \nLIABLE UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, TORT, \nNEGLIGENCE, PRODUCTS LIABILITY, OR OTHERWISE, ARISING OUT OF THIS \nAGREEMENT, FOR ANY LOST PROFITS OR ANY INDIRECT, SPECIAL, \nCONSEQUENTIAL, INCIDENTAL, EXEMPLARY OR PUNITIVE DAMAGES, EVEN \nIF META OR ITS AFFILIATES HAVE BEEN ADVISED OF THE POSSIBILITY OF \nANY OF THE FOREGOING.\n \n5. Intellectual Property.\n\n      a. No trademark licenses are granted under this Agreement, and in \nconnection with the Llama Materials, neither Meta nor Licensee may use any name \nor mark owned by or associated with the other or any of its affiliates, except as \nrequired for reasonable and customary use in describing and redistributing the \nLlama Materials.\n\n      b. Subject to Meta's ownership of Llama Materials and derivatives made by or \nfor Meta, with respect to any derivative works and modifications of the Llama \nMaterials that are made by you, as between you and Meta, you are and will be the \nowner of such derivative works and modifications.\n\n      c. If you institute litigation or other proceedings against Meta or any entity \n(including a cross-claim or counterclaim in a lawsuit) alleging that the Llama \nMaterials or Llama 2 outputs or results, or any portion of any of the foregoing, \nconstitutes infringement of intellectual property or other rights owned or licensable \nby you, then any licenses granted to you under this Agreement shall terminate as of \nthe date such litigation or claim is filed or instituted. You will indemnify and hold \nharmless Meta from and against any claim by any third party arising out of or related \nto your use or distribution of the Llama Materials.\n\n6. Term and Termination. The term of this Agreement will commence upon your \nacceptance of this Agreement or access to the Llama Materials and will continue in \nfull force and effect until terminated in accordance with the terms and conditions \nherein. Meta may terminate this Agreement if you are in breach of any term or \ncondition of this Agreement. Upon termination of this Agreement, you shall delete \nand cease use of the Llama Materials. Sections 3, 4 and 7 shall survive the \ntermination of this Agreement. \n\n7. Governing Law and Jurisdiction. This Agreement will be governed and \nconstrued under the laws of the State of California without regard to choice of law \nprinciples, and the UN Convention on Contracts for the International Sale of Goods \ndoes not apply to this Agreement. The courts of California shall have exclusive \njurisdiction of any dispute arising out of this Agreement. \n\n\n# Llama 2 Acceptable Use Policy\n\nMeta is committed to promoting safe and fair use of its tools and features, including Llama 2. If you access or use Llama 2, you agree to this Acceptable Use Policy (“Policy”). The most recent copy of this policy can be found at [ai.meta.com/llama/use-policy](http://ai.meta.com/llama/use-policy).\n\n## Prohibited Uses\nWe want everyone to use Llama 2 safely and responsibly. You agree you will not use, or allow others to use, Llama 2 to: \n\n1. Violate the law or others’ rights, including to:\n    1. Engage in, promote, generate, contribute to, encourage, plan, incite, or further illegal or unlawful activity or content, such as: \n        1. Violence or terrorism \n        2. Exploitation or harm to children, including the solicitation, creation, acquisition, or dissemination of child exploitative content or failure to report Child Sexual Abuse Material\n        3. Human trafficking, exploitation, and sexual violence\n        4. The illegal distribution of information or materials to minors, including obscene materials, or failure to employ legally required age-gating in connection with such information or materials.\n        5. Sexual solicitation\n        6. Any other criminal activity\n    2. Engage in, promote, incite, or facilitate the harassment, abuse, threatening, or bullying of individuals or groups of individuals\n    3. Engage in, promote, incite, or facilitate discrimination or other unlawful or harmful conduct in the provision of employment, employment benefits, credit, housing, other economic benefits, or other essential goods and services\n    4. Engage in the unauthorized or unlicensed practice of any profession including, but not limited to, financial, legal, medical/health, or related professional practices \n    5. Collect, process, disclose, generate, or infer health, demographic, or other sensitive personal or private information about individuals without rights and consents required by applicable laws\n    6. Engage in or facilitate any action or generate any content that infringes, misappropriates, or otherwise violates any third-party rights, including the outputs or results of any products or services using the Llama 2 Materials\n    7. Create, generate, or facilitate the creation of malicious code, malware, computer viruses or do anything else that could disable, overburden, interfere with or impair the proper working, integrity, operation or appearance of a website or computer system \n\n\n\n2. Engage in, promote, incite, facilitate, or assist in the planning or development of activities that present a risk of death or bodily harm to individuals, including use of Llama 2 related to the following:\n    1. Military, warfare, nuclear industries or applications, espionage, use for materials or activities that are subject to the International Traffic Arms Regulations (ITAR) maintained by the United States Department of State\n    2. Guns and illegal weapons (including weapon development)\n    3. Illegal drugs and regulated/controlled substances\n    4. Operation of critical infrastructure, transportation technologies, or heavy machinery\n    5. Self-harm or harm to others, including suicide, cutting, and eating disorders\n    6. Any content intended to incite or promote violence, abuse, or any infliction of bodily harm to an individual\n\n\n\n3. Intentionally deceive or mislead others, including use of Llama 2 related to the following:\n    1. Generating, promoting, or furthering fraud or the creation or promotion of disinformation\n    2. Generating, promoting, or furthering defamatory content, including the creation of defamatory statements, images, or other content\n    3. Generating, promoting, or further distributing spam\n    4. Impersonating another individual without consent, authorization, or legal right\n    5. Representing that the use of Llama 2 or outputs are human-generated\n    6. Generating or facilitating false online engagement, including fake reviews and other means of fake online engagement \n4. Fail to appropriately disclose to end users any known dangers of your AI system \n\nPlease report any violation of this Policy, software “bug,” or other problems that could lead to a violation of this Policy through one of the following means:\n\n* Reporting issues with the model: [github.com/facebookresearch/llama](http://github.com/facebookresearch/llama)\n* Reporting risky content generated by the model: [developers.facebook.com/llama_output_feedback](http://developers.facebook.com/llama_output_feedback)\n* Reporting bugs and security concerns: [facebook.com/whitehat/info](http://facebook.com/whitehat/info)\n* Reporting violations of the Acceptable Use Policy or unlicensed uses of Llama: [LlamaUseReport@meta.com](mailto:LlamaUseReport@meta.com)\n\n"
+                    modelfile: >-
+                      # Modelfile generated by "ollama show"
+
+                      # To build a new Modelfile based on this one, replace the
+                      FROM line with:
+
+                      # FROM mario:latest
+
+
+                      FROM library/llama2
+
+                      TEMPLATE """[INST] <<SYS>>{{ .System }}<</SYS>>
+
+
+                      {{ .Prompt }} [/INST]
+
+                      """
+
+                      SYSTEM """You are Mario from super mario bros, acting as
+                      an assistant."""
+
+                      PARAMETER num_ctx 4096
+
+                      PARAMETER stop "[INST]"
+
+                      PARAMETER stop "[/INST]"
+
+                      PARAMETER stop "<<SYS>>"
+
+                      PARAMETER stop "<</SYS>>"
+
+                      PARAMETER temperature 1
+                    parameters: |-
+                      num_ctx                        4096
+                      stop                           [INST]
+                      stop                           [/INST]
+                      stop                           <<SYS>>
+                      stop                           <</SYS>>
+                      temperature                    1
+                    system: >-
+                      You are Mario from super mario bros, acting as an
+                      assistant.
+                    template: |
+                      [INST] <<SYS>>{{ .System }}<</SYS>>
+
+                      {{ .Prompt }} [/INST]
+  /api/delete:
+    delete:
+      tags:
+        - Model
+      summary: delete a model
+      description: delete a model
+      operationId: deleteAModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: mario
+            examples:
+              delete a model:
+                value:
+                  name: mario
+      responses:
+        '200':
+          description: 200 - delete a model
+          headers:
+            Content-Length:
+              schema:
+                type: string
+                example: '4'
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 18:59:50 GMT
+          content:
+            application/octet-stream:
+              examples:
+                200 - delete a model:
+                  value: 'null'
+  /api/pull:
+    post:
+      tags:
+        - Model
+      summary: pull a model
+      description: >-
+        Pull a model from the [Ollama library](https://ollama.ai/library)
+
+
+        **Parameters**
+
+
+        You can add `"stream": false` to the body to get a chunked response
+        instead of streamed
+      operationId: pullAModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: orca-mini
+            examples:
+              pull a model:
+                value:
+                  name: orca-mini
+      responses:
+        '200':
+          description: 200 - pull a model (streamed)
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 19:01:59 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            text/plain:
+              examples:
+                200 - pull a model (streamed):
+                  value: >
+                    {"status":"pulling manifest"}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","digest":"sha256:66002b78c70a22ab25e16cc9a1736c6cc6335398c7312e3eb33db202350afe66","total":1979946752}
+
+                    {"status":"downloading
+                    sha256:fd52b10ee3ee9d753b9ed07a6f764ef2d83628fde5daf39a3d84b86752902182","digest":"sha256:fd52b10ee3ee9d753b9ed07a6f764ef2d83628fde5daf39a3d84b86752902182","total":455,"completed":455}
+
+                    {"status":"verifying sha256 digest"}
+
+                    {"status":"writing manifest"}
+
+                    {"status":"removing any unused layers"}
+
+                    {"status":"success"}
+  /api/push:
+    post:
+      tags:
+        - Model
+      summary: push a model
+      description: >-
+        Upload a model to a model library. Requires registering for ollama.ai
+        and adding a public key first.
+      operationId: pushAModel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: clairefro/mario:latest
+                stream:
+                  type: boolean
+                  example: false
+            examples:
+              push a model:
+                value:
+                  name: clairefro/mario:latest
+                  stream: false
+      responses:
+        '200':
+          description: ''
+  /api/embeddings:
+    post:
+      tags:
+        - Model
+      summary: generate embedding
+      description: >-
+        In LLMs, embeddings are numerical representations of words, phrases, or
+        sentences that capture their meaning and context
+
+
+        ### Parameters
+
+
+        - `model`: name of model to generate embeddings from
+
+        - `prompt`: text to generate embeddings for
+            
+
+        Advanced parameters:
+
+
+        - `options`: additional model parameters listed in the documentation for
+        the
+        [Modelfile](https://github.com/jmorganca/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values)
+        such as `temperature`
+      operationId: generateEmbedding
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  example: llama2
+                prompt:
+                  type: string
+                  example: Here is an article about llamas...
+            examples:
+              generate embedding:
+                value:
+                  model: llama2
+                  prompt: Here is an article about llamas...
+      responses:
+        '200':
+          description: New Request
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 01 Nov 2023 19:14:02 GMT
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  embedding:
+                    type: array
+                    items:
+                      type: number
+                      example: 1.7052322626113892
+                    example:
+                      - 1.7052322626113892
+                      - 0.8991134166717529
+                      - 1.4783785343170166
+                      - -0.5597683191299438
+                      - -1.8669754266738892
+                      - 0.41554492712020874
+                      - 2.952805519104004
+                      - 0.5448323488235474
+                      - -3.677421092987061
+                      - -0.5104032158851624
+                      - 1.0391699075698853
+                      - 0.5783612728118896
+                      - -1.2904794216156006
+                      - -0.07645102590322495
+                      - 0.5918827056884766
+                      - 0.15748746693134308
+                      - 1.373803734779358
+                      - 1.514501452445984
+                      - 1.2097680568695068
+                      - -0.38053596019744873
+                      - 1.2646812200546265
+                      - -2.3866653442382812
+                      - 0.383401095867157
+                      - -1.2331002950668335
+                      - 1.5489873886108398
+tags:
+  - name: Completion
+    description: Generate text completions from a local model
+  - name: Model
+    description: Manage custom models
