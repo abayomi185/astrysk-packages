@@ -17,6 +17,7 @@ export {
   useSearchHeader,
   useSettingsHeader,
   useDetailHeader,
+  useFullScreenDetailHeader,
   useModalHeader,
 } from "./common/header";
 export { AppletHeaderButton } from "./common/appletHeaderButton";
