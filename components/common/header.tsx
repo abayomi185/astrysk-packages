@@ -111,6 +111,67 @@ export const useDetailHeader = (
   }, []);
 };
 
+export const useFullScreenDetailHeader = (
+  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  headerTitle: string,
+  appletColors: AppletColors,
+  headerOpacity?: Animated.AnimatedInterpolation<number>
+) => {
+  return React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerTransparent: headerOpacity ? true : false,
+      headerLeft: () => (
+        <XStack
+          width="$2"
+          height="$2.5"
+          marginRight="$2"
+          alignItems="center"
+          justifyContent="center"
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Ionicons
+            name="chevron-back"
+            size={30}
+            color={appletColors.accentColor}
+          />
+        </XStack>
+      ),
+      headerBackground: () => (
+        <Animated.View
+          style={{
+            flex: 1,
+            opacity: headerOpacity ?? 1,
+          }}
+        >
+          <YStack
+            width="100%"
+            height="100%"
+            backgroundColor="$background"
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <XStack
+              width="50%"
+              height="$4"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <H4 color="$color" numberOfLines={1}>
+                {headerTitle}
+              </H4>
+            </XStack>
+          </YStack>
+        </Animated.View>
+      ),
+      headerRight: () => <HeaderRightWrapper />,
+      headerTintColor: appletColors.accentColor,
+    } as NativeStackNavigationOptions);
+  }, []);
+};
+
 export const useModalHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
@@ -119,6 +180,7 @@ export const useModalHeader = (
   dependencies?: any[]
 ) => {
   return React.useLayoutEffect(() => {
+    // console.log(JSON.stringify(navigation.getParent(), null, 4));
     navigation.setOptions({
       headerTitle: headerTitle,
       gestureEnabled: gestureEnabled,

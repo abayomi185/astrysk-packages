@@ -27,7 +27,7 @@ export const AppletHeaderButton = () => {
               inlineChildren: true,
               actions: [
                 {
-                  index: 0,
+                  index: 0, // What's this for? I don't remember
                   title: `${t("common:changeApplet")}`,
                   systemIcon: "switch.programmable",
                 },
