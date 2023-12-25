@@ -48,6 +48,8 @@ export {
   type FilterKind,
   type FilterKindValue,
   createSettingsOptionsObject,
+  handleFilterPress,
+  checkActiveStatus,
 } from "./utils/search";
 
 export * as storageUtils from "./utils/storage";
