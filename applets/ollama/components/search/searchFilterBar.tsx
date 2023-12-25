@@ -17,8 +17,9 @@ import {
   OllamaSearchFilterContext,
 } from "../../types";
 import { ollamaColors } from "../../colors";
-import { isEmpty } from "@astrysk/utils";
+import { checkActiveStatus, isEmpty } from "@astrysk/utils";
 import { ViewType } from "@astrysk/types";
+import { handleFilterPress } from "@astrysk/utils/utils/search";
 
 const getOllamaFilterBarOptions = (
   context: OllamaSearchFilterContext
@@ -46,21 +47,6 @@ const OllamaSearchFilterBar: React.FC<{
 
   const searchFilters = useOllamaStore((state) => state.searchFilters);
 
-  const handleFilterPress = (id: string, isToggle?: boolean) => {
-    if (isToggle) {
-      // WARN: Put toggle logic here
-    } else {
-      router.push({
-        pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
-        params: {
-          context: OllamaDetailScreenContext.SearchFilter,
-          searchContext: context,
-          itemId: id,
-        } as OllamaDetailScreenProps,
-      });
-    }
-  };
-
   const clearFiltersForContext = () => {
     // Don't clear filters if there are none
     if (!searchFilters?.[context]) return;
@@ -72,13 +58,6 @@ const OllamaSearchFilterBar: React.FC<{
       },
     }));
     handleClearAllFilters?.();
-  };
-
-  const checkActiveStatus = (id: string) => {
-    if (searchFilters?.[context] && id in (searchFilters?.[context] ?? {})) {
-      return true;
-    }
-    return false;
   };
 
   const filterBarOptions = React.useMemo(() => {
@@ -102,8 +81,24 @@ const OllamaSearchFilterBar: React.FC<{
           renderItem={({ item }) => (
             <FilterButton
               id={item.id}
-              handlePress={handleFilterPress}
-              active={checkActiveStatus(item.id)}
+              handlePress={(id: string, isToggle?: boolean) => {
+                handleFilterPress<
+                  OllamaDetailScreenProps,
+                  OllamaDetailScreenContext,
+                  OllamaSearchFilterContext
+                >(
+                  router,
+                  OllamaDetailScreenContext.SearchFilter,
+                  context,
+                  id,
+                  isToggle
+                );
+              }}
+              active={checkActiveStatus<OllamaSearchFilterContext>(
+                searchFilters,
+                context,
+                item.id
+              )}
               activeBackgroundColor={ollamaColors.primary}
             />
           )}

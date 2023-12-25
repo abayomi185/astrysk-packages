@@ -16,16 +16,10 @@ Based on the [official Ollama API docs](https://github.com/jmorganca/ollama/blob
  * OpenAPI spec version: 1.0.0
  */
 
-export type ListLocalModels200ModelsItem = {
-  digest?: string;
-  modified_at?: string;
-  name?: string;
-  size?: number;
-  details?: {
-    families?: string[];
-    family?: string;
-    format?: string;
-    parameter_size?: string;
-    quantization_level?: string;
-  };
+export type ChatBody = {
+  model?: string;
+  messages?: {
+    content?: string;
+    role?: string;
+  }[];
 };

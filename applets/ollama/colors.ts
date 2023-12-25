@@ -4,7 +4,7 @@ import { AppletColors } from "@astrysk/types";
 export const ollamaColors: AppletColors = {
   primary: "$gray8",
   secondary: "$blue5",
-  accentColor: "#222222",
+  accentColor: "#343541",
   activeCheckFillColor: "#9fdfc3",
   activeBookmarkFillColor: "#e4aaae",
   bannerBackground: "#432C16",

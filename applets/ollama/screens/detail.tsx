@@ -16,9 +16,9 @@ const OllamaDetail: React.FC = () => {
 
   const itemData = React.useMemo(() => {
     const dataToForward: ExtendedListLocalModels200ModelsItem = {
-      // ...useOllamaStore.getState().ollamaCache?.clusterResources?.[
-      //   refParams.current.itemId as string
-      // ],
+      ...useOllamaStore.getState().ollamaCache?.models?.[
+        refParams.current.itemId as string
+      ],
       ollamaContext: params.context,
       ollamaTabContext: params.tabContext as TabContext,
     };

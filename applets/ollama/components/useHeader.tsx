@@ -1,5 +1,9 @@
 import { NavigationProp } from "@react-navigation/native";
-import { HeaderRightWrapper, useModalHeader } from "@astrysk/components";
+import {
+  HeaderRightWrapper,
+  useFullScreenDetailHeader,
+  useModalHeader,
+} from "@astrysk/components";
 
 import { Animated } from "react-native";
 import { TFunction } from "i18next";
@@ -36,6 +40,19 @@ export const useOllamaDetailHeader = (
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
   return useDetailHeader(navigation, headerTitle, ollamaColors, headerOpacity);
+};
+
+export const useOllamaFsDetailHeader = (
+  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  headerTitle: string,
+  headerOpacity?: Animated.AnimatedInterpolation<number>
+) => {
+  return useFullScreenDetailHeader(
+    navigation,
+    headerTitle,
+    ollamaColors,
+    headerOpacity
+  );
 };
 
 export const useOllamaModalHeader = (

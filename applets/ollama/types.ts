@@ -1,8 +1,19 @@
 import { TabContext } from "@astrysk/types";
 import { FilterOrder } from "@astrysk/types";
+import { ListLocalModels200ModelsItem } from "./api";
+import { IMessage } from "react-native-gifted-chat";
 
-export interface OllamaCache {}
-export interface OllamaConversationCache {}
+export interface OllamaCache {
+  models?: Record<string, ListLocalModels200ModelsItem>;
+}
+
+export interface OllamaConversation extends IMessage {
+  name?: string;
+}
+
+export interface OllamaConversationHistory {
+  [key: string]: OllamaConversation;
+}
 
 export interface ExtendedListLocalModels200ModelsItem
   extends ListLocalModels200ModelsItem {
@@ -47,6 +58,7 @@ export interface OllamaFilter {
 
 export enum OllamaSearchFilterContext {
   Search = "Search",
+  Conversation = "Conversation",
 }
 
 export type OllamaFilterKind = string;

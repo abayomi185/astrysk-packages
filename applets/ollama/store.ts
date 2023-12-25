@@ -4,7 +4,8 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { APP_STATE_VERSION, StateTypes } from "@astrysk/stores";
 import {
   OllamaCache,
-  OllamaConversationCache,
+  OllamaConversation,
+  OllamaConversationHistory,
   OllamaFilter,
   OllamaFilterKind,
   OllamaFilterKindValue,
@@ -40,7 +41,7 @@ interface OllamaState extends StateTypes.AppletState {
   tokenId?: string;
   // Main cache
   ollamaCache?: OllamaCache;
-  ollamaConversationsCache?: OllamaConversationCache;
+  ollamaConversationHistory?: OllamaConversationHistory;
   // Other
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;

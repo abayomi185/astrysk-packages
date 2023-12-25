@@ -16,6 +16,15 @@ const ollamaLocales = {
   gb: "GB",
 
   conversation: "Conversation",
+
+  sendAMessage: "Send a message",
+
+  ollama_user: "Ollama",
+
+  selectText: "Select Text",
+
+  conversation_history: "History",
+  settings: "Settings",
 };
 
 export default ollamaLocales;
