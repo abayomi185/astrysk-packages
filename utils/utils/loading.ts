@@ -1,5 +1,9 @@
 import React from "react";
-import { UseQueryResult, QueryKey } from "@tanstack/react-query";
+import {
+  UseQueryResult,
+  QueryKey,
+  UseMutationResult,
+} from "@tanstack/react-query";
 import {
   registerLoadingComponent,
   unregisterLoadingComponent,
@@ -33,4 +37,15 @@ export const useQueryLoadingSpinner = (
     const action = query.isFetching ? Actions.LOADING : Actions.DONE;
     setLoadingSpinner(queryKeyString, action);
   }, [query.isFetching, queryKeyString]);
+};
+
+export const useMutationLoadingSpinner = (
+  mutation: UseMutationResult<any, any, any>,
+  mutationKey: string
+) => {
+  const mutationKeyString = mutationKey;
+  React.useEffect(() => {
+    const action = mutation.isLoading ? Actions.LOADING : Actions.DONE;
+    setLoadingSpinner(mutationKeyString, action);
+  }, [mutation.isLoading, mutationKeyString]);
 };

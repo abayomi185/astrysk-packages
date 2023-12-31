@@ -16,6 +16,7 @@ export {
   setLoadingSpinner,
   useLoadingSpinner,
   useQueryLoadingSpinner,
+  useMutationLoadingSpinner,
 } from "./utils/loading";
 
 export { isEmpty, getStringValue, getNumberValue } from "./utils/object";

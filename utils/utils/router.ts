@@ -12,12 +12,14 @@ export const goToDetailScreen = <
   tabContext,
   screenContext,
   searchContext,
+  otherParams,
 }: {
   router: Router;
   itemId: string;
   tabContext: TabContext;
   screenContext?: TScreenContext;
   searchContext?: TSearchContext;
+  otherParams?: Record<string, any>;
 }) => {
   const screenRoute =
     tabContext === TabContext.Search
@@ -29,6 +31,7 @@ export const goToDetailScreen = <
       context: screenContext,
       itemId,
       tabContext: tabContext,
+      ...otherParams,
     } as TDetailScreenProps,
   });
 };
@@ -43,12 +46,14 @@ export const goToFullScreenDetailScreen = <
   tabContext,
   screenContext,
   searchContext,
+  otherParams,
 }: {
   router: Router;
   itemId: string;
   tabContext: TabContext;
   screenContext?: TScreenContext;
   searchContext?: TSearchContext;
+  otherParams?: Record<string, any>;
 }) => {
   // const screenRoute = Screens.DETAIL_ROUTE;
   const screenRoute = Screens.ROOT_DETAIL_ROUTE;
@@ -58,6 +63,7 @@ export const goToFullScreenDetailScreen = <
       context: screenContext,
       itemId,
       tabContext: tabContext,
+      ...otherParams,
     } as TDetailScreenProps,
   });
 };
@@ -68,23 +74,23 @@ export const goToModalScreen = <
   TDetailScreenProps
 >({
   router,
-  node,
-  resource,
+  itemId,
   screenContext,
   searchContext,
+  otherParams,
 }: {
   router: Router;
-  node: string;
-  resource: number | string;
+  itemId: number | string;
   screenContext?: TScreenContext;
   searchContext?: TSearchContext;
+  otherParams?: Record<string, any>;
 }) => {
   router.push({
     pathname: `/${Screens.ROOT_MODAL_ROUTE}`,
     params: {
       context: screenContext,
-      node: node,
-      itemId: resource,
+      itemId: itemId,
+      ...otherParams,
     } as TDetailScreenProps,
   });
 };
