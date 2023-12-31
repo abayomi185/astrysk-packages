@@ -44,7 +44,9 @@ const animations = createAnimations({
 const customTokenMerge = {
   ...size,
   "$1.25": 22,
+  "$3.25": 38,
   "$6.5": 69,
+  "$7.5": 79,
   "$11.5": 134,
   "$12.5": 154,
   "$14.5": 194,
@@ -135,6 +137,6 @@ export type ThemeConfig = typeof config;
 declare module "tamagui" {
   // overrides TamaguiCustomConfig so your custom types
   // work everywhere you import `tamagui`
-  interface TamaguiCustomConfig extends ThemeConfig { }
+  interface TamaguiCustomConfig extends ThemeConfig {}
 }
 export default config;
