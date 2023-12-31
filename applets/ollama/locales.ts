@@ -4,6 +4,8 @@ const ollamaLocales = {
 
   selectModelFromSearchTab: "Select a model from the Search tab",
 
+  noResourcesFound: "No resources found",
+
   order: "Order",
 
   alphabetical: "Alphabetical",
@@ -16,15 +18,36 @@ const ollamaLocales = {
   gb: "GB",
 
   conversation: "Conversation",
+  newConversation: "New Conversation",
+
+  save: "Save",
 
   sendAMessage: "Send a message",
 
   ollama_user: "Ollama",
 
   selectText: "Select Text",
+  editText: "Edit Text",
 
   conversation_history: "History",
   settings: "Settings",
+
+  requestError: "Request Error",
+
+  chatHistory: "Chat History",
+
+  options: "Options",
+
+  lastUpdated: "Last Updated",
+
+  deleteChatHistoryItemQuestion: "Delete Chat History Item?",
+  editChatNameQuestion: "Edit Chat Name?",
+
+  model: "Model",
+  models: "Models",
+  conversationLength: "Length",
+
+  delete: "Delete",
 };
 
 export default ollamaLocales;
