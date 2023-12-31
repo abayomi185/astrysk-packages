@@ -153,33 +153,25 @@ export const filterProxmoxSearchData = <
   if (searchFilters?.["proxmox:order"]) {
     const searchFilter = searchFilters?.["proxmox:order"];
     if (searchFilter.value === "proxmox:id") {
-      if (searchFilter.order === FilterOrder.ASCENDING) {
-        filteredData.sort(
-          (a, b) => (a.vmid ?? Infinity) - (b.vmid ?? Infinity)
-        );
-      } else if (searchFilter.order === FilterOrder.DESCENDING) {
-        filteredData = filteredData.sort(
-          (a, b) => (b.vmid || 0) - (a.vmid || 0)
-        );
-      }
+      filteredData.sort((a, b) => {
+        return searchFilter.order === FilterOrder.ASCENDING
+          ? (a.vmid ?? Infinity) - (b.vmid ?? Infinity)
+          : (b.vmid || 0) - (a.vmid || 0);
+      });
     } else if (searchFilter.value === "proxmox:alphabetical") {
-      if (searchFilter.order === FilterOrder.ASCENDING) {
-        filteredData.sort((a, b) =>
-          (
-            (a.name || a.storage || a.node || a.sdn || a.id) as string
-          ).localeCompare(
-            (b.name || b.storage || b.node || a.sdn || b.id) as string
-          )
-        );
-      } else if (searchFilter.order === FilterOrder.DESCENDING) {
-        filteredData.sort((a, b) =>
-          (
-            (b.name || b.storage || b.node || a.sdn || b.id) as string
-          ).localeCompare(
-            (a.name || a.storage || a.node || a.sdn || a.id) as string
-          )
-        );
-      }
+      filteredData.sort((a, b) => {
+        return searchFilter.order === FilterOrder.ASCENDING
+          ? (
+              (a.name || a.storage || a.node || a.sdn || a.id) as string
+            ).localeCompare(
+              (b.name || b.storage || b.node || a.sdn || b.id) as string
+            )
+          : (
+              (b.name || b.storage || b.node || a.sdn || b.id) as string
+            ).localeCompare(
+              (a.name || a.storage || a.node || a.sdn || a.id) as string
+            );
+      });
     }
   }
 
