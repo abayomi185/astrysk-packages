@@ -1,5 +1,5 @@
 import { IconDefinition } from "@fortawesome/fontawesome-common-types";
-import { FilterOrder } from "./order";
+import { FilterOrder } from "./filter";
 import { ColorTokens } from "tamagui";
 
 export interface SettingsOptionProps {
