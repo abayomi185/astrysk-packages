@@ -84,7 +84,6 @@ export const SettingsOption: React.FC<{
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
         borderBottomColor="$gray6"
         borderRadius="$0"
-        theme="dark_gray"
         backgroundColor="$gray1"
         borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
         borderTopRightRadius={item.firstItem ? "$5" : "$0"}
@@ -172,7 +171,6 @@ export const SettingsOption: React.FC<{
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
         borderBottomColor="$gray6"
         borderRadius="$0"
-        theme="dark_gray"
         backgroundColor={active ? "$gray5" : "$gray1"}
         borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
         borderTopRightRadius={item.firstItem ? "$5" : "$0"}
@@ -233,7 +231,6 @@ export const SettingsOption: React.FC<{
         borderBottomLeftRadius={item.lastItem ? "$5" : "$0"}
         borderBottomRightRadius={item.lastItem ? "$5" : "$0"}
         // theme="gray"
-        theme="dark_gray"
         backgroundColor="$gray1"
         {...style}
         onPress={item.onPress}
@@ -303,7 +300,6 @@ export const SettingsOption: React.FC<{
         borderBottomWidth={item.lastItem ? "$0" : "$0.25"}
         borderBottomColor="$gray6"
         borderRadius="$0"
-        theme="dark_gray"
         backgroundColor={active ? "$gray5" : "$gray1"}
         borderTopLeftRadius={item.firstItem ? "$5" : "$0"}
         borderTopRightRadius={item.firstItem ? "$5" : "$0"}

@@ -79,20 +79,18 @@ const SCAppletButton = styled(XStack, {
     },
   } as const,
 
-  defaultVariants: {
-    height: "$12",
-    // elevation: "$2", // Cannot calculate shadow efficiently
-    marginVertical: "$1.5",
-    width: "$24",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: "$3",
-    borderRadius: "$8",
-    borderWidth: "$0",
-    padding: "$0",
-    overflow: "hidden",
-    pressStyle: { scale: 0.97 },
-    // animation: "bouncy", // This causes out of order hook error
-    animation: "delay",
-  },
+  height: "$12",
+  // elevation: "$2", // Cannot calculate shadow efficiently
+  marginVertical: "$1.5",
+  width: "$24",
+  justifyContent: "center",
+  alignItems: "center",
+  marginHorizontal: "$3",
+  borderRadius: "$8",
+  borderWidth: "$0",
+  padding: "$0",
+  overflow: "hidden",
+  pressStyle: { scale: 0.97 },
+  // animation: "bouncy", // This causes out of order hook error
+  animation: "delay",
 });
