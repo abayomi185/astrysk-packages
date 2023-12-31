@@ -37,13 +37,87 @@ import type {
   PushAModelBody,
   GenerateEmbedding200,
   GenerateEmbeddingBody,
+  ChatBody,
 } from "./model";
-import { apiInstance } from "../../../api/apiInstance";
+import { apiInstance, cancellableApiInstance } from "../../../api/apiInstance";
 import type { ErrorType } from "../../../api/apiInstance";
+import { CancelTokenSource } from "axios";
 
 type AwaitedInput<T> = PromiseLike<T> | T;
 
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
+
+/**
+ * Chat endpoint
+ */
+export const chat = (chatBody: ChatBody, cancelSource: CancelTokenSource) => {
+  return cancellableApiInstance<Generate200>(
+    {
+      url: `/api/chat`,
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      data: chatBody,
+    },
+    cancelSource
+  );
+};
+
+export const getChatMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof chat>>,
+    TError,
+    { data: ChatBody; cancelSource: CancelTokenSource },
+    TContext
+  >;
+}) => {
+  const { mutation: mutationOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof chat>>,
+    { data: ChatBody; cancelSource: CancelTokenSource }
+  > = (props) => {
+    const { data, cancelSource } = props ?? {};
+
+    return chat(data, cancelSource);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ChatMutationResult = NonNullable<Awaited<ReturnType<typeof chat>>>;
+export type ChatMutationBody = ChatBody;
+export type ChatMutationError = ErrorType<unknown>;
+
+/**
+ * @summary chat
+ */
+export const useChat = <
+  TError = ErrorType<unknown>,
+  TContext = unknown
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof chat>>,
+    TError,
+    { data: ChatBody; cancelSource: CancelTokenSource },
+    TContext
+  >;
+}) => {
+  // const mutationOptions = getChatMutationOptions({
+  //   ...options,
+  //   mutation: {
+  //     ...options?.mutation,
+  //     onMutate: async (variables) => {
+  //       return { variables };
+  //     },
+  //   },
+  // });
+  const mutationOptions = getChatMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
 
 /**
  * Generates a streamed response like shown below  
@@ -63,7 +137,7 @@ export const generate = (generateBody: GenerateBody) => {
 
 export const getGenerateMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof generate>>,
@@ -102,7 +176,7 @@ export type GenerateMutationError = ErrorType<unknown>;
  */
 export const useGenerate = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof generate>>,
@@ -152,7 +226,7 @@ export const create = (createBody: CreateBody) => {
 
 export const getCreateMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof create>>,
@@ -191,7 +265,7 @@ export type CreateMutationError = ErrorType<unknown>;
  */
 export const useCreate = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof create>>,
@@ -221,7 +295,7 @@ export const getListLocalModelsQueryKey = () => [`/api/tags`] as const;
 
 export const getListLocalModelsQueryOptions = <
   TData = Awaited<ReturnType<typeof listLocalModels>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<unknown>
 >(options?: {
   query?: UseQueryOptions<
     Awaited<ReturnType<typeof listLocalModels>>,
@@ -254,7 +328,7 @@ export type ListLocalModelsQueryError = ErrorType<unknown>;
  */
 export const useListLocalModels = <
   TData = Awaited<ReturnType<typeof listLocalModels>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<unknown>
 >(options?: {
   query?: UseQueryOptions<
     Awaited<ReturnType<typeof listLocalModels>>,
@@ -288,7 +362,7 @@ export const showModel = (showModelBody: ShowModelBody) => {
 
 export const getShowModelMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof showModel>>,
@@ -327,7 +401,7 @@ export type ShowModelMutationError = ErrorType<unknown>;
  */
 export const useShowModel = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof showModel>>,
@@ -356,7 +430,7 @@ export const deleteAModel = (deleteAModelBody: DeleteAModelBody) => {
 
 export const getDeleteAModelMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteAModel>>,
@@ -395,7 +469,7 @@ export type DeleteAModelMutationError = ErrorType<unknown>;
  */
 export const useDeleteAModel = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof deleteAModel>>,
@@ -428,7 +502,7 @@ export const pullAModel = (pullAModelBody: PullAModelBody) => {
 
 export const getPullAModelMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof pullAModel>>,
@@ -467,7 +541,7 @@ export type PullAModelMutationError = ErrorType<unknown>;
  */
 export const usePullAModel = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof pullAModel>>,
@@ -496,7 +570,7 @@ export const pushAModel = (pushAModelBody: PushAModelBody) => {
 
 export const getPushAModelMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof pushAModel>>,
@@ -535,7 +609,7 @@ export type PushAModelMutationError = ErrorType<unknown>;
  */
 export const usePushAModel = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof pushAModel>>,
@@ -564,7 +638,7 @@ Advanced parameters:
  * @summary generate embedding
  */
 export const generateEmbedding = (
-  generateEmbeddingBody: GenerateEmbeddingBody,
+  generateEmbeddingBody: GenerateEmbeddingBody
 ) => {
   return apiInstance<GenerateEmbedding200>({
     url: `/api/embeddings`,
@@ -576,7 +650,7 @@ export const generateEmbedding = (
 
 export const getGenerateEmbeddingMutationOptions = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof generateEmbedding>>,
@@ -615,7 +689,7 @@ export type GenerateEmbeddingMutationError = ErrorType<unknown>;
  */
 export const useGenerateEmbedding = <
   TError = ErrorType<unknown>,
-  TContext = unknown,
+  TContext = unknown
 >(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof generateEmbedding>>,

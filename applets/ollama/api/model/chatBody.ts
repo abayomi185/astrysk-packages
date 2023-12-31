@@ -22,4 +22,5 @@ export type ChatBody = {
     content?: string;
     role?: string;
   }[];
+  stream?: boolean;
 };

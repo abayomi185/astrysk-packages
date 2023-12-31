@@ -31,3 +31,4 @@ export * from "./pushAModelBody";
 export * from "./showModel200";
 export * from "./showModelBody";
 export * from "./generateEmbedding200";
+export * from "./chatBody";

@@ -19,5 +19,9 @@ Based on the [official Ollama API docs](https://github.com/jmorganca/ollama/blob
 export type GenerateBody = {
   model?: string;
   prompt?: string;
+  messages?: {
+    content?: string;
+    role?: string;
+  }[];
   stream?: boolean;
 };

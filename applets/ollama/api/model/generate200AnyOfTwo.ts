@@ -28,4 +28,8 @@ export type Generate200AnyOfTwo = {
   prompt_eval_duration?: number;
   response?: string;
   total_duration?: number;
+  message?: {
+    content?: string;
+    role?: string;
+  };
 };

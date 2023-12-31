@@ -18,4 +18,5 @@ Based on the [official Ollama API docs](https://github.com/jmorganca/ollama/blob
 import type { Generate200AnyOf } from "./generate200AnyOf";
 import type { Generate200AnyOfTwo } from "./generate200AnyOfTwo";
 
-export type Generate200 = Generate200AnyOf | number[] | Generate200AnyOfTwo;
+// export type Generate200 = Generate200AnyOf | Generate200AnyOfTwo;
+export type Generate200 = Generate200AnyOf;
