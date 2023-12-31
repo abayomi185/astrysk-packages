@@ -1,4 +1,9 @@
-import Axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import Axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  CancelTokenSource,
+} from "axios";
 import qs from "qs";
 
 export let AXIOS_INSTANCE: AxiosInstance = Axios.create();
@@ -24,6 +29,28 @@ export const apiInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
   const promise = AXIOS_INSTANCE({ ...config, cancelToken: source.token }).then(
     ({ data }) => data
   );
+
+  // @ts-ignore
+  promise.cancel = () => {
+    source.cancel("Query was cancelled by React Query");
+  };
+
+  return promise;
+};
+
+// export interface CancelablePromise<T> extends Promise<T> {
+//   cancel: () => void;
+// }
+
+export const cancellableApiInstance = <T>(
+  config: AxiosRequestConfig,
+  cancelSource: CancelTokenSource
+): Promise<T> => {
+  const source = cancelSource;
+  const promise = AXIOS_INSTANCE({
+    ...config,
+    cancelToken: source.token,
+  }).then(({ data }) => data);
 
   // @ts-ignore
   promise.cancel = () => {
