@@ -115,7 +115,8 @@ export const useFullScreenDetailHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   appletColors: AppletColors,
-  headerOpacity?: Animated.AnimatedInterpolation<number>
+  headerOpacity?: Animated.AnimatedInterpolation<number>,
+  dependencies?: any[]
 ) => {
   return React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -169,7 +170,7 @@ export const useFullScreenDetailHeader = (
       headerRight: () => <HeaderRightWrapper />,
       headerTintColor: appletColors.accentColor,
     } as NativeStackNavigationOptions);
-  }, []);
+  }, [...(dependencies ? dependencies : [])]);
 };
 
 export const useModalHeader = (
@@ -177,7 +178,8 @@ export const useModalHeader = (
   headerTitle: string,
   appletColors: AppletColors,
   gestureEnabled?: boolean,
-  dependencies?: any[]
+  dependencies?: any[],
+  headerRight?: () => React.ReactNode
 ) => {
   return React.useLayoutEffect(() => {
     // console.log(JSON.stringify(navigation.getParent(), null, 4));
@@ -198,6 +200,7 @@ export const useModalHeader = (
           <Ionicons name="close" size={30} color={appletColors.accentColor} />
         </XStack>
       ),
+      headerRight: headerRight,
     } as NativeStackNavigationOptions);
   }, [...(dependencies ? dependencies : [])]);
 };
