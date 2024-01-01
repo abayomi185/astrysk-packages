@@ -9,6 +9,17 @@ import {
   useColorScheme,
 } from "@astrysk/utils";
 
+const textColor = (
+  colorScheme: string,
+  active: boolean,
+  invertTextColor: boolean
+) => {
+  if (active && invertTextColor) {
+    return colorScheme === "dark" ? "black" : "white";
+  }
+  return "$color";
+};
+
 export const FilterButton: React.FC<{
   id: string;
   handlePress: (id: string, isToggle?: boolean) => void;
@@ -56,7 +67,7 @@ export const FilterButton: React.FC<{
       >
         <XStack alignItems="center" justifyContent="space-between">
           <Text
-            color={active ? (invertTextColor ? "black" : "$color") : "$color"}
+            color={textColor(colorScheme, active, invertTextColor)}
             numberOfLines={1}
             opacity={0.8}
           >
@@ -65,9 +76,7 @@ export const FilterButton: React.FC<{
           {isToggle ? (
             <Dot
               opacity={0.8}
-              color={
-                active ? (invertTextColor ? "black" : "$color") : undefined
-              }
+              color={textColor(colorScheme, active, invertTextColor)}
               style={{
                 marginRight: -5,
               }}
@@ -76,9 +85,7 @@ export const FilterButton: React.FC<{
             <ChevronDown
               size={18}
               opacity={0.8}
-              color={
-                active ? (invertTextColor ? "black" : "$color") : undefined
-              }
+              color={textColor(colorScheme, active, invertTextColor)}
               style={{
                 marginLeft: 3,
                 marginRight: -2,
@@ -129,7 +136,7 @@ export const CancelFilterButton: React.FC<{
         <X
           size={18}
           opacity={0.8}
-          color={!active ? (invertTextColor ? "black" : "$color") : undefined}
+          color={textColor(colorScheme, !active, invertTextColor)}
         />
       </Button>
     </XStack>

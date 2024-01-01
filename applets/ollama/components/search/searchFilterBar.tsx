@@ -111,22 +111,6 @@ const OllamaSearchFilterBar: React.FC<{
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={
             <>
-              {/* <XStack flex={1} width="$3" marginLeft="$3" alignItems="center"> */}
-              {/*   <Button */}
-              {/*     flex={1} */}
-              {/*     height="$2.5" */}
-              {/*     borderRadius="$8" */}
-              {/*     paddingHorizontal="$3" */}
-              {/*     backgroundColor={ */}
-              {/*       isEmpty(searchFilters?.[context]) */}
-              {/*         ? "$gray5" */}
-              {/*         : ollamaColors.primary */}
-              {/*     } */}
-              {/*     onPress={() => clearFiltersForContext()} */}
-              {/*   > */}
-              {/*     <X size={18} opacity={0.8} /> */}
-              {/*   </Button> */}
-              {/* </XStack> */}
               <CancelFilterButton
                 active={isEmpty(searchFilters?.[context])}
                 activeBackgroundColor={ollamaColors.primary}
