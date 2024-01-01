@@ -42,6 +42,13 @@ interface OllamaState extends StateTypes.AppletState {
   // Main cache
   ollamaCache?: OllamaCache;
   ollamaConversationHistory?: OllamaConversationHistory;
+  ollamaConversationIdOverride?: string;
+  ollamaConversationIsRequesting?: boolean;
+  ollamaSelectTextCache?: string[];
+  // Editing text
+  ollamaEditTextCache?: string;
+  ollamaAfterEditTextCache?: string;
+  editTextId?: string | null;
   // Other
   customHeaders?: Record<string, string>;
   // mediaItemSettings?: JellyfinMediaItemSettings;
@@ -56,11 +63,24 @@ interface OllamaState extends StateTypes.AppletState {
 
 // NOTE: Make sure to add key to ollamaPersistStateKeys too
 interface OllamaPersistState
-  extends Pick<OllamaState, "baseURL" | "token" | "customHeaders"> {}
+  extends Pick<
+    OllamaState,
+    | "baseURL"
+    | "token"
+    | "customHeaders"
+    | "ollamaConversationHistory"
+    | "ollamaCache"
+  > {}
 
 // NOTE: Persist key needs to be added here too
 export const ollamaPersistStateKeys = Array.from(
-  new Set<keyof OllamaState>(["baseURL", "token", "customHeaders"])
+  new Set<keyof OllamaState>([
+    "baseURL",
+    "token",
+    "customHeaders",
+    "ollamaConversationHistory",
+    "ollamaCache",
+  ])
 );
 
 const initialAppState: OllamaState = {
