@@ -2,11 +2,11 @@ import React from "react";
 import debounce from "lodash.debounce";
 
 export const debouncedSetter = (
-  setStateFunction: (value: string | string[]) => void,
+  setStateFunction: (value: any) => void,
   delay: number = 300
 ) => {
-  const debouncedFn = debounce((newSearchTerm: string | string[]) => {
-    setStateFunction(newSearchTerm);
+  const debouncedFn = debounce((newValue: any) => {
+    setStateFunction(newValue);
   }, delay);
   const callback = React.useCallback(debouncedFn, []);
 
