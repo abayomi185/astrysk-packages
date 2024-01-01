@@ -530,7 +530,6 @@ const JellyfinSeriesDetail: React.FC<{
                       },
                     ]}
                     dropdownMenuMode
-                    previewBackgroundColor={"transparent"}
                     onPress={(event) => {
                       const { indexPath } = event.nativeEvent;
                       setSelectedSeasonID(

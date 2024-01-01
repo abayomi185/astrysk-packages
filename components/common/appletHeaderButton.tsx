@@ -40,7 +40,6 @@ export const AppletHeaderButton = () => {
             },
           ]}
           dropdownMenuMode
-          previewBackgroundColor={"transparent"}
           onPress={(event) => {
             const { indexPath } = event.nativeEvent;
             if (indexPath[0] === 0)
