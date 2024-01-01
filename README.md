@@ -15,5 +15,5 @@ See the astrysk docs for more info - [astrysk-docs.vercel.app](https://astrysk-d
 - [x] Jellyfin [TestFlight]
 - [x] Sonarr [TestFlight]
 - [x] Radarr [TestFlight]
-- [ ] Ollama 
+- [x] Ollama
 - [ ] \[Your suggested applet?\]
