@@ -45,13 +45,15 @@ export const useOllamaDetailHeader = (
 export const useOllamaFsDetailHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
-  headerOpacity?: Animated.AnimatedInterpolation<number>
+  headerOpacity?: Animated.AnimatedInterpolation<number>,
+  dependencies?: any[]
 ) => {
   return useFullScreenDetailHeader(
     navigation,
     headerTitle,
     ollamaColors,
-    headerOpacity
+    headerOpacity,
+    dependencies
   );
 };
 
@@ -59,13 +61,15 @@ export const useOllamaModalHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   gestureEnabled?: boolean,
-  dependencies?: any[]
+  dependencies?: any[],
+  headerRight?: () => React.ReactNode
 ) => {
   return useModalHeader(
     navigation,
     headerTitle,
     ollamaColors,
     gestureEnabled,
-    dependencies
+    dependencies,
+    headerRight
   );
 };
