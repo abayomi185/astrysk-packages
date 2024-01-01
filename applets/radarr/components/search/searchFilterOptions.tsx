@@ -134,7 +134,7 @@ const RadarrSearchFilterOptions: React.FC<{
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={
               <XStack>
-                <ClearFilterButton t={t} clearFilter={clearFilter} />
+                <ClearFilterButton clearFilter={clearFilter} />
               </XStack>
             }
           />

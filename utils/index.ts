@@ -54,3 +54,8 @@ export {
 } from "./utils/search";
 
 export * as storageUtils from "./utils/storage";
+
+export {
+  hasDarkAndLightAppletPrimaryColors,
+  hasDarkAndLightAppletAccentColors,
+} from "./utils/color";
