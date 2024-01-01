@@ -7,6 +7,7 @@ const ollamaLocales = {
   noResourcesFound: "No resources found",
 
   order: "Order",
+  type: "Type",
 
   alphabetical: "Alphabetical",
   size: "Size",
@@ -22,6 +23,7 @@ const ollamaLocales = {
 
   save: "Save",
 
+  typeAMessage: "Type a message...",
   sendAMessage: "Send a message",
 
   ollama_user: "Ollama",
