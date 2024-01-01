@@ -27,7 +27,7 @@ export const configureAxiosForOllama = (
   const axiosConfig = {
     baseURL: baseURL,
     headers: {
-      // Authorization: `Bearer ${token}`,
+      // ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...(customHeaders ? customHeaders : {}),
     },
   };
