@@ -49,8 +49,8 @@ const getAgendaListTheme = (
   fontSize: 15 * fontScale,
   paddingTop: 10,
   // weekVerticalMargin: 10,
-  paddingLeft: 13,
-  paddingRight: 13,
+  paddingLeft: 18,
+  paddingRight: 18,
   paddingBottom: 3,
 });
 
@@ -199,7 +199,9 @@ const SonarrCalendar: React.FC = () => {
         date={new Date().toISOString().split("T")[0]}
         // theme={calendarTheme.current}
       >
-        <SectionTitle subtle>{t("sonarr:upcomingEpisodes")}</SectionTitle>
+        <XStack paddingHorizontal="$1.5">
+          <SectionTitle subtle>{t("sonarr:upcomingEpisodes")}</SectionTitle>
+        </XStack>
         {/* <ExpandableCalendar */}
         {/*   key={colorScheme} */}
         {/*   firstDay={0} */}

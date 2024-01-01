@@ -52,8 +52,8 @@ const getAgendaListTheme = (
   fontSize: 15 * fontScale,
   paddingTop: 10,
   // weekVerticalMargin: 10,
-  paddingLeft: 13,
-  paddingRight: 13,
+  paddingLeft: 18,
+  paddingRight: 18,
   paddingBottom: 3,
 });
 
@@ -198,7 +198,9 @@ const RadarrCalendar: React.FC = () => {
         date={new Date().toISOString().split("T")[0]}
         // theme={calendarTheme.current}
       >
-        <SectionTitle subtle>{t("radarr:upcomingMovies")}</SectionTitle>
+        <XStack paddingHorizontal="$1.5">
+          <SectionTitle subtle>{t("sonarr:upcomingEpisodes")}</SectionTitle>
+        </XStack>
         <XStack flexGrow={1}>
           <AgendaList
             sections={
