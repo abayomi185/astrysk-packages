@@ -1,10 +1,13 @@
 import React from "react";
+import { Alert } from "react-native";
 
 import { create_axios_instance } from "@astrysk/api";
 import { useOllamaStore } from "./store";
 
 import { FilterOrder, Router, TabContext, ViewType } from "@astrysk/types";
 import {
+  OllamaConversationHistory,
+  OllamaConversationHistoryDetailItems,
   OllamaDetailScreenContext,
   OllamaDetailScreenProps,
   OllamaSearchFilterContext,
@@ -100,12 +103,14 @@ export const goToOllamaFsDetailScreen = ({
   tabContext,
   screenContext,
   searchContext,
+  conversationId,
 }: {
   router: Router;
   searchItemId: string;
   tabContext: TabContext;
   screenContext?: OllamaDetailScreenContext;
   searchContext?: OllamaSearchFilterContext;
+  conversationId?: string;
 }) => {
   goToFullScreenDetailScreen<
     OllamaDetailScreenContext,
@@ -117,19 +122,18 @@ export const goToOllamaFsDetailScreen = ({
     tabContext,
     screenContext,
     searchContext,
+    otherParams: { conversationId },
   });
 };
 
 export const goToOllamaModalScreen = ({
   router,
-  node,
-  resource,
+  itemId,
   screenContext,
   searchContext,
 }: {
   router: Router;
-  node: string;
-  resource: number | string;
+  itemId: string;
   screenContext?: OllamaDetailScreenContext;
   searchContext?: OllamaSearchFilterContext;
 }) => {
@@ -139,47 +143,90 @@ export const goToOllamaModalScreen = ({
     OllamaDetailScreenProps
   >({
     router,
-    node,
-    resource,
+    itemId,
     screenContext,
     searchContext,
   });
 };
 
-export const filterOllamaSearchData = <T extends ListLocalModels200ModelsItem>(
+export const filterOllamaSearchData = <
+  T extends ListLocalModels200ModelsItem | OllamaConversationHistoryDetailItems
+>(
   data: T[],
   searchFilters: Record<string, any> | undefined
 ) => {
   let filteredData = data;
 
+  const isListLocalModels200ModelsItem = (
+    data: any
+  ): data is ListLocalModels200ModelsItem => {
+    return "name" in data && "size" in data && "modified_at" in data;
+  };
+
+  const isOllamaConversationHistoryDetailItem = (
+    data: any
+  ): data is OllamaConversationHistoryDetailItems => {
+    return "conversationId" in data;
+  };
+
   if (searchFilters?.["ollama:order"]) {
-    const searchFilter = searchFilters?.["ollama:order"];
+    const searchFilter = searchFilters["ollama:order"];
+
     if (searchFilter.value === "ollama:alphabetical") {
-      if (searchFilter.order === FilterOrder.ASCENDING) {
-        filteredData.sort((a, b) => a.name!.localeCompare(b.name!));
-      } else if (searchFilter.order === FilterOrder.DESCENDING) {
-        filteredData.sort((a, b) => b.name!.localeCompare(a.name!));
-      }
+      filteredData = filteredData.sort((a, b) => {
+        if (
+          isListLocalModels200ModelsItem(a) &&
+          isListLocalModels200ModelsItem(b)
+        ) {
+          return searchFilter.order === FilterOrder.ASCENDING
+            ? a.name!.localeCompare(b.name!)
+            : b.name!.localeCompare(a.name!);
+        }
+        return 0;
+      });
     } else if (searchFilter.value === "ollama:size") {
-      if (searchFilter.order === FilterOrder.ASCENDING) {
-        filteredData.sort((a, b) => a.size! - b.size!);
-      } else if (searchFilter.order === FilterOrder.DESCENDING) {
-        filteredData.sort((a, b) => b.size! - a.size!);
-      }
+      filteredData = filteredData.sort((a, b) => {
+        if (
+          isListLocalModels200ModelsItem(a) &&
+          isListLocalModels200ModelsItem(b)
+        ) {
+          return searchFilter.order === FilterOrder.ASCENDING
+            ? a.size! - b.size!
+            : b.size! - a.size!;
+        }
+        return 0;
+      });
     } else if (searchFilter.value === "ollama:modified_date") {
-      if (searchFilter.order === FilterOrder.ASCENDING) {
-        filteredData.sort(
-          (a, b) =>
-            new Date(a.modified_at!).getTime() -
-            new Date(b.modified_at!).getTime()
-        );
-      } else if (searchFilter.order === FilterOrder.DESCENDING) {
-        filteredData.sort(
-          (a, b) =>
-            new Date(b.modified_at!).getTime() -
-            new Date(a.modified_at!).getTime()
-        );
-      }
+      filteredData = filteredData.sort((a, b) => {
+        if (
+          isListLocalModels200ModelsItem(a) &&
+          isListLocalModels200ModelsItem(b)
+        ) {
+          const dateA = new Date(a.modified_at!).getTime();
+          const dateB = new Date(b.modified_at!).getTime();
+          return searchFilter.order === FilterOrder.ASCENDING
+            ? dateA - dateB
+            : dateB - dateA;
+        }
+        return 0;
+      });
+    }
+  }
+
+  if (searchFilters?.["ollama:type"]) {
+    const searchFilter = searchFilters?.["ollama:type"];
+    if (searchFilter.value === "ollama:models") {
+      filteredData = filteredData.filter((data) => {
+        if (isListLocalModels200ModelsItem(data)) {
+          return data?.digest;
+        }
+      });
+    } else if (searchFilter.value === "ollama:chatHistory") {
+      filteredData = filteredData.filter((data) => {
+        if (isOllamaConversationHistoryDetailItem(data)) {
+          return data?.conversationId;
+        }
+      });
     }
   }
 
@@ -188,3 +235,57 @@ export const filterOllamaSearchData = <T extends ListLocalModels200ModelsItem>(
 
 // NOTE: VIEW TYPE
 export const OLLAMA_SUPPORTED_VIEW_TYPES = [ViewType.Grid, ViewType.List];
+
+export const createOllamaActionAlert = (
+  t: TFunction,
+  title: string,
+  message?: string,
+  onPress?: () => void
+) => {
+  return Alert.alert(
+    title,
+    message,
+    [
+      {
+        text: `${t("common:cancel")}`,
+        style: "default",
+      },
+      {
+        text: `${t("common:ok")}`,
+        onPress: onPress,
+        style: "destructive",
+      },
+    ],
+    {}
+  );
+};
+
+export const getOllamaConversationHistoryDetailItems = (
+  ollamaConversationHistory: OllamaConversationHistory,
+  ollamaConversationHistoryKeys: string[]
+) => {
+  const ollamaConversationHistoryDetailItems: OllamaConversationHistoryDetailItems[] =
+    React.useMemo(() => {
+      return ollamaConversationHistoryKeys
+        .map((key) => ({
+          conversationId: key,
+          model: ollamaConversationHistory[key].model!,
+          modelName: ollamaConversationHistory[key].modelName,
+          name:
+            ollamaConversationHistory[key].name ??
+            ollamaConversationHistory[key].conversation[
+              ollamaConversationHistory[key].conversation.length - 1
+            ]?.text ??
+            "",
+          lastUpdated: ollamaConversationHistory[key].lastUpdated,
+          conversationLength:
+            ollamaConversationHistory[key].conversation.length,
+        }))
+        .sort(
+          (a, b) =>
+            new Date(b.lastUpdated ?? 0).getTime() -
+            new Date(a.lastUpdated ?? 0).getTime()
+        );
+    }, [ollamaConversationHistoryKeys]);
+  return ollamaConversationHistoryDetailItems;
+};

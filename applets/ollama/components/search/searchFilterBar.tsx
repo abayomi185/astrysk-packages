@@ -6,6 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import { Screens } from "@astrysk/constants";
 import { useOllamaStore } from "../../store";
 import {
+  CancelFilterButton,
   FilterButton,
   ViewTypeButton,
   changeViewType,
@@ -32,6 +33,10 @@ const getOllamaFilterBarOptions = (
         { value: "ollama:size", supportsOrderBy: true },
         { value: "ollama:modified_date", supportsOrderBy: true },
       ],
+    },
+    {
+      id: "ollama:type",
+      options: [{ value: "ollama:models" }, { value: "ollama:chatHistory" }],
     },
   ];
 };
@@ -100,26 +105,35 @@ const OllamaSearchFilterBar: React.FC<{
                 item.id
               )}
               activeBackgroundColor={ollamaColors.primary}
+              appletColors={ollamaColors}
             />
           )}
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={
-            <XStack flex={1} width="$3" marginLeft="$3" alignItems="center">
-              <Button
-                flex={1}
-                height="$2.5"
-                borderRadius="$8"
-                paddingHorizontal="$3"
-                backgroundColor={
-                  isEmpty(searchFilters?.[context])
-                    ? "$gray5"
-                    : ollamaColors.primary
-                }
-                onPress={() => clearFiltersForContext()}
-              >
-                <X size={18} opacity={0.8} />
-              </Button>
-            </XStack>
+            <>
+              {/* <XStack flex={1} width="$3" marginLeft="$3" alignItems="center"> */}
+              {/*   <Button */}
+              {/*     flex={1} */}
+              {/*     height="$2.5" */}
+              {/*     borderRadius="$8" */}
+              {/*     paddingHorizontal="$3" */}
+              {/*     backgroundColor={ */}
+              {/*       isEmpty(searchFilters?.[context]) */}
+              {/*         ? "$gray5" */}
+              {/*         : ollamaColors.primary */}
+              {/*     } */}
+              {/*     onPress={() => clearFiltersForContext()} */}
+              {/*   > */}
+              {/*     <X size={18} opacity={0.8} /> */}
+              {/*   </Button> */}
+              {/* </XStack> */}
+              <CancelFilterButton
+                active={isEmpty(searchFilters?.[context])}
+                activeBackgroundColor={ollamaColors.primary}
+                appletColors={ollamaColors}
+                clearFilter={clearFiltersForContext}
+              />
+            </>
           }
           ListFooterComponent={() => <XStack marginLeft="$3" />}
           estimatedItemSize={69}

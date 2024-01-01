@@ -32,11 +32,15 @@ const OllamaDetail: React.FC = () => {
   }, [refParams.current.itemId]);
 
   const getComponentToRender = () => {
-    if (itemData?.ollamaContext === OllamaDetailScreenContext.SearchItem) {
+    if (
+      itemData?.ollamaContext === OllamaDetailScreenContext.SearchItem ||
+      itemData?.ollamaContext === OllamaDetailScreenContext.HistoryItem
+    ) {
       return (
         <OllamaConversationDetail
           forwardedData={itemData}
-          tabContext={itemData.ollamaTabContext as TabContext}
+          conversationHistoryId={params.conversationId}
+          // tabContext={itemData.ollamaTabContext as TabContext}
         />
       );
     }

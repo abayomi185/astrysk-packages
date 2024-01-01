@@ -2,19 +2,11 @@ import React from "react";
 import { Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Button, GetProps, Stack, XStack } from "tamagui";
-import { Ionicons } from "@expo/vector-icons";
 import { Plus, Trash2 } from "@tamagui/lucide-icons";
 import { useTranslation } from "react-i18next";
-import {
-  checkActiveStatus,
-  getIconColor,
-  handleFilterPress,
-  isEmpty,
-} from "@astrysk/utils";
+import { checkActiveStatus, handleFilterPress, isEmpty } from "@astrysk/utils";
 import { useToastController } from "@tamagui/toast";
 import { FilterButton, showToast } from "@astrysk/components";
-import { TFunction } from "i18next";
-import { goToOllamaModalScreen } from "../../utils";
 import {
   OllamaDetailScreenContext,
   OllamaDetailScreenProps,
@@ -25,84 +17,26 @@ import { FlashList } from "@shopify/flash-list";
 import { ollamaColors } from "../../colors";
 import { useOllamaStore } from "../../store";
 
-const createOllamaActionAlert = (
-  t: TFunction,
-  title: string,
-  message: string,
-  onPress: () => void
-) => {
-  return Alert.alert(
-    title,
-    message,
-    [
-      {
-        text: `${t("common:cancel")}`,
-        style: "default",
-      },
-      {
-        text: `${t("common:ok")}`,
-        onPress: onPress,
-        style: "destructive",
-      },
-    ],
-    {}
-  );
-};
-
-const getOllamaActionAlertMessage = (id: string, name: string) =>
-  `${id} • ${name}`;
-
-const OllamaActionPanelButton: React.FC<{
-  children: React.ReactNode;
-  onPress?: () => void;
-  onLongPress?: () => void;
-  disabled?: boolean;
-  style?: GetProps<typeof Button>;
-  first?: boolean;
-  vertical?: boolean;
-}> = ({ children, onPress, onLongPress, disabled, style, first, vertical }) => {
-  return (
-    <Button
-      width="auto"
-      minWidth="$5"
-      marginLeft={first || vertical ? undefined : "$2"}
-      marginTop={!first && vertical ? "$3" : undefined}
-      padding="$0"
-      backgroundColor="$gray1"
-      onPress={onPress}
-      onLongPress={onLongPress}
-      disabled={disabled}
-      {...style}
-    >
-      {children}
-    </Button>
-  );
-};
-
 const getOllamaConversationFilterBarOptions = (
   context: OllamaSearchFilterContext
 ): OllamaFilter[] => {
   return [
     {
       id: "ollama:conversation_history",
-      options: [
-        { value: "ollama:alphabetical", supportsOrderBy: true },
-        { value: "ollama:size", supportsOrderBy: true },
-        { value: "ollama:modified_date", supportsOrderBy: true },
-      ],
+      context: OllamaDetailScreenContext.History,
+      options: [], // Not needed in this context
     },
     // {
-    //   id: "ollama:settings",
-    //   options: [
-    //     { value: "ollama:alphabetical", supportsOrderBy: true },
-    //     { value: "ollama:size", supportsOrderBy: true },
-    //     { value: "ollama:modified_date", supportsOrderBy: true },
-    //   ],
+    //   id: "ollama:options",
+    //   context: OllamaDetailScreenContext.AdvancedOptions,
+    //   options: [],
     // },
   ];
 };
 
-const OllamaNewConversationButton: React.FC<{}> = () => {
+const OllamaNewConversationButton: React.FC<{
+  onPress: () => void;
+}> = ({ onPress }) => {
   return (
     <Button
       flex={1}
@@ -110,37 +44,20 @@ const OllamaNewConversationButton: React.FC<{}> = () => {
       paddingHorizontal="$1"
       backgroundColor="$gray5"
       borderRadius="$8"
-      // onPress={onPressHandler}
+      onPress={onPress}
     >
       <Plus size="$1" />
     </Button>
   );
 };
 
-const OllamaDeleteConversationButton: React.FC<{}> = () => {
-  return (
-    <Button
-      flex={1}
-      height="$2.5"
-      paddingHorizontal="$1"
-      backgroundColor="$gray5"
-      borderRadius="$8"
-      // onPress={onPressHandler}
-    >
-      <Trash2 size="$1" />
-    </Button>
-  );
-};
-
 const OllamaConversationActionPanel: React.FC<{
-  data: any;
+  onNewConversationPress: () => void;
   callback?: (action?: string) => void;
-}> = ({ data, callback }) => {
+}> = ({ onNewConversationPress, callback }) => {
   const { t } = useTranslation();
   const toast = useToastController();
   const router = useRouter();
-
-  const iconColor = getIconColor();
 
   const context = OllamaSearchFilterContext.Conversation;
 
@@ -194,13 +111,7 @@ const OllamaConversationActionPanel: React.FC<{
                   OllamaDetailScreenProps,
                   OllamaDetailScreenContext,
                   OllamaSearchFilterContext
-                >(
-                  router,
-                  OllamaDetailScreenContext.SearchFilter,
-                  context,
-                  id,
-                  isToggle
-                );
+                >(router, item.context!, context, id, isToggle);
               }}
               active={checkActiveStatus<OllamaSearchFilterContext>(
                 searchFilters,
@@ -212,16 +123,17 @@ const OllamaConversationActionPanel: React.FC<{
           )}
           showsHorizontalScrollIndicator={false}
           ListHeaderComponent={<XStack width="$0.75" />}
-          ListFooterComponent={() => (
-            <>
-              <XStack marginLeft="$3" />
-            </>
-          )}
+          ListFooterComponent={() => <XStack marginLeft="$3" />}
           estimatedItemSize={69}
         />
       </XStack>
-      <XStack width="$3" marginLeft="$2.5" marginRight="$3" alignItems="center">
-        <OllamaNewConversationButton />
+      <XStack
+        width="$2.5"
+        marginLeft="$2.5"
+        marginRight="$3"
+        alignItems="center"
+      >
+        <OllamaNewConversationButton onPress={onNewConversationPress} />
       </XStack>
     </XStack>
   );

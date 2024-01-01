@@ -4,11 +4,16 @@ import { useRouter, useFocusEffect } from "expo-router";
 import { YStack, XStack } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import {
+  OllamaConversationHistoryDetailItems,
   OllamaDetailScreenContext,
   OllamaSearchFilterContext,
 } from "../../types";
 import { useOllamaStore } from "../../store";
-import { filterOllamaSearchData, goToOllamaDetailScreen } from "../../utils";
+import {
+  filterOllamaSearchData,
+  getOllamaConversationHistoryDetailItems,
+  goToOllamaDetailScreen,
+} from "../../utils";
 import {
   getFlashListColumnsFromViewType,
   useGetListColumnNumber,
@@ -23,6 +28,7 @@ import { customTokens } from "@astrysk/styles";
 import { ListLocalModels200ModelsItem, useListLocalModels } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import { ModelListItem } from "./searchModels";
+import { ChatHistoryListItem } from "./searchChatHistory";
 
 const OllamaSearchLanding: React.FC<{
   searchTerm: string;
@@ -34,6 +40,25 @@ const OllamaSearchLanding: React.FC<{
   const viewType = useOllamaStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useOllamaStore((state) => state.searchFilters);
+
+  React.useEffect(() => {
+    useOllamaStore.setState((state) => ({
+      searchFilters: {
+        ...state.searchFilters,
+        [OllamaSearchFilterContext.Search]: {
+          "ollama:type": { order: undefined, value: "ollama:models" },
+        },
+      },
+    }));
+  }, []);
+
+  const ollamaConversationHistory =
+    useOllamaStore((state) => state.ollamaConversationHistory) ?? {};
+
+  const ollamaConversationHistoryKeys = React.useMemo(
+    () => Object.keys(ollamaConversationHistory),
+    [ollamaConversationHistory]
+  );
 
   const models = useListLocalModels({
     query: {
@@ -59,24 +84,48 @@ const OllamaSearchLanding: React.FC<{
   };
 
   const getModels = React.useCallback(() => {
-    const initialResourcesData = [...(models.data ?? [])];
-    let resourcesDataToReturn = initialResourcesData;
+    const initialModelsData = [...(models.data ?? [])];
+    let modelsDataToReturn = initialModelsData;
 
-    if (searchTerm && initialResourcesData.length > 0) {
-      const filteredResources = initialResourcesData.filter((data) => {
+    if (searchTerm && initialModelsData.length > 0) {
+      const filteredResources = initialModelsData.filter((data) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return data.name?.toLowerCase().includes(lowerCaseSearchTerm);
       });
-      resourcesDataToReturn = filteredResources;
+      modelsDataToReturn = filteredResources;
     }
-    resourcesDataToReturn =
-      filterOllamaSearchData<ListLocalModels200ModelsItem>(
-        resourcesDataToReturn,
+    modelsDataToReturn = filterOllamaSearchData<ListLocalModels200ModelsItem>(
+      modelsDataToReturn,
+      searchFilters?.[OllamaSearchFilterContext.Search]
+    );
+
+    return modelsDataToReturn;
+  }, [models.data, searchTerm, searchFilters]);
+
+  const getChatHistory = React.useCallback(() => {
+    const chatHistory = getOllamaConversationHistoryDetailItems(
+      ollamaConversationHistory,
+      ollamaConversationHistoryKeys
+    );
+
+    const initialChatHistoryData = [...(chatHistory ?? [])];
+    let chatHistoryDataToReturn = initialChatHistoryData;
+
+    if (searchTerm && initialChatHistoryData.length > 0) {
+      const filteredResources = initialChatHistoryData.filter((data) => {
+        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        return data.name?.toLowerCase().includes(lowerCaseSearchTerm);
+      });
+      chatHistoryDataToReturn = filteredResources;
+    }
+    chatHistoryDataToReturn =
+      filterOllamaSearchData<OllamaConversationHistoryDetailItems>(
+        chatHistoryDataToReturn,
         searchFilters?.[OllamaSearchFilterContext.Search]
       );
 
-    return resourcesDataToReturn;
-  }, [models.data, searchTerm, searchFilters]);
+    return chatHistoryDataToReturn;
+  }, [ollamaConversationHistoryKeys, searchTerm, searchFilters]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -93,8 +142,18 @@ const OllamaSearchLanding: React.FC<{
         <YStack flex={1}>
           <FlashList
             contentContainerStyle={{ paddingHorizontal: "7" }}
-            data={getModels()}
-            renderItem={({ item }) => <ModelListItem t={t} data={item} />}
+            data={[...getModels(), ...getChatHistory()]}
+            renderItem={({ item }) => {
+              if ("digest" in item) {
+                return <ModelListItem t={t} data={item} />;
+              }
+              return (
+                <ChatHistoryListItem
+                  t={t}
+                  data={item as OllamaConversationHistoryDetailItems}
+                />
+              );
+            }}
             estimatedItemSize={100}
             refreshControl={
               <RefreshControl

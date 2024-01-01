@@ -1,56 +1,182 @@
 import React from "react";
-import { SafeAreaView, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import {
+  SafeAreaView,
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import { useNavigation } from "expo-router";
 import { SettingsOptionProps, TabContext } from "@astrysk/types";
-import { H3, Input, Text, TextArea, XStack, YStack, useTheme } from "tamagui";
+import {
+  Text,
+  TextArea,
+  XStack,
+  YStack,
+  getTokenValue,
+  useTheme,
+} from "tamagui";
+import { useToastController } from "@tamagui/toast";
 import { useOllamaDetailHeader, useOllamaFsDetailHeader } from "../useHeader";
 import { useTranslation } from "react-i18next";
 import { FlashList } from "@shopify/flash-list";
-import { TFunction } from "i18next";
-import { SettingsOption } from "@astrysk/components";
+import { debouncedSetter, showToast } from "@astrysk/components";
 import { Ionicons } from "@expo/vector-icons";
 import ContextMenu from "react-native-context-menu-view";
+import * as Clipboard from "expo-clipboard";
+import * as Crypto from "expo-crypto";
+import Axios from "axios";
+import { GiftedChat } from "react-native-gifted-chat";
 import {
-  GiftedChat,
-  IMessage,
-  InputToolbar,
-  InputToolbarProps,
-  Composer,
-  ComposerProps,
-  Send,
-  SendProps,
-  MessageProps,
-} from "react-native-gifted-chat";
-import { getIconColor, useColorScheme } from "@astrysk/utils";
+  getIconColor,
+  useColorScheme,
+  useMutationLoadingSpinner,
+} from "@astrysk/utils";
 import { useOllamaStore } from "../../store";
 import {
   ExtendedListLocalModels200ModelsItem,
   OllamaConversation,
+  OllamaDetailScreenContext,
+  OllamaSearchFilterContext,
 } from "../../types";
 import OllamaConversationActionPanel from "./actionPanel";
-import { useChatWithEventSource } from "../../api/event";
+import { Generate200, useChat } from "../../api";
+import SyntaxHighlighter from "react-native-syntax-highlighter";
+import a11yDark from "../styles/hljs-a11y-dark";
+import a11yLight from "../styles/hljs-a11y-light";
+import Markdown from "react-native-markdown-display";
+import { goToOllamaModalScreen } from "../../utils";
+import { DONE } from "@astrysk/constants/actions";
 
-const OllamaConversationSendButton = () => {
+const OllamaMarkdown = ({ content }: { content: string }) => {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const colorScheme = useColorScheme();
+
+  const syntaxHighlighterStyle = React.useMemo(() => {
+    return colorScheme === "dark" ? a11yDark : a11yLight;
+  }, [colorScheme]);
+
+  const markdownStyle: StyleSheet.NamedStyles<any> = {
+    body: {
+      color: useTheme().color.get(),
+      fontSize: 16,
+      lineHeight: 24,
+    },
+    code_inline: {
+      color: useTheme().color.get(),
+      backgroundColor: useTheme().gray5.get(),
+    },
+    fence: {
+      color: useTheme().color.get(),
+      backgroundColor: useTheme().gray5.get(),
+      borderRadius: 0,
+      borderWidth: 0,
+    },
+  };
+
+  const rules = {
+    body: (node: any, children: any, parent: any, styles: any) => (
+      <YStack
+        key={node.key}
+        style={{ ...styles._VIEW_SAFE_body, marginTop: -7 }}
+      >
+        {children}
+      </YStack>
+    ),
+    fence: (node: any, children: any, parent: any, styles: any) => {
+      return (
+        <YStack key={node.key} marginLeft="$-8" marginRight="$-5">
+          <ContextMenu
+            key={node.key}
+            actions={[
+              {
+                title: `${t("common:copy")}`,
+                systemIcon: "clipboard",
+              },
+              {
+                title: `${t("ollama:selectText")}`,
+                systemIcon: "selection.pin.in.out",
+              },
+            ]}
+            // dropdownMenuMode
+            onPress={(event) => {
+              const { indexPath } = event.nativeEvent;
+              switch (indexPath[0]) {
+                case 0:
+                  // Copy
+                  Clipboard.setStringAsync(node.content);
+                  break;
+                case 1:
+                  // Select Text
+                  useOllamaStore.setState({
+                    ollamaSelectTextCache: [node.content],
+                  });
+                  goToOllamaModalScreen({
+                    router,
+                    itemId: "cache",
+                    screenContext: OllamaDetailScreenContext.SelectText,
+                    searchContext: OllamaSearchFilterContext.NONE,
+                  });
+                  break;
+              }
+            }}
+          >
+            <XStack
+              flex={1}
+              backgroundColor={syntaxHighlighterStyle.hljs.background}
+            >
+              <XStack width="$3.25" />
+              <SyntaxHighlighter
+                style={syntaxHighlighterStyle}
+                // PreTag={OllamaMarkdownTagContainer}
+                // CodeTag={OllamaMarkdownTagContainer}
+              >
+                {(node.content as string).trimEnd()}
+              </SyntaxHighlighter>
+              <XStack width="$3" />
+            </XStack>
+          </ContextMenu>
+        </YStack>
+      );
+    },
+  };
+
   return (
-    <XStack
-      width="$4"
-      height="100%"
-      alignItems="center"
-      justifyContent="center"
-      marginRight="$0.5"
-      paddingVertical="$1"
-      pointerEvents="box-none"
-    >
-      <Ionicons name="arrow-up-circle" size={28} color={getIconColor()} />
-    </XStack>
+    <Markdown style={markdownStyle} rules={rules}>
+      {content}
+    </Markdown>
   );
 };
 
-const OllamaConversationSend: React.FC<SendProps<IMessage>> = (props) => {
+const OllamaConversationSendButton: React.FC<{
+  isLoading?: boolean;
+  onPressHandler?: () => void;
+}> = ({ isLoading, onPressHandler }) => {
   return (
-    <Send {...props}>
-      <OllamaConversationSendButton />
-    </Send>
+    <TouchableOpacity
+      style={{
+        alignSelf: "flex-end",
+      }}
+      onPress={onPressHandler}
+    >
+      <XStack
+        width="$4"
+        height="$5"
+        alignItems="center"
+        justifyContent="center"
+        marginRight="$0.5"
+        paddingVertical="$1"
+      >
+        {isLoading ? (
+          <Ionicons name="stop-circle" size={30} color={getIconColor()} />
+        ) : (
+          <Ionicons name="arrow-up-circle" size={30} color={getIconColor()} />
+        )}
+      </XStack>
+    </TouchableOpacity>
   );
 };
 
@@ -86,12 +212,15 @@ const OllamaConversationMessageIcon: React.FC<{ userId: string }> = ({
   );
 };
 
-const OllamaConversationMessage: React.FC<MessageProps<OllamaConversation>> = (
-  props
-) => {
+const OllamaConversationMessage: React.FC<{
+  props: OllamaConversation;
+  deleteMessageHandler?: (messageId: string) => void;
+}> = ({ props, deleteMessageHandler }) => {
   const { t } = useTranslation();
-  const userId = props.currentMessage?.user._id as string;
-  const userName = props.currentMessage?.user.name;
+  const router = useRouter();
+
+  const userId = props.user._id as string;
+  const userName = props.user.name;
 
   return (
     <ContextMenu
@@ -104,177 +233,428 @@ const OllamaConversationMessage: React.FC<MessageProps<OllamaConversation>> = (
           title: `${t("ollama:selectText")}`,
           systemIcon: "selection.pin.in.out",
         },
+        {
+          title: `${t("ollama:editText")}`,
+          systemIcon: "square.and.pencil",
+        },
+        {
+          title: `${t("ollama:delete")}`,
+          systemIcon: "trash",
+          destructive: true,
+        },
       ]}
       // dropdownMenuMode
       onPress={(event) => {
         const { indexPath } = event.nativeEvent;
-        if (indexPath[0] === 0)
-          switch (indexPath[1]) {
-            case 0:
-              break;
-          }
+        switch (indexPath[0]) {
+          case 0:
+            // Copy
+            Clipboard.setStringAsync(props.text!);
+            break;
+          case 1:
+            // Select Text
+            useOllamaStore.setState((state) => ({
+              ollamaSelectTextCache: [
+                ...(state.ollamaSelectTextCache ?? []),
+                props.text!,
+              ],
+            }));
+            goToOllamaModalScreen({
+              router,
+              itemId: "cache",
+              screenContext: OllamaDetailScreenContext.SelectText,
+              searchContext: OllamaSearchFilterContext.NONE,
+            });
+            break;
+          case 2:
+            useOllamaStore.setState({
+              ollamaEditTextCache: props.text!,
+              ollamaAfterEditTextCache: props.text!, // For state comparison
+              editTextId: props._id as string,
+            });
+            goToOllamaModalScreen({
+              router,
+              itemId: "cache",
+              screenContext: OllamaDetailScreenContext.EditText,
+              searchContext: OllamaSearchFilterContext.NONE,
+            });
+            break;
+          case 3:
+            deleteMessageHandler?.(props._id as string);
+            break;
+        }
       }}
     >
-      <XStack
-        paddingHorizontal="$2"
-        paddingTop="$1"
-        paddingBottom="$3"
-        backgroundColor={userId === "ollama_user" ? "$background" : undefined}
-      >
-        <OllamaConversationMessageIcon userId={userId} />
-        <YStack flex={1}>
+      <YStack>
+        <XStack
+          paddingTop="$1"
+          paddingBottom="$3"
+          // WARN:
+          marginLeft="$2"
+          marginRight="$5"
+        >
+          <OllamaConversationMessageIcon userId={userId} />
           <YStack flex={1}>
             <XStack height="$3" alignItems="center">
-              <Text fontWeight="700">{userName}</Text>
+              <Text fontWeight="700" color="$color">
+                {userName}
+              </Text>
             </XStack>
-            <Text>{props.currentMessage?.text}</Text>
+            <OllamaMarkdown content={props.text!} />
           </YStack>
-        </YStack>
-      </XStack>
+        </XStack>
+      </YStack>
     </ContextMenu>
   );
 };
 
-const OllamaConversationComposer: React.FC<ComposerProps> = (props) => {
-  const colorScheme = useColorScheme();
+const OllamaConversationComposer: React.FC<{
+  resetCount: number;
+  setText: (newSearchTerm: string | string[]) => void;
+}> = ({ resetCount, setText }) => {
+  const { t } = useTranslation();
+  const paddingVertical = getTokenValue("$1.5");
 
-  const textColor = React.useMemo(() => {
-    return colorScheme === "dark" ? "white" : "black";
-  }, [colorScheme]);
+  const textAreaRef = React.useRef<TextInput>(null);
 
-  const accentColor = useTheme().gray6.get();
+  React.useEffect(() => {
+    if (resetCount > 0) {
+      textAreaRef.current?.clear();
+      setText("");
+    }
+  }, [resetCount]);
 
   return (
-    <Composer
-      {...props}
-      textInputStyle={{
-        ...(props.textInputStyle as object),
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-        color: textColor,
-        minHeight: 35,
-        borderLeftWidth: 1.5,
-        borderLeftColor: accentColor,
-        borderRightWidth: 1.5,
-        borderRightColor: accentColor,
-        borderTopWidth: 1.5,
-        borderTopColor: accentColor,
-        borderBottomWidth: 1.5,
-        borderBottomColor: accentColor,
-        borderTopLeftRadius: 15,
-        borderTopRightRadius: 15,
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
-      }}
-    />
+    <XStack flex={1} paddingLeft="$2.5" paddingVertical="$2">
+      <TextArea
+        ref={textAreaRef}
+        flex={1}
+        paddingVertical={paddingVertical + 2}
+        paddingHorizontal="$3"
+        borderTopLeftRadius="$6"
+        borderBottomLeftRadius="$6"
+        borderTopRightRadius="$6"
+        borderBottomRightRadius="$6"
+        placeholder={`${t("ollama:typeAMessage")}`}
+        onChangeText={(text) => {
+          setText(text);
+        }}
+      />
+    </XStack>
   );
 };
 
-const OllamaConversationInputToolbar: React.FC<InputToolbarProps<IMessage>> = (
-  props
-) => {
-  const backgroundColor = useTheme().backgroundTransparent.get();
+const OllamaConversationToolBar: React.FC<{
+  onSend: (text: string) => void;
+  onCancel?: () => void;
+}> = ({ onSend, onCancel }) => {
+  const [text, setText] = React.useState<string | string[]>("");
+  const [resetCount, setResetCount] = React.useState<number>(0);
+
+  const debouncedSetText = debouncedSetter(setText, 50);
+
+  const conversationIsRequesting = useOllamaStore(
+    (state) => state.ollamaConversationIsRequesting
+  );
+
+  const sendPressHandler = React.useCallback(
+    (text: string) => {
+      if (conversationIsRequesting) {
+        onCancel?.();
+      } else if (text) {
+        onSend?.(text.trim());
+        setResetCount((previousCount) => previousCount + 1);
+      }
+    },
+    [conversationIsRequesting]
+  );
 
   return (
-    <InputToolbar
-      {...props}
-      containerStyle={{
-        ...(props.containerStyle as object),
-        backgroundColor: backgroundColor,
-        borderTopWidth: 0,
-      }}
-      renderComposer={(props) => <OllamaConversationComposer {...props} />}
-      renderSend={(props) => <OllamaConversationSend {...props} />}
-    />
+    <XStack minHeight="$5" maxHeight="$13">
+      <OllamaConversationComposer
+        resetCount={resetCount}
+        setText={debouncedSetText}
+      />
+      <OllamaConversationSendButton
+        isLoading={conversationIsRequesting}
+        onPressHandler={() => sendPressHandler(text as string)}
+      />
+    </XStack>
   );
 };
 
 const OllamaConversationDetail: React.FC<{
   forwardedData: ExtendedListLocalModels200ModelsItem; // WARN: Change to specific type
-  tabContext: TabContext;
-}> = ({ forwardedData, tabContext }) => {
+  conversationHistoryId?: string;
+  historyMode?: boolean;
+}> = ({ forwardedData, conversationHistoryId, historyMode }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
+  const toast = useToastController();
+
   const baseUrl = useOllamaStore.getState().baseURL;
 
-  // const actionPanelCallback = (action?: string) => {
-  //   resource.refetch();
-  // };
+  const axiosCancelTokenSource = React.useRef(Axios.CancelToken.source());
+  const ollamaConversationIsRequesting =
+    useOllamaStore((state) => state.ollamaConversationIsRequesting) ?? false;
 
-  const [conversation, setConversation] = React.useState<OllamaConversation[]>([
-    {
-      _id: "2",
-      text: "Hello this is a long message",
-      createdAt: new Date(new Date().getTime() + 100000),
-      user: { _id: "ollama_user", name: "Ollama" },
-    },
-    {
-      _id: "1",
-      text: "Hello",
-      createdAt: new Date(),
-      user: { _id: "active_user", name: "You" },
-    },
-  ]);
+  const ollamaConversationHistory =
+    useOllamaStore((state) => state.ollamaConversationHistory) ?? {};
 
-  const onSend = React.useCallback((messages: OllamaConversation[] = []) => {
-    setConversation((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
-    requestChatStream(); // Temporary
-  }, []);
+  const ollamaConversationIdOverride = useOllamaStore(
+    (state) => state.ollamaConversationIdOverride
+  );
+  const ollamaEditTextId = useOllamaStore((state) => state.editTextId);
 
-  const chatStream = useChatWithEventSource(
-    {
-      baseUrl: baseUrl!,
-    },
-    {
-      onSuccess: (data) => {
-        console.log("Stream finished", data);
-      },
-      onError: (error) => {
-        console.log("Stream error", error);
-      },
-    }
+  const ollamaEditTextCache = useOllamaStore(
+    (state) => state.ollamaAfterEditTextCache
+  );
+  const ollamaAfterEditTextCache = useOllamaStore(
+    (state) => state.ollamaAfterEditTextCache
   );
 
-  const requestChatStream = () => {
-    chatStream.mutation.mutate({
-      model: forwardedData.name,
-      messages: [
-        { content: "Hello, write a hello world program in Go", role: "user" },
-      ],
-    });
+  const [conversationId, setConversationId] = React.useState(
+    conversationHistoryId
+  );
+  const [conversation, setConversation] = React.useState<OllamaConversation[]>(
+    []
+  );
+
+  const [initialMessageCount, setInitialMessageCount] =
+    React.useState<number>(0);
+
+  const [sendCount, setSendCount] = React.useState<number>(0);
+  const [waitingForResponse, setWaitingForResponse] =
+    React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (conversationId) {
+      setConversation(ollamaConversationHistory[conversationId]?.conversation);
+      setInitialMessageCount(
+        ollamaConversationHistory[conversationId]?.conversation.length
+      );
+    }
+  }, [conversationId]);
+
+  React.useEffect(() => {
+    if (!historyMode && ollamaConversationIdOverride) {
+      setConversationId(ollamaConversationIdOverride);
+    }
+    return () => {
+      useOllamaStore.setState({
+        ollamaSelectTextCache: undefined,
+        ollamaConversationIdOverride: undefined,
+        ollamaConversationIsRequesting: false,
+      });
+    };
+  }, [ollamaConversationIdOverride]);
+
+  const consistentUUID = React.useMemo(() => {
+    if (conversationId) {
+      return conversationId;
+    } else {
+      return Crypto.randomUUID();
+    }
+  }, [conversationId]);
+
+  const convertConversationToOllamaRequestMessage = (
+    conversation: OllamaConversation[]
+  ) => {
+    return conversation.map((ollamaMessage) => ({
+      content: ollamaMessage.text,
+      role: "user",
+    }));
   };
 
-  useOllamaFsDetailHeader(navigation, t("ollama:conversation"));
+  const convertResponseToOllamaConversation = (
+    message: Generate200
+  ): OllamaConversation[] => {
+    return [
+      {
+        _id: message.created_at!,
+        text: message.message?.content!.trimStart()!,
+        createdAt: new Date(message.created_at!),
+        user: { _id: "ollama_user", name: "Ollama" },
+      },
+    ];
+  };
+
+  const chatNoStream = useChat({
+    mutation: {
+      onSuccess: (data) => {
+        setConversation((previousMessages) =>
+          GiftedChat.append(
+            previousMessages,
+            convertResponseToOllamaConversation(data)
+          )
+        );
+        useOllamaStore.setState({ ollamaConversationIsRequesting: false });
+      },
+      onError: (error) => {
+        useOllamaStore.setState({ ollamaConversationIsRequesting: false });
+        showToast(toast, t("ollama:requestError"), {
+          message: error.message,
+          type: "error",
+        });
+      },
+    },
+  });
+
+  const saveConversation = () => {
+    useOllamaStore.setState((state) => ({
+      ollamaConversationHistory: {
+        ...state.ollamaConversationHistory,
+        [consistentUUID]: {
+          ...state.ollamaConversationHistory?.[consistentUUID],
+          conversation: conversation,
+          conversationLength: conversation.length,
+          model: forwardedData.digest,
+          modelName: forwardedData.name,
+          lastUpdated: new Date().toISOString(),
+        },
+      },
+    }));
+  };
+
+  React.useEffect(() => {
+    // Save current conversation when new message is received
+    if (!historyMode && conversation.length > 0) {
+      if (
+        (conversationHistoryId && conversation.length != initialMessageCount) ||
+        !conversationHistoryId
+      ) {
+        saveConversation();
+      } else if (
+        useOllamaStore.getState().ollamaEditTextCache !==
+        useOllamaStore.getState().ollamaAfterEditTextCache
+      ) {
+        saveConversation();
+      }
+    }
+  }, [conversation]);
+
+  const requestChatNoStream = () => {
+    chatNoStream.mutate({
+      data: {
+        model: forwardedData.name,
+        messages: convertConversationToOllamaRequestMessage(conversation),
+        stream: false,
+      },
+      cancelSource: axiosCancelTokenSource.current,
+    });
+    useOllamaStore.setState({ ollamaConversationIsRequesting: true });
+  };
+
+  const onSend = React.useCallback((newMessage: string) => {
+    setConversation((previousMessages) => [
+      {
+        _id: new Date().toISOString(),
+        text: newMessage,
+        createdAt: new Date(),
+        user: { _id: "active_user", name: "You" },
+      },
+      ...previousMessages,
+    ]);
+    setSendCount((previousCount) => previousCount + 1);
+  }, []);
+
+  const cancelRequest = () => {
+    axiosCancelTokenSource.current?.cancel();
+    // Cancel token has be reset after cancel
+    axiosCancelTokenSource.current = Axios.CancelToken.source();
+    chatNoStream.reset();
+  };
+
+  const newConversationHandler = () => {
+    // Save current conversation
+    useOllamaStore.setState({
+      ollamaConversationIdOverride: undefined,
+    });
+    saveConversation();
+
+    // Reset conversation
+    setConversation([]);
+    setSendCount(0);
+  };
+
+  const deleteMessage = (messageId: string) => {
+    setConversation((previousMessages) =>
+      previousMessages.filter((message) => message._id !== messageId)
+    );
+  };
+
+  React.useEffect(() => {
+    if (sendCount > 0) {
+      requestChatNoStream();
+    }
+  }, [sendCount]);
+
+  React.useEffect(() => {
+    if (
+      useOllamaStore.getState().ollamaEditTextCache !==
+      useOllamaStore.getState().ollamaAfterEditTextCache
+    ) {
+      const messageIndex = conversation.findIndex(
+        (message) => (message._id as string) === ollamaEditTextId
+      );
+
+      setConversation((previousMessages) => {
+        const newMessages = [...previousMessages];
+        newMessages[messageIndex] = {
+          ...newMessages[messageIndex],
+          text: useOllamaStore.getState().ollamaAfterEditTextCache!,
+        };
+        return newMessages;
+      });
+    }
+  }, [ollamaEditTextId, ollamaAfterEditTextCache]);
+
+  if (!historyMode) {
+    useOllamaFsDetailHeader(
+      navigation,
+      ollamaConversationHistory[conversationId!]?.name ??
+        t("ollama:conversation"),
+      undefined,
+      [conversationId]
+    );
+  }
+
+  useMutationLoadingSpinner(chatNoStream, "requestingChatResponse");
 
   return (
     <SafeAreaView>
-      <YStack height="100%" width="100%">
-        <OllamaConversationActionPanel data={[]} />
-        <GiftedChat
-          messages={conversation}
-          onSend={(messages) => onSend(messages)}
-          bottomOffset={33}
-          alwaysShowSend
-          renderMessage={(props) => <OllamaConversationMessage {...props} />}
-          // Most modifications live in inputToolbar
-          renderInputToolbar={(props) => (
-            <OllamaConversationInputToolbar {...props} />
-          )}
-          minInputToolbarHeight={50}
-          alignTop={false}
-          listViewProps={{
-            contentContainerStyle: { flexGrow: 1, justifyContent: "flex-end" },
-          }}
-          user={{
-            _id: "active_user",
-            name: "You",
-          }}
-        />
-      </YStack>
+      <KeyboardAvoidingView
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
+        behavior="padding"
+        keyboardVerticalOffset={100}
+      >
+        {!historyMode && (
+          <OllamaConversationActionPanel
+            onNewConversationPress={newConversationHandler}
+          />
+        )}
+        <YStack flex={1}>
+          <FlashList
+            inverted
+            data={conversation}
+            renderItem={({ item }) => (
+              <OllamaConversationMessage
+                props={item}
+                deleteMessageHandler={deleteMessage}
+              />
+            )}
+            keyboardShouldPersistTaps="handled"
+            estimatedItemSize={247}
+          />
+        </YStack>
+        {!historyMode && (
+          <OllamaConversationToolBar onSend={onSend} onCancel={cancelRequest} />
+        )}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -4,31 +4,32 @@ import { Button, H3, XStack, YStack, Text } from "tamagui";
 import { TFunction } from "i18next";
 import { goToOllamaFsDetailScreen } from "../../utils";
 import { TabContext } from "@astrysk/types";
-import { OllamaDetailScreenContext } from "../../types";
-import { ListLocalModels200ModelsItem } from "../../api";
-import { storageUtils } from "@astrysk/utils";
+import {
+  OllamaConversationHistoryDetailItems,
+  OllamaDetailScreenContext,
+} from "../../types";
 
-export const ModelListItem: React.FC<{
+export const ChatHistoryListItem: React.FC<{
   t: TFunction;
-  data: ListLocalModels200ModelsItem;
+  data: OllamaConversationHistoryDetailItems;
 }> = ({ t, data }) => {
   const router = useRouter();
 
   const getComponentBody = () => {
     return (
       <YStack flex={1}>
-        <H3>{data.name}</H3>
+        <H3 numberOfLines={1}>{data.name}</H3>
         <Text color="$gray10" marginTop="$1">
-          {t(`ollama:digest`) + ": "}
-          {data.digest?.slice(0, 6)}
+          {t(`ollama:model`) + ": "}
+          {data.modelName}
         </Text>
         <Text color="$gray10" marginTop="$1">
-          {t(`ollama:size`) + ": "}
-          {storageUtils.convertBytesToGB(data.size!) + t(`ollama:gb`)}
+          {t(`ollama:conversationLength`) + ": "}
+          {data.conversationLength}
         </Text>
         <Text color="$gray10" marginTop="$1">
           {t(`ollama:modified`) + ": "}
-          {new Date(data.modified_at ?? "").toLocaleDateString()}
+          {new Date(data.lastUpdated ?? 0).toLocaleString().slice(0, -3)}
         </Text>
       </YStack>
     );
@@ -46,9 +47,10 @@ export const ModelListItem: React.FC<{
       onPress={() =>
         goToOllamaFsDetailScreen({
           router,
-          searchItemId: data.digest as string,
+          searchItemId: data.model as string,
           tabContext: TabContext.Search,
           screenContext: OllamaDetailScreenContext.SearchItem,
+          conversationId: data.conversationId,
         })
       }
     >

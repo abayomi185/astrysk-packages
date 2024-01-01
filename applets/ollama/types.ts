@@ -9,10 +9,30 @@ export interface OllamaCache {
 
 export interface OllamaConversation extends IMessage {
   name?: string;
+  message?: {
+    content?: string;
+    role?: string;
+  };
 }
 
 export interface OllamaConversationHistory {
-  [key: string]: OllamaConversation;
+  [key: string]: {
+    name?: string;
+    model?: string;
+    modelName?: string;
+    conversation: OllamaConversation[];
+    conversationLength: number;
+    lastUpdated?: string;
+  };
+}
+
+export interface OllamaConversationHistoryDetailItems {
+  conversationId: string;
+  model: string;
+  modelName?: string;
+  name?: string;
+  conversationLength?: number;
+  lastUpdated?: string;
 }
 
 export interface ExtendedListLocalModels200ModelsItem
@@ -26,6 +46,12 @@ export interface ExtendedListLocalModels200ModelsItem
 export enum OllamaDetailScreenContext {
   SearchItem = "SearchItem",
   SearchFilter = "SearchFilter",
+  SelectText = "SelectText",
+  EditText = "EditText",
+  History = "History",
+  HistoryItem = "HistoryItem",
+  HomePreview = "HomePreview",
+  AdvancedOptions = "AdvancedOptions",
 }
 
 export interface OllamaDetailScreenProps extends Record<string, string> {
@@ -53,12 +79,15 @@ export interface OllamaFilterOption {
 
 export interface OllamaFilter {
   id: string;
+  context?: OllamaDetailScreenContext;
   options: OllamaFilterOption[];
 }
 
 export enum OllamaSearchFilterContext {
   Search = "Search",
   Conversation = "Conversation",
+  SelectText = "SelectText",
+  NONE = "NONE",
 }
 
 export type OllamaFilterKind = string;

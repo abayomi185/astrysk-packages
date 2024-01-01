@@ -10,6 +10,10 @@ import {
 } from "../types";
 import OllamaSearchFilterOptions from "../components/search/searchFilterOptions";
 import { useOllamaModalHeader } from "../components/useHeader";
+import OllamaSelectText from "../components/modal/selectText";
+import { useOllamaStore } from "../store";
+import OllamaChatHistory from "../components/modal/chatHistory";
+import { Button, Text } from "tamagui";
 
 const OllamaModal = () => {
   const { t } = useTranslation();
@@ -32,6 +36,27 @@ const OllamaModal = () => {
         filterType={filterType}
       />
     );
+  }
+
+  if (params.context === OllamaDetailScreenContext.SelectText) {
+    const textCache = useOllamaStore.getState().ollamaSelectTextCache ?? "";
+
+    const text =
+      textCache.length > 2 ? textCache[textCache.length - 1] : textCache[0];
+
+    return <OllamaSelectText text={text} edit={false} />;
+  }
+
+  if (params.context === OllamaDetailScreenContext.EditText) {
+    const text = useOllamaStore.getState().ollamaEditTextCache ?? "";
+
+    return <OllamaSelectText text={text} edit={true} />;
+  }
+
+  if (params.context === OllamaDetailScreenContext.History) {
+    useOllamaModalHeader(navigation, `${t("ollama:chatHistory")}`);
+
+    return <OllamaChatHistory />;
   }
 
   return null;
