@@ -575,6 +575,7 @@ const OllamaConversationDetail: React.FC<{
 
     // Reset conversation
     setConversation([]);
+    setConversationId(undefined);
     setSendCount(0);
   };
 
