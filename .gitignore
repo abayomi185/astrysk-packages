@@ -21,3 +21,6 @@ web-build/
 
 # IPAs
 *.ipa
+
+# Yarn
+*yarn-error.log
