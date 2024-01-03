@@ -11,7 +11,8 @@ const ollamaLocales = {
 
   alphabetical: "Alphabetical",
   size: "Size",
-  modified_date: "Modified Date",
+  modifiedDate: "Modified Date",
+  lastUpdated: "Last Updated",
 
   digest: "Digest",
   modified: "Modified",
@@ -20,6 +21,7 @@ const ollamaLocales = {
 
   conversation: "Conversation",
   newConversation: "New Conversation",
+  emptyConversation: "Empty Conversation",
 
   save: "Save",
 
@@ -32,13 +34,22 @@ const ollamaLocales = {
   editText: "Edit Text",
 
   conversation_history: "History",
+  conversation_details: "Details",
+  conversation_model: "Model",
+
+  options: "Options",
+  advancedOptions: "Advanced Options",
+
+  template: "Template",
+  templateNotEmpty: "Not empty",
+
   settings: "Settings",
 
   requestError: "Request Error",
 
+  chat: "Chat",
   chatHistory: "Chat History",
-
-  options: "Options",
+  recentChatHistory: "Recent Chat History",
 
   lastUpdated: "Last Updated",
 
@@ -50,6 +61,9 @@ const ollamaLocales = {
   conversationLength: "Length",
 
   delete: "Delete",
+
+  invalidOptionsJson: "Invalid JSON",
+  pleaseCheckTheJsonString: "Please check the JSON string",
 };
 
 export default ollamaLocales;
