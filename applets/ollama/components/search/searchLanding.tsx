@@ -21,7 +21,7 @@ import {
   useRefreshHandler,
 } from "@astrysk/utils";
 import { ollamaColors } from "../../colors";
-import { TabContext, ViewType } from "@astrysk/types";
+import { ExtendedAppletColors, TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { customTokens } from "@astrysk/styles";
@@ -29,6 +29,7 @@ import { ListLocalModels200ModelsItem, useListLocalModels } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import { ModelListItem } from "./searchModels";
 import { ChatHistoryListItem } from "./searchChatHistory";
+import { getColorSchemeBasedAppletColor } from "@astrysk/utils/utils/colorScheme";
 
 const OllamaSearchLanding: React.FC<{
   searchTerm: string;
@@ -159,7 +160,10 @@ const OllamaSearchLanding: React.FC<{
               <RefreshControl
                 refreshing={false}
                 onRefresh={refetchModelsList}
-                tintColor={ollamaColors.accentColor}
+                tintColor={getColorSchemeBasedAppletColor(
+                  ollamaColors,
+                  "accentColor"
+                )}
               />
             }
             ListEmptyComponent={
