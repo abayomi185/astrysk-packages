@@ -12,7 +12,7 @@ import {
   OllamaDetailScreenProps,
   OllamaSearchFilterContext,
 } from "./types";
-import { TFunction } from "i18next";
+import i18next, { TFunction } from "i18next";
 import { goToDetailScreen, goToModalScreen } from "@astrysk/utils";
 import { ListLocalModels200ModelsItem } from "./api";
 import { goToFullScreenDetailScreen } from "@astrysk/utils/utils/router";
@@ -174,15 +174,9 @@ export const filterOllamaSearchData = <
 
     if (searchFilter.value === "ollama:alphabetical") {
       filteredData = filteredData.sort((a, b) => {
-        if (
-          isListLocalModels200ModelsItem(a) &&
-          isListLocalModels200ModelsItem(b)
-        ) {
-          return searchFilter.order === FilterOrder.ASCENDING
-            ? a.name!.localeCompare(b.name!)
-            : b.name!.localeCompare(a.name!);
-        }
-        return 0;
+        return searchFilter.order === FilterOrder.ASCENDING
+          ? a.name!.localeCompare(b.name!)
+          : b.name!.localeCompare(a.name!);
       });
     } else if (searchFilter.value === "ollama:size") {
       filteredData = filteredData.sort((a, b) => {
@@ -196,7 +190,7 @@ export const filterOllamaSearchData = <
         }
         return 0;
       });
-    } else if (searchFilter.value === "ollama:modified_date") {
+    } else if (searchFilter.value === "ollama:modifiedDate") {
       filteredData = filteredData.sort((a, b) => {
         if (
           isListLocalModels200ModelsItem(a) &&
@@ -204,6 +198,20 @@ export const filterOllamaSearchData = <
         ) {
           const dateA = new Date(a.modified_at!).getTime();
           const dateB = new Date(b.modified_at!).getTime();
+          return searchFilter.order === FilterOrder.ASCENDING
+            ? dateA - dateB
+            : dateB - dateA;
+        }
+        return 0;
+      });
+    } else if (searchFilter.value === "ollama:lastUpdated") {
+      filteredData = filteredData.sort((a, b) => {
+        if (
+          isOllamaConversationHistoryDetailItem(a) &&
+          isOllamaConversationHistoryDetailItem(b)
+        ) {
+          const dateA = new Date(a.lastUpdated!).getTime();
+          const dateB = new Date(b.lastUpdated!).getTime();
           return searchFilter.order === FilterOrder.ASCENDING
             ? dateA - dateB
             : dateB - dateA;
@@ -273,13 +281,16 @@ export const getOllamaConversationHistoryDetailItems = (
           modelName: ollamaConversationHistory[key].modelName,
           name:
             ollamaConversationHistory[key].name ??
-            ollamaConversationHistory[key].conversation[
-              ollamaConversationHistory[key].conversation.length - 1
-            ]?.text ??
-            "",
+            ollamaConversationHistory[key].conversation
+              ? ollamaConversationHistory[key].conversation?.length > 0
+                ? ollamaConversationHistory[key].conversation[
+                    ollamaConversationHistory[key].conversation?.length - 1 ?? 0
+                  ]?.text
+                : i18next.t("ollama:emptyConversation")
+              : i18next.t("ollama:emptyConversation"),
           lastUpdated: ollamaConversationHistory[key].lastUpdated,
           conversationLength:
-            ollamaConversationHistory[key].conversation.length,
+            ollamaConversationHistory[key].conversation?.length ?? 0,
         }))
         .sort(
           (a, b) =>
