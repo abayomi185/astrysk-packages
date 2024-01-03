@@ -59,3 +59,5 @@ export {
   hasDarkAndLightAppletPrimaryColors,
   hasDarkAndLightAppletAccentColors,
 } from "./utils/color";
+
+export { isValidJSON } from "./utils/json";
