@@ -449,10 +449,8 @@ const OllamaConversationDetail: React.FC<{
 
   const consistentUUID = React.useMemo(() => {
     if (conversationId) {
-      console.log("return consistentUUID", conversationId);
       return conversationId;
     } else {
-      console.log("new consistentUUID", conversationId);
       return Crypto.randomUUID();
     }
   }, [conversationId]);

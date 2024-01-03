@@ -53,9 +53,9 @@ export const useChatWithEventSource = (
       const messageHandler: EventSourceListener<string, "message"> = (
         event
       ) => {
-        console.log("EventSource message:", event.data);
+        // console.log("EventSource message:", event.data);
         const data: Generate200AnyOf = JSON.parse(event.data as string);
-        console.log("Message received:", data);
+        // console.log("Message received:", data);
 
         setMessages((prevMessages) => [...prevMessages, data]);
 
@@ -67,7 +67,7 @@ export const useChatWithEventSource = (
       };
 
       const errorHandler: EventSourceListener<string, "error"> = (event) => {
-        console.error("EventSource error:", event);
+        // console.error("EventSource error:", event);
         eventSource.close();
         eventSource.removeAllEventListeners();
         setEventSource(null);
@@ -117,15 +117,15 @@ export const useChatWithReader = (
     const response = await chatWithFetch(requestConfig, chatBody);
 
     let chunks = [];
-    console.log(response);
-    console.log(response.blob());
+    // console.log(response);
+    // console.log(response.blob());
     // const reader = response.body!.getReader()!;
 
-    console.log("File Reader");
+    // console.log("File Reader");
     const reader2 = new FileReader();
     reader2.onload = () => {
       const text = reader2.result;
-      console.log("text", text);
+      // console.log("text", text);
     };
 
     // while (true) {

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigation } from "expo-router";
-import { TextInput, KeyboardAvoidingView } from "react-native";
-import { YStack, TextArea, Button, Text, XStack } from "tamagui";
+import { YStack, XStack } from "tamagui";
 import { useTranslation } from "react-i18next";
 import { useOllamaStore } from "../../store";
 import { onItemLayout } from "@astrysk/utils";
