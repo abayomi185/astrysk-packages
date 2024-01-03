@@ -23,4 +23,6 @@ export type ChatBody = {
     role?: string;
   }[];
   stream?: boolean;
+  template?: string;
+  options?: Record<string, number | string>;
 };

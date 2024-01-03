@@ -19,6 +19,10 @@ export const ModelListItem: React.FC<{
       <YStack flex={1}>
         <H3>{data.name}</H3>
         <Text color="$gray10" marginTop="$1">
+          {t(`ollama:type`) + ": "}
+          {t("ollama:model")}
+        </Text>
+        <Text color="$gray10" marginTop="$1">
           {t(`ollama:digest`) + ": "}
           {data.digest?.slice(0, 6)}
         </Text>

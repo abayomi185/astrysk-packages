@@ -36,6 +36,7 @@ import {
 import { useOllamaStore } from "../../store";
 import {
   ExtendedListLocalModels200ModelsItem,
+  OllamaAdvancedOptions,
   OllamaConversation,
   OllamaDetailScreenContext,
   OllamaSearchFilterContext,
@@ -393,11 +394,7 @@ const OllamaConversationDetail: React.FC<{
 
   const toast = useToastController();
 
-  const baseUrl = useOllamaStore.getState().baseURL;
-
   const axiosCancelTokenSource = React.useRef(Axios.CancelToken.source());
-  const ollamaConversationIsRequesting =
-    useOllamaStore((state) => state.ollamaConversationIsRequesting) ?? false;
 
   const ollamaConversationHistory =
     useOllamaStore((state) => state.ollamaConversationHistory) ?? {};
@@ -407,9 +404,6 @@ const OllamaConversationDetail: React.FC<{
   );
   const ollamaEditTextId = useOllamaStore((state) => state.editTextId);
 
-  const ollamaEditTextCache = useOllamaStore(
-    (state) => state.ollamaAfterEditTextCache
-  );
   const ollamaAfterEditTextCache = useOllamaStore(
     (state) => state.ollamaAfterEditTextCache
   );
@@ -420,19 +414,22 @@ const OllamaConversationDetail: React.FC<{
   const [conversation, setConversation] = React.useState<OllamaConversation[]>(
     []
   );
+  const [conversationAdvancedOptions, setConversationAdvancedOptions] =
+    React.useState<OllamaAdvancedOptions>({});
 
   const [initialMessageCount, setInitialMessageCount] =
     React.useState<number>(0);
 
   const [sendCount, setSendCount] = React.useState<number>(0);
-  const [waitingForResponse, setWaitingForResponse] =
-    React.useState<boolean>(false);
 
   React.useEffect(() => {
     if (conversationId) {
       setConversation(ollamaConversationHistory[conversationId]?.conversation);
       setInitialMessageCount(
-        ollamaConversationHistory[conversationId]?.conversation.length
+        ollamaConversationHistory[conversationId]?.conversation?.length ?? 0
+      );
+      setConversationAdvancedOptions(
+        ollamaConversationHistory[conversationId]?.advancedOptions ?? {}
       );
     }
   }, [conversationId]);
@@ -452,8 +449,10 @@ const OllamaConversationDetail: React.FC<{
 
   const consistentUUID = React.useMemo(() => {
     if (conversationId) {
+      console.log("return consistentUUID", conversationId);
       return conversationId;
     } else {
+      console.log("new consistentUUID", conversationId);
       return Crypto.randomUUID();
     }
   }, [conversationId]);
@@ -461,10 +460,12 @@ const OllamaConversationDetail: React.FC<{
   const convertConversationToOllamaRequestMessage = (
     conversation: OllamaConversation[]
   ) => {
-    return conversation.map((ollamaMessage) => ({
-      content: ollamaMessage.text,
-      role: "user",
-    }));
+    return conversation
+      .map((ollamaMessage) => ({
+        content: ollamaMessage.text,
+        role: "user",
+      }))
+      .reverse();
   };
 
   const convertResponseToOllamaConversation = (
@@ -483,12 +484,10 @@ const OllamaConversationDetail: React.FC<{
   const chatNoStream = useChat({
     mutation: {
       onSuccess: (data) => {
-        setConversation((previousMessages) =>
-          GiftedChat.append(
-            previousMessages,
-            convertResponseToOllamaConversation(data)
-          )
-        );
+        setConversation((previousMessages) => [
+          ...convertResponseToOllamaConversation(data),
+          ...previousMessages,
+        ]);
         useOllamaStore.setState({ ollamaConversationIsRequesting: false });
       },
       onError: (error) => {
@@ -517,8 +516,9 @@ const OllamaConversationDetail: React.FC<{
     }));
   };
 
+  // Save current conversation when new message is received
+  // or when a message is edited
   React.useEffect(() => {
-    // Save current conversation when new message is received
     if (!historyMode && conversation.length > 0) {
       if (
         (conversationHistoryId && conversation.length != initialMessageCount) ||
@@ -540,6 +540,7 @@ const OllamaConversationDetail: React.FC<{
         model: forwardedData.name,
         messages: convertConversationToOllamaRequestMessage(conversation),
         stream: false,
+        ...conversationAdvancedOptions, // Advanced options
       },
       cancelSource: axiosCancelTokenSource.current,
     });
@@ -585,12 +586,14 @@ const OllamaConversationDetail: React.FC<{
     );
   };
 
+  // Request response when sendCount changes
   React.useEffect(() => {
     if (sendCount > 0) {
       requestChatNoStream();
     }
   }, [sendCount]);
 
+  // Save edited text
   React.useEffect(() => {
     if (
       useOllamaStore.getState().ollamaEditTextCache !==
@@ -635,6 +638,11 @@ const OllamaConversationDetail: React.FC<{
       >
         {!historyMode && (
           <OllamaConversationActionPanel
+            conversationId={consistentUUID}
+            modelDetails={{
+              name: forwardedData.name,
+              digest: forwardedData.digest,
+            }}
             onNewConversationPress={newConversationHandler}
           />
         )}

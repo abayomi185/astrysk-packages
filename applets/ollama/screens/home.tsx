@@ -155,7 +155,7 @@ const OllamaHome: React.FC = () => {
     return getOllamaConversationHistoryDetailItems(
       ollamaConversationHistory,
       ollamaConversationHistoryKeys
-    );
+    ).slice(0, 20);
   }, [ollamaConversationHistoryKeys]);
 
   const deleteHistoryItem = (conversationId: string) => {
@@ -179,8 +179,9 @@ const OllamaHome: React.FC = () => {
     <YStack height="100%">
       <XStack flex={1}>
         <FlashList
-          // contentContainerStyle={{ paddingHorizontal: "7" }}
+          contentContainerStyle={{ paddingBottom: 100 }}
           data={getChatHistory()}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <OllamaHomeItem
               details={item}
@@ -190,7 +191,9 @@ const OllamaHome: React.FC = () => {
           estimatedItemSize={70}
           ListHeaderComponent={
             <XStack flex={1} paddingHorizontal="$1.5">
-              <SectionTitle subtle>{t("ollama:chatHistory")}</SectionTitle>
+              <SectionTitle subtle>
+                {t("ollama:recentChatHistory")}
+              </SectionTitle>
             </XStack>
           }
           ListEmptyComponent={

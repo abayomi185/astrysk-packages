@@ -31,7 +31,8 @@ const getOllamaFilterBarOptions = (
       options: [
         { value: "ollama:alphabetical", supportsOrderBy: true },
         { value: "ollama:size", supportsOrderBy: true },
-        { value: "ollama:modified_date", supportsOrderBy: true },
+        { value: "ollama:modifiedDate", supportsOrderBy: true },
+        { value: "ollama:lastUpdated", supportsOrderBy: true },
       ],
     },
     {

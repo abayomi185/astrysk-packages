@@ -21,7 +21,9 @@ import {
   getOllamaConversationHistoryDetailItems,
 } from "../../utils";
 
-const OllamaChatHistory: React.FC<{}> = () => {
+const OllamaChatHistory: React.FC<{
+  filterType: string;
+}> = ({ filterType }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -30,6 +32,12 @@ const OllamaChatHistory: React.FC<{}> = () => {
   const iconColor = getIconColor();
 
   const [flashListHeight, setFlashListHeight] = React.useState(0);
+
+  const conversationId =
+    useOllamaStore
+      .getState()
+      .filterBarOptions?.Conversation?.find((data) => data.id === filterType)
+      ?.conversationId ?? "";
 
   const ollamaConversationHistory =
     useOllamaStore((state) => state.ollamaConversationHistory) ?? {};
@@ -40,10 +48,16 @@ const OllamaChatHistory: React.FC<{}> = () => {
   );
 
   const getChatHistory = React.useCallback(() => {
-    return getOllamaConversationHistoryDetailItems(
+    const historyDetailItems = getOllamaConversationHistoryDetailItems(
       ollamaConversationHistory,
       ollamaConversationHistoryKeys
     );
+    if (conversationId) {
+      return historyDetailItems.filter(
+        (item) => item.conversationId !== conversationId
+      );
+    }
+    return historyDetailItems;
   }, [ollamaConversationHistoryKeys]);
 
   const editHistoryItem = (key: string) => {

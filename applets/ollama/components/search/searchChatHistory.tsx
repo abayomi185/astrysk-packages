@@ -20,15 +20,19 @@ export const ChatHistoryListItem: React.FC<{
       <YStack flex={1}>
         <H3 numberOfLines={1}>{data.name}</H3>
         <Text color="$gray10" marginTop="$1">
+          {t(`ollama:type`) + ": "}
+          {t("ollama:chat")}
+        </Text>
+        <Text color="$gray10" marginTop="$1">
           {t(`ollama:model`) + ": "}
-          {data.modelName}
+          {data.modelName ?? t("common:na")}
         </Text>
         <Text color="$gray10" marginTop="$1">
           {t(`ollama:conversationLength`) + ": "}
           {data.conversationLength}
         </Text>
         <Text color="$gray10" marginTop="$1">
-          {t(`ollama:modified`) + ": "}
+          {t(`ollama:lastUpdated`) + ": "}
           {new Date(data.lastUpdated ?? 0).toLocaleString().slice(0, -3)}
         </Text>
       </YStack>

@@ -36,7 +36,7 @@ const OllamaSelectText: React.FC<{ text: string; edit: boolean }> = ({
 
   const [selectAllToggle, setSelectAllToggle] = React.useState<boolean>(false);
 
-  const handleHeaderRight = () => {
+  const handleHeaderRight = React.useCallback(() => {
     if (edit) {
       saveEditedText();
       navigation.goBack();
@@ -48,7 +48,7 @@ const OllamaSelectText: React.FC<{ text: string; edit: boolean }> = ({
         },
       });
     }
-  };
+  }, []);
 
   useOllamaModalHeader(
     navigation,
@@ -57,7 +57,7 @@ const OllamaSelectText: React.FC<{ text: string; edit: boolean }> = ({
     undefined,
     () => (
       <Button
-        width="$4"
+        width="$3"
         backgroundColor="$transparent"
         padding="$0"
         onPress={handleHeaderRight}
@@ -66,9 +66,9 @@ const OllamaSelectText: React.FC<{ text: string; edit: boolean }> = ({
         }}
       >
         {edit ? (
-          <Text color="$blue10" fontSize="$7">
-            {t("ollama:save")}
-          </Text>
+          <XStack flex={1} justifyContent="center">
+            <Ionicons name="save-outline" size={24} color={getIconColor()} />
+          </XStack>
         ) : (
           <XStack flex={1} justifyContent="center">
             <Ionicons name="scan" size={24} color={getIconColor()} />

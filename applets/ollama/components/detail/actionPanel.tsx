@@ -11,6 +11,7 @@ import {
   OllamaDetailScreenContext,
   OllamaDetailScreenProps,
   OllamaFilter,
+  OllamaModelDetails,
   OllamaSearchFilterContext,
 } from "../../types";
 import { FlashList } from "@shopify/flash-list";
@@ -18,19 +19,30 @@ import { ollamaColors } from "../../colors";
 import { useOllamaStore } from "../../store";
 
 const getOllamaConversationFilterBarOptions = (
+  conversationId: string,
+  modelDetails: OllamaModelDetails,
   context: OllamaSearchFilterContext
 ): OllamaFilter[] => {
   return [
     {
-      id: "ollama:conversation_history",
-      context: OllamaDetailScreenContext.History,
-      options: [], // Not needed in this context
+      id: "ollama:conversation_model",
+      conversationId,
+      otherParams: {
+        name: modelDetails.name,
+        digest: modelDetails.digest,
+      },
+      context: OllamaDetailScreenContext.ModelPreview,
     },
-    // {
-    //   id: "ollama:options",
-    //   context: OllamaDetailScreenContext.AdvancedOptions,
-    //   options: [],
-    // },
+    {
+      id: "ollama:conversation_history",
+      conversationId,
+      context: OllamaDetailScreenContext.History,
+    },
+    {
+      id: "ollama:options",
+      conversationId,
+      context: OllamaDetailScreenContext.AdvancedOptions,
+    },
   ];
 };
 
@@ -52,9 +64,11 @@ const OllamaNewConversationButton: React.FC<{
 };
 
 const OllamaConversationActionPanel: React.FC<{
+  conversationId: string;
+  modelDetails: OllamaModelDetails;
   onNewConversationPress: () => void;
   callback?: (action?: string) => void;
-}> = ({ onNewConversationPress, callback }) => {
+}> = ({ conversationId, modelDetails, onNewConversationPress, callback }) => {
   const { t } = useTranslation();
   const toast = useToastController();
   const router = useRouter();
@@ -81,7 +95,11 @@ const OllamaConversationActionPanel: React.FC<{
   };
 
   const conversationFilterBarOptions = React.useMemo(() => {
-    const filterBarOptions = getOllamaConversationFilterBarOptions(context);
+    const filterBarOptions = getOllamaConversationFilterBarOptions(
+      conversationId,
+      modelDetails,
+      context
+    );
     useOllamaStore.setState((state) => ({
       filterBarOptions: {
         ...state.filterBarOptions,
@@ -89,7 +107,7 @@ const OllamaConversationActionPanel: React.FC<{
       },
     }));
     return filterBarOptions;
-  }, [context]);
+  }, [context, conversationId]);
 
   return (
     <XStack

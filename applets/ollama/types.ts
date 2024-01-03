@@ -12,7 +12,13 @@ export interface OllamaConversation extends IMessage {
   message?: {
     content?: string;
     role?: string;
+    image?: string[];
   };
+}
+
+export interface OllamaAdvancedOptions {
+  template?: string;
+  options?: Record<string, number | string>;
 }
 
 export interface OllamaConversationHistory {
@@ -23,8 +29,14 @@ export interface OllamaConversationHistory {
     conversation: OllamaConversation[];
     conversationLength: number;
     lastUpdated?: string;
+    advancedOptions?: OllamaAdvancedOptions;
   };
 }
+
+export type OllamaModelDetails = Pick<
+  ListLocalModels200ModelsItem,
+  "name" | "digest"
+>;
 
 export interface OllamaConversationHistoryDetailItems {
   conversationId: string;
@@ -51,6 +63,8 @@ export enum OllamaDetailScreenContext {
   History = "History",
   HistoryItem = "HistoryItem",
   HomePreview = "HomePreview",
+  DetailPreview = "DetailPreview",
+  ModelPreview = "ModelPreview",
   AdvancedOptions = "AdvancedOptions",
 }
 
@@ -79,14 +93,17 @@ export interface OllamaFilterOption {
 
 export interface OllamaFilter {
   id: string;
+  conversationId?: string;
   context?: OllamaDetailScreenContext;
-  options: OllamaFilterOption[];
+  otherParams?: OllamaModelDetails;
+  options?: OllamaFilterOption[];
 }
 
 export enum OllamaSearchFilterContext {
   Search = "Search",
   Conversation = "Conversation",
   SelectText = "SelectText",
+  ModelPreview = "ModelPreview",
   NONE = "NONE",
 }
 

@@ -13,7 +13,8 @@ import { useOllamaModalHeader } from "../components/useHeader";
 import OllamaSelectText from "../components/modal/selectText";
 import { useOllamaStore } from "../store";
 import OllamaChatHistory from "../components/modal/chatHistory";
-import { Button, Text } from "tamagui";
+import OllamaModelView from "../components/modal/model";
+import OllamaAdvancedOptionsView from "../components/modal/advancedOptions";
 
 const OllamaModal = () => {
   const { t } = useTranslation();
@@ -54,9 +55,25 @@ const OllamaModal = () => {
   }
 
   if (params.context === OllamaDetailScreenContext.History) {
+    const filterType = params?.itemId as string;
+
     useOllamaModalHeader(navigation, `${t("ollama:chatHistory")}`);
 
-    return <OllamaChatHistory />;
+    return <OllamaChatHistory filterType={filterType} />;
+  }
+
+  if (params.context === OllamaDetailScreenContext.AdvancedOptions) {
+    const filterType = params?.itemId as string;
+
+    return <OllamaAdvancedOptionsView filterType={filterType} />;
+  }
+
+  if (params.context === OllamaDetailScreenContext.ModelPreview) {
+    const filterType = params?.itemId as string;
+
+    useOllamaModalHeader(navigation, `${t("ollama:model")}`);
+
+    return <OllamaModelView filterType={filterType} />;
   }
 
   return null;
