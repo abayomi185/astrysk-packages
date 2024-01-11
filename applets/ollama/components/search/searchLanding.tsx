@@ -1,18 +1,15 @@
 import React, { Suspense } from "react";
 import { RefreshControl } from "react-native";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 import { YStack, XStack } from "tamagui";
-import { Image, ImageSource } from "expo-image";
 import {
   OllamaConversationHistoryDetailItems,
-  OllamaDetailScreenContext,
   OllamaSearchFilterContext,
 } from "../../types";
 import { useOllamaStore } from "../../store";
 import {
   filterOllamaSearchData,
   getOllamaConversationHistoryDetailItems,
-  goToOllamaDetailScreen,
 } from "../../utils";
 import {
   getFlashListColumnsFromViewType,

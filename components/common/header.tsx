@@ -1,7 +1,7 @@
 import React from "react";
+import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { Animated } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { Screens } from "@astrysk/constants";
 import { TFunction } from "i18next";
@@ -11,11 +11,12 @@ import { AppletColors } from "@astrysk/types";
 import { HeaderRightWrapper } from "./headerRightWrapper";
 
 export const useHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   HeaderRightComponent: React.FC,
   largeTitle?: boolean
 ) => {
   const applet = useAppStateStore((state) => state.activeApplet) as string;
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: applet ?? Screens.ASTRYSK,
@@ -29,9 +30,10 @@ export const useHomeHeader = (
 
 export const useSearchHeader = (
   t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   HeaderRightComponent: React.FC
 ) => {
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: t(`common:${Screens.SEARCH_SCREEN}`),
@@ -52,10 +54,9 @@ export const useSearchHeader = (
   }, []);
 };
 
-export const useSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
-  HeaderRightComponent: React.FC
-) => {
+export const useSettingsHeader = (HeaderRightComponent: React.FC) => {
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: Screens.SETTINGS_SCREEN,
@@ -67,11 +68,12 @@ export const useSettingsHeader = (
 };
 
 export const useDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   appletColors: AppletColors,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -112,12 +114,13 @@ export const useDetailHeader = (
 };
 
 export const useFullScreenDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   appletColors: AppletColors,
   headerOpacity?: Animated.AnimatedInterpolation<number>,
   dependencies?: any[]
 ) => {
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -174,15 +177,15 @@ export const useFullScreenDetailHeader = (
 };
 
 export const useModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   appletColors: AppletColors,
   gestureEnabled?: boolean,
   dependencies?: any[],
   headerRight?: () => React.ReactNode
 ) => {
+  const navigation = useNavigation();
+
   return React.useLayoutEffect(() => {
-    // console.log(JSON.stringify(navigation.getParent(), null, 4));
     navigation.setOptions({
       headerTitle: headerTitle,
       gestureEnabled: gestureEnabled,

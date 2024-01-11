@@ -18,20 +18,20 @@ import { ollamaColors } from "../colors";
 export const useOllamaHomeHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useHomeHeader(navigation, HeaderRightWrapper);
+  return useHomeHeader(HeaderRightWrapper);
 };
 
 export const useOllamaSearchHeader = (
   t: TFunction,
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useSearchHeader(t, navigation, HeaderRightWrapper);
+  return useSearchHeader(t, HeaderRightWrapper);
 };
 
 export const useOllamaSettingsHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useSettingsHeader(navigation, HeaderRightWrapper);
+  return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useOllamaDetailHeader = (
@@ -39,7 +39,7 @@ export const useOllamaDetailHeader = (
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
-  return useDetailHeader(navigation, headerTitle, ollamaColors, headerOpacity);
+  return useDetailHeader(headerTitle, ollamaColors, headerOpacity);
 };
 
 export const useOllamaFsDetailHeader = (
@@ -49,7 +49,6 @@ export const useOllamaFsDetailHeader = (
   dependencies?: any[]
 ) => {
   return useFullScreenDetailHeader(
-    navigation,
     headerTitle,
     ollamaColors,
     headerOpacity,
@@ -65,7 +64,6 @@ export const useOllamaModalHeader = (
   headerRight?: () => React.ReactNode
 ) => {
   return useModalHeader(
-    navigation,
     headerTitle,
     ollamaColors,
     gestureEnabled,

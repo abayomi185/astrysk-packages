@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { useGlobalSearchParams, useNavigation } from "expo-router";
 
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ const OllamaModal = () => {
     const searchContext =
       params.searchContext ?? OllamaSearchFilterContext.Search;
 
-    useOllamaModalHeader(navigation, t(filterType));
+    useOllamaModalHeader(t(filterType));
 
     return (
       <OllamaSearchFilterOptions
@@ -57,7 +57,7 @@ const OllamaModal = () => {
   if (params.context === OllamaDetailScreenContext.History) {
     const filterType = params?.itemId as string;
 
-    useOllamaModalHeader(navigation, `${t("ollama:chatHistory")}`);
+    useOllamaModalHeader(`${t("ollama:chatHistory")}`);
 
     return <OllamaChatHistory filterType={filterType} />;
   }
@@ -71,7 +71,7 @@ const OllamaModal = () => {
   if (params.context === OllamaDetailScreenContext.ModelPreview) {
     const filterType = params?.itemId as string;
 
-    useOllamaModalHeader(navigation, `${t("ollama:model")}`);
+    useOllamaModalHeader(`${t("ollama:model")}`);
 
     return <OllamaModelView filterType={filterType} />;
   }

@@ -14,20 +14,20 @@ import { proxmoxColors } from "../colors";
 export const useProxmoxHomeHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useHomeHeader(navigation, HeaderRightWrapper);
+  return useHomeHeader(HeaderRightWrapper);
 };
 
 export const useProxmoxSearchHeader = (
   t: TFunction,
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useSearchHeader(t, navigation, HeaderRightWrapper);
+  return useSearchHeader(t, HeaderRightWrapper);
 };
 
 export const useProxmoxSettingsHeader = (
   navigation: NavigationProp<ReactNavigation.RootParamList>
 ) => {
-  return useSettingsHeader(navigation, HeaderRightWrapper);
+  return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useProxmoxDetailHeader = (
@@ -35,7 +35,7 @@ export const useProxmoxDetailHeader = (
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
-  return useDetailHeader(navigation, headerTitle, proxmoxColors, headerOpacity);
+  return useDetailHeader(headerTitle, proxmoxColors, headerOpacity);
 };
 
 export const useProxmoxModalHeader = (
@@ -45,7 +45,6 @@ export const useProxmoxModalHeader = (
   dependencies?: any[]
 ) => {
   return useModalHeader(
-    navigation,
     headerTitle,
     proxmoxColors,
     gestureEnabled,

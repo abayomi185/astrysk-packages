@@ -51,7 +51,6 @@ const OllamaSelectText: React.FC<{ text: string; edit: boolean }> = ({
   }, []);
 
   useOllamaModalHeader(
-    navigation,
     edit ? `${t("ollama:editText")}` : `${t("ollama:selectText")}`,
     undefined,
     undefined,

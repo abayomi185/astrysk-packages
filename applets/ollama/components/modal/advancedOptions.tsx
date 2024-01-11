@@ -69,29 +69,23 @@ const OllamaAdvancedOptionsView: React.FC<{
     if (valid) navigation.goBack();
   };
 
-  useOllamaModalHeader(
-    navigation,
-    t("ollama:options"),
-    undefined,
-    undefined,
-    () => (
-      <Button
-        minWidth="$4"
-        backgroundColor="$transparent"
-        padding="$0"
-        onPress={handleHeaderRight}
-        pressStyle={{
-          backgroundColor: "$transparent",
-        }}
-      >
-        {
-          <XStack flex={1} justifyContent="center">
-            <Ionicons name="save-outline" size={24} color={getIconColor()} />
-          </XStack>
-        }
-      </Button>
-    )
-  );
+  useOllamaModalHeader(t("ollama:options"), undefined, undefined, () => (
+    <Button
+      minWidth="$4"
+      backgroundColor="$transparent"
+      padding="$0"
+      onPress={handleHeaderRight}
+      pressStyle={{
+        backgroundColor: "$transparent",
+      }}
+    >
+      {
+        <XStack flex={1} justifyContent="center">
+          <Ionicons name="save-outline" size={24} color={getIconColor()} />
+        </XStack>
+      }
+    </Button>
+  ));
 
   return (
     <YStack height="100%">
