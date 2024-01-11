@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation } from "expo-router";
+import { useNavigation, usePathname } from "expo-router";
 import {
   GetClusterResourcesResponseResponseDataItem,
   useGetClusterResources,
@@ -31,6 +31,7 @@ import {
 import { getNumberValue } from "@astrysk/utils";
 import { ProxmoxChartWrapper, ProxmoxHistoricChartWrapper } from "./charts";
 import { ProxmoxChartProps, ProxmoxListContext } from "../../types";
+import { SEARCH } from "@astrysk/constants/screens";
 
 const getProxmoxResourceDetailOptions = (
   t: TFunction,
@@ -294,7 +295,12 @@ const ProxmoxResourceDetail: React.FC<{
   //   forwardedData.status === "running" || forwardedData.status === "available"
   // );
 
+  const routePathname = usePathname();
+  const CHART_PATH = `/${SEARCH}/detail`;
+
   // Fetch data for the specific resource
+  // Replaces the forwardedData with the fetched data
+  // for up-to-date data
   const resource = useGetClusterResources({
     query: {
       initialData: { data: [forwardedData] },
@@ -314,7 +320,8 @@ const ProxmoxResourceDetail: React.FC<{
     {
       query: {
         select: (response) => response.data,
-        enabled: forwardedData.type === "qemu",
+        enabled:
+          forwardedData.type === "qemu" && routePathname.startsWith(CHART_PATH),
       },
     }
   );
@@ -326,7 +333,8 @@ const ProxmoxResourceDetail: React.FC<{
     {
       query: {
         select: (response) => response.data,
-        enabled: forwardedData.type === "lxc",
+        enabled:
+          forwardedData.type === "lxc" && routePathname.startsWith(CHART_PATH),
       },
     }
   );
@@ -338,7 +346,9 @@ const ProxmoxResourceDetail: React.FC<{
     {
       query: {
         select: (response) => response.data,
-        enabled: forwardedData.type === "storage",
+        enabled:
+          forwardedData.type === "storage" &&
+          routePathname.startsWith(CHART_PATH),
       },
     }
   );

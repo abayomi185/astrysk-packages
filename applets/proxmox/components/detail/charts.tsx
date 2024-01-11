@@ -20,6 +20,7 @@ import { proxmoxColors } from "../../colors";
 import { useTranslation } from "react-i18next";
 import { generateChartTimestamps } from "../../utils";
 import { getNumberValue, getStringValue } from "@astrysk/utils";
+import { ExtendedAppletColors } from "@astrysk/types";
 
 // Register extensions
 echartsCore.use([
@@ -55,9 +56,9 @@ const ProxmoxLineAreaChartPanel: React.FC<{
   const option: echarts.EChartsOption = {
     animation: false,
     color: [
-      proxmoxColors.chartColor1,
-      proxmoxColors.chartColor2,
-      proxmoxColors.chartColor3,
+      (proxmoxColors as ExtendedAppletColors).chartColor1 as string,
+      (proxmoxColors as ExtendedAppletColors).chartColor2 as string,
+      (proxmoxColors as ExtendedAppletColors).chartColor3 as string,
     ],
     tooltip: {
       trigger: "axis",
@@ -311,7 +312,9 @@ export const ProxmoxChartWrapper: React.FC<{
             >
               <Progress.Indicator
                 animation="delay"
-                backgroundColor={proxmoxColors.chartColor1}
+                backgroundColor={
+                  (proxmoxColors as ExtendedAppletColors).chartColor1
+                }
               />
             </Progress>
           </YStack>
