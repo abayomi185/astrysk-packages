@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "@astrysk/assets": "*",
-    "react": "18.2.0",
     "i18next": "^22.4.14",
+    "react": "18.2.0",
     "react-i18next": "^12.2.0"
   },
   "devDependencies": {
-    "@types/react": "~18.2.14",
+    "@types/react": "~18.2.45",
     "tsup": "^6.7.0"
   },
   "private": true

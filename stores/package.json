@@ -7,8 +7,8 @@
   },
   "dependencies": {
     "@astrysk/api": "*",
-    "@astrysk/types": "*",
     "@astrysk/components": "*",
+    "@astrysk/types": "*",
     "zustand": "^4.3.3"
   },
   "devDependencies": {
