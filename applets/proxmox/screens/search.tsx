@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation, useSearchParams } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { useProxmoxConfigurator } from "../utils";
 import { useProxmoxSearchHeader } from "../components/useHeader";
 import ProxmoxSearchLanding from "../components/search/searchLanding";
@@ -15,7 +15,7 @@ const ProxmoxSearch: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const { searchPathName, searchQuery } = useSearchParams();
+  const { searchPathName, searchQuery } = useLocalSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
 

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -17,7 +17,7 @@ const ProxmoxModal = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const params = useSearchParams() as ProxmoxDetailScreenProps;
+  const params = useLocalSearchParams() as ProxmoxDetailScreenProps;
 
   // NOTE: SEARCH FILTER
   if (params.context === ProxmoxDetailScreenContext.SearchFilter) {

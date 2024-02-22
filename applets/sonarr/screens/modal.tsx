@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +23,7 @@ const SonarrModal = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const params = useSearchParams() as SonarrDetailScreenProps;
+  const params = useLocalSearchParams() as SonarrDetailScreenProps;
 
   const seriesId = parseInt(params?.itemId as string);
   const data = useSonarrStore.getState().sonarrSeriesCache?.[

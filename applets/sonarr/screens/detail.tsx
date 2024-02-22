@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { useSonarrStore } from "../store";
 import {
@@ -14,7 +14,7 @@ import { TabContext } from "@astrysk/types";
 import SonarrAllEpisodesDetail from "../components/detail/episodesDetail";
 
 const SonarrDetail: React.FC = () => {
-  const params = useSearchParams() as SonarrDetailScreenProps;
+  const params = useLocalSearchParams() as SonarrDetailScreenProps;
   const refParams = React.useRef(params);
 
   const itemData = React.useMemo(() => {

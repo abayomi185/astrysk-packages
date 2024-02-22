@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { useJellyfinStore } from "../store";
 import {
@@ -13,7 +13,7 @@ import JellyfinCollectionFolderDetail from "../components/detail/collectionFolde
 import JellyfinMediaNotSupported from "../components/detail/mediaNotSupported";
 
 const JellyfinDetail: React.FC = () => {
-  const params = useSearchParams() as JellyfinDetailScreenProps;
+  const params = useLocalSearchParams() as JellyfinDetailScreenProps;
 
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;

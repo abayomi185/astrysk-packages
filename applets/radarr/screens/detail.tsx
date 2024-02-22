@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { useRadarrStore } from "../store";
 import {
@@ -12,7 +12,7 @@ import { MovieResource } from "../api";
 import { TabContext } from "@astrysk/types";
 
 const RadarrDetail: React.FC = () => {
-  const params = useSearchParams() as RadarrDetailScreenProps;
+  const params = useLocalSearchParams() as RadarrDetailScreenProps;
   const refParams = React.useRef(params);
 
   const itemData = React.useMemo(() => {

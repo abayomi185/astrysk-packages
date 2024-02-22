@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams, useNavigation, usePathname } from "expo-router";
+import { useLocalSearchParams, useNavigation, usePathname } from "expo-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -24,7 +24,7 @@ const RadarrModal = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const params = useSearchParams() as RadarrDetailScreenProps;
+  const params = useLocalSearchParams() as RadarrDetailScreenProps;
 
   const movieId = parseInt(params?.itemId as string);
   const data = useRadarrStore.getState().radarrMovieCache?.[

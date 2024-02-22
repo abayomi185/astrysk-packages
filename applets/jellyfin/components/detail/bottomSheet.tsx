@@ -1,6 +1,6 @@
 import React, { Dispatch } from "react";
 import * as ISO639 from "iso-language-codes";
-import { useSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { YStack, Text, H3, Button, XStack } from "tamagui";
 import BottomSheet, {
   BottomSheetBackdrop,
@@ -35,7 +35,7 @@ export const JellyfinLanguageBottomSheet: React.FC<
 
   const snapPoints = React.useMemo(() => ["50%"], []);
 
-  const params = useSearchParams() as JellyfinMediaItemSettingsProps;
+  const params = useLocalSearchParams() as JellyfinMediaItemSettingsProps;
 
   const selectedLanguage =
     params.settingsOptionType &&

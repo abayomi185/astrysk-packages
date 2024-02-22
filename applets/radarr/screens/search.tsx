@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation, useSearchParams } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { useRadarrConfigurator } from "../utils";
 import { useRadarrSearchHeader } from "../components/useHeader";
 import RadarrSearchLanding from "../components/search/searchLanding";
@@ -15,7 +15,7 @@ const RadarrSearch: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const { searchPathName, searchQuery } = useSearchParams();
+  const { searchPathName, searchQuery } = useLocalSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
 

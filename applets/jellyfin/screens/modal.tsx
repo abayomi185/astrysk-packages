@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 
 import {
   JellyfinDetailScreenContext,
@@ -29,7 +29,7 @@ const JellyfinModal = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const params = useSearchParams() as JellyfinDetailScreenProps;
+  const params = useLocalSearchParams() as JellyfinDetailScreenProps;
 
   const baseURL = useJellyfinStore.getState().baseURL;
   const token = useJellyfinStore.getState().token;

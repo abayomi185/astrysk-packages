@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation, useSearchParams } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { useSonarrConfigurator } from "../utils";
 import { useSonarrSearchHeader } from "../components/useHeader";
 import SonarrSearchLanding from "../components/search/searchLanding";
@@ -15,7 +15,7 @@ const SonarrSearch: React.FC = () => {
   const navigation = useNavigation();
   const { t } = useTranslation();
 
-  const { searchPathName, searchQuery } = useSearchParams();
+  const { searchPathName, searchQuery } = useLocalSearchParams();
 
   const [searchTerm, setSearchTerm] = React.useState<string | string[]>();
 

@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { YStack } from "tamagui";
 import {
   JellyfinDetailScreenProps,
@@ -15,7 +15,7 @@ const JellyfinFullScreenModal = () => {
 
   // WARN: Set this up later to support multiple types of media
 
-  const params = useSearchParams() as JellyfinDetailScreenProps;
+  const params = useLocalSearchParams() as JellyfinDetailScreenProps;
 
   const playbackInfo = useGetPlaybackInfo(params.itemId as string, {
     userId: userId,
