@@ -8,7 +8,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": true,
@@ -19,7 +21,9 @@
           "UIInterfaceOrientationLandscapeRight",
           "UIInterfaceOrientationLandscapeLeft"
         ],
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       },
       "splash": {
         "image": "./assets/splash.png",
@@ -59,7 +63,8 @@
           "initialOrientation": "PORTRAIT_UP"
         }
       ],
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   },
   "runtimeVersion": "0.2.0"

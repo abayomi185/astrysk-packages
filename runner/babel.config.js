@@ -5,15 +5,6 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      require.resolve("expo-router/babel"),
-      [
-        "module-resolver",
-        {
-          alias: {
-            "@applet": "./src/applet",
-          },
-        },
-      ],
       [
         "@tamagui/babel-plugin",
         {
@@ -23,13 +14,6 @@ module.exports = function (api) {
           disableExtraction: process.env.NODE_ENV === "development",
         },
       ],
-      [
-        "transform-inline-environment-variables",
-        {
-          include: ["TAMAGUI_TARGET"],
-        },
-      ],
-      "@babel/plugin-proposal-export-namespace-from",
       "react-native-reanimated/plugin",
     ],
   };
