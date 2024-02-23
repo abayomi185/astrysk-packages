@@ -50,7 +50,7 @@ export const AppletHeaderButton = () => {
                   // Go back to root of tab stack
                   navigation.dispatch(StackActions.popToTop());
                   // WARN: Add delay to prevent navigation from being blocked
-                  router.push({
+                  router.replace({
                     pathname: `/${Screens.HOME_SCREEN_ROUTE}`,
                   });
                   break;
