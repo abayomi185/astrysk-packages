@@ -18,6 +18,7 @@ import {
 import { useSonarrStore } from "../../store";
 import {
   filterSonarrSearchData,
+  getSonarrImageURLForId,
   goToSonarrDetailScreen,
   goToSonarrModalScreen,
 } from "../../utils";
@@ -30,7 +31,7 @@ import {
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { sonarrColors } from "../../colors";
-import { TabContext, ViewType } from "@astrysk/types";
+import { ExtendedAppletColors, TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
@@ -81,7 +82,7 @@ const SonarrSearchResultGridItem: React.FC<{
           source={
             {
               uri: data.id
-                ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                ? getSonarrImageURLForId(data.id)
                 : data.remotePoster,
             } as ImageSource
           }
@@ -167,7 +168,7 @@ const SonarrSearchResultListItem: React.FC<{
             source={
               {
                 uri: data.id
-                  ? `${baseURL}/api/MediaCover/${data.id}/poster.jpg?apikey=${token}`
+                  ? `${baseURL}/MediaCover/${data.id}/poster.jpg?apikey=${token}`
                   : data.remotePoster,
               } as ImageSource
             }
@@ -191,7 +192,8 @@ const SonarrSearchResultListItem: React.FC<{
               color={data.monitored ? "$red8" : "$gray9"}
               fill={
                 data.monitored
-                  ? sonarrColors.activeBookmarkFillColor
+                  ? (sonarrColors as ExtendedAppletColors)
+                      .activeBookmarkFillColor
                   : "transparent"
               }
             />

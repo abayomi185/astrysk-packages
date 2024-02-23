@@ -28,7 +28,11 @@ import {
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import { checkEpisodeHasAired, goToSonarrDetailScreen } from "../../utils";
+import {
+  checkEpisodeHasAired,
+  getSonarrImageURLForId,
+  goToSonarrDetailScreen,
+} from "../../utils";
 import { useSonarrStore } from "../../store";
 import {
   CalendarData,
@@ -283,7 +287,7 @@ const SonarrCalendar: React.FC = () => {
                         }}
                         source={
                           {
-                            uri: `${baseURL}/api/MediaCover/${item?.seriesData?.id}/poster.jpg?apikey=${token}`,
+                            uri: getSonarrImageURLForId(item?.seriesData?.id!),
                           } as ImageSource
                         }
                         transition={200}

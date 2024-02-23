@@ -64,6 +64,14 @@ export const deConfigureSonarr = () => {
   useSonarrStore.setState({ isConfigured: false });
 };
 
+export const getSonarrImageURLForId = (id: number) => {
+  return `${
+    useSonarrStore.getState().baseURL
+  }/api/v3/MediaCover/${id}/poster.jpg?apikey=${
+    useSonarrStore.getState().token
+  }`;
+};
+
 // NOTE: SEARCH / COLLECTION UTILS
 export const goToSonarrDetailScreen = ({
   router,

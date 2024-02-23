@@ -12,7 +12,11 @@ import {
 } from "../../types";
 import { Screens } from "@astrysk/constants";
 import { useTranslation } from "react-i18next";
-import { getSizeOnDisk, goToSonarrDetailScreen } from "../../utils";
+import {
+  getSizeOnDisk,
+  getSonarrImageURLForId,
+  goToSonarrDetailScreen,
+} from "../../utils";
 import { TabContext } from "@astrysk/types";
 
 const SonarrSeriesDetailHeader: React.FC<{
@@ -46,7 +50,7 @@ const SonarrSeriesDetailHeader: React.FC<{
             style={{ flex: 1, overflow: "hidden", borderRadius: 15 }}
             source={
               {
-                uri: `${baseURL}/api/MediaCover/${forwardedData.id}/poster.jpg?apikey=${token}`,
+                uri: getSonarrImageURLForId(forwardedData.id!),
               } as ImageSource
             }
             recyclingKey={`${forwardedData.id}`}
