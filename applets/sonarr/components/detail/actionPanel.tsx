@@ -126,7 +126,7 @@ export const SonarrEpisodeItemActionPanel: React.FC<{
       {/* NOTE: AUTOMATIC SEARCH */}
       {isTestflightBuild && (
         <SonarrActionPanelButton first vertical onPress={postCommandAction}>
-          <Ionicons name="ios-search" size={23} color={iconColor} />
+          <Ionicons name="search" size={23} color={iconColor} />
         </SonarrActionPanelButton>
       )}
     </YStack>
@@ -254,7 +254,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
         }}
         onPress={toggleMonitor}
       >
-        <Ionicons name="ios-bookmark" size={23} color={iconColor} />
+        <Ionicons name="bookmark" size={23} color={iconColor} />
       </SonarrActionPanelButton>
 
       {/* NOTE: Automatic Search */}
@@ -263,7 +263,7 @@ export const SonarrEpisodeActionPanel: React.FC<{
           style={sonarrActionButtonColors.automaticSearch}
           onPress={postCommandAction}
         >
-          <Ionicons name="ios-search" size={23} color={iconColor} />
+          <Ionicons name="search" size={23} color={iconColor} />
         </SonarrActionPanelButton>
       )}
 
@@ -506,7 +506,7 @@ export const SonarrActionPanel: React.FC<{
           }}
           onPress={toggleMonitor}
         >
-          <Ionicons name="ios-bookmark" size={23} color={iconColor} />
+          <Ionicons name="bookmark" size={23} color={iconColor} />
         </SonarrActionPanelButton>
 
         {/* NOTE: Edit */}
@@ -532,7 +532,7 @@ export const SonarrActionPanel: React.FC<{
             style={sonarrActionButtonColors.automaticSearch}
             onPress={() => postCommandAction()}
           >
-            <Ionicons name="ios-search" size={23} color={iconColor} />
+            <Ionicons name="search" size={23} color={iconColor} />
           </SonarrActionPanelButton>
         )}
 

@@ -28,7 +28,7 @@ import {
   useQueryLoadingSpinner,
 } from "@astrysk/utils";
 import { radarrColors } from "../../colors";
-import { TabContext, ViewType } from "@astrysk/types";
+import { ExtendedAppletColors, TabContext, ViewType } from "@astrysk/types";
 import { useTranslation } from "react-i18next";
 import { EmptyList } from "@astrysk/components";
 import { Search } from "@tamagui/lucide-icons";
@@ -192,7 +192,8 @@ const RadarrSearchResultListItem: React.FC<{
               color={data.monitored ? "$red8" : "$gray9"}
               fill={
                 data.monitored
-                  ? radarrColors.activeBookmarkFillColor
+                  ? (radarrColors as ExtendedAppletColors)
+                      .activeBookmarkFillColor
                   : "transparent"
               }
             />
@@ -200,7 +201,9 @@ const RadarrSearchResultListItem: React.FC<{
               size={15}
               color={data.hasFile ? "$green8" : "$gray9"}
               fill={
-                data.hasFile ? radarrColors.activeCheckFillColor : "transparent"
+                data.hasFile
+                  ? (radarrColors as ExtendedAppletColors).activeCheckFillColor
+                  : "transparent"
               }
             />
           </XStack>
@@ -340,7 +343,7 @@ const RadarrSearchLanding: React.FC<{
       <YStack flex={1} height="100%" width="100%" paddingTop="$2">
         <FlashList
           contentContainerStyle={{
-            paddingHorizontal: "7",
+            paddingHorizontal: 7,
           }}
           horizontal={false}
           numColumns={getFlashListColumnsFromViewType(

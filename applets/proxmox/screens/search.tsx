@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useProxmoxConfigurator } from "../utils";
 import { useProxmoxSearchHeader } from "../components/useHeader";
 import ProxmoxSearchLanding from "../components/search/searchLanding";
@@ -12,7 +12,6 @@ import { debouncedSetter } from "@astrysk/components";
 const ProxmoxSearch: React.FC = () => {
   useProxmoxConfigurator();
 
-  const navigation = useNavigation();
   const { t } = useTranslation();
 
   const { searchPathName, searchQuery } = useLocalSearchParams();
@@ -28,7 +27,7 @@ const ProxmoxSearch: React.FC = () => {
     }
   }, [searchQuery]);
 
-  useProxmoxSearchHeader(t, navigation);
+  useProxmoxSearchHeader(t);
 
   return (
     <YStack height="100%" width="100%">

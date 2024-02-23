@@ -163,7 +163,7 @@ const ClusterResources: React.FC<{
     <YStack flex={1}>
       <YStack flex={1}>
         <FlashList
-          contentContainerStyle={{ paddingHorizontal: "7" }}
+          contentContainerStyle={{ paddingHorizontal: 7 }}
           data={data ?? []}
           renderItem={({ item }) => (
             <ClusterResourcesListItem t={t} data={item} />

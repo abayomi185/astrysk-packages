@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigation, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useRadarrConfigurator } from "../utils";
 import { useRadarrSearchHeader } from "../components/useHeader";
 import RadarrSearchLanding from "../components/search/searchLanding";
@@ -12,7 +12,6 @@ import { debouncedSetter } from "@astrysk/components";
 const RadarrSearch: React.FC = () => {
   useRadarrConfigurator();
 
-  const navigation = useNavigation();
   const { t } = useTranslation();
 
   const { searchPathName, searchQuery } = useLocalSearchParams();
@@ -28,7 +27,7 @@ const RadarrSearch: React.FC = () => {
     }
   }, [searchQuery]);
 
-  useRadarrSearchHeader(t, navigation);
+  useRadarrSearchHeader(t);
 
   return (
     <YStack height="100%" width="100%">

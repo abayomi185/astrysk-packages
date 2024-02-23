@@ -104,8 +104,8 @@ const JellyfinCollectionFolderDetail: React.FC<{
         <FlashList
           horizontal={false}
           contentContainerStyle={{
-            paddingHorizontal: "7",
-            paddingBottom: "5",
+            paddingHorizontal: 7,
+            paddingBottom: 5,
           }}
           numColumns={flashListColumns}
           data={collectionData.data}

@@ -62,7 +62,7 @@ const JellyfinHome: React.FC = () => {
     }
   }, [refreshing]);
 
-  useJellyfinHomeHeader(navigation);
+  useJellyfinHomeHeader();
 
   return (
     <YStack height="100%">

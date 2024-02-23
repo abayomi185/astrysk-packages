@@ -370,10 +370,7 @@ const ProxmoxResourceDetail: React.FC<{
     resource.refetch();
   };
 
-  useProxmoxDetailHeader(
-    navigation,
-    (forwardedData.storage || forwardedData.id) as string
-  );
+  useProxmoxDetailHeader((forwardedData.storage || forwardedData.id) as string);
 
   return (
     <YStack flex={1}>

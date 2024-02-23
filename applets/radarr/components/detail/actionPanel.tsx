@@ -207,7 +207,7 @@ export const RadarrActionPanel: React.FC<{
           }}
           onPress={toggleMonitor}
         >
-          <Ionicons name="ios-bookmark" size={23} color={iconColor} />
+          <Ionicons name="bookmark" size={23} color={iconColor} />
         </RadarrActionPanelButton>
 
         {/* NOTE: Edit */}
@@ -230,7 +230,7 @@ export const RadarrActionPanel: React.FC<{
             style={radarrActionButtonColors.automaticSearch}
             onPress={() => postCommandAction()}
           >
-            <Ionicons name="ios-search" size={23} color={iconColor} />
+            <Ionicons name="search" size={23} color={iconColor} />
           </RadarrActionPanelButton>
         )}
 

@@ -230,7 +230,7 @@ const RadarrHistory: React.FC<{
         <XStack flex={1} marginTop="$1">
           <FlashList
             contentContainerStyle={{
-              paddingHorizontal: "12",
+              paddingHorizontal: 12,
             }}
             data={movieHistory.data}
             renderItem={({ item }: { item: HistoryResource }) => (

@@ -1,5 +1,5 @@
 import React from "react";
-import { useGlobalSearchParams, useNavigation } from "expo-router";
+import { useGlobalSearchParams } from "expo-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +18,6 @@ import OllamaAdvancedOptionsView from "../components/modal/advancedOptions";
 
 const OllamaModal = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const params = useGlobalSearchParams() as OllamaDetailScreenProps;
 

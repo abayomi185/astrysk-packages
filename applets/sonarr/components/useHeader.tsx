@@ -1,8 +1,6 @@
 import React from "react";
 import { NavigationProp } from "@react-navigation/native";
 import { HeaderRightWrapper } from "@astrysk/components";
-import { Screens } from "@astrysk/constants";
-import { useAppStateStore } from "@astrysk/stores";
 import { H4, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,24 +14,18 @@ import {
 } from "@astrysk/components";
 import { sonarrColors } from "../colors";
 
-export const useSonarrHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
+export const useSonarrHomeHeader = () =>
   // largeTitle: boolean
-) => {
-  return useHomeHeader(navigation, HeaderRightWrapper);
+  {
+    return useHomeHeader(HeaderRightWrapper);
+  };
+
+export const useSonarrSearchHeader = (t: TFunction) => {
+  return useSearchHeader(t, HeaderRightWrapper);
 };
 
-export const useSonarrSearchHeader = (
-  t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSearchHeader(t, navigation, HeaderRightWrapper);
-};
-
-export const useSonarrSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSettingsHeader(navigation, HeaderRightWrapper);
+export const useSonarrSettingsHeader = () => {
+  return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useSonarrDetailHeader = (

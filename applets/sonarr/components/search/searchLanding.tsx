@@ -331,7 +331,7 @@ const SonarrSearchLanding: React.FC<{
       <YStack flex={1} height="100%" width="100%" paddingTop="$2">
         <FlashList
           contentContainerStyle={{
-            paddingHorizontal: "7",
+            paddingHorizontal: 7,
           }}
           horizontal={false}
           numColumns={getFlashListColumnsFromViewType(

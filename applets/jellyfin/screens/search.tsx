@@ -41,7 +41,7 @@ const JellyfinSearch: React.FC = () => {
     }
   }, [searchQuery]);
 
-  useJellyfinSearchHeader(t, navigation);
+  useJellyfinSearchHeader(t);
 
   return (
     <YStack height="100%" width="100%">

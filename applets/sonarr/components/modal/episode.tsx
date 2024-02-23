@@ -229,7 +229,7 @@ const SonarrEpisode: React.FC<{
             <FlashList
               data={episodeHistory.data}
               contentContainerStyle={{
-                paddingHorizontal: "12",
+                paddingHorizontal: 12,
               }}
               renderItem={({ item }) => {
                 return (

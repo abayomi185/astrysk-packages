@@ -11,27 +11,19 @@ import {
 } from "@astrysk/components";
 import { proxmoxColors } from "../colors";
 
-export const useProxmoxHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useProxmoxHomeHeader = () => {
   return useHomeHeader(HeaderRightWrapper);
 };
 
-export const useProxmoxSearchHeader = (
-  t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useProxmoxSearchHeader = (t: TFunction) => {
   return useSearchHeader(t, HeaderRightWrapper);
 };
 
-export const useProxmoxSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useProxmoxSettingsHeader = () => {
   return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useProxmoxDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
@@ -39,7 +31,6 @@ export const useProxmoxDetailHeader = (
 };
 
 export const useProxmoxModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   gestureEnabled?: boolean,
   dependencies?: any[]

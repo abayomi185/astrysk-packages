@@ -12,7 +12,6 @@ import {
 } from "../utils";
 
 import { useOllamaHomeHeader } from "../components/useHeader";
-import { useNavigation } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useOllamaStore } from "../store";
 import { FlashList } from "@shopify/flash-list";
@@ -141,8 +140,6 @@ const OllamaHome: React.FC = () => {
   const { t } = useTranslation();
   useOllamaConfigurator();
 
-  const navigation = useNavigation();
-
   const ollamaConversationHistory =
     useOllamaStore((state) => state.ollamaConversationHistory) ?? {};
 
@@ -173,7 +170,7 @@ const OllamaHome: React.FC = () => {
     );
   };
 
-  useOllamaHomeHeader(navigation);
+  useOllamaHomeHeader();
 
   return (
     <YStack height="100%">

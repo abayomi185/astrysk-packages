@@ -219,7 +219,7 @@ const SonarrAllEpisodesDetail: React.FC<{
             )}
             extraData={episodeFile.data}
             contentContainerStyle={{
-              paddingHorizontal: "12",
+              paddingHorizontal: 12,
             }}
             renderItem={({
               item,

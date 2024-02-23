@@ -12,7 +12,6 @@ import { debouncedSetter } from "@astrysk/components";
 const OllamaSearch: React.FC = () => {
   useOllamaConfigurator();
 
-  const navigation = useNavigation();
   const { t } = useTranslation();
 
   const { searchPathName, searchQuery } = useGlobalSearchParams();
@@ -28,7 +27,7 @@ const OllamaSearch: React.FC = () => {
     }
   }, [searchQuery]);
 
-  useOllamaSearchHeader(t, navigation);
+  useOllamaSearchHeader(t);
 
   return (
     <YStack height="100%" width="100%">

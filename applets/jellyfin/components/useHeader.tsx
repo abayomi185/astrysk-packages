@@ -14,23 +14,16 @@ import {
 import { TFunction } from "i18next";
 import { jellyfinColors } from "../colors";
 
-export const useJellyfinHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useHomeHeader(navigation, HeaderRightWrapper);
+export const useJellyfinHomeHeader = () => {
+  return useHomeHeader(HeaderRightWrapper);
 };
 
-export const useJellyfinSearchHeader = (
-  t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSearchHeader(t, navigation, HeaderRightWrapper);
+export const useJellyfinSearchHeader = (t: TFunction) => {
+  return useSearchHeader(t, HeaderRightWrapper);
 };
 
-export const useJellyfinSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSettingsHeader(navigation, HeaderRightWrapper);
+export const useJellyfinSettingsHeader = () => {
+  return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useJellyfinDetailHeader = (

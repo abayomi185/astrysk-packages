@@ -230,7 +230,7 @@ const RadarrInteractiveSearch: React.FC<{
         <XStack flex={1} marginTop="$1">
           <FlashList
             contentContainerStyle={{
-              paddingHorizontal: "12",
+              paddingHorizontal: 12,
             }}
             data={releaseQuery.data}
             renderItem={({ item }: { item: ReleaseResource }) => (

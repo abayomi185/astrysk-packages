@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,6 @@ import ProxmoxTaskHistory from "../components/modal/taskHistory";
 
 const ProxmoxModal = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const params = useLocalSearchParams() as ProxmoxDetailScreenProps;
 
@@ -26,7 +25,7 @@ const ProxmoxModal = () => {
     const searchContext =
       params.searchContext ?? ProxmoxSearchFilterContext.Search;
 
-    useProxmoxModalHeader(navigation, t(filterType));
+    useProxmoxModalHeader(t(filterType));
 
     return (
       <ProxmoxSearchFilterOptions
@@ -40,10 +39,7 @@ const ProxmoxModal = () => {
     const node = params?.node as string;
     const resource = params?.itemId as string;
 
-    useProxmoxModalHeader(
-      navigation,
-      `${t("proxmox:taskHistory")} • ${resource}`
-    );
+    useProxmoxModalHeader(`${t("proxmox:taskHistory")} • ${resource}`);
 
     return <ProxmoxTaskHistory node={node} resource={resource} />;
   }

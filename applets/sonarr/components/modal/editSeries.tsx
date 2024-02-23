@@ -293,8 +293,8 @@ const SonarrEditSeries: React.FC<{
       <XStack flex={1}>
         <FlashList
           contentContainerStyle={{
-            paddingHorizontal: "13",
-            paddingTop: "10",
+            paddingHorizontal: 13,
+            paddingTop: 10,
           }}
           data={getEditSeriesOptions()}
           renderItem={({ item }) => (

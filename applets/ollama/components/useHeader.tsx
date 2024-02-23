@@ -1,4 +1,3 @@
-import { NavigationProp } from "@react-navigation/native";
 import {
   HeaderRightWrapper,
   useFullScreenDetailHeader,
@@ -15,27 +14,19 @@ import {
 } from "@astrysk/components";
 import { ollamaColors } from "../colors";
 
-export const useOllamaHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useOllamaHomeHeader = () => {
   return useHomeHeader(HeaderRightWrapper);
 };
 
-export const useOllamaSearchHeader = (
-  t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useOllamaSearchHeader = (t: TFunction) => {
   return useSearchHeader(t, HeaderRightWrapper);
 };
 
-export const useOllamaSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
+export const useOllamaSettingsHeader = () => {
   return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useOllamaDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
@@ -43,7 +34,6 @@ export const useOllamaDetailHeader = (
 };
 
 export const useOllamaFsDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>,
   dependencies?: any[]
@@ -57,7 +47,6 @@ export const useOllamaFsDetailHeader = (
 };
 
 export const useOllamaModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
   headerTitle: string,
   gestureEnabled?: boolean,
   dependencies?: any[],

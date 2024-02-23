@@ -28,7 +28,7 @@ const SonarrSearch: React.FC = () => {
     }
   }, [searchQuery]);
 
-  useSonarrSearchHeader(t, navigation);
+  useSonarrSearchHeader(t);
 
   return (
     <YStack height="100%" width="100%">

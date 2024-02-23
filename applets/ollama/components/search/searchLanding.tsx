@@ -139,7 +139,7 @@ const OllamaSearchLanding: React.FC<{
       <YStack flex={1} height="100%" width="100%" paddingTop="$2">
         <YStack flex={1}>
           <FlashList
-            contentContainerStyle={{ paddingHorizontal: "7" }}
+            contentContainerStyle={{ paddingHorizontal: 7 }}
             data={[...getModels(), ...getChatHistory()]}
             renderItem={({ item }) => {
               if ("digest" in item) {

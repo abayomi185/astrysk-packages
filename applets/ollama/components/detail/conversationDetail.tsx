@@ -390,7 +390,6 @@ const OllamaConversationDetail: React.FC<{
   historyMode?: boolean;
 }> = ({ forwardedData, conversationHistoryId, historyMode }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
 
   const toast = useToastController();
 
@@ -614,7 +613,6 @@ const OllamaConversationDetail: React.FC<{
 
   if (!historyMode) {
     useOllamaFsDetailHeader(
-      navigation,
       ollamaConversationHistory[conversationId!]?.name ??
         t("ollama:conversation"),
       undefined,
