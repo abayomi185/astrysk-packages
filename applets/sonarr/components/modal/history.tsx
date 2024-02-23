@@ -22,9 +22,11 @@ const SonarrHistoryItemExpanded: React.FC<{
   return (
     <XStack flex={1} marginTop="$2">
       <YStack flex={1}>
-        <Text color="$gray11" numberOfLines={2}>{`${t("sonarr:season")} ${data.episode?.seasonNumber
-          } • ${t("sonarr:episode")} ${data.episode?.episodeNumber} - ${data.episode?.title
-          }`}</Text>
+        <Text color="$gray11" numberOfLines={2}>{`${t("sonarr:season")} ${
+          data.episode?.seasonNumber
+        } • ${t("sonarr:episode")} ${data.episode?.episodeNumber} - ${
+          data.episode?.title
+        }`}</Text>
         {data.eventType === "grabbed" && (
           <XStack marginTop="$3">
             <Text
@@ -51,18 +53,18 @@ const SonarrHistoryItemExpanded: React.FC<{
         {/* </XStack> */}
         {(data.eventType === "downloadFolderImported" ||
           data.eventType === "grabbed") && (
-            <XStack marginTop="$2.5">
-              <Text
-                color="$gray11"
-                width="30%"
-                textAlign="right"
-                marginRight="$3"
-              >
-                {t("sonarr:client")}
-              </Text>
-              <Text color="$gray11">{data.data?.downloadClient}</Text>
-            </XStack>
-          )}
+          <XStack marginTop="$2.5">
+            <Text
+              color="$gray11"
+              width="30%"
+              textAlign="right"
+              marginRight="$3"
+            >
+              {t("sonarr:client")}
+            </Text>
+            <Text color="$gray11">{data.data?.downloadClient}</Text>
+          </XStack>
+        )}
         {data.eventType === "grabbed" && (
           <XStack marginTop="$2.5">
             <Text
@@ -181,8 +183,11 @@ export const SonarrHistoryItem: React.FC<{
           <YStack flex={1} overflow="hidden">
             <Text color="$gray11" marginTop="$2" numberOfLines={1}>{`${t(
               "sonarr:season"
-            )} ${data.episode?.seasonNumber} • ${t("sonarr:episode")} ${data.episode?.episodeNumber
-              } - ${data.episode?.title}`}</Text>
+            )} ${data.episode?.seasonNumber ?? t("sonarr:na")} • ${t(
+              "sonarr:episode"
+            )} ${data.episode?.episodeNumber ?? t("sonarr:na")} - ${
+              data.episode?.title ?? t("sonarr:na")
+            }`}</Text>
             <Text color="$gray11" marginTop="$2">
               {`${new Date(data.date as string).toLocaleString(undefined, {
                 dateStyle: "long",
@@ -228,7 +233,7 @@ const SonarrHistory: React.FC<{
     },
     {
       query: {
-        onSuccess: () => { },
+        onSuccess: () => {},
       },
     }
   );
