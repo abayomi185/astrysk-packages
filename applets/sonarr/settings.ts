@@ -41,6 +41,7 @@ export const SonarrSettingsOptions = (
           text: alertOkText,
           onPress: () => {
             Image.clearDiskCache();
+            Image.clearMemoryCache();
             useSonarrStore.setState({
               sonarrSeriesCache: {},
               sonarrEpisodeCache: {},
