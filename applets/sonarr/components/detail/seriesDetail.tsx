@@ -68,7 +68,7 @@ const getSonarrSeriesDetailOptions = (
       type: "label",
       value: seriesData?.nextAiring
         ? new Date(seriesData.nextAiring as string).toLocaleString(
-            getLocales()[0].languageCode,
+            getLocales()[0].languageCode ?? "en-US",
             {
               dateStyle: "medium",
               timeStyle: "short",
