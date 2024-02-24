@@ -53,6 +53,7 @@ export const AppletHeaderButton = () => {
                   router.replace({
                     pathname: `/${Screens.HOME_SCREEN_ROUTE}`,
                   });
+                  // navigation.dispatch(StackActions.popToTop());
                   break;
               }
             applets[applet].contextMenu.getContextHandler(t, indexPath);
