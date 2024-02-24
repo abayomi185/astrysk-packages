@@ -89,7 +89,7 @@ const createProxmoxActionAlert = (
 const getProxmoxActionAlertMessage = (id: string, name: string) =>
   `${id} • ${name}`;
 
-const ProxmoxActionPanelButton: React.FC<{
+export const ProxmoxActionPanelButton: React.FC<{
   children: React.ReactNode;
   onPress?: () => void;
   onLongPress?: () => void;
@@ -109,6 +109,7 @@ const ProxmoxActionPanelButton: React.FC<{
       onPress={onPress}
       onLongPress={onLongPress}
       disabled={disabled}
+      // opacity={disabled ? 0.5 : 1}
       {...style}
     >
       {children}
@@ -455,7 +456,7 @@ const ProxmoxActionPanel: React.FC<{
             }
           }}
         >
-          <Ionicons name="ios-reload" size={23} color={iconColor} />
+          <Ionicons name="reload" size={23} color={iconColor} />
         </ProxmoxActionPanelButton>
 
         {/* NOTE: STOP */}

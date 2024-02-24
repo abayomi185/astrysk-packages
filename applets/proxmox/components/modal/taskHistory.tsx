@@ -3,20 +3,29 @@ import { Suspense } from "react";
 import {
   GetClusterTasksResponseResponseDataItem,
   useGetClusterTasks,
+  useStopNodeTask,
 } from "../../api";
 import { FlashList } from "@shopify/flash-list";
 import { useTranslation } from "react-i18next";
 import { XStack, YStack, Text, ColorTokens, Button, H6 } from "tamagui";
+import { Ionicons } from "@expo/vector-icons";
+import { useToastController } from "@tamagui/toast";
 import { TFunction } from "i18next";
-import { EmptyList } from "@astrysk/components";
+import {
+  EmptyList,
+  useMutationOnErrorToast,
+  useMutationOnSuccessToast,
+} from "@astrysk/components";
 import { proxmoxColors } from "../../colors";
-import { expandableItemAnimationHandler } from "@astrysk/utils";
+import { expandableItemAnimationHandler, getIconColor } from "@astrysk/utils";
+import { ProxmoxActionPanelButton } from "../detail/actionPanel";
 
 export const ProxmoxTaskHistoryItem: React.FC<{
   t: TFunction;
   data: GetClusterTasksResponseResponseDataItem;
   pressHandler: () => void;
-}> = ({ t, data, pressHandler }) => {
+  actionHandler: () => void;
+}> = ({ t, data, pressHandler, actionHandler }) => {
   const getTextColor = (status: string): ColorTokens => {
     switch (status) {
       case "OK":
@@ -25,6 +34,10 @@ export const ProxmoxTaskHistoryItem: React.FC<{
         return "$red9";
     }
   };
+
+  const taskIsActive = data.endtime === undefined;
+
+  const iconColor = getIconColor();
 
   const [expanded, setExpanded] = React.useState(false);
 
@@ -42,41 +55,55 @@ export const ProxmoxTaskHistoryItem: React.FC<{
       }}
       overflow="hidden"
     >
-      <YStack flex={1} marginTop="$1.5">
-        <XStack>
-          <H6 numberOfLines={expanded ? undefined : 1}>
-            {t(`proxmox:${data.type}`)}
-            {" • "}
-          </H6>
-          <H6>
-            {data.user}
-            {" • "}
-          </H6>
-          <H6 color={getTextColor(data?.status!)}>{data.status}</H6>
-        </XStack>
-        <YStack flex={1} overflow="hidden">
-          <Text color="$gray11" marginTop="$2" numberOfLines={1}>
-            {`${t("proxmox:startTime")}: `}
-            {data.starttime
-              ? new Date(data.starttime! * 1000).toLocaleString()
-              : "N/A"}
-          </Text>
-          <Text color="$gray11" marginTop="$2" numberOfLines={1}>
-            {`${t("proxmox:endTime")}: `}{" "}
-            {data.endtime
-              ? new Date(data.endtime! * 1000).toLocaleString()
-              : "N/A"}
-          </Text>
-          <Text color="$gray11" marginTop="$2" numberOfLines={1}>
-            {`${t("proxmox:duration")}: `}{" "}
-            {data.starttime && data.endtime
-              ? new Date(data.endtime! * 1000).getSeconds() -
-                new Date(data.starttime! * 1000).getSeconds()
-              : "N/A"}{" "}
-            {t("proxmox:seconds")}
-          </Text>
+      <XStack>
+        <YStack flex={1} marginTop="$1.5">
+          <XStack>
+            <H6 numberOfLines={expanded ? undefined : 1}>
+              {t(`proxmox:${data.type}`)}
+              {" • "}
+            </H6>
+            <H6>
+              {data.user}
+              {" • "}
+            </H6>
+            <H6 color={getTextColor(data?.status!)}>{data.status}</H6>
+          </XStack>
+          <YStack flex={1} overflow="hidden">
+            <Text color="$gray11" marginTop="$2" numberOfLines={1}>
+              {`${t("proxmox:startTime")}: `}
+              {data.starttime
+                ? new Date(data.starttime! * 1000).toLocaleString()
+                : "N/A"}
+            </Text>
+            <Text color="$gray11" marginTop="$2" numberOfLines={1}>
+              {`${t("proxmox:endTime")}: `}{" "}
+              {data.endtime
+                ? new Date(data.endtime! * 1000).toLocaleString()
+                : "N/A"}
+            </Text>
+            <Text color="$gray11" marginTop="$2" numberOfLines={1}>
+              {`${t("proxmox:duration")}: `}{" "}
+              {data.starttime && data.endtime
+                ? new Date(data.endtime! * 1000).getSeconds() -
+                  new Date(data.starttime! * 1000).getSeconds()
+                : "N/A"}{" "}
+              {t("proxmox:seconds")}
+            </Text>
+          </YStack>
         </YStack>
-      </YStack>
+        <XStack
+          width="$5"
+          marginLeft="$1.5"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {taskIsActive ? (
+            <ProxmoxActionPanelButton first vertical onPress={actionHandler}>
+              <Ionicons name="stop" size={23} color={iconColor} />
+            </ProxmoxActionPanelButton>
+          ) : null}
+        </XStack>
+      </XStack>
     </Button>
   );
 };
@@ -86,6 +113,7 @@ const ProxmoxTaskHistory: React.FC<{
   resource: string;
 }> = ({ node, resource }) => {
   const { t } = useTranslation();
+  const toast = useToastController();
 
   const flashListRef =
     React.useRef<FlashList<GetClusterTasksResponseResponseDataItem>>(null);
@@ -102,13 +130,29 @@ const ProxmoxTaskHistory: React.FC<{
     },
   });
 
+  const stopNodeTask = useStopNodeTask({
+    mutation: {
+      onSuccess: () => {
+        useMutationOnSuccessToast(toast, t("proxmox:success:taskStopped"));
+        clusterTasks.refetch();
+      },
+      onError: () => {
+        useMutationOnErrorToast(toast, t("proxmox:error:actionFailed"));
+      },
+    },
+  });
+
+  const stopTask = (node: string, upid: string) => {
+    stopNodeTask.mutate({ node, upid });
+  };
+
   return (
     <Suspense>
       <YStack height="100%" width="100%">
         <XStack flex={1} marginTop="$1">
           <FlashList
             contentContainerStyle={{
-              paddingHorizontal: "12",
+              paddingHorizontal: 12,
             }}
             data={clusterTasks.data}
             renderItem={({
@@ -124,6 +168,7 @@ const ProxmoxTaskHistory: React.FC<{
                     flashListRef
                   )
                 }
+                actionHandler={() => stopTask(item.node!, item.upid!)}
               />
             )}
             estimatedItemSize={64}

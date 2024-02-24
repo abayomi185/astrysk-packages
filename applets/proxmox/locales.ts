@@ -100,6 +100,8 @@ const proxmoxLocales = {
     lxcShutdown: "LXC Shutdown Request Successful",
     lxcRebooted: "LXC Reboot Request Successful",
     lxcStopped: "LXC Stop Request Successful",
+
+    taskStopped: "Task Stop Request Successful",
   },
 
   error: {
