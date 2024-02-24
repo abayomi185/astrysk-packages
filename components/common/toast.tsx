@@ -71,3 +71,25 @@ export const UniversalToast = () => {
     </Toast>
   );
 };
+
+export const useMutationOnSuccessToast = (
+  toast: ToastContext,
+  toastMessage: string,
+  callback?: () => void
+) => {
+  showToast(toast, toastMessage, {
+    type: "done",
+  });
+  callback && callback();
+};
+
+export const useMutationOnErrorToast = (
+  toast: ToastContext,
+  toastMessage: string,
+  callback?: () => void
+) => {
+  showToast(toast, toastMessage, {
+    type: "error",
+  });
+  callback && callback();
+};

@@ -58,4 +58,6 @@ export {
   type ShowToastOptions,
   SafeToastViewport,
   UniversalToast,
+  useMutationOnSuccessToast,
+  useMutationOnErrorToast,
 } from "./common/toast";
