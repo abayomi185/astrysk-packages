@@ -64,7 +64,8 @@
         }
       ],
       "expo-router",
-      "expo-font"
+      "expo-font",
+      "expo-asset"
     ]
   },
   "runtimeVersion": "0.2.0"
