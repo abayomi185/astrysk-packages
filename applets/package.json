@@ -14,26 +14,26 @@
     "@astrysk/styles": "*",
     "@astrysk/utils": "*",
     "@expo/browser-polyfill": "^1.0.0",
-    "@shopify/flash-list": "1.6.3",
-    "@tanstack/react-query": "^4.28.0",
+    "@shopify/flash-list": "1.7.1",
+    "@tanstack/react-query": "^5.59.16",
     "big-integer": "^1.6.52",
     "i18next": "^22.4.14",
     "iso-language-codes": "^1.1.0",
     "lodash.debounce": "^4.0.7",
-    "react": "18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-hook-form": "^7.46.2",
     "react-i18next": "^12.2.0",
-    "react-native-sse": "^1.2.0",
-    "tamagui": "~1.68.6",
+    "react-native-sse": "^1.2.1",
+    "tamagui": "^1.116.9",
     "text-encoding": "^0.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.4",
+    "@babel/core": "^7.25.2",
     "@types/lodash.debounce": "^4.0.7",
-    "@types/react": "~18.2.45",
+    "@types/react": "~18.3.12",
     "burnt": "^0.12.1",
     "tsup": "^6.7.0",
-    "typescript": "^5.3.0"
+    "typescript": "~5.3.3"
   }
 }

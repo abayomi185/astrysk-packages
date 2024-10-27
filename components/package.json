@@ -13,9 +13,9 @@
     "@astrysk/stores": "*",
     "@astrysk/styles": "*",
     "@astrysk/utils": "*",
-    "react": "18.2.0",
-    "react-dom": "^18.2.0",
-    "tamagui": "~1.68.6"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tamagui": "^1.116.9"
   },
   "devDependencies": {
     "tsup": "^6.7.0"

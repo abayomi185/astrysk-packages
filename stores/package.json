@@ -9,7 +9,7 @@
     "@astrysk/api": "*",
     "@astrysk/components": "*",
     "@astrysk/types": "*",
-    "zustand": "^4.3.3"
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "tsup": "^6.7.0"
