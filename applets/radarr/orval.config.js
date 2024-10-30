@@ -17,6 +17,8 @@ module.exports = {
     },
     query: {
       useQuery: true,
+      useSuspenseQuery: true,
+      useSuspenseInfiniteQuery: true,
       useInfinite: true,
       useInfiniteQueryParam: "limit",
     },
