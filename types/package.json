@@ -6,7 +6,7 @@
     "dev": "tsup --watch --silent"
   },
   "dependencies": {
-    "@astrysk/utils": "*",
+    "@astrysk/utils": "workspace:",
     "react": "18.3.1"
   },
   "devDependencies": {

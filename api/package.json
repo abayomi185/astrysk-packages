@@ -6,8 +6,8 @@
     "dev": "tsup --watch --silent"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.59.16",
-    "qs": "^6.11.1"
+    "@tanstack/react-query": "catalog:",
+    "qs": "catalog:"
   },
   "devDependencies": {
     "tsup": "^6.7.0"

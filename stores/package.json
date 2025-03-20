@@ -6,9 +6,8 @@
     "dev": "tsup --watch --silent"
   },
   "dependencies": {
-    "@astrysk/api": "*",
-    "@astrysk/components": "*",
-    "@astrysk/types": "*",
+    "@astrysk/api": "workspace:",
+    "@astrysk/types": "workspace:",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

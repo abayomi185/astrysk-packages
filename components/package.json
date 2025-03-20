@@ -6,16 +6,15 @@
     "dev": "tsup --watch --silent"
   },
   "dependencies": {
-    "@astrysk/api": "*",
-    "@astrysk/applets": "*",
-    "@astrysk/assets": "*",
-    "@astrysk/constants": "*",
-    "@astrysk/stores": "*",
-    "@astrysk/styles": "*",
-    "@astrysk/utils": "*",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "tamagui": "^1.116.9"
+    "@astrysk/api": "workspace:",
+    "@astrysk/assets": "workspace:",
+    "@astrysk/constants": "workspace:",
+    "@astrysk/stores": "workspace:",
+    "@astrysk/styles": "workspace:",
+    "@astrysk/utils": "workspace:",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "tamagui": "catalog:"
   },
   "devDependencies": {
     "tsup": "^6.7.0"
