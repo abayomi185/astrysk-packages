@@ -48,7 +48,7 @@ export const AppletButton = ({ applet, isBanner }: AppletButtonProps) => {
           </XStack>
         </XStack>
         <XStack flex={1} marginLeft="$3" alignItems="center">
-          <Text color="white" fontWeight="200" fontSize="$12">
+          <Text color="white" fontWeight="200" fontSize="$10">
             {applet}
           </Text>
         </XStack>
