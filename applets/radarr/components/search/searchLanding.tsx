@@ -8,7 +8,7 @@ import {
   useGetApiV3Movie,
   useGetApiV3MovieLookup,
 } from "../../api";
-import { H6, YStack, Text, XStack, Button, useTheme } from "tamagui";
+import { H6, YStack, Text, XStack, Button, useTheme, getTokens } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -219,7 +219,7 @@ const RadarrSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const viewType = useRadarrStore((state) => state.viewType) ?? ViewType.Grid;
 

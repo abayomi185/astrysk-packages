@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { useRouter, useFocusEffect } from "expo-router";
-import { H6, YStack, Text, XStack, Button } from "tamagui";
+import { H6, YStack, Text, XStack, Button, getTokens } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import {
   ProxmoxDetailScreenContext,
@@ -32,7 +32,7 @@ const ProxmoxSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const viewType = useProxmoxStore((state) => state.viewType) ?? ViewType.Grid;
 

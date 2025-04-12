@@ -8,7 +8,7 @@ import {
   useGetApiV3Series,
   useGetApiV3SeriesLookup,
 } from "../../api";
-import { H6, YStack, Text, XStack, Button } from "tamagui";
+import { H6, YStack, Text, XStack, Button, getTokens } from "tamagui";
 import { Image, ImageSource } from "expo-image";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -210,7 +210,7 @@ const SonarrSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const viewType = useSonarrStore((state) => state.viewType) ?? ViewType.Grid;
 

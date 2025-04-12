@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { useRouter } from "expo-router";
-import { Spinner, XStack, YStack, Text, H6 } from "tamagui";
+import { Spinner, XStack, YStack, Text, H6, getTokens } from "tamagui";
 import { useGet } from "../../api/api";
 import { FlashList } from "@shopify/flash-list";
 import { useJellyfinStore } from "../../store";
@@ -110,7 +110,7 @@ const JellyfinSearchResults: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
 

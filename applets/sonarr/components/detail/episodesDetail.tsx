@@ -6,7 +6,7 @@ import { useNavigation } from "expo-router";
 import { TabContext } from "@astrysk/types";
 import { useSonarrDetailHeader } from "../useHeader";
 import { useTranslation } from "react-i18next";
-import { YStack, XStack, Button, H6, Text } from "tamagui";
+import { YStack, XStack, Button, H6, Text, getTokens } from "tamagui";
 import { ExtendedSeriesResource, SonarrDetailScreenContext } from "../../types";
 import { FlashList } from "@shopify/flash-list";
 import {
@@ -35,8 +35,8 @@ const SonarrEpisodeItem: React.FC<{
 }> = ({ t, data, fileData }) => {
   const router = useRouter();
 
-  const buttonDefaultHeight = customTokens.size["$10"].val;
-  const buttonExpandedHeight = customTokens.size["$16"].val;
+  const buttonDefaultHeight = getTokens().size["$10"].val;
+  const buttonExpandedHeight = getTokens().size["$16"].val;
 
   const [buttonHeight] = React.useState(
     new Animated.Value(buttonDefaultHeight)

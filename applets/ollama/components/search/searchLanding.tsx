@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { RefreshControl } from "react-native";
 import { useFocusEffect } from "expo-router";
-import { YStack, XStack } from "tamagui";
+import { YStack, XStack, getTokens } from "tamagui";
 import {
   OllamaConversationHistoryDetailItems,
   OllamaSearchFilterContext,
@@ -34,7 +34,7 @@ const OllamaSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const viewType = useOllamaStore((state) => state.viewType) ?? ViewType.Grid;
 

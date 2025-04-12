@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "expo-router";
 import { BaseItemDto, useGetItems } from "../../api";
-import { YStack } from "tamagui";
+import { YStack, getTokens } from "tamagui";
 import JellyfinSearchFilterBar from "../search/searchFilterBar";
 import { JellyfinSearchFilterContext } from "../../types";
 import { useJellyfinDetailHeader } from "../useHeader";
@@ -25,7 +25,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
 }> = ({ userId, serverId, forwardedData }) => {
   const navigation = useNavigation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
+  const flashListColumns = useGetListColumnNumber(getTokens().size["$11"].val);
 
   const collectionId = forwardedData?.Id as string;
   const headerTitle = forwardedData?.Name as string;
