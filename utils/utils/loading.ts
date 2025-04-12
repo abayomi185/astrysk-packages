@@ -45,7 +45,7 @@ export const useMutationLoadingSpinner = (
 ) => {
   const mutationKeyString = mutationKey;
   React.useEffect(() => {
-    const action = mutation.isLoading ? Actions.LOADING : Actions.DONE;
+    const action = mutation.isPending ? Actions.LOADING : Actions.DONE;
     setLoadingSpinner(mutationKeyString, action);
-  }, [mutation.isLoading, mutationKeyString]);
+  }, [mutation.isPending, mutationKeyString]);
 };

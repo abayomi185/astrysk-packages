@@ -61,3 +61,5 @@ export {
 } from "./utils/color";
 
 export { isValidJSON } from "./utils/json";
+
+export { useQueryEvents } from "./hooks/useQueryEvent";

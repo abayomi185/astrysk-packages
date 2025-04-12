@@ -8,9 +8,13 @@
   },
   "dependencies": {
     "@astrysk/assets": "workspace:",
+    "@astrysk/constants": "workspace:",
+    "@astrysk/components": "workspace:",
+    "@astrysk/types": "workspace:",
     "i18next": "catalog:",
     "react": "catalog:react",
-    "react-i18next": "catalog:"
+    "react-i18next": "catalog:",
+    "@tanstack/react-query": "catalog:"
   },
   "devDependencies": {
     "@types/react": "catalog:react",
