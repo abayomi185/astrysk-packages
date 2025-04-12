@@ -12,28 +12,28 @@
     "@astrysk/constants": "workspace:",
     "@astrysk/stores": "workspace:",
     "@astrysk/styles": "workspace:",
+    "@astrysk/types": "workspace:",
     "@astrysk/utils": "workspace:",
-    "@expo/browser-polyfill": "^1.0.0",
-    "@shopify/flash-list": "1.7.1",
+    "@shopify/flash-list": "catalog:",
     "@tanstack/react-query": "^5.59.16",
     "big-integer": "^1.6.52",
     "i18next": "^22.4.14",
     "iso-language-codes": "^1.1.0",
     "lodash.debounce": "^4.0.7",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
     "react-hook-form": "^7.46.2",
     "react-i18next": "^12.2.0",
     "react-native-sse": "^1.2.1",
-    "tamagui": "^1.116.9",
+    "tamagui": "catalog:",
     "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/lodash.debounce": "^4.0.7",
-    "@types/react": "~18.3.12",
+    "@types/react": "catalog:react",
     "burnt": "^0.12.1",
     "tsup": "^6.7.0",
-    "typescript": "~5.3.3"
+    "typescript": "catalog:"
   }
 }

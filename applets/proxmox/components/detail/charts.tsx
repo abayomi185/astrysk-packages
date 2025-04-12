@@ -205,7 +205,7 @@ export const ProxmoxChartWrapper: React.FC<{
 
     props.dataKeys.forEach((str) => {
       let keys = str.split(".");
-      tempData.push(keys.reduce((obj, key) => obj?.[key], nodeData));
+      tempData.push(keys.reduce((obj, key) => obj?.[key] as any, nodeData));
     });
 
     dataMax =
@@ -213,7 +213,7 @@ export const ProxmoxChartWrapper: React.FC<{
         ? props.dataMaxValueKey
         : props.dataMaxValueKey
             ?.split(".")
-            .reduce((obj, key) => obj?.[key], nodeData);
+            .reduce((obj, key) => obj?.[key] as any, nodeData);
 
     setRawData(tempData);
 
@@ -233,8 +233,8 @@ export const ProxmoxChartWrapper: React.FC<{
       let timestamps: number[] = [];
 
       rrdData?.map((rrdDataItem) => {
-        dataSeries.push(getNumberValue(rrdDataItem?.[key]));
-        timestamps.push(rrdDataItem?.["time"]);
+        dataSeries.push(getNumberValue(rrdDataItem?.[key] as any));
+        timestamps.push(rrdDataItem?.["time"] as any);
       });
 
       // if (props.dataMaxValueKey) {

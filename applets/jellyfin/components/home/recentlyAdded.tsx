@@ -6,7 +6,7 @@ import { BaseItemDto, ImageType, useGetLatestMedia } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { useQueryLoadingSpinner } from "@astrysk/utils";
+import { useQueryEvents, useQueryLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import {
@@ -102,19 +102,21 @@ const JellyfinRecentlyAdded: React.FC = () => {
         //   // WARN: Make use of time to regulate query staletime
         //   // return useJellyfinStore.getState().mediaCache?.resumeMediaCache.data;
         // },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                latestMediaCache: { data: data },
-              },
-            },
-          }));
-        },
       },
     }
   );
+  useQueryEvents(latestMedia, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            latestMediaCache: { data: data },
+          },
+        },
+      }));
+    },
+  });
 
   useFocusEffect(
     React.useCallback(() => {

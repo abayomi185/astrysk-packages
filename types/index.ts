@@ -5,7 +5,7 @@ export type {
   ExtendedAppletColors,
 } from "./types/applet";
 
-export type { Router } from "./types/router";
+export type { Router, ExtendedNavigationProp } from "./types/router";
 
 export type { SettingsSection, SettingsOptionProps } from "./types/settings";
 

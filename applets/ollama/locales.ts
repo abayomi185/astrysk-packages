@@ -51,8 +51,6 @@ const ollamaLocales = {
   chatHistory: "Chat History",
   recentChatHistory: "Recent Chat History",
 
-  lastUpdated: "Last Updated",
-
   deleteChatHistoryItemQuestion: "Delete Chat History Item?",
   editChatNameQuestion: "Edit Chat Name?",
 

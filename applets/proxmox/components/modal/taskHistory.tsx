@@ -123,10 +123,7 @@ const ProxmoxTaskHistory: React.FC<{
   const clusterTasks = useGetClusterTasks({
     query: {
       select: (response) =>
-        response.data?.filter(
-          (task) => task.node === node && task.id === resourceId
-        ),
-      onSuccess: (_data) => {},
+        response.data?.filter((task) => task.upid === resourceId),
     },
   });
 

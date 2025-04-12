@@ -16,7 +16,7 @@ import { FlashList } from "@shopify/flash-list";
 import { SettingsOptionProps } from "@astrysk/types";
 import { TFunction } from "i18next";
 import { checkEpisodeHasAired, getSizeOnDisk } from "../../utils";
-import { expandableItemAnimationHandler } from "@astrysk/utils";
+import { expandableItemAnimationHandler, useQueryEvents } from "@astrysk/utils";
 import { SonarrHistoryItem } from "./history";
 import { sonarrColors } from "../../colors";
 
@@ -125,20 +125,22 @@ const SonarrEpisode: React.FC<{
     {
       query: {
         select: (episodeData) => episodeData[0],
-        onSuccess: (episodeData) => {
-          useSonarrStore.setState((state) => ({
-            sonarrEpisodeCache: {
-              ...state.sonarrEpisodeCache,
-              [data.seriesId as number]: {
-                ...state.sonarrEpisodeCache?.[data.seriesId as number],
-                [data.id as number]: episodeData ?? data,
-              },
-            },
-          }));
-        },
       },
     }
   );
+  useQueryEvents(episode, {
+    onSuccess: (episodeData) => {
+      useSonarrStore.setState((state) => ({
+        sonarrEpisodeCache: {
+          ...state.sonarrEpisodeCache,
+          [data.seriesId as number]: {
+            ...state.sonarrEpisodeCache?.[data.seriesId as number],
+            [data.id as number]: episodeData ?? data,
+          },
+        },
+      }));
+    },
+  });
 
   const episodeHistory = useGetApiV3HistorySeries(
     {

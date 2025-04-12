@@ -7,10 +7,12 @@
   },
   "dependencies": {
     "@astrysk/api": "workspace:",
+    "@astrysk/applets": "workspace:",
     "@astrysk/assets": "workspace:",
     "@astrysk/constants": "workspace:",
     "@astrysk/stores": "workspace:",
     "@astrysk/styles": "workspace:",
+    "@astrysk/types": "workspace:",
     "@astrysk/utils": "workspace:",
     "react": "catalog:react",
     "react-dom": "catalog:react",

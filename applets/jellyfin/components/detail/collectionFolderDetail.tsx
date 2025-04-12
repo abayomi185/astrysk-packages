@@ -13,6 +13,7 @@ import {
   setLoadingSpinner,
   useGetListColumnNumber,
   useLoadingSpinner,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
 import { customTokens } from "@astrysk/styles";
@@ -24,7 +25,7 @@ const JellyfinCollectionFolderDetail: React.FC<{
 }> = ({ userId, serverId, forwardedData }) => {
   const navigation = useNavigation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const collectionId = forwardedData?.Id as string;
   const headerTitle = forwardedData?.Name as string;
@@ -66,22 +67,24 @@ const JellyfinCollectionFolderDetail: React.FC<{
           }));
           return filteredData;
         },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                collectionMediaCache: {
-                  data: data,
-                },
-              },
-            },
-          }));
-          setLoadingSpinner(JellyfinCollectionFolderDetail.name, Actions.DONE);
-        },
       },
     }
   );
+  useQueryEvents(collectionData, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            collectionMediaCache: {
+              data: data,
+            },
+          },
+        },
+      }));
+      setLoadingSpinner(JellyfinCollectionFolderDetail.name, Actions.DONE);
+    },
+  });
 
   const handleClearAllFilters = () => {
     collectionData.refetch();

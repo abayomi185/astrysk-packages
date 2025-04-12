@@ -26,6 +26,7 @@ import {
   useGetListColumnNumber,
   useRefreshHandler,
   useQueryLoadingSpinner,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { radarrColors } from "../../colors";
 import { ExtendedAppletColors, TabContext, ViewType } from "@astrysk/types";
@@ -218,53 +219,53 @@ const RadarrSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const viewType = useRadarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useRadarrStore((state) => state.searchFilters);
 
-  const movieData = useGetApiV3Movie(
-    {},
-    {
-      query: {
-        onSuccess: (data) => {
-          // console.log(JSON.stringify(data, null, 2));
-          useRadarrStore.setState((state) => ({
-            radarrMovieCache: {
-              ...state.radarrMovieCache,
-              ...data.reduce((acc: { [key: number]: MovieResource }, item) => {
-                if (item.id) acc[item.id as number] = item;
-                return acc;
-              }, {}),
-            },
-          }));
+  const movieData = useGetApiV3Movie({});
+  useQueryEvents(movieData, {
+    onSuccess: (data) => {
+      // console.log(JSON.stringify(data, null, 2));
+      useRadarrStore.setState((state) => ({
+        radarrMovieCache: {
+          ...state.radarrMovieCache,
+          ...data.reduce((acc: { [key: number]: MovieResource }, item) => {
+            if (item.id) acc[item.id as number] = item;
+            return acc;
+          }, {}),
         },
-      },
-    }
-  );
-  useGetApiV3Qualityprofile({
+      }));
+    },
+  });
+  const qualityProfile = useGetApiV3Qualityprofile({
     query: {
       refetchOnMount: false,
       refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useRadarrStore.setState({
-          radarrQualityProfiles: data,
-        });
-      },
       staleTime: Infinity,
     },
   });
-  useGetApiV3Language({
+  useQueryEvents(qualityProfile, {
+    onSuccess: (data) => {
+      useRadarrStore.setState({
+        radarrQualityProfiles: data,
+      });
+    },
+  });
+  const languageProfile = useGetApiV3Language({
     query: {
       refetchOnMount: false,
       refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useRadarrStore.setState({
-          radarrLanguageProfiles: data,
-        });
-      },
       staleTime: Infinity,
+    },
+  });
+  useQueryEvents(languageProfile, {
+    onSuccess: (data) => {
+      useRadarrStore.setState({
+        radarrLanguageProfiles: data,
+      });
     },
   });
 
@@ -383,9 +384,9 @@ const RadarrSearchLanding: React.FC<{
           ListEmptyComponent={
             <EmptyList
               queryStatus={
-                movieData.status === "loading" ||
-                searchResults.status === "loading"
-                  ? "loading"
+                movieData.status === "pending" ||
+                searchResults.status === "pending"
+                  ? "pending"
                   : "success" // Success does not do anything in EmptyList
               }
               text={t("radarr:noDataFound")}

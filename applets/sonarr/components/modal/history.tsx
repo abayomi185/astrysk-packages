@@ -225,18 +225,11 @@ const SonarrHistory: React.FC<{
 
   const flashListRef = React.useRef<FlashList<HistoryResource>>(null);
 
-  const seriesHistory = useGetApiV3HistorySeries(
-    {
-      seriesId: data.id,
-      includeEpisode: true,
-      ...(seasonNumber ? { seasonNumber: seasonNumber } : {}),
-    },
-    {
-      query: {
-        onSuccess: () => {},
-      },
-    }
-  );
+  const seriesHistory = useGetApiV3HistorySeries({
+    seriesId: data.id,
+    includeEpisode: true,
+    ...(seasonNumber ? { seasonNumber: seasonNumber } : {}),
+  });
 
   return (
     <Suspense>

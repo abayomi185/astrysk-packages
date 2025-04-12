@@ -26,6 +26,7 @@ import {
 import { SonarrEpisodeItemActionPanel } from "./actionPanel";
 import { useSonarrStore } from "../../store";
 import { EmptyList } from "@astrysk/components";
+import { useQueryEvents } from "@astrysk/utils";
 
 const SonarrEpisodeItem: React.FC<{
   t: TFunction;
@@ -34,8 +35,8 @@ const SonarrEpisodeItem: React.FC<{
 }> = ({ t, data, fileData }) => {
   const router = useRouter();
 
-  const buttonDefaultHeight = customTokens.size[10].val;
-  const buttonExpandedHeight = customTokens.size[16].val;
+  const buttonDefaultHeight = customTokens.size["$10"].val;
+  const buttonExpandedHeight = customTokens.size["$16"].val;
 
   const [buttonHeight] = React.useState(
     new Animated.Value(buttonDefaultHeight)
@@ -134,59 +135,48 @@ const SonarrAllEpisodesDetail: React.FC<{
 
   const [fileQueryEnabled, setFileQueryEnabled] = React.useState(false);
 
-  const episodes = useGetApiV3Episode(
-    {
-      seriesId: forwardedData.id,
-      // WARN: Here in case of all episodes option
-      ...(seasonNumber ? { seasonNumber: seasonNumber } : {}),
-    },
-    {
-      query: {
-        onSuccess: (data) => {
-          useSonarrStore.setState((state) => ({
-            sonarrEpisodeCache: {
-              ...state.sonarrEpisodeCache,
-              [forwardedData.id as number]: {
-                ...state.sonarrEpisodeCache?.[forwardedData.id as number],
-                ...data.reduce(
-                  (acc: { [key: number]: EpisodeResource }, item) => {
-                    if (item.id) acc[item.id as number] = item;
-                    return acc;
-                  },
-                  {}
-                ),
-              },
-            },
-          }));
-          setFileQueryEnabled(true);
+  const episodes = useGetApiV3Episode({
+    seriesId: forwardedData.id,
+    // WARN: Here in case of all episodes option
+    ...(seasonNumber ? { seasonNumber: seasonNumber } : {}),
+  });
+  useQueryEvents(episodes, {
+    onSuccess: (data) => {
+      useSonarrStore.setState((state) => ({
+        sonarrEpisodeCache: {
+          ...state.sonarrEpisodeCache,
+          [forwardedData.id as number]: {
+            ...state.sonarrEpisodeCache?.[forwardedData.id as number],
+            ...data.reduce((acc: { [key: number]: EpisodeResource }, item) => {
+              if (item.id) acc[item.id as number] = item;
+              return acc;
+            }, {}),
+          },
         },
-      },
-    }
-  );
+      }));
+      setFileQueryEnabled(true);
+    },
+  });
 
-  const episodeFile = useGetApiV3Episodefile(
-    {
-      seriesId: forwardedData.id,
-    },
-    {
-      query: {
-        onSuccess: (data) => {
-          useSonarrStore.setState((state) => ({
-            sonarrEpisodeFileCache: {
-              ...state.sonarrEpisodeFileCache,
-              ...data.reduce(
-                (acc: { [key: number]: EpisodeFileResource }, item) => {
-                  if (item.id) acc[item.id as number] = item;
-                  return acc;
-                },
-                {}
-              ),
+  const episodeFile = useGetApiV3Episodefile({
+    seriesId: forwardedData.id,
+  });
+  useQueryEvents(episodeFile, {
+    onSuccess: (data) => {
+      useSonarrStore.setState((state) => ({
+        sonarrEpisodeFileCache: {
+          ...state.sonarrEpisodeFileCache,
+          ...data.reduce(
+            (acc: { [key: number]: EpisodeFileResource }, item) => {
+              if (item.id) acc[item.id as number] = item;
+              return acc;
             },
-          }));
+            {}
+          ),
         },
-      },
-    }
-  );
+      }));
+    },
+  });
 
   const refetchEpisodes = () => {
     episodes.refetch();

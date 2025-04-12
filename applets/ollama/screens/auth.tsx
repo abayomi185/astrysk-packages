@@ -18,6 +18,7 @@ import {
   UrlRegexPattern,
   getIconColor,
   promptUserForURLSchemaIfNotExists,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { useToastController } from "@tamagui/toast";
 import { useListLocalModels } from "../api";
@@ -50,38 +51,40 @@ const OllamaAuth = () => {
   const auth = useListLocalModels({
     query: {
       enabled: !!apiToken,
-      onSuccess: (_data) => {
-        useOllamaStore.setState({
-          authenticated: true,
-          token: apiToken,
+    },
+  });
+  useQueryEvents(auth, {
+    onSuccess: (_data) => {
+      useOllamaStore.setState({
+        authenticated: true,
+        token: apiToken,
+      });
+      useAppStateStore.setState({
+        activeApplet: Applets.OLLAMA,
+      });
+      navigation.goBack();
+    },
+    onError: (error) => {
+      useAppStateStore.setState({ activeApplet: undefined });
+      // WARN: Show error message or prompt
+      if (error.response?.status) {
+        showToast(toast, `${t("common:error")}`, {
+          message: `${error.response.status}: ${error.code}`,
+          type: "error",
         });
-        useAppStateStore.setState({
-          activeApplet: Applets.OLLAMA,
+        // WARN: Make use of ReactHookForm to show error in fields
+        setError("serverURL", {
+          type: "manual",
         });
-        navigation.goBack();
-      },
-      onError: (error) => {
-        useAppStateStore.setState({ activeApplet: undefined });
-        // WARN: Show error message or prompt
-        if (error.response?.status) {
-          showToast(toast, `${t("common:error")}`, {
-            message: `${error.response.status}: ${error.code}`,
-            type: "error",
-          });
-          // WARN: Make use of ReactHookForm to show error in fields
-          setError("serverURL", {
-            type: "manual",
-          });
-          setError("token", {
-            type: "manual",
-          });
-        }
-      },
-      onSettled: (_data, error) => {
-        if (error) {
-          useOllamaStore.setState({ baseURL: undefined });
-        }
-      },
+        setError("token", {
+          type: "manual",
+        });
+      }
+    },
+    onSettled: (_data, error) => {
+      if (error) {
+        useOllamaStore.setState({ baseURL: undefined });
+      }
     },
   });
 

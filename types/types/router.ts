@@ -1,3 +1,5 @@
+import { NavigationProp, NavigationState } from "@react-navigation/native";
+
 // export type Href = string | HrefObject;
 
 // export interface HrefObject {
@@ -17,4 +19,11 @@ export type Router = {
   back: () => void;
   /** Update the current route query params. */
   setParams: (params?: Record<string, string>) => void;
+};
+
+export type ExtendedNavigationProp = Omit<
+  NavigationProp<ReactNavigation.RootParamList>,
+  "getState"
+> & {
+  getState(): NavigationState | undefined;
 };

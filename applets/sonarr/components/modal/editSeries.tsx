@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { SectionTitle, SettingsOption, showToast } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
+import { useQueryEvents } from "@astrysk/utils";
 
 const getSonarrEditDetailOptions = (
   t: TFunction,
@@ -204,13 +205,15 @@ const SonarrEditSeries: React.FC<{
     {
       query: {
         select: (data: any) => data[0] as SeriesResource,
-        onSuccess: (data) => {
-          setDataState({ ...data, seasonFolder: true });
-        },
         enabled: !!tvdbId,
       },
     }
   );
+  useQueryEvents(newSeriesData, {
+    onSuccess: (data) => {
+      setDataState({ ...data, seasonFolder: true });
+    },
+  });
 
   const addSeries = usePostApiV3Series({
     mutation: {
@@ -316,7 +319,7 @@ const SonarrEditSeries: React.FC<{
                   justifyContent="space-between"
                 >
                   <SectionTitle>{dataState?.title}</SectionTitle>
-                  {newSeriesData.status === "loading" && (
+                  {newSeriesData.status === "pending" && (
                     <Spinner marginRight="$3" />
                   )}
                 </XStack>

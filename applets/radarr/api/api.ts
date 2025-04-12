@@ -14815,7 +14815,7 @@ export const getApiV3MovieLookupTmdb = (
   params?: GetApiV3MovieLookupTmdbParams,
   signal?: AbortSignal
 ) => {
-  return apiInstance<void>({
+  return apiInstance<MovieResource>({
     url: `/api/v3/movie/lookup/tmdb`,
     method: "GET",
     params,
@@ -14957,7 +14957,7 @@ export const getApiV3MovieLookupImdb = (
   params?: GetApiV3MovieLookupImdbParams,
   signal?: AbortSignal
 ) => {
-  return apiInstance<void>({
+  return apiInstance<MovieResource>({
     url: `/api/v3/movie/lookup/imdb`,
     method: "GET",
     params,

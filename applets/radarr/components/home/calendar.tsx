@@ -19,6 +19,7 @@ import {
   getStartAndEndOfWeek,
   setLoadingSpinner,
   useColorScheme,
+  useQueryEvents,
   useQueryLoadingSpinner,
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
@@ -84,25 +85,21 @@ const RadarrCalendar: React.FC = () => {
 
   const weekRange = getStartAndEndOfWeek(new Date());
 
-  useGetApiV3Movie(
-    {},
-    {
-      query: {
-        onSuccess: (data) => {
-          // console.log(JSON.stringify(data, null, 2));
-          useRadarrStore.setState((state) => ({
-            radarrMovieCache: {
-              ...state.radarrMovieCache,
-              ...data.reduce((acc: { [key: number]: MovieResource }, item) => {
-                if (item.id) acc[item.id as number] = item;
-                return acc;
-              }, {}),
-            },
-          }));
+  const movies = useGetApiV3Movie();
+  useQueryEvents(movies, {
+    onSuccess: (data) => {
+      // console.log(JSON.stringify(data, null, 2));
+      useRadarrStore.setState((state) => ({
+        radarrMovieCache: {
+          ...state.radarrMovieCache,
+          ...data.reduce((acc: { [key: number]: MovieResource }, item) => {
+            if (item.id) acc[item.id as number] = item;
+            return acc;
+          }, {}),
         },
-      },
-    }
-  );
+      }));
+    },
+  });
 
   const calendarQuery = useGetApiV3Calendar(
     {
@@ -114,13 +111,15 @@ const RadarrCalendar: React.FC = () => {
     },
     {
       query: {
-        onSettled: (_data) => {
-          setLoadingSpinner(RadarrCalendar.name, Actions.DONE);
-        },
         staleTime: 60_000,
       },
     }
   );
+  useQueryEvents(calendarQuery, {
+    onSettled: (_data) => {
+      setLoadingSpinner(RadarrCalendar.name, Actions.DONE);
+    },
+  });
 
   // const onVisibleMonthsChange = (months) => {
   //   console.log(months);
@@ -134,31 +133,28 @@ const RadarrCalendar: React.FC = () => {
   //   }
   // };
 
-  useGetApiV3Qualityprofile({
-    query: {
-      onSuccess: (data) => {
-        useRadarrStore.setState({
-          radarrQualityProfiles: data,
-        });
-      },
+  const qualityProfile = useGetApiV3Qualityprofile();
+  useQueryEvents(qualityProfile, {
+    onSuccess: (data) => {
+      useRadarrStore.setState({
+        radarrQualityProfiles: data,
+      });
     },
   });
-  useGetApiV3Language({
-    query: {
-      onSuccess: (data) => {
-        useRadarrStore.setState({
-          radarrLanguageProfiles: data,
-        });
-      },
+  const languageProfiles = useGetApiV3Language();
+  useQueryEvents(languageProfiles, {
+    onSuccess: (data) => {
+      useRadarrStore.setState({
+        radarrLanguageProfiles: data,
+      });
     },
   });
-  useGetApiV3Rootfolder({
-    query: {
-      onSuccess: (data) => {
-        useRadarrStore.setState({
-          radarrRootFolderCache: data.map((item) => item.path as string),
-        });
-      },
+  const rootFolder = useGetApiV3Rootfolder();
+  useQueryEvents(rootFolder, {
+    onSuccess: (data) => {
+      useRadarrStore.setState({
+        radarrRootFolderCache: data.map((item) => item.path as string),
+      });
     },
   });
 

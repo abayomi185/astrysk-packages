@@ -92,7 +92,7 @@ const getProxmoxResourceDetailOptions = (
           {
             key: "proxmox:filesystem",
             type: "label",
-            value: `${resourceData?.plugintype}`,
+            value: `${resourceData?.type}`,
             context: ProxmoxListContext.Options,
             lastItem: true,
           },
@@ -255,7 +255,7 @@ const ProxmoxResourceDetailHeader: React.FC<{
         <YStack flex={1} justifyContent="center">
           <XStack flex={1} alignItems="center">
             <H3 numberOfLines={1}>
-              {data?.name ||
+              {data?.node ||
                 data?.storage ||
                 data?.sdn ||
                 data?.node ||

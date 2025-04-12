@@ -17,6 +17,7 @@ import { TabContext } from "@astrysk/types";
 import { SonarrDetailScreenContext } from "../../types";
 import { sonarrColors } from "../../colors";
 import { useSonarrStore } from "../../store";
+import { useQueryEvents } from "@astrysk/utils";
 
 const SonarrAllSeasonsDetail: React.FC<{
   forwardedData: SeriesResource;
@@ -33,46 +34,46 @@ const SonarrAllSeasonsDetail: React.FC<{
   const seriesData = useGetApiV3SeriesId(forwardedData.id as number, {
     query: {
       initialData: () => forwardedData,
-      onSuccess: (seriesData) => {
-        useSonarrStore.setState((state) => ({
-          sonarrSeriesCache: {
-            ...state.sonarrSeriesCache,
-            [forwardedData.id as number]: {
-              ...state.sonarrSeriesCache?.[forwardedData.id as number],
-              seasons: seriesData.seasons,
-            },
+    },
+  });
+  useQueryEvents(seriesData, {
+    onSuccess: (seriesData) => {
+      useSonarrStore.setState((state) => ({
+        sonarrSeriesCache: {
+          ...state.sonarrSeriesCache,
+          [forwardedData.id as number]: {
+            ...state.sonarrSeriesCache?.[forwardedData.id as number],
+            seasons: seriesData.seasons,
           },
-        }));
-      },
+        },
+      }));
     },
   });
 
-  useGetApiV3Episode(
+  const episodesData = useGetApiV3Episode(
     {
       seriesId: forwardedData.id,
     },
     {
-      query: {
-        onSuccess: (data) => {
-          useSonarrStore.setState((state) => ({
-            sonarrEpisodeCache: {
-              ...state.sonarrEpisodeCache,
-              [forwardedData.id as number]: {
-                ...state.sonarrEpisodeCache?.[forwardedData.id as number],
-                ...data.reduce(
-                  (acc: { [key: number]: EpisodeResource }, item) => {
-                    if (item.id) acc[item.id as number] = item;
-                    return acc;
-                  },
-                  {}
-                ),
-              },
-            },
-          }));
-        },
-      },
+      query: {},
     }
   );
+  useQueryEvents(episodesData, {
+    onSuccess: (data) => {
+      useSonarrStore.setState((state) => ({
+        sonarrEpisodeCache: {
+          ...state.sonarrEpisodeCache,
+          [forwardedData.id as number]: {
+            ...state.sonarrEpisodeCache?.[forwardedData.id as number],
+            ...data.reduce((acc: { [key: number]: EpisodeResource }, item) => {
+              if (item.id) acc[item.id as number] = item;
+              return acc;
+            }, {}),
+          },
+        },
+      }));
+    },
+  });
 
   const refetchSeasons = () => {
     seriesData.refetch();

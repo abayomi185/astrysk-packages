@@ -26,6 +26,7 @@ import {
   isTestflightBuild,
   setLoadingSpinner,
   useLoadingSpinner,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { useNavigation, useRouter, useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -126,43 +127,40 @@ const JellyfinSeriesDetail: React.FC<{
         return useJellyfinStore.getState().mediaCache?.[serverId]
           ?.seriesMediaCache?.[seriesId]?.data;
       },
-      onSuccess: (data) => {
-        useJellyfinStore.setState((state) => ({
-          mediaCache: {
-            [serverId]: {
-              ...state.mediaCache?.[serverId],
-              seriesMediaCache: {
-                ...state.mediaCache?.[serverId]?.seriesMediaCache,
-                [seriesId]: {
-                  data: data,
-                },
+    },
+  });
+  useQueryEvents(seriesData, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            seriesMediaCache: {
+              ...state.mediaCache?.[serverId]?.seriesMediaCache,
+              [seriesId]: {
+                data: data,
               },
             },
           },
-        }));
-        setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
-      },
-      onError: () => {
-        setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
-      },
+        },
+      }));
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+    },
+    onError: () => {
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
     },
   });
 
   // Get all seasons for Series
-  const seasonsData = useGetSeasons(
-    seriesId,
-    {},
-    {
-      query: {
-        onSuccess: (_data) => {
-          setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
-        },
-        onError: () => {
-          setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
-        },
-      },
-    }
-  );
+  const seasonsData = useGetSeasons(seriesId);
+  useQueryEvents(seasonsData, {
+    onSuccess: (_data) => {
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+    },
+    onError: () => {
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+    },
+  });
   // Get season from forwardedData or set based on episodesData
   React.useEffect(() => {
     if ((seasonsData.data?.Items?.length ?? 0) > 0) {
@@ -175,37 +173,35 @@ const JellyfinSeriesDetail: React.FC<{
   }, [seasonsData.data]);
 
   // Get all episodes for all seasons
-  const episodesData = useGetEpisodes(
-    seriesId,
-    { userId: userId, fields: [ItemFields.Overview] },
-    {
-      query: {
-        // staleTime: 5_000,
-        onSuccess: (data) => {
-          // WARN: Cache this data in episodesMediaCache
-          // setEpisodesData(data.Items as BaseItemDto[]);
+  const episodesData = useGetEpisodes(seriesId, {
+    userId: userId,
+    fields: [ItemFields.Overview],
+  });
+  useQueryEvents(episodesData, {
+    // staleTime: 5_000,
+    onSuccess: (data) => {
+      // WARN: Cache this data in episodesMediaCache
+      // setEpisodesData(data.Items as BaseItemDto[]);
 
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                episodesMediaCache: {
-                  ...state.mediaCache?.[serverId]?.episodesMediaCache,
-                  [seriesId]: {
-                    data: data.Items as BaseItemDto[],
-                  },
-                },
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            episodesMediaCache: {
+              ...state.mediaCache?.[serverId]?.episodesMediaCache,
+              [seriesId]: {
+                data: data.Items as BaseItemDto[],
               },
             },
-          }));
-          setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+          },
         },
-        onError: () => {
-          setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
-        },
-      },
-    }
-  );
+      }));
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+    },
+    onError: () => {
+      setLoadingSpinner(JellyfinSeriesDetail.name, Actions.DONE);
+    },
+  });
 
   React.useEffect(() => {
     setSelectedEpisodeIndex(forwardedData.IndexNumber as number);

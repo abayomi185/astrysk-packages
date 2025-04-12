@@ -7,10 +7,10 @@
   },
   "dependencies": {
     "@astrysk/utils": "workspace:",
-    "react": "18.3.1"
+    "react": "catalog:react"
   },
   "devDependencies": {
-    "@types/react": "~18.3.12",
+    "@types/react": "catalog:react",
     "tsup": "^6.7.0"
   },
   "private": true

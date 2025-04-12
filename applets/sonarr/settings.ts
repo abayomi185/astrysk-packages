@@ -1,6 +1,5 @@
 import { Alert } from "react-native";
 import { Image } from "expo-image";
-import { useNavigation } from "expo-router";
 import { Router, SettingsOptionProps } from "@astrysk/types";
 import { Applets, Screens } from "@astrysk/constants";
 

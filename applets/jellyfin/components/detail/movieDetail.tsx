@@ -8,7 +8,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { Animated } from "react-native";
 import { YStack, Text, XStack, H2, H4, H6 } from "tamagui";
 import { roundToNearestStandardResolution } from "../../utils";
-import { isTestflightBuild, setLoadingSpinner } from "@astrysk/utils";
+import {
+  isTestflightBuild,
+  setLoadingSpinner,
+  useQueryEvents,
+} from "@astrysk/utils";
 import { Actions, Screens } from "@astrysk/constants";
 import { useTranslation } from "react-i18next";
 import JellyfinDetailSection from "./section";
@@ -78,25 +82,27 @@ const JellyfinMovieDetail: React.FC<{
         return useJellyfinStore.getState().mediaCache?.[serverId]
           ?.movieMediaCache?.[movieId]?.data;
       },
-      onSuccess: (data) => {
-        useJellyfinStore.setState((state) => ({
-          mediaCache: {
-            [serverId]: {
-              ...state.mediaCache?.[serverId],
-              movieMediaCache: {
-                ...state.mediaCache?.[serverId]?.movieMediaCache,
-                [movieId]: {
-                  data: data,
-                },
+    },
+  });
+  useQueryEvents(movieData, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            movieMediaCache: {
+              ...state.mediaCache?.[serverId]?.movieMediaCache,
+              [movieId]: {
+                data: data,
               },
             },
           },
-        }));
-        setLoadingSpinner(JellyfinMovieDetail.name, Actions.DONE);
-      },
-      onError: () => {
-        setLoadingSpinner(JellyfinMovieDetail.name, Actions.DONE);
-      },
+        },
+      }));
+      setLoadingSpinner(JellyfinMovieDetail.name, Actions.DONE);
+    },
+    onError: () => {
+      setLoadingSpinner(JellyfinMovieDetail.name, Actions.DONE);
     },
   });
 

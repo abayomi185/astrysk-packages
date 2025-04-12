@@ -1,5 +1,4 @@
 import React from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { HeaderRightWrapper } from "@astrysk/components";
 import { H4, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,6 +12,7 @@ import {
   useSettingsHeader,
 } from "@astrysk/components";
 import { sonarrColors } from "../colors";
+import { ExtendedNavigationProp } from "@astrysk/types";
 
 export const useSonarrHomeHeader = () =>
   // largeTitle: boolean
@@ -29,7 +29,7 @@ export const useSonarrSettingsHeader = () => {
 };
 
 export const useSonarrDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
@@ -74,7 +74,7 @@ export const useSonarrDetailHeader = (
 };
 
 export const useSonarrModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   gestureEnabled?: boolean,
   dependencies?: any[]

@@ -19,6 +19,7 @@ import {
   UrlRegexPattern,
   getIconColor,
   promptUserForURLSchemaIfNotExists,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { useToastController } from "@tamagui/toast";
 
@@ -52,38 +53,40 @@ const ProxmoxAuth = () => {
   const auth = useGetVersion({
     query: {
       enabled: !!apikey,
-      onSuccess: (_data) => {
-        useProxmoxStore.setState({
-          authenticated: true,
-          token: apikey,
+    },
+  });
+  useQueryEvents(auth, {
+    onSuccess: (_data) => {
+      useProxmoxStore.setState({
+        authenticated: true,
+        token: apikey,
+      });
+      useAppStateStore.setState({
+        activeApplet: Applets.PROXMOX,
+      });
+      navigation.goBack();
+    },
+    onError: (error) => {
+      useAppStateStore.setState({ activeApplet: undefined });
+      // WARN: Show error message or prompt
+      if (error.response?.status) {
+        showToast(toast, `${t("common:error")}`, {
+          message: `${error.response.status}: ${error.code}`,
+          type: "error",
         });
-        useAppStateStore.setState({
-          activeApplet: Applets.PROXMOX,
+        // WARN: Make use of ReactHookForm to show error in fields
+        setError("serverURL", {
+          type: "manual",
         });
-        navigation.goBack();
-      },
-      onError: (error) => {
-        useAppStateStore.setState({ activeApplet: undefined });
-        // WARN: Show error message or prompt
-        if (error.response?.status) {
-          showToast(toast, `${t("common:error")}`, {
-            message: `${error.response.status}: ${error.code}`,
-            type: "error",
-          });
-          // WARN: Make use of ReactHookForm to show error in fields
-          setError("serverURL", {
-            type: "manual",
-          });
-          setError("token", {
-            type: "manual",
-          });
-        }
-      },
-      onSettled: (_data, error) => {
-        if (error) {
-          useProxmoxStore.setState({ baseURL: undefined });
-        }
-      },
+        setError("token", {
+          type: "manual",
+        });
+      }
+    },
+    onSettled: (_data, error) => {
+      if (error) {
+        useProxmoxStore.setState({ baseURL: undefined });
+      }
     },
   });
 

@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 import { SectionTitle, SettingsOption, showToast } from "@astrysk/components";
 import { Plus, Pencil } from "@tamagui/lucide-icons";
 import { useToastController } from "@tamagui/toast";
+import { useQueryEvents } from "@astrysk/utils";
 
 const getRadarrEditDetailOptions = (
   t: TFunction,
@@ -199,26 +200,30 @@ const RadarrEditMovie: React.FC<{
     },
     {
       query: {
-        onSuccess: (data: MovieResource) => {
-          setDataState(data);
-        },
         enabled: !!imdbId,
       },
     }
   );
+  useQueryEvents(newMovieDataImdb, {
+    onSuccess: (data) => {
+      setDataState(data);
+    },
+  });
   const newMovieDataTmdb = useGetApiV3MovieLookupTmdb(
     {
       tmdbId: tmdbId,
     },
     {
       query: {
-        onSuccess: (data: MovieResource) => {
-          setDataState(data);
-        },
         enabled: !imdbId && !!tmdbId,
       },
     }
   );
+  useQueryEvents(newMovieDataTmdb, {
+    onSuccess: (data) => {
+      setDataState(data);
+    },
+  });
 
   const addMovie = usePostApiV3Movie({
     mutation: {
@@ -318,10 +323,10 @@ const RadarrEditMovie: React.FC<{
                   justifyContent="space-between"
                 >
                   <SectionTitle>{dataState?.title}</SectionTitle>
-                  {(newMovieDataImdb.status === "loading" ||
+                  {(newMovieDataImdb.status === "pending" ||
                     (!imdbId &&
                       !!tmdbId &&
-                      newMovieDataTmdb.status === "loading")) && (
+                      newMovieDataTmdb.status === "pending")) && (
                     <Spinner marginRight="$3" />
                   )}
                 </XStack>

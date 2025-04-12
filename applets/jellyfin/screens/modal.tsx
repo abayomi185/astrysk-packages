@@ -22,7 +22,7 @@ import { SettingsOptionProps } from "@astrysk/types";
 import { roundToNearestStandardResolution } from "../utils";
 import { JellyfinLanguageBottomSheet } from "../components/detail/bottomSheet";
 import { JellyfinMediaItemSettingsOptions } from "../settings";
-import { onItemLayout } from "@astrysk/utils";
+import { onItemLayout, useQueryEvents } from "@astrysk/utils";
 import JellyfinMoreDetail from "../components/detail/moreDetail";
 
 const JellyfinModal = () => {
@@ -114,16 +114,15 @@ const JellyfinModal = () => {
     useJellyfinModalHeader(navigation, t(`${settingsKey}`));
 
     if (settingsKey === JellyfinSettingsKeys.Server) {
-      const systemInfo = useGetSystemInfo({
-        query: {
-          onSuccess: (data) => {
-            useJellyfinStore.setState((state) => ({
-              userDetails: {
-                ...state.userDetails,
-                ServerName: data.ServerName,
-              },
-            }));
-          },
+      const systemInfo = useGetSystemInfo();
+      useQueryEvents(systemInfo, {
+        onSuccess: (data) => {
+          useJellyfinStore.setState((state) => ({
+            userDetails: {
+              ...state.userDetails,
+              ServerName: data.ServerName,
+            },
+          }));
         },
       });
 

@@ -27,6 +27,7 @@ import {
   setLoadingSpinner,
   useGetListColumnNumber,
   useLoadingSpinner,
+  useQueryEvents,
   useRefreshHandler,
 } from "@astrysk/utils";
 import { Actions } from "@astrysk/constants";
@@ -209,53 +210,53 @@ const SonarrSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const viewType = useSonarrStore((state) => state.viewType) ?? ViewType.Grid;
 
   const searchFilters = useSonarrStore((state) => state.searchFilters);
 
-  const seriesData = useGetApiV3Series(
-    {},
-    {
-      query: {
-        onSuccess: (data) => {
-          useSonarrStore.setState((state) => ({
-            sonarrSeriesCache: {
-              ...state.sonarrSeriesCache,
-              ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
-                if (item.id) acc[item.id as number] = item;
-                return acc;
-              }, {}),
-            },
-          }));
-          setLoadingSpinner(SonarrSearchLanding.name, Actions.DONE);
+  const seriesData = useGetApiV3Series();
+  useQueryEvents(seriesData, {
+    onSuccess: (data) => {
+      useSonarrStore.setState((state) => ({
+        sonarrSeriesCache: {
+          ...state.sonarrSeriesCache,
+          ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
+            if (item.id) acc[item.id as number] = item;
+            return acc;
+          }, {}),
         },
-      },
-    }
-  );
-  useGetApiV3Qualityprofile({
+      }));
+      setLoadingSpinner(SonarrSearchLanding.name, Actions.DONE);
+    },
+  });
+  const qualityProfiles = useGetApiV3Qualityprofile({
     query: {
       refetchOnMount: false,
       refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrQualityProfiles: data,
-        });
-      },
       staleTime: Infinity,
     },
   });
-  useGetApiV3Languageprofile({
+  useQueryEvents(qualityProfiles, {
+    onSuccess: (data) => {
+      useSonarrStore.setState({
+        sonarrQualityProfiles: data,
+      });
+    },
+  });
+  const languageProfiles = useGetApiV3Languageprofile({
     query: {
       refetchOnMount: false,
       refetchOnReconnect: false,
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrLanguageProfiles: data,
-        });
-      },
       staleTime: Infinity,
+    },
+  });
+  useQueryEvents(languageProfiles, {
+    onSuccess: (data) => {
+      useSonarrStore.setState({
+        sonarrLanguageProfiles: data,
+      });
     },
   });
 
@@ -373,9 +374,9 @@ const SonarrSearchLanding: React.FC<{
           ListEmptyComponent={() => (
             <EmptyList
               queryStatus={
-                seriesData.status === "loading" ||
-                searchResults.status === "loading"
-                  ? "loading"
+                seriesData.status === "pending" ||
+                searchResults.status === "pending"
+                  ? "pending"
                   : "success" // Success does not do anything in EmptyList
               }
               text={t("sonarr:noDataFound")}

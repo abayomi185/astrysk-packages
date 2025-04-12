@@ -3,21 +3,21 @@
   "version": "0.0.0",
   "main": "tamagui.config.ts",
   "dependencies": {
-    "@tamagui/animations-moti": "^1.116.9",
-    "@tamagui/animations-react-native": "^1.116.9",
-    "@tamagui/babel-plugin": "^1.116.9",
-    "@tamagui/config": "^1.116.9",
-    "@tamagui/font-inter": "^1.116.9",
-    "@tamagui/lucide-icons": "^1.116.9",
-    "@tamagui/shorthands": "^1.116.9",
-    "@tamagui/theme-base": "^1.116.9",
-    "@tamagui/themes": "^1.116.9",
-    "@tamagui/toast": "^1.116.9",
-    "react": "18.3.1",
-    "tamagui": "^1.116.9"
+    "@tamagui/animations-moti": "catalog:",
+    "@tamagui/animations-react-native": "catalog:",
+    "@tamagui/babel-plugin": "catalog:",
+    "@tamagui/config": "catalog:",
+    "@tamagui/font-inter": "catalog:",
+    "@tamagui/lucide-icons": "catalog:",
+    "@tamagui/shorthands": "catalog:",
+    "@tamagui/theme-base": "catalog:",
+    "@tamagui/themes": "catalog:",
+    "@tamagui/toast": "catalog:",
+    "react": "catalog:react",
+    "tamagui": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "~18.3.12"
+    "@types/react": "catalog:react"
   },
   "private": true
 }

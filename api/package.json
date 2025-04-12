@@ -10,7 +10,8 @@
     "qs": "catalog:"
   },
   "devDependencies": {
-    "tsup": "^6.7.0"
+    "tsup": "^6.7.0",
+    "@types/qs": "catalog:"
   },
   "private": true
 }

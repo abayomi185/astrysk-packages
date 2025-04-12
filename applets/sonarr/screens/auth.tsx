@@ -19,6 +19,7 @@ import {
   UrlRegexPattern,
   getIconColor,
   promptUserForURLSchemaIfNotExists,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { useToastController } from "@tamagui/toast";
 
@@ -50,38 +51,40 @@ const SonarrAuth = () => {
   const auth = useGetApiV3Health({
     query: {
       enabled: !!apikey,
-      onSuccess: (_data) => {
-        useSonarrStore.setState({
-          authenticated: true,
-          token: apikey,
+    },
+  });
+  useQueryEvents(auth, {
+    onSuccess: (_data) => {
+      useSonarrStore.setState({
+        authenticated: true,
+        token: apikey,
+      });
+      useAppStateStore.setState({
+        activeApplet: Applets.SONARR,
+      });
+      navigation.goBack();
+    },
+    onError: (error) => {
+      useAppStateStore.setState({ activeApplet: undefined });
+      // WARN: Show error message or prompt
+      if (error.response?.status) {
+        showToast(toast, `${t("common:error")}`, {
+          message: `${error.response.status}: ${error.code}`,
+          type: "error",
         });
-        useAppStateStore.setState({
-          activeApplet: Applets.SONARR,
+        // WARN: Make use of ReactHookForm to show error in fields
+        setError("serverURL", {
+          type: "manual",
         });
-        navigation.goBack();
-      },
-      onError: (error) => {
-        useAppStateStore.setState({ activeApplet: undefined });
-        // WARN: Show error message or prompt
-        if (error.response?.status) {
-          showToast(toast, `${t("common:error")}`, {
-            message: `${error.response.status}: ${error.code}`,
-            type: "error",
-          });
-          // WARN: Make use of ReactHookForm to show error in fields
-          setError("serverURL", {
-            type: "manual",
-          });
-          setError("apiKey", {
-            type: "manual",
-          });
-        }
-      },
-      onSettled: (data, error) => {
-        if (!Array.isArray(data) || error) {
-          useSonarrStore.setState({ baseURL: undefined });
-        }
-      },
+        setError("apiKey", {
+          type: "manual",
+        });
+      }
+    },
+    onSettled: (data, error) => {
+      if (!Array.isArray(data) || error) {
+        useSonarrStore.setState({ baseURL: undefined });
+      }
     },
   });
 

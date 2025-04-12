@@ -5,8 +5,11 @@ import { YStack, XStack } from "tamagui";
 import { onItemLayout } from "@astrysk/utils";
 import { ClearFilterButton, SettingsOption } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
-import { FilterOrder, SettingsOptionProps } from "@astrysk/types";
-import { NavigationProp } from "@react-navigation/native";
+import {
+  ExtendedNavigationProp,
+  FilterOrder,
+  SettingsOptionProps,
+} from "@astrysk/types";
 import { useOllamaStore } from "../../store";
 import {
   OllamaFilterKind,
@@ -17,7 +20,7 @@ import { TFunction } from "i18next";
 
 const createSettingsOptionsObject = (
   t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   item: string,
   supportsOrderBy: boolean,
   context: OllamaSearchFilterContext,

@@ -13,6 +13,7 @@ import {
   useSettingsHeader,
 } from "@astrysk/components";
 import { radarrColors } from "../colors";
+import { ExtendedNavigationProp } from "@astrysk/types";
 
 export const useRadarrHomeHeader = () =>
   // largeTitle: boolean
@@ -29,7 +30,7 @@ export const useRadarrSettingsHeader = () => {
 };
 
 export const useRadarrDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
@@ -74,7 +75,7 @@ export const useRadarrDetailHeader = (
 };
 
 export const useRadarrModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   gestureEnabled?: boolean,
   dependencies?: any[]

@@ -10,7 +10,7 @@ export const EmptyList: React.FC<{
 }> = ({ queryStatus, text, accentColor }) => {
   return (
     <XStack justifyContent="center" marginTop="$5">
-      {queryStatus === "loading" ? (
+      {queryStatus === "pending" ? (
         <Spinner color={accentColor ?? undefined} size="large" />
       ) : (
         <H4 color="$gray11">{text}</H4>

@@ -8,7 +8,11 @@ import { Image } from "expo-image";
 
 import { BaseItemDto, BaseItemKind, useGetResumeItems } from "../../api";
 
-import { isTestflightBuild, useQueryLoadingSpinner } from "@astrysk/utils";
+import {
+  isTestflightBuild,
+  useQueryEvents,
+  useQueryLoadingSpinner,
+} from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import { onItemLayout } from "@astrysk/utils";
@@ -169,20 +173,22 @@ const JellyfinResumeMedia: React.FC = () => {
           return useJellyfinStore.getState().mediaCache?.[serverId]
             ?.resumeMediaCache?.data;
         },
-        onSuccess: (data) => {
-          // Set state for this data to cache it and read from state instead
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                resumeMediaCache: { data: data },
-              },
-            },
-          }));
-        },
       },
     }
   );
+  useQueryEvents(resumeItems, {
+    onSuccess: (data) => {
+      // Set state for this data to cache it and read from state instead
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            resumeMediaCache: { data: data },
+          },
+        },
+      }));
+    },
+  });
 
   useFocusEffect(
     React.useCallback(() => {

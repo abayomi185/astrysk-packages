@@ -15,7 +15,7 @@ import {
   JellyfinSearchFilterContext,
 } from "../../types";
 import { useTranslation } from "react-i18next";
-import { useGetListColumnNumber } from "@astrysk/utils";
+import { useGetListColumnNumber, useQueryEvents } from "@astrysk/utils";
 import { customTokens } from "@astrysk/styles";
 
 export const JellyfinSearchResultItem: React.FC<{
@@ -110,7 +110,7 @@ const JellyfinSearchResults: React.FC<{
   const userId = useJellyfinStore.getState().userDetails?.Id as string;
   const serverId = useJellyfinStore.getState().userDetails?.ServerId as string;
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const searchFilters = useJellyfinStore((state) => state.searchFilters);
 
@@ -141,26 +141,28 @@ const JellyfinSearchResults: React.FC<{
             searchFilters?.[JellyfinSearchFilterContext.Search]
           );
         },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                searchMediaCache: {
-                  data: data,
-                },
-              },
-            },
-          }));
-        },
-        onError: (error) => {
-          // WARN: Do something on Error
-          // console.log(error);
-        },
         refetchOnMount: false,
       },
     }
   );
+  useQueryEvents(searchResults, {
+    onSuccess: (data): void => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            searchMediaCache: {
+              data: data,
+            },
+          },
+        },
+      }));
+    },
+    onError: (error) => {
+      // WARN: Do something on Error
+      // console.log(error);
+    },
+  });
 
   const customOrder: { [key: string]: number } = {
     Movie: 1,

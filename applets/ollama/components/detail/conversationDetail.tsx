@@ -42,13 +42,14 @@ import {
   OllamaSearchFilterContext,
 } from "../../types";
 import OllamaConversationActionPanel from "./actionPanel";
-import { Generate200, useChat } from "../../api";
+import { Generate200 } from "../../api";
 import SyntaxHighlighter from "react-native-syntax-highlighter";
 import a11yDark from "../styles/hljs-a11y-dark";
 import a11yLight from "../styles/hljs-a11y-light";
 import Markdown from "react-native-markdown-display";
 import { goToOllamaModalScreen } from "../../utils";
 import { DONE } from "@astrysk/constants/actions";
+import { useChatWithReader } from "../../api/event";
 
 const OllamaMarkdown = ({ content }: { content: string }) => {
   const { t } = useTranslation();
@@ -478,8 +479,12 @@ const OllamaConversationDetail: React.FC<{
     ];
   };
 
-  const chatNoStream = useChat({
-    mutation: {
+  const chatNoStream = useChatWithReader(
+    {
+      baseUrl: useOllamaStore.getState().baseURL!,
+      token: useOllamaStore.getState().token!,
+    },
+    {
       onSuccess: (data) => {
         setConversation((previousMessages) => [
           ...convertResponseToOllamaConversation(data),
@@ -494,8 +499,8 @@ const OllamaConversationDetail: React.FC<{
           type: "error",
         });
       },
-    },
-  });
+    }
+  );
 
   const saveConversation = () => {
     useOllamaStore.setState((state) => ({

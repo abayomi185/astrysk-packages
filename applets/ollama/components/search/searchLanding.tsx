@@ -14,6 +14,7 @@ import {
 import {
   getFlashListColumnsFromViewType,
   useGetListColumnNumber,
+  useQueryEvents,
   useQueryLoadingSpinner,
   useRefreshHandler,
 } from "@astrysk/utils";
@@ -33,7 +34,7 @@ const OllamaSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const viewType = useOllamaStore((state) => state.viewType) ?? ViewType.Grid;
 
@@ -61,19 +62,21 @@ const OllamaSearchLanding: React.FC<{
   const models = useListLocalModels({
     query: {
       select: (data) => data.models,
-      onSuccess: (data) => {
-        useOllamaStore.setState((state) => ({
-          ollamaCache: {
-            ...state.ollamaCache,
-            models: data?.reduce((acc, curr) => {
-              if (curr.digest) {
-                acc[curr.digest] = curr;
-              }
-              return acc;
-            }, {} as Record<string, ListLocalModels200ModelsItem>), // Initialize as a partial record
-          },
-        }));
-      },
+    },
+  });
+  useQueryEvents(models, {
+    onSuccess: (data) => {
+      useOllamaStore.setState((state) => ({
+        ollamaCache: {
+          ...state.ollamaCache,
+          models: data?.reduce((acc, curr) => {
+            if (curr.digest) {
+              acc[curr.digest] = curr;
+            }
+            return acc;
+          }, {} as Record<string, ListLocalModels200ModelsItem>), // Initialize as a partial record
+        },
+      }));
     },
   });
 

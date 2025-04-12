@@ -8,7 +8,7 @@ import { BaseItemDto, ImageType, useGetNextUp } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { useQueryLoadingSpinner } from "@astrysk/utils";
+import { useQueryEvents, useQueryLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import {
@@ -91,32 +91,24 @@ const JellyfinNextUp: React.FC = () => {
 
   const [flashListHeight, setFlashListHeight] = React.useState(0);
 
-  const nextUpMedia = useGetNextUp(
-    { userId },
-    {
-      query: {
-        // initialData: () => {
-        //   // WARN: Make use of time to regulate query staletime
-        //   // return useJellyfinStore.getState().mediaCache?.resumeMediaCache.data;
-        // },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                nextUpMediaCache: { data: data },
-              },
-            },
-          }));
+  const nextUpMedia = useGetNextUp({ userId });
+  useQueryEvents(nextUpMedia, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            nextUpMediaCache: { data: data },
+          },
         },
-        // onError: () => {
-        //   // Call common function to alert or have indicator to show when there's an error.
-        //   // Perhaps replace applet icon
-        //   setLoadingSpinner(JellyfinNextUp.name, Actions.DONE);
-        // },
-      },
-    }
-  );
+      }));
+    },
+    // onError: () => {
+    //   // Call common function to alert or have indicator to show when there's an error.
+    //   // Perhaps replace applet icon
+    //   setLoadingSpinner(JellyfinNextUp.name, Actions.DONE);
+    // },
+  });
 
   useFocusEffect(
     React.useCallback(() => {

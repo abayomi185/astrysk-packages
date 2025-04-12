@@ -1,5 +1,4 @@
 import React from "react";
-import { NavigationProp } from "@react-navigation/native";
 import { HeaderRightWrapper } from "@astrysk/components";
 import { H4, XStack, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,6 +12,7 @@ import {
 } from "@astrysk/components";
 import { TFunction } from "i18next";
 import { jellyfinColors } from "../colors";
+import { ExtendedNavigationProp } from "@astrysk/types";
 
 export const useJellyfinHomeHeader = () => {
   return useHomeHeader(HeaderRightWrapper);
@@ -27,7 +27,7 @@ export const useJellyfinSettingsHeader = () => {
 };
 
 export const useJellyfinDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {
@@ -72,7 +72,7 @@ export const useJellyfinDetailHeader = (
 };
 
 export const useJellyfinModalHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   gestureEnabled?: boolean,
   dependencies?: any[]

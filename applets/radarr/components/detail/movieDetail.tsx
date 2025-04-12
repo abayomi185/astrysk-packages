@@ -12,7 +12,8 @@ import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import RadarrMovieDetailHeader from "./movieDetailHeader";
 import { radarrColors } from "../../colors";
-import { useQueryLoadingSpinner } from "@astrysk/utils";
+import { useQueryEvents, useQueryLoadingSpinner } from "@astrysk/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const getRadarrSeriesDetailOptions = (
   t: TFunction,
@@ -106,14 +107,16 @@ export const RadarrMovieDetail: React.FC<{
   const movieData = useGetApiV3MovieId(forwardedData.id as number, {
     query: {
       initialData: () => forwardedData,
-      onSuccess: (seriesData) => {
-        useRadarrStore.setState((state) => ({
-          radarrMovieCache: {
-            ...state.radarrMovieCache,
-            [forwardedData.id as number]: seriesData,
-          },
-        }));
-      },
+    },
+  });
+  useQueryEvents(movieData, {
+    onSuccess: (seriesData) => {
+      useRadarrStore.setState((state) => ({
+        radarrMovieCache: {
+          ...state.radarrMovieCache,
+          [forwardedData.id as number]: seriesData,
+        },
+      }));
     },
   });
 

@@ -17,6 +17,7 @@ import { SettingsOptionProps, TabContext } from "@astrysk/types";
 import { TFunction } from "i18next";
 import SonarrSeriesDetailHeader from "./seriesDetailHeader";
 import { sonarrColors } from "../../colors";
+import { useQueryEvents } from "@astrysk/utils";
 
 const getSonarrSeriesDetailOptions = (
   t: TFunction,
@@ -133,14 +134,16 @@ export const SonarrSeriesDetail: React.FC<{
   const seriesData = useGetApiV3SeriesId(forwardedData.id as number, {
     query: {
       initialData: () => forwardedData,
-      onSuccess: (seriesData) => {
-        useSonarrStore.setState((state) => ({
-          sonarrSeriesCache: {
-            ...state.sonarrSeriesCache,
-            [forwardedData.id as number]: seriesData,
-          },
-        }));
-      },
+    },
+  });
+  useQueryEvents(seriesData, {
+    onSuccess: (seriesData) => {
+      useSonarrStore.setState((state) => ({
+        sonarrSeriesCache: {
+          ...state.sonarrSeriesCache,
+          [forwardedData.id as number]: seriesData,
+        },
+      }));
     },
   });
 

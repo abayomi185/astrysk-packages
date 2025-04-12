@@ -4,21 +4,14 @@ import { YStack } from "tamagui";
 import { useLidarrConfigurator } from "../utils";
 
 import { useLidarrHomeHeader } from "../components/useHeader";
-import { useNavigation } from "expo-router";
 // import LidarrCalendar from "../components/home/calendar";
 
 const RadarrHome: React.FC = () => {
   useLidarrConfigurator();
 
-  const navigation = useNavigation();
+  useLidarrHomeHeader();
 
-  useLidarrHomeHeader(navigation);
-
-  return (
-    <YStack height="100%">
-      {/* <RadarrCalendar /> */}
-    </YStack>
-  );
+  return <YStack height="100%">{/* <RadarrCalendar /> */}</YStack>;
 };
 
 export default RadarrHome;

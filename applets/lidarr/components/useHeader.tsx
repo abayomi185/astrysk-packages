@@ -13,29 +13,22 @@ import {
   useSettingsHeader,
 } from "@astrysk/components";
 import { lidarrColors } from "../colors";
+import { ExtendedNavigationProp } from "@astrysk/types";
 
-export const useLidarrHomeHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-  // largeTitle: boolean
-) => {
-  return useHomeHeader(navigation, HeaderRightWrapper);
+export const useLidarrHomeHeader = () => {
+  return useHomeHeader(HeaderRightWrapper);
 };
 
-export const useLidarrSearchHeader = (
-  t: TFunction,
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSearchHeader(t, navigation, HeaderRightWrapper);
+export const useLidarrSearchHeader = (t: TFunction) => {
+  return useSearchHeader(t, HeaderRightWrapper);
 };
 
-export const useLidarrSettingsHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>
-) => {
-  return useSettingsHeader(navigation, HeaderRightWrapper);
+export const useLidarrSettingsHeader = () => {
+  return useSettingsHeader(HeaderRightWrapper);
 };
 
 export const useLidarrDetailHeader = (
-  navigation: NavigationProp<ReactNavigation.RootParamList>,
+  navigation: ExtendedNavigationProp,
   headerTitle: string,
   headerOpacity?: Animated.AnimatedInterpolation<number>
 ) => {

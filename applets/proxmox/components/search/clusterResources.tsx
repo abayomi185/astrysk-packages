@@ -35,8 +35,8 @@ const ClusterResourcesListItem: React.FC<{
             />
           </YStack>
           <YStack flex={1} marginLeft="$3">
-            <H3>{data.vmid}</H3>
-            <Text>{data.name}</Text>
+            <H3>{data.id}</H3>
+            <Text>{data.node}</Text>
             <Text color="$gray10" marginTop="$1">
               {t(`proxmox:${data.status}`)}
             </Text>
@@ -54,8 +54,8 @@ const ClusterResourcesListItem: React.FC<{
             />
           </YStack>
           <YStack flex={1} marginLeft="$3">
-            <H3>{data.vmid}</H3>
-            <Text>{data.name}</Text>
+            <H3>{data.id}</H3>
+            <Text>{data.node}</Text>
             <Text color="$gray10" marginTop="$1">
               {t(`proxmox:${data.status}`)}
             </Text>

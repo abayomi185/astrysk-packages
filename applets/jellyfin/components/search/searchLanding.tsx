@@ -12,7 +12,7 @@ import {
   JellyfinDetailScreenContext,
   JellyfinSearchFilterContext,
 } from "../../types";
-import { useRefreshHandler } from "@astrysk/utils";
+import { useQueryEvents, useRefreshHandler } from "@astrysk/utils";
 
 const JellyfinSearchLandingItem: React.FC<{
   index: number;
@@ -93,22 +93,24 @@ const JellyfinSearchLanding = () => {
         select: (data) => {
           return filterSuggestionsData(data.Items as BaseItemDto[]);
         },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                searchSuggestionsMediaCache: {
-                  data: data,
-                },
-              },
-            },
-          }));
-        },
         refetchOnMount: false,
       },
     }
   );
+  useQueryEvents(suggestions, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            searchSuggestionsMediaCache: {
+              data: data,
+            },
+          },
+        },
+      }));
+    },
+  });
 
   const { isRefetching, refetch } = useRefreshHandler(suggestions.refetch);
 

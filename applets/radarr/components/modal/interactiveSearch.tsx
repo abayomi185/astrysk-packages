@@ -23,6 +23,7 @@ import { getSizeOnDisk } from "../../utils";
 import {
   expandableItemAnimationHandler,
   getDateFromHours,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { getIconColor, setLoadingSpinner } from "@astrysk/utils";
 import { useToastController } from "@tamagui/toast";
@@ -201,21 +202,17 @@ const RadarrInteractiveSearch: React.FC<{
 
   const flashListRef = React.useRef<FlashList<ReleaseResource>>(null);
 
-  const releaseQuery = useGetApiV3Release(
-    {
-      movieId: data.id,
+  const releaseQuery = useGetApiV3Release({
+    movieId: data.id,
+  });
+  useQueryEvents(releaseQuery, {
+    onError: (error) => {
+      showToast(toast, t("radarr:error:interactiveSearchFailed"), {
+        message: error.message,
+        type: "error",
+      });
     },
-    {
-      query: {
-        onError: (error) => {
-          showToast(toast, t("radarr:error:interactiveSearchFailed"), {
-            message: error.message,
-            type: "error",
-          });
-        },
-      },
-    }
-  );
+  });
 
   const interactiveSearchContext = RadarrInteractiveSearchContext.Movie;
 

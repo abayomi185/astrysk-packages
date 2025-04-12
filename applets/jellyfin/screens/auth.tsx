@@ -271,7 +271,7 @@ const JellyfinAuth = () => {
             <Button theme="blue" width="100%">
               <XStack flex={1} alignItems="center" justifyContent="center">
                 <Text>
-                  {auth.status === "loading" ? <Spinner /> : t("common:signIn")}
+                  {auth.status === "pending" ? <Spinner /> : t("common:signIn")}
                 </Text>
               </XStack>
             </Button>

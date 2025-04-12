@@ -6,7 +6,7 @@ import { BaseItemDto, ImageType, useGetUserViews } from "../../api";
 import { Image, ImageSource } from "expo-image";
 import { useTranslation } from "react-i18next";
 import { SectionTitle } from "../../components/styles";
-import { useQueryLoadingSpinner } from "@astrysk/utils";
+import { useQueryEvents, useQueryLoadingSpinner } from "@astrysk/utils";
 import { useJellyfinStore } from "../../store";
 import { Screens } from "@astrysk/constants";
 import {
@@ -89,19 +89,21 @@ const JellyfinViews: React.FC = () => {
         select: (data) => {
           return data.Items as BaseItemDto[];
         },
-        onSuccess: (data) => {
-          useJellyfinStore.setState((state) => ({
-            mediaCache: {
-              [serverId]: {
-                ...state.mediaCache?.[serverId],
-                viewsMediaCache: { data: data },
-              },
-            },
-          }));
-        },
       },
     }
   );
+  useQueryEvents(views, {
+    onSuccess: (data) => {
+      useJellyfinStore.setState((state) => ({
+        mediaCache: {
+          [serverId]: {
+            ...state.mediaCache?.[serverId],
+            viewsMediaCache: { data: data },
+          },
+        },
+      }));
+    },
+  });
 
   useFocusEffect(
     React.useCallback(() => {

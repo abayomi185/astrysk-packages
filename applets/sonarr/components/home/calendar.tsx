@@ -25,6 +25,7 @@ import {
   setLoadingSpinner,
   useColorScheme,
   useLoadingSpinner,
+  useQueryEvents,
 } from "@astrysk/utils";
 import { EmptyList, SectionTitle } from "@astrysk/components";
 import { useTranslation } from "react-i18next";
@@ -89,24 +90,20 @@ const SonarrCalendar: React.FC = () => {
 
   const weekRange = getStartAndEndOfWeek(new Date());
 
-  useGetApiV3Series(
-    {},
-    {
-      query: {
-        onSuccess: (data) => {
-          useSonarrStore.setState((state) => ({
-            sonarrSeriesCache: {
-              ...state.sonarrSeriesCache,
-              ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
-                if (item.id) acc[item.id as number] = item;
-                return acc;
-              }, {}),
-            },
-          }));
+  const seriesData = useGetApiV3Series();
+  useQueryEvents(seriesData, {
+    onSuccess: (data) => {
+      useSonarrStore.setState((state) => ({
+        sonarrSeriesCache: {
+          ...state.sonarrSeriesCache,
+          ...data.reduce((acc: { [key: number]: SeriesResource }, item) => {
+            if (item.id) acc[item.id as number] = item;
+            return acc;
+          }, {}),
         },
-      },
-    }
-  );
+      }));
+    },
+  });
 
   const calendarQuery = useGetApiV3Calendar(
     {
@@ -118,13 +115,15 @@ const SonarrCalendar: React.FC = () => {
     },
     {
       query: {
-        onSuccess: (_data) => {
-          setLoadingSpinner(SonarrCalendar.name, Actions.DONE);
-        },
         staleTime: 60_000,
       },
     }
   );
+  useQueryEvents(calendarQuery, {
+    onSuccess: (_data) => {
+      setLoadingSpinner(SonarrCalendar.name, Actions.DONE);
+    },
+  });
 
   // const onVisibleMonthsChange = (months) => {
   //   console.log(months);
@@ -138,31 +137,32 @@ const SonarrCalendar: React.FC = () => {
   //   }
   // };
 
-  useGetApiV3Qualityprofile({
-    query: {
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrQualityProfiles: data,
-        });
-      },
+  const qualityProfiles = useGetApiV3Qualityprofile({
+    query: {},
+  });
+  useQueryEvents(qualityProfiles, {
+    onSuccess: (data) => {
+      useSonarrStore.setState({
+        sonarrQualityProfiles: data,
+      });
     },
   });
-  useGetApiV3Languageprofile({
-    query: {
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrLanguageProfiles: data,
-        });
-      },
+  const languageProfiles = useGetApiV3Languageprofile({
+    query: {},
+  });
+  useQueryEvents(languageProfiles, {
+    onSuccess: (data) => {
+      useSonarrStore.setState({
+        sonarrLanguageProfiles: data,
+      });
     },
   });
-  useGetApiV3Rootfolder({
-    query: {
-      onSuccess: (data) => {
-        useSonarrStore.setState({
-          sonarrRootFolderCache: data.map((item) => item.path as string),
-        });
-      },
+  const rootFolder = useGetApiV3Rootfolder();
+  useQueryEvents(rootFolder, {
+    onSuccess: (data) => {
+      useSonarrStore.setState({
+        sonarrRootFolderCache: data.map((item) => item.path as string),
+      });
     },
   });
 

@@ -296,14 +296,14 @@ const ProxmoxActionPanel: React.FC<{
               if (data.type === "qemu") {
                 startVm.mutate({
                   node: data.node!,
-                  vmid: data.vmid!,
+                  vmid: parseInt(data.id!),
                   data: {},
                 });
               }
               if (data.type === "lxc") {
                 startLxc.mutate({
                   node: data.node!,
-                  vmid: data.vmid!,
+                  vmid: parseInt(data.id!),
                   data: {},
                 });
               }
@@ -312,14 +312,14 @@ const ProxmoxActionPanel: React.FC<{
               if (data.type === "qemu") {
                 resumeVm.mutate({
                   node: data.node!,
-                  vmid: data.vmid!,
+                  vmid: parseInt(data.id!),
                   data: {},
                 });
               }
               if (data.type === "lxc") {
                 resumeLxc.mutate({
                   node: data.node!,
-                  vmid: data.vmid!,
+                  vmid: parseInt(data.id!),
                   data: {},
                 });
               }
@@ -343,19 +343,19 @@ const ProxmoxActionPanel: React.FC<{
               createProxmoxActionAlert(
                 t,
                 t("proxmox:alert:suspend") as string,
-                getProxmoxActionAlertMessage(data.id!, data.name!),
+                getProxmoxActionAlertMessage(data.id!, data.node!),
                 () => {
                   if (data.type === "qemu") {
                     suspendVm.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
                   if (data.type === "lxc") {
                     suspendLxc.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
@@ -381,19 +381,19 @@ const ProxmoxActionPanel: React.FC<{
               createProxmoxActionAlert(
                 t,
                 t("proxmox:alert:shutdown") as string,
-                getProxmoxActionAlertMessage(data.id!, data.name!),
+                getProxmoxActionAlertMessage(data.id!, data.node!),
                 () => {
                   if (data.type === "qemu") {
                     shutdownVm.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
                   if (data.type === "lxc") {
                     shutdownLxc.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
@@ -419,19 +419,19 @@ const ProxmoxActionPanel: React.FC<{
               createProxmoxActionAlert(
                 t,
                 t("proxmox:alert:reboot") as string,
-                getProxmoxActionAlertMessage(data.id!, data.name!),
+                getProxmoxActionAlertMessage(data.id!, data.node!),
                 () => {
                   if (data.type === "qemu") {
                     rebootVm.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
                   if (data.type === "lxc") {
                     rebootLxc.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
@@ -444,11 +444,11 @@ const ProxmoxActionPanel: React.FC<{
               createProxmoxActionAlert(
                 t,
                 t("proxmox:alert:reset") as string,
-                getProxmoxActionAlertMessage(data.id!, data.name!),
+                getProxmoxActionAlertMessage(data.id!, data.node!),
                 () => {
                   resetVm.mutate({
                     node: data.node!,
-                    vmid: data.vmid!,
+                    vmid: parseInt(data.id!),
                     data: {},
                   });
                 }
@@ -473,19 +473,19 @@ const ProxmoxActionPanel: React.FC<{
               createProxmoxActionAlert(
                 t,
                 t("proxmox:alert:stop") as string,
-                getProxmoxActionAlertMessage(data.id!, data.name!),
+                getProxmoxActionAlertMessage(data.id!, data.node!),
                 () => {
                   if (data.type === "qemu") {
                     stopVm.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }
                   if (data.type === "lxc") {
                     stopLxc.mutate({
                       node: data.node!,
-                      vmid: data.vmid!,
+                      vmid: parseInt(data.id!),
                       data: {},
                     });
                   }

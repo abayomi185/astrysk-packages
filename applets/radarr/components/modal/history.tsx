@@ -212,17 +212,10 @@ const RadarrHistory: React.FC<{
 
   const flashListRef = React.useRef<FlashList<HistoryResource>>(null);
 
-  const movieHistory = useGetApiV3HistoryMovie(
-    {
-      movieId: data.id,
-      includeMovie: true,
-    },
-    {
-      query: {
-        onSuccess: () => {},
-      },
-    }
-  );
+  const movieHistory = useGetApiV3HistoryMovie({
+    movieId: data.id,
+    includeMovie: true,
+  });
 
   return (
     <Suspense>

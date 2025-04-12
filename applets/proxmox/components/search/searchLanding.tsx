@@ -11,6 +11,7 @@ import { filterProxmoxSearchData, goToProxmoxDetailScreen } from "../../utils";
 import {
   getFlashListColumnsFromViewType,
   useGetListColumnNumber,
+  useQueryEvents,
   useQueryLoadingSpinner,
   useRefreshHandler,
 } from "@astrysk/utils";
@@ -31,7 +32,7 @@ const ProxmoxSearchLanding: React.FC<{
 }> = ({ searchTerm }) => {
   const { t } = useTranslation();
 
-  const flashListColumns = useGetListColumnNumber(customTokens.size[11].val);
+  const flashListColumns = useGetListColumnNumber(customTokens.size["$11"].val);
 
   const viewType = useProxmoxStore((state) => state.viewType) ?? ViewType.Grid;
 
@@ -51,29 +52,31 @@ const ProxmoxSearchLanding: React.FC<{
           })
           .filter((data) => data.type !== "node");
       },
-      onSuccess: (data) => {
-        // console.log(JSON.stringify(data, null, 2));
-        useProxmoxStore.setState((state) => ({
-          proxmoxCache: {
-            ...state.proxmoxCache,
-            clusterResources: {
-              ...state.proxmoxCache?.clusterResources,
-              ...data?.reduce(
-                (
-                  acc: {
-                    [key: string]: GetClusterResourcesResponseResponseDataItem;
-                  },
-                  item
-                ) => {
-                  if (item.id) acc[item.id] = item;
-                  return acc;
+    },
+  });
+  useQueryEvents(clusterResources, {
+    onSuccess: (data) => {
+      // console.log(JSON.stringify(data, null, 2));
+      useProxmoxStore.setState((state) => ({
+        proxmoxCache: {
+          ...state.proxmoxCache,
+          clusterResources: {
+            ...state.proxmoxCache?.clusterResources,
+            ...data?.reduce(
+              (
+                acc: {
+                  [key: string]: GetClusterResourcesResponseResponseDataItem;
                 },
-                {}
-              ),
-            },
+                item
+              ) => {
+                if (item.id) acc[item.id] = item;
+                return acc;
+              },
+              {}
+            ),
           },
-        }));
-      },
+        },
+      }));
     },
   });
 
@@ -85,7 +88,7 @@ const ProxmoxSearchLanding: React.FC<{
       const filteredResources = initialResourcesData.filter((data) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return (
-          data.name?.toLowerCase().includes(lowerCaseSearchTerm) ||
+          data.node?.toLowerCase().includes(lowerCaseSearchTerm) ||
           data.id?.toLowerCase().includes(lowerCaseSearchTerm)
         );
       });
